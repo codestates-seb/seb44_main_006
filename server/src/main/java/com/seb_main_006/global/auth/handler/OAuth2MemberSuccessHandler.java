@@ -6,7 +6,9 @@ import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.util.LinkedMultiValueMap;
@@ -23,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenizer jwtTokenizer;
@@ -39,16 +42,26 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var oAuth2User = (OAuth2User)authentication.getPrincipal();
-        String email = String.valueOf(oAuth2User.getAttributes().get("email"));
-        String nickname = String.valueOf(oAuth2User.getAttributes().get("given_name"));
-        String imgURL = String.valueOf(oAuth2User.getAttributes().get("picture"));
-        List<String> authorities = authorityUtils.createRoles(email);
 
-        googleSavedUser(email, nickname, imgURL);
-        redirect(request, response, email, authorities);
+        System.out.println("oAuth2User = " + oAuth2User);
+
+//        String email = String.valueOf(oAuth2User.getAttributes().get("email"));
+//        String nickname = String.valueOf(oAuth2User.getAttributes().get("given_name"));
+//        String imgURL = String.valueOf(oAuth2User.getAttributes().get("picture"));
+//        List<String> authorities = authorityUtils.createRoles(email);
+
+//        googleSavedUser(email, nickname, imgURL);
+//        redirect(request, response, email, authorities);
+
+
+
+
+
     }
     //DB에 해당하는 사용자 정보 저장
     private void googleSavedUser(String memberEmail, String nickname, String imgURL){
+
+        System.out.println("여기까지 옴?");
         Member member = new Member(memberEmail, nickname, imgURL);
         memberService.createGoogleMember(member);
     }
