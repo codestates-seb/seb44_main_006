@@ -27,6 +27,9 @@ public class Member {
     @Column
     private String memberImageUrl;
 
+    @Enumerated(EnumType.STRING)
+    private MemberStatus memberStatus = MemberStatus.ACTIVE;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -36,6 +39,8 @@ public class Member {
         this.memberImageUrl = imgURL;
     }
 
-
-
+    @Getter
+    public enum MemberStatus {
+        ACTIVE, DELETED;
+    }
 }

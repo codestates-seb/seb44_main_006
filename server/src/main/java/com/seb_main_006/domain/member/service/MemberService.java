@@ -21,10 +21,10 @@ public class MemberService {
     }
 
     // 구글 로그인 회원 가입
-    public Member createGoogleMember(Member member) {
-        if (!verifyExistEmail(member.getMemberEmail())) {
+    public Member createMember(Member member) {
+        if (!verifyExistEmail(member.getMemberEmail())) { // DB에 이메일이 존재하지 않을 때만 회원 가입 로직 수행
 
-            //DB에 member Role 저장
+            // DB에 member Role 저장
             List<String> roles = customAuthorityUtils.createRoles(member.getMemberEmail());
             member.setRoles(roles);
 

@@ -41,29 +41,23 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     //소셜(구글)로그인 성공시 이메일, 닉네임, 프로필이미지 가져와서 DB에 저장 후 리다이렉트
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        var oAuth2User = (OAuth2User)authentication.getPrincipal();
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
-        System.out.println("oAuth2User = " + oAuth2User);
+        log.info("oAuth2User ={}", oAuth2User); // provider로부터 제공받은 사용자의 정보가 가공되어 담겨있음
 
-//        String email = String.valueOf(oAuth2User.getAttributes().get("email"));
-//        String nickname = String.valueOf(oAuth2User.getAttributes().get("given_name"));
-//        String imgURL = String.valueOf(oAuth2User.getAttributes().get("picture"));
-//        List<String> authorities = authorityUtils.createRoles(email);
+        String email = String.valueOf(oAuth2User.getAttributes().get("email"));
+        String nickname = String.valueOf(oAuth2User.getAttributes().get("name"));
+        String imgURL = String.valueOf(oAuth2User.getAttributes().get("picture"));
+        List<String> authorities = authorityUtils.createRoles(email);
 
-//        googleSavedUser(email, nickname, imgURL);
-//        redirect(request, response, email, authorities);
-
-
-
-
-
+        saveMember(email, nickname, imgURL);
+        redirect(request, response, email, authorities);
     }
-    //DB에 해당하는 사용자 정보 저장
-    private void googleSavedUser(String memberEmail, String nickname, String imgURL){
 
-        System.out.println("여기까지 옴?");
-        Member member = new Member(memberEmail, nickname, imgURL);
-        memberService.createGoogleMember(member);
+    //DB에 해당하는 사용자 정보 저장
+    private Member saveMember(String email, String nickname, String imgURL) {
+        Member member = new Member(email, nickname, imgURL);
+        return memberService.createMember(member);
     }
 
     //URL에 accessToken과 refreshToken 담아서 전달
