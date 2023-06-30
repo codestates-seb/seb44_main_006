@@ -43,7 +43,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
-        log.info("oAuth2User ={}", oAuth2User); // provider로부터 제공받은 사용자의 정보가 가공되어 담겨있음
+
+
+        log.info("oAuth2User.getAttributes()={}" , oAuth2User.getAttributes().get("id"));
+
+
 
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
         String nickname = String.valueOf(oAuth2User.getAttributes().get("name"));

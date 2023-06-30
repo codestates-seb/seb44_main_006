@@ -29,8 +29,8 @@ public class OAuth2Attribute {
                 return ofGoogle(attributeKey, attributes);
             case "kakao":
                 return ofKakao(attributeKey, attributes);
-            case "github":
-                return ofGithub(attributeKey, attributes);
+            case "naver":
+                return ofNaver(attributeKey, attributes);
             default:
                 System.out.println("예외 던짐!!");
                 return null;
@@ -64,16 +64,26 @@ public class OAuth2Attribute {
                 .build();
     }
 
-    private static OAuth2Attribute ofGithub(String attributeKey,
+    private static OAuth2Attribute ofNaver(String attributeKey,
                                             Map<String, Object> attributes)  {
-        return OAuth2Attribute.builder()
-                .name((String)attributes.get("name")) // 깃허브에서 이름 따로 설정해줘야됨
-                .email((String)attributes.get("email"))
-                .picture((String)attributes.get("avatar_url"))
-                .attributes(attributes)
+        Map<String, Object> naverResponse = (Map<String, Object>) attributes.get("response");
+
+        System.out.println("naverResponse = " + naverResponse);
+
+
+
+
+       return OAuth2Attribute.builder()
+                .name((String)naverResponse.get("nickname"))
+                .email((String)naverResponse.get("email"))
+                .picture((String)naverResponse.get("profile_image"))
+                .attributes(naverResponse)
                 .attributeKey(String.valueOf(attributes.get(attributeKey)))
-                .provider("github")
+                .provider("naver")
                 .build();
+
+
+
     }
 
     public Map<String, Object> convertToMap() {
