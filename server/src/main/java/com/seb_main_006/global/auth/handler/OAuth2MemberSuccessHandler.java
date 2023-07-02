@@ -2,15 +2,19 @@ package com.seb_main_006.global.auth.handler;
 
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
+import com.seb_main_006.global.auth.jwt.Subject;
+import com.seb_main_006.global.auth.redis.RefreshToken;
+import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,16 +30,19 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+@Component
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
-    public OAuth2MemberSuccessHandler(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils, MemberService memberService) {
+    public OAuth2MemberSuccessHandler(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils, MemberService memberService, RefreshTokenRedisRepository refreshTokenRedisRepository) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.memberService = memberService;
+        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     }
 
     //소셜(구글)로그인 성공시 이메일, 닉네임, 프로필이미지 가져와서 DB에 저장 후 리다이렉트
@@ -43,11 +50,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
-
-
         log.info("oAuth2User.getAttributes()={}" , oAuth2User.getAttributes().get("id"));
-
-
 
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
         String nickname = String.valueOf(oAuth2User.getAttributes().get("name"));
@@ -69,17 +72,27 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String accessToken = delegateAccessToken(username, authorities);
         String refreshToken = delegateRefreshToken(username);
 
+        refreshTokenRedisRepository.save(RefreshToken.builder()
+                .id(username)
+                .authorities(authorities)
+                .refreshToken(refreshToken)
+                .build());
+
+        RefreshToken findToken = refreshTokenRedisRepository.findByRefreshToken(refreshToken);
+        System.out.println("findToken.getId() = " + findToken.getId());
+
         String uri = createURI(accessToken, refreshToken).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
     //accessToken 발급 메소드
-    private String delegateAccessToken(String username, List<String> authorities) {
+    public String delegateAccessToken(String username, List<String> authorities) throws JsonProcessingException {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username);
         claims.put("roles", authorities);
 
-        String subject = username;
+        Subject subject = new Subject(username, "AccessToken");
+
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
 
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
@@ -90,8 +103,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     }
 
     //refreshToken 발급 메소드
-    private String delegateRefreshToken(String username) {
-        String subject = username;
+    private String delegateRefreshToken(String username) throws JsonProcessingException {
+        Subject subject = new Subject(username, "RefreshToken");
+
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 

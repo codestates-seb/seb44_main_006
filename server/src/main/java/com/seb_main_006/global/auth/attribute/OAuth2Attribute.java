@@ -40,17 +40,17 @@ public class OAuth2Attribute {
     private static OAuth2Attribute ofGoogle(String attributeKey,
                                             Map<String, Object> attributes) {
         return OAuth2Attribute.builder()
-                .name((String)attributes.get("name"))
-                .email((String)attributes.get("email"))
-                .picture((String)attributes.get("picture"))
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .picture((String) attributes.get("picture"))
                 .attributes(attributes)
-                .attributeKey((String)attributes.get(attributeKey))
+                .attributeKey((String) attributes.get(attributeKey))
                 .provider("google")
                 .build();
     }
 
     private static OAuth2Attribute ofKakao(String attributeKey,
-                                           Map<String, Object> attributes)  {
+                                           Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
 
@@ -65,23 +65,20 @@ public class OAuth2Attribute {
     }
 
     private static OAuth2Attribute ofNaver(String attributeKey,
-                                            Map<String, Object> attributes)  {
+                                           Map<String, Object> attributes) {
         Map<String, Object> naverResponse = (Map<String, Object>) attributes.get("response");
 
         System.out.println("naverResponse = " + naverResponse);
 
 
-
-
-       return OAuth2Attribute.builder()
-                .name((String)naverResponse.get("nickname"))
-                .email((String)naverResponse.get("email"))
-                .picture((String)naverResponse.get("profile_image"))
+        return OAuth2Attribute.builder()
+                .name((String) naverResponse.get("nickname"))
+                .email((String) naverResponse.get("email"))
+                .picture((String) naverResponse.get("profile_image"))
                 .attributes(naverResponse)
                 .attributeKey(String.valueOf(attributes.get(attributeKey)))
                 .provider("naver")
                 .build();
-
 
 
     }

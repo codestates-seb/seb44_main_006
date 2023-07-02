@@ -1,14 +1,18 @@
 package com.seb_main_006.config;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seb_main_006.domain.member.service.MemberService;
+import com.seb_main_006.global.auth.filter.JwtReissueFilter;
 import com.seb_main_006.global.auth.filter.JwtVerificationFilter;
 import com.seb_main_006.global.auth.handler.OAuth2MemberSuccessHandler;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
+import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,10 +31,12 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
+    private final ObjectMapper objectMapper;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final OAuth2MemberSuccessHandler oAuth2MemberSuccessHandler; // Refactoring 이 필요할 수 있음.. (에러나면 JwtTokenizer 사용하는 방식으로...)
 
     //필터체인 설정(초기라서 permitAll로 설정)
     @Bean
@@ -47,11 +53,12 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.POST, "/auth/**").hasAnyRole("USER","ADMIN")
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         // 소셜 로그인 성공 시 수행되는 핸들러 설정
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService)));
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, refreshTokenRedisRepository)));
 
 
         return http.build();
@@ -78,14 +85,13 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-
-
             // JWT 토큰 검증 필터 생성 및 필터 순서 설정 : 인증(일반로그인 or 소셜로그인) 필터 다음에 적용
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 
+            JwtReissueFilter jwtReissueFilter = new JwtReissueFilter(objectMapper, jwtTokenizer, refreshTokenRedisRepository, oAuth2MemberSuccessHandler);
+
+            builder.addFilterBefore(jwtReissueFilter, OAuth2LoginAuthenticationFilter.class);
             builder.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
-
-
         }
 
     }

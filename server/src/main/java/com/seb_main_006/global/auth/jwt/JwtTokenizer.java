@@ -1,5 +1,7 @@
 package com.seb_main_006.global.auth.jwt;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -18,6 +20,12 @@ import java.util.Map;
 
 @Component
 public class JwtTokenizer {
+
+    private final ObjectMapper objectMapper;
+
+    public JwtTokenizer(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     //환경 변수 정의
     @Getter
@@ -39,14 +47,15 @@ public class JwtTokenizer {
 
     //인증된 사용자에게 JWT 를 최초로 발급해 주기 위한 JWT 생성 메서드
     public String generateAccessToken(Map<String, Object> claims,
-                                      String subject,
+                                      Subject subject,
                                       Date expiration,
-                                      String base64EncodedSecretKey) {
+                                      String base64EncodedSecretKey) throws JsonProcessingException {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+        String subjectStr = objectMapper.writeValueAsString(subject);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(subjectStr)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .setExpiration(expiration)
                 .signWith(key)
@@ -54,11 +63,12 @@ public class JwtTokenizer {
     }
 
     //Access Token 이 만료되었을 경우, Access Token 을 새로 생성할 수 있게 해주는 Refresh Token 을 생성하는 메서드
-    public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey) {
+    public String generateRefreshToken(Subject subject, Date expiration, String base64EncodedSecretKey) throws JsonProcessingException {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+        String subjectStr = objectMapper.writeValueAsString(subject);
 
         return Jwts.builder()
-                .setSubject(subject)
+                .setSubject(subjectStr)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .setExpiration(expiration)
                 .signWith(key)
@@ -101,6 +111,15 @@ public class JwtTokenizer {
         Key key = Keys.hmacShaKeyFor(keyBytes);  // 적절한 HMAC 알고리즘을 적용한 Key 객체를 생성
 
         return key;
+    }
+
+    // JWT 토큰 생성 시 Token 타입 정보까지 Subject에 추가, String으로 직렬화된 Subject 를 객체로 변환하여 리턴
+    public Subject getSubject(String token) throws JsonProcessingException {
+        String base64EncodedSecretKey = encodeBase64SecretKey(secretKey);
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+
+        String subjectStr = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
+        return objectMapper.readValue(subjectStr, Subject.class);
     }
 
 }
