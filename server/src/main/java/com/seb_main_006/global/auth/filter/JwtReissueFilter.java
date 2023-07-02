@@ -37,7 +37,17 @@ public class JwtReissueFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String token = request.getHeader("Authorization").replace("Bearer ", "");
-        Subject subject = jwtTokenizer.getSubject(token);
+
+        Subject subject = null;
+        try {
+            subject = jwtTokenizer.getSubject(token); // 500 에러
+        } catch (ExpiredJwtException e) {
+            // ResponseBody 에 에러 메세지 세팅 및 에러 코드 설정
+            String errorMessage = "토큰이 만료되었습니다. 다시 로그인해주세요.";
+            setErrorMessageAndStatus(response, errorMessage);
+            return;
+        }
+
         String requestURI = request.getRequestURI();
 
         log.info("requestURI = {}", requestURI);
@@ -47,13 +57,8 @@ public class JwtReissueFilter extends OncePerRequestFilter {
             log.info("RefreshToken 이 아님");
 
             // ResponseBody 에 에러 메세지 세팅 및 에러 코드 설정
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType("application/json");
-            response.setCharacterEncoding("utf-8");
-            CustomJwtErrorResponse errorResponse = new CustomJwtErrorResponse(HttpStatus.UNAUTHORIZED.value(), "토큰을 확인해주세요");
-            String result = objectMapper.writeValueAsString(errorResponse);
-            response.getWriter().write(result);
-
+            String errorMessage = "토큰을 확인해주세요";
+            setErrorMessageAndStatus(response, errorMessage);
             return;
 
         } else if (requestURI.equals("/auth/reissue") && subject.getTokenType().equals("RefreshToken")) {
@@ -71,6 +76,15 @@ public class JwtReissueFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private void setErrorMessageAndStatus(HttpServletResponse response, String message) throws IOException {
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        CustomJwtErrorResponse errorResponse = new CustomJwtErrorResponse(HttpStatus.UNAUTHORIZED.value(), message);
+        String result = objectMapper.writeValueAsString(errorResponse);
+        response.getWriter().write(result);
     }
 
     @Override
