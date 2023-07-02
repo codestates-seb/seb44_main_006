@@ -1,10 +1,11 @@
 package com.seb_main_006.global.auth.filter;
 
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
+import com.seb_main_006.global.auth.redis.RedisUtil;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
-import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,12 +23,14 @@ import java.util.Map;
 public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final JwtTokenizer jwtTokenizer;
+    private final RedisUtil redisUtil;
     private final CustomAuthorityUtils authorityUtils;
 
 
     public JwtVerificationFilter(JwtTokenizer jwtTokenizer,
-                                 CustomAuthorityUtils authorityUtils) {
+                                 RedisUtil redisUtil, CustomAuthorityUtils authorityUtils) {
         this.jwtTokenizer = jwtTokenizer;
+        this.redisUtil = redisUtil;
         this.authorityUtils = authorityUtils;
     }
 
@@ -35,6 +38,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
+            String jws = request.getHeader("Authorization").replace("Bearer ", "");
+            if (redisUtil.hasKeyBlackList(jws)) {
+                throw new RuntimeException("다시 로그인 하십시오.");
+            }
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims);
         } catch (SignatureException se) {

@@ -20,7 +20,7 @@ import java.util.List;
 public class RefreshToken {
 
     @Id
-    private String id;
+    private String username;
 
     private List<String> authorities;
 

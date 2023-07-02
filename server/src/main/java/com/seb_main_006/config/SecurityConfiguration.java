@@ -7,6 +7,7 @@ import com.seb_main_006.global.auth.filter.JwtReissueFilter;
 import com.seb_main_006.global.auth.filter.JwtVerificationFilter;
 import com.seb_main_006.global.auth.handler.OAuth2MemberSuccessHandler;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
+import com.seb_main_006.global.auth.redis.RedisUtil;
 import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
+    private final RedisUtil redisUtil;
     private final ObjectMapper objectMapper;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
@@ -76,6 +78,7 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+
     }
 
 
@@ -86,7 +89,7 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             // JWT 토큰 검증 필터 생성 및 필터 순서 설정 : 인증(일반로그인 or 소셜로그인) 필터 다음에 적용
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, redisUtil, authorityUtils);
 
             JwtReissueFilter jwtReissueFilter = new JwtReissueFilter(objectMapper, jwtTokenizer, refreshTokenRedisRepository, oAuth2MemberSuccessHandler);
 
