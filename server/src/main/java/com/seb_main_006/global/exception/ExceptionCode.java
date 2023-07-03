@@ -17,7 +17,13 @@ public enum ExceptionCode {
     ANSWER_EXISTS(409, "답변이 이미 존재 합니다."),
     ANSWER_CANNOT_CHANGE(403,"답변을 수정 할 수 없습니다."),
     ANSWER_CANNOT_DELETE(403,"답변을 삭제 할 수 없습니다."),
-    NOT_IMPLEMENTATION(501,"Not Implementation");
+    NOT_IMPLEMENTATION(501,"Not Implementation"),
+    TOKEN_EXPIRED(401,"토큰이 만료되었습니다. 다시 로그인해주세요."),
+    IM_A_TEAPOT(418,"주전자가 비어있습니다. 커피를 넣어주세요");
+
+
+
+
 
     @Getter
     private int status;

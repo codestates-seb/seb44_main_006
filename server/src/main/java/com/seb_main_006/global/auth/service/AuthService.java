@@ -6,6 +6,8 @@ import com.seb_main_006.global.auth.jwt.Subject;
 import com.seb_main_006.global.auth.redis.RedisUtil;
 import com.seb_main_006.global.auth.redis.RefreshToken;
 import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
+import com.seb_main_006.global.exception.BusinessLogicException;
+import com.seb_main_006.global.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,20 +56,17 @@ public class AuthService {
 
         Subject subject = null;
 
-        try {
+        if (refreshToken == null) { //RefreshToken 이 비어있을시 에러
+            throw new BusinessLogicException(ExceptionCode.IM_A_TEAPOT);
+        }
+        try { //RefreshToken 이 만료시 에러
             subject = jwtTokenizer.getSubject(refreshToken);
         } catch (ExpiredJwtException e) {
-            // TODO : 예외 발생시키기 "토큰이 만료되었습니다. 다시 로그인해주세요."; (401)
+            throw new BusinessLogicException(ExceptionCode.TOKEN_EXPIRED);
         }
-
-        if (!subject.getTokenType().equals("RefreshToken")) { // 토큰 타입이 RefreshToken 인지 아닌지
-            // "RefreshToken" 이 아님 -> 에러 메세지 + 418 status 리턴
-            // TODO : 예외 발생시키기 "토큰을 확인해주세요";
+        if (!subject.getTokenType().equals("RefreshToken")) { // "RefreshToken" 이 아님 -> 에러 메세지 + 418 status 리턴
+            throw new BusinessLogicException(ExceptionCode.IM_A_TEAPOT);
         }
-
-        // 예외 처리
-        // 418 : refreshToken 이 null 이거나(refreshToken == null)  / 토큰 타입이 RefreshToken 이 아니거나(잘못된 토큰)
-
 
         // "RefreshToken" 인 경우 -> AccessToken 재발급 후 리턴
         String username = subject.getUsername(); // 유저 email
