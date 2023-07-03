@@ -37,7 +37,7 @@ export const Img = styled.img`
 const ThumbnailBox = ({ src, styles }: Thumbnail) => {
   return (
     <ThumbnailContainer {...styles}>
-      <Img src={src} />
+      <Img src={src} alt="ThumbnailImg" />
     </ThumbnailContainer>
   );
 };
