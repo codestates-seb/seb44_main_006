@@ -1,19 +1,9 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { Props } from '../../../types/type';
+import { IButtonStyle } from '../../../types/type';
 
-const TagButton = ({
-  children,
-  width,
-  height,
-  isActive,
-}: {
-  children: Props['children'];
-  width: string;
-  height: string;
-  isActive: boolean;
-}) => {
+const TagButton = ({ children, width, height, isActive }: IButtonStyle) => {
   return (
     <Button
       styles={{
