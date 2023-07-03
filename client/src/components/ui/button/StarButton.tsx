@@ -1,16 +1,15 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
+import { IButtonStyle } from '../../../types/type';
 
 const StarButton = ({
   width,
   height,
+  svgWidth,
+  svgHeight,
   isActive,
-}: {
-  width: string;
-  height: string;
-  isActive: boolean;
-}) => {
+}: IButtonStyle) => {
   return (
     <Button
       styles={{
@@ -23,9 +22,9 @@ const StarButton = ({
       }}
     >
       <svg
-        width="26"
-        height="26"
-        viewBox="0 0 26 26"
+        width={svgWidth || '27px'}
+        height={svgHeight || '26px'}
+        viewBox="0 0 27 26"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >

@@ -1,20 +1,7 @@
 import { styled } from 'styled-components';
 
-import { Props } from '../../../types/type';
+import { IButtonStyle, Props } from '../../../types/type';
 
-interface IButtonStyle {
-  width?: string;
-  height?: string;
-  padding?: string;
-  margin?: string;
-  color?: string;
-  backgroundColor?: string;
-  boxShadow?: string;
-  border?: string;
-  borderRadius?: string;
-}
-
-// background-color, color, shadow, border, border-radius
 const ButtonTemplate = styled.button<IButtonStyle>`
   width: ${(props) => props.width || 'fit-content'};
   height: ${(props) => props.height || 'fit-content'};
@@ -25,21 +12,32 @@ const ButtonTemplate = styled.button<IButtonStyle>`
   box-shadow: ${(props) => props.boxShadow};
   border: ${(props) => props.border || 'none'};
   border-radius: ${(props) => props.borderRadius};
+
   cursor: pointer;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: ${(props) => props.gap};
 `;
 
 const Button = ({
   children,
   styles,
+  onClick,
+  onSubmit,
 }: {
-  children: Props['children'];
-  styles: IButtonStyle;
+  children?: Props['children'];
+  styles?: IButtonStyle;
+  onClick?: () => void;
+  onSubmit?: () => void;
 }) => {
-  return <ButtonTemplate {...styles}>{children}</ButtonTemplate>;
+  return (
+    <ButtonTemplate {...styles} onClick={onClick} onSubmit={onSubmit}>
+      {children}
+    </ButtonTemplate>
+  );
 };
 
 export default Button;
