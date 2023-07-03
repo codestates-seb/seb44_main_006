@@ -30,7 +30,7 @@ const Input = styled.input`
   }
 `;
 
-const InputContainer = () => {
+const SearchContainer = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const PostSearch = () => {
     if (inputRef.current) {
@@ -50,4 +50,4 @@ const InputContainer = () => {
   );
 };
 
-export default InputContainer;
+export default SearchContainer;

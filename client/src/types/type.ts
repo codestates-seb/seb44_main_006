@@ -6,6 +6,11 @@ export type TextStyleT = {
   weight?: '300' | '500' | '700';
 };
 
+export type TextareaT = {
+  width?: string;
+  height?: string;
+};
+
 export interface Props {
   children: ReactNode;
 }
