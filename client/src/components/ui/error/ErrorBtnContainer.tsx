@@ -1,15 +1,13 @@
-import Text from '../text/Text';
+import { Link } from 'react-router-dom';
+import { styled } from 'styled-components';
+
+const MainLav = styled(Link)`
+  color: white;
+  text-decoration: none;
+`;
 
 const ErrorBtnContainer = () => {
-  return (
-    <Text
-      styles={{
-        color: 'white',
-      }}
-    >
-      메인으로 가기
-    </Text>
-  );
+  return <MainLav to="/">메인으로 가기</MainLav>;
 };
 
 export default ErrorBtnContainer;
