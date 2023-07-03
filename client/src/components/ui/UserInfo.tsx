@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import cssToken from '../../../styles/cssToken';
+import cssToken from '../../styles/cssToken';
 
 type UserInfoStyle = {
   size?: string;
