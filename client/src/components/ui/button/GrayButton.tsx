@@ -8,9 +8,11 @@ const GrayButton = ({
   width,
   height,
   borderRadius,
+  onClick,
 }: IButtonStyle) => {
   return (
     <Button
+      onClick={onClick}
       styles={{
         width,
         height,
