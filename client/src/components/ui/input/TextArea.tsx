@@ -16,6 +16,9 @@ const Content = styled.textarea<TextareaT>`
   ::-webkit-input-placeholder {
     color: #c6c6c6;
   }
+  &:focus {
+    outline: none;
+  }
 `;
 
 const TextArea = ({
