@@ -94,7 +94,7 @@ const DataText = styled.span`
 `;
 
 const ContensCard = ({ title, text, likeCount, tag, userName }: ContCard) => {
-  // 컴포넌트 나누는 작업 필요 합니다.
+  // Todo 컴포넌트 나누는 작업 필요 합니다.
   return (
     <ContensCardContainer>
       <ContensTop>
