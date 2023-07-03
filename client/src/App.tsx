@@ -1,5 +1,7 @@
+import Comment from './components/community/Comment';
+
 const App = () => {
-  return <>HI</>;
+  return <Comment />;
 };
 
 export default App;
