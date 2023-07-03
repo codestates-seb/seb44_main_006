@@ -2,13 +2,25 @@ import styled from 'styled-components';
 
 import cssToken from '../../../styles/cssToken';
 
-const ThumbnailContainer = styled.div`
+type ThumbnailStyle = {
+  width?: string;
+  height?: string;
+  borderRadius?: string;
+};
+
+interface Thumbnail {
+  styles?: ThumbnailStyle;
+  src?: string;
+  alt?: string;
+}
+
+const ThumbnailContainer = styled.div<ThumbnailStyle>`
   position: relative;
-  border-radius: ${cssToken.BORDER['rounded-s']};
+  border-radius: ${(props) => (props.borderRadius ? props.borderRadius : '0')};
   overflow: hidden;
-  width: ${cssToken.WIDTH['w-full']};
-  height: 0;
-  padding-bottom: 50%;
+  width: ${(props) => (props.width ? props.width : '100%')};
+  height: ${(props) => (props.height ? props.height : '0')};
+  padding-bottom: ${(props) => (props.height === '0' ? '50%' : 'auto')};
 `;
 
 export const Img = styled.img`
@@ -22,10 +34,10 @@ export const Img = styled.img`
   height: ${cssToken.HEIGHT['h-full']};
 `;
 
-const ThumbnailBox = () => {
+const ThumbnailBox = ({ src, styles }: Thumbnail) => {
   return (
-    <ThumbnailContainer>
-      <Img src="https://www.sungsimdangmall.co.kr/data/sungsimdang/goods/sungsimdang/big/202310454292163523295.jpg" />
+    <ThumbnailContainer {...styles}>
+      <Img src={src} />
     </ThumbnailContainer>
   );
 };
