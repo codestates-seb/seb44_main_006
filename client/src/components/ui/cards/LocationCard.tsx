@@ -4,14 +4,7 @@ import { CardCommonBox } from './Card.styled';
 
 import TagButton from '../button/TagButton';
 import cssToken from '../../../styles/cssToken';
-
-interface LocationInfo {
-  title?: string;
-  category?: string;
-  address?: string;
-  phone?: string;
-  isAction?: boolean;
-}
+import { LocationCardInfo } from '../../../types/type';
 
 const LocationCardContainer = styled.section`
   display: flex;
@@ -51,7 +44,7 @@ const LocationCard = ({
   address,
   phone,
   isAction,
-}: LocationInfo) => {
+}: LocationCardInfo) => {
   return (
     <LocationCardContainer>
       <LocationTop>

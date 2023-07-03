@@ -3,11 +3,7 @@ import styled from 'styled-components';
 import { CardCommonBox } from './Card.styled';
 
 import cssToken from '../../../styles/cssToken';
-
-interface MapLocationCardInfo {
-  indexNum?: number;
-  location?: string;
-}
+import { MapLocationCardInfo } from '../../../types/type';
 
 const MapLocationCardContainer = styled.section`
   display: flex;

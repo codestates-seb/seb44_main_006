@@ -8,14 +8,7 @@ import ThumbnailBox from '../thumbnail/ThumbnailBox';
 import OptionButton from '../button/OptionButton';
 import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
-
-interface ContCard {
-  userName?: string;
-  title?: string;
-  text?: string;
-  likeCount?: string;
-  tag?: string[];
-}
+import { ContCardInfo } from '../../../types/type';
 
 const ContensCardContainer = styled.section`
   display: flex;
@@ -90,7 +83,13 @@ const DataText = styled.span`
   font-size: ${cssToken.TEXT_SIZE['text-14']};
 `;
 
-const ContensCard = ({ title, text, likeCount, tag, userName }: ContCard) => {
+const ContensCard = ({
+  title,
+  text,
+  likeCount,
+  tag,
+  userName,
+}: ContCardInfo) => {
   // Todo 컴포넌트 나누는 작업 필요 합니다.
   return (
     <ContensCardContainer>

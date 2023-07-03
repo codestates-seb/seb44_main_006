@@ -41,3 +41,24 @@ export interface IButtonStyle {
   onClick?: () => void;
   onSubmit?: () => void;
 }
+
+export interface ContCardInfo {
+  userName?: string;
+  title?: string;
+  text?: string;
+  likeCount?: string;
+  tag?: string[];
+}
+
+export interface LocationCardInfo {
+  title?: string;
+  category?: string;
+  address?: string;
+  phone?: string;
+  isAction?: boolean;
+}
+
+export interface MapLocationCardInfo {
+  indexNum?: number;
+  location?: string;
+}
