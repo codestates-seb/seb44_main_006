@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-import { Props, TextStyleT } from '../../types/type';
+import { Props, TextStyleT } from '../../../types/type';
 
 const P = styled.p<TextStyleT>`
   //Todo 멘토님에게 styles 코드 겹치는 거 어떻게 해결할지

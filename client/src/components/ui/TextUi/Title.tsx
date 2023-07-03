@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-import { Props, TextStyleT } from '../../types/type';
+import { Props, TextStyleT } from '../../../types/type';
 
 const H1 = styled.h1<TextStyleT>`
   font-size: ${(props) => (props.size ? props.size : '1rem')};
