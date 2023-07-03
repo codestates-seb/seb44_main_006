@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import Text from '../ui/text/Text';
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../ui/UserInfoPfp';
+import { FlexDiv } from '../../styles/styles';
 
 const CommentWrapper = styled.div`
   display: flex;
@@ -13,9 +14,6 @@ const CommentWrapper = styled.div`
   padding-bottom: ${cssToken.SPACING['gap-16']};
 `;
 
-const FlexDiv = styled.div`
-  display: flex;
-`;
 const FlexBetween = styled(FlexDiv)`
   justify-content: space-between;
   margin-bottom: ${cssToken.SPACING['gap-12']};
