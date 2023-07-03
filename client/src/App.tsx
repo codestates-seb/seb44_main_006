@@ -1,3 +1,4 @@
+import ContensCard from './components/ui/cards/ContentsCard';
 import LocationCard from './components/ui/cards/LocationCard';
 import MapLocationCard from './components/ui/cards/MapLocationCard';
 

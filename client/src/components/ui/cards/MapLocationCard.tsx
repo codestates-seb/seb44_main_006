@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { CardCommonBox } from './Card.styled';
+
 import cssToken from '../../../styles/cssToken';
 
 interface MapLocationCardInfo {
@@ -12,7 +14,6 @@ const MapLocationCardContainer = styled.section`
   align-items: center;
   gap: ${cssToken.SPACING['gap-10']};
   cursor: pointer;
-  transition: ${cssToken.TRANSITION.basic};
 `;
 
 const NumCircle = styled.span`
@@ -30,11 +31,7 @@ const LocationCard = styled.div`
   flex: 1;
   width: ${cssToken.WIDTH['w-full']};
   padding: ${cssToken.SPACING['gap-24']};
-  border: 0.0625rem solid ${cssToken.COLOR['gray-500']};
-  border-radius: ${cssToken.BORDER['rounded-md']};
-  &:hover {
-    border: 0.0625rem solid ${cssToken.COLOR['point-900']};
-  }
+  ${CardCommonBox}
 `;
 
 const LocationText = styled.p`

@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import { CardCommonBox } from './Card.styled';
+
 import cssToken from '../../../styles/cssToken';
 import TagButton from '../button/TagButton';
 import ThumbnailBox from '../thumbnail/ThumbnailBox';
@@ -20,15 +22,10 @@ const ContensCardContainer = styled.section`
   gap: ${cssToken.SPACING['gap-24']};
   flex-direction: column;
   justify-content: space-between;
-  border: 0.0625rem solid ${cssToken.COLOR['gray-500']};
-  border-radius: ${cssToken.BORDER['rounded-md']};
   padding: 1.25rem;
   flex-grow: 0;
   width: 25.2813rem;
-  transition: ${cssToken.TRANSITION.basic};
-  &:hover {
-    border: 0.0625rem solid ${cssToken.COLOR['point-900']};
-  }
+  ${CardCommonBox}
 `;
 
 const UserName = styled.span`

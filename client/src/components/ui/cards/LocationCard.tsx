@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import { CardCommonBox } from './Card.styled';
+
 import TagButton from '../button/TagButton';
 import cssToken from '../../../styles/cssToken';
 
@@ -16,13 +18,7 @@ const LocationCardContainer = styled.section`
   flex-direction: column;
   padding: ${cssToken.SPACING['gap-16']};
   gap: ${cssToken.SPACING['gap-10']};
-  border: 0.0625rem solid ${cssToken.COLOR['gray-500']};
-  border-radius: ${cssToken.BORDER['rounded-md']};
-  cursor: pointer;
-  transition: ${cssToken.TRANSITION.basic};
-  &:hover {
-    border: 0.0625rem solid ${cssToken.COLOR['point-900']};
-  }
+  ${CardCommonBox}
 `;
 
 const LocationTop = styled.div`
