@@ -102,8 +102,15 @@ const ContensCard = ({ title, text, heartCount, tag, userName }: ContCard) => {
       <ContensText>{text}</ContensText>
 
       <Tags>
-        {tag?.map((tagItem) => (
-          <TagButton key={tagItem}>{tagItem}</TagButton>
+        {tag?.map((tagItem: string) => (
+          <TagButton
+            width={cssToken.WIDTH['min-w-fit']}
+            height={cssToken.HEIGHT['h-fit']}
+            isActive={false}
+            key={tagItem}
+          >
+            {tagItem}
+          </TagButton>
         ))}
       </Tags>
 
