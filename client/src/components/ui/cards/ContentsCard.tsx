@@ -1,34 +1,24 @@
 import styled, { css } from 'styled-components';
 
+import { CardCommonBox } from './Card.styled';
+
 import cssToken from '../../../styles/cssToken';
 import TagButton from '../button/TagButton';
 import ThumbnailBox from '../thumbnail/ThumbnailBox';
 import OptionButton from '../button/OptionButton';
 import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
-
-interface ContCard {
-  userName?: string;
-  title?: string;
-  text?: string;
-  likeCount?: string;
-  tag?: string[];
-}
+import { ContCardInfo } from '../../../types/type';
 
 const ContensCardContainer = styled.section`
   display: flex;
   gap: ${cssToken.SPACING['gap-24']};
   flex-direction: column;
   justify-content: space-between;
-  border: 0.0625rem solid ${cssToken.COLOR['gray-500']};
-  border-radius: ${cssToken.BORDER['rounded-md']};
   padding: 1.25rem;
   flex-grow: 0;
   width: 25.2813rem;
-  transition: ${cssToken.TRANSITION.basic};
-  &:hover {
-    border: 0.0625rem solid ${cssToken.COLOR['point-900']};
-  }
+  ${CardCommonBox}
 `;
 
 const UserName = styled.span`
@@ -93,7 +83,13 @@ const DataText = styled.span`
   font-size: ${cssToken.TEXT_SIZE['text-14']};
 `;
 
-const ContensCard = ({ title, text, likeCount, tag, userName }: ContCard) => {
+const ContensCard = ({
+  title,
+  text,
+  likeCount,
+  tag,
+  userName,
+}: ContCardInfo) => {
   // Todo 컴포넌트 나누는 작업 필요 합니다.
   return (
     <ContensCardContainer>
