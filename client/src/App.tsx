@@ -12,6 +12,8 @@ const App = () => {
         phone="02-558-5476"
       />
       <MapLocationCard indexNum={1} location="구림 빌라" />
+      <MapLocationCard indexNum={2} location="구림 11" />
+      <MapLocationCard indexNum={3} location="제발.." />
     </>
   );
 };

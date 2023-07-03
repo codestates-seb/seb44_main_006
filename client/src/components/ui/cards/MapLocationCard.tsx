@@ -14,6 +14,11 @@ const MapLocationCardContainer = styled.section`
   align-items: center;
   gap: ${cssToken.SPACING['gap-10']};
   cursor: pointer;
+  margin-bottom: 15px;
+
+  &:last-child .last-circle::after {
+    display: none;
+  }
 `;
 
 const NumCircle = styled.span`
@@ -25,6 +30,18 @@ const NumCircle = styled.span`
   width: 2.1875rem;
   height: 2.1875rem;
   background-color: ${cssToken.COLOR['point-900']};
+  position: relative;
+  &::after {
+    content: '';
+    width: 0.125rem;
+    height: ${cssToken.HEIGHT['h-full']};
+    border-left: 2px dotted ${cssToken.COLOR['gray-900']};
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: -120%;
+    transform: translate(-50%, 0);
+  }
 `;
 
 const LocationCard = styled.div`
@@ -42,7 +59,9 @@ const LocationText = styled.p`
 const MapLocationCard = ({ indexNum, location }: MapLocationCardInfo) => {
   return (
     <MapLocationCardContainer>
-      <NumCircle>{indexNum}</NumCircle>
+      <NumCircle className={indexNum ?? indexNum >= 0 ? 'last-circle' : ''}>
+        {indexNum}
+      </NumCircle>
       <LocationCard>
         <LocationText>{location}</LocationText>
       </LocationCard>
