@@ -38,7 +38,7 @@ const cssToken = {
     'text-14': '0.875rem',
   },
   SPACING: {
-    'px-50': '3.125',
+    'px-50': '3.125rem',
     'py-100': '6.5rem',
     'gap-50': '3.125rem',
     'gap-40': '2.5rem',
@@ -51,6 +51,7 @@ const cssToken = {
     'rounded-none': '0px',
     'rounded-s': '10px',
     'rounded-md': '16px',
+    'rounded-tag': '50px',
     'rounded-full': '50%',
     'weight-1': '1px',
     'weight-5': '5px',

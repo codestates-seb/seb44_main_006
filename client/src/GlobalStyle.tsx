@@ -20,13 +20,9 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
   }
 
-  * {
-
-  font-family: 'GmarketSans';
-  }
-
   *, *::before, *::after {
     box-sizing: border-box;
+    font-family: 'GmarketSans';
   }
 
   html, body, div, span, applet, object, iframe,
