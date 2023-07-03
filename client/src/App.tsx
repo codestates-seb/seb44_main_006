@@ -1,6 +1,6 @@
-import SubTitle from './components/ui/textUi/SubTitle';
-import Text from './components/ui/textUi/Text';
-import Title from './components/ui/textUi/Title';
+import SubTitle from './components/ui/text/SubTitle';
+import Text from './components/ui/text/Text';
+import Title from './components/ui/text/Title';
 import cssToken from './styles/cssToken';
 
 const App = () => {
