@@ -9,3 +9,9 @@ export type TextStyleT = {
 export interface Props {
   children: ReactNode;
 }
+
+export type IconStyle = {
+  width: number;
+  height: number;
+  color: string;
+};

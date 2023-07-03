@@ -51,6 +51,7 @@ const cssToken = {
     'rounded-s': '10px',
     'rounded-md': '16px',
     'rounded-full': '50%',
+    'rounded-input': '5px',
     'weight-1': '1px',
     'weight-5': '5px',
   },
