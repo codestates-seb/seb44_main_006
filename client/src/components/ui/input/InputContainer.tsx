@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useRef } from 'react';
 
 import Search from '../../../assets/Search';
 import cssToken from '../../../styles/cssToken';
@@ -30,12 +31,20 @@ const Input = styled.input`
 `;
 
 const InputContainer = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const PostSearch = () => {
+    if (inputRef.current) {
+      if (inputRef.current.value.trim().length) {
+        // Todo 입력값이 제대로 있는 경우 POST하도록
+      }
+    }
+  };
   return (
     <InputWrapper>
-      <Input type="text" placeholder="성심당" />
+      <Input ref={inputRef} type="text" placeholder="성심당" />
       <Search
         style={{ width: 25, height: 25, color: 'none' }}
-        onClick={() => {}}
+        onClick={PostSearch}
       />
     </InputWrapper>
   );
