@@ -8,6 +8,7 @@ interface LocationInfo {
   category?: string;
   address?: string;
   phone?: string;
+  isAction?: boolean;
 }
 
 const LocationCardContainer = styled.section`
@@ -17,6 +18,7 @@ const LocationCardContainer = styled.section`
   gap: ${cssToken.SPACING['gap-10']};
   border: 0.0625rem solid ${cssToken.COLOR['gray-500']};
   border-radius: ${cssToken.BORDER['rounded-md']};
+  cursor: pointer;
   transition: ${cssToken.TRANSITION.basic};
   &:hover {
     border: 0.0625rem solid ${cssToken.COLOR['point-900']};
@@ -47,16 +49,22 @@ const LocationPhone = styled.span`
   ${LocationInfoText}
 `;
 
-const LocationCard = ({ title, category, address, phone }: LocationInfo) => {
+const LocationCard = ({
+  title,
+  category,
+  address,
+  phone,
+  isAction,
+}: LocationInfo) => {
   return (
     <LocationCardContainer>
       <LocationTop>
-        <LocationTitle>장생당 약국</LocationTitle>
-        <TagButton>약국</TagButton>
+        <LocationTitle>{title}</LocationTitle>
+        <TagButton>{category}</TagButton>
       </LocationTop>
 
-      <LocationAddress>서울 강남구 테헤란로84길 17</LocationAddress>
-      <LocationPhone>02-558-5476</LocationPhone>
+      <LocationAddress>{address}</LocationAddress>
+      <LocationPhone>{phone}</LocationPhone>
     </LocationCardContainer>
   );
 };
