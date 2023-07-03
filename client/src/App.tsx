@@ -16,26 +16,29 @@ const App = () => {
       <GlobalStyle />
       <CardListContainer>
         <ContensCard
+          userName="김영웅"
           title="오늘티켓팅성공하게해주세요 제발요8시제발 게해주세요 제발요8시제발게해주세요 제발요8시제발"
           text="길막마전부타비켜엘사불러도날못식혀쇳뿔 달고뛰어일 직선쉽게타지마삐딱선직선쉽게타지마삐딱선직선쉽게타지마삐딱선"
           heartCount="23"
           tag={['티켓팅', '길막', '오늘']}
         />
         <ContensCard
+          userName="류지수"
           title="오늘티켓팅성공하게"
           text="길막마전부타비켜엘사불러도날못"
           heartCount="55"
           tag={['티켓팅', '제발']}
         />
         <ContensCard
-          title="3"
-          text="3"
+          userName="최지은"
+          title="전부타비켜엘사불러도날못식혀쇳뿔 달고뛰어일 직선쉽"
+          text="전부타비켜엘사불러도날못식혀쇳뿔 달고뛰어일 직선쉽"
           heartCount="60"
           tag={['엘사', '제발']}
         />
         <ContensCard
-          title="4"
-          text="4"
+          title="전부타비켜엘사불러도날못식혀쇳뿔 달고뛰어일 직선쉽"
+          text="전부타비켜엘사불러도날못식혀쇳뿔 달고뛰어일 직선쉽"
           heartCount="88"
           tag={['티켓팅', '여름']}
         />

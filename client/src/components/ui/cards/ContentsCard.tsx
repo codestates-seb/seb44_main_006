@@ -4,6 +4,14 @@ import cssToken from '../../../styles/cssToken';
 import TagButton from '../button/TagButton';
 import ThumbnailBox from '../thumbnail/ThumbnailBox';
 
+interface ContCard {
+  userName?: string;
+  title?: string;
+  text?: string;
+  heartCount?: string;
+  tag?: string[];
+}
+
 const ContensCardContainer = styled.section`
   display: flex;
   gap: ${cssToken.SPACING['gap-24']};
@@ -14,6 +22,10 @@ const ContensCardContainer = styled.section`
   padding: 1.25rem;
   flex-grow: 0;
   width: 25.2813rem;
+  transition: ${cssToken.TRANSITION.basic};
+  &:hover {
+    border: 0.0625rem solid ${cssToken.COLOR['point-900']};
+  }
 `;
 
 const UserName = styled.span`
@@ -50,7 +62,7 @@ const ContensTitle = styled.h3`
 
 const ContensText = styled.p`
   line-height: 120%;
-  color: ${cssToken.COLOR['gray-500']};
+  color: ${cssToken.COLOR['gray-900']};
   font-size: ${cssToken.TEXT_SIZE['text-16']};
   font-weight: ${cssToken.FONT_WEIGHT.light};
   height: 2.1875rem;
@@ -72,31 +84,26 @@ const DataText = styled.span`
   font-size: ${cssToken.TEXT_SIZE['text-14']};
 `;
 
-interface ContCard {
-  title?: string;
-  text?: string;
-  heartCount?: string;
-  tag?: string[];
-}
-
-const ContensCard = ({ title, text, heartCount, tag }: ContCard) => {
+const ContensCard = ({ title, text, heartCount, tag, userName }: ContCard) => {
+  // 버튼 영역은 작업 완료 후 다시 한 번 수정 필요합니다.
+  // 컴포넌트 나누는 작업 필요합니다.
   return (
     <ContensCardContainer>
       <ContensTop>
-        <UserName>하루하루</UserName>
-        <button>더보기 버튼</button>
+        <UserName>{userName || '탈퇴한 회원'}</UserName>
+        <button type="button">더보기 버튼</button>
       </ContensTop>
 
       <ContensHeader>
         <ContensTitle>{title}</ContensTitle>
-        <button>즐찾 위치</button>
+        <button type="button">즐찾 위치</button>
       </ContensHeader>
 
       <ContensText>{text}</ContensText>
 
       <Tags>
-        {tag?.map((tagItem, idx: number) => (
-          <TagButton key={idx}>{tagItem}</TagButton>
+        {tag?.map((tagItem) => (
+          <TagButton key={tagItem}>{tagItem}</TagButton>
         ))}
       </Tags>
 
@@ -111,7 +118,7 @@ const ContensCard = ({ title, text, heartCount, tag }: ContCard) => {
 
       <ContensBottom>
         <div>
-          <button>하트버튼</button>
+          <button type="button">하트버튼</button>
           <DataText>{heartCount}개</DataText>
         </div>
         <DataText>23.06.30</DataText>

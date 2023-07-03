@@ -58,7 +58,7 @@ const cssToken = {
     'weight-5': '5px',
   },
   TRANSITION: {
-    basic: 'transition: 0.3s ease-in-out',
+    basic: '0.3s ease-in-out',
   },
   SHADOW: {
     'shadow-lg':
