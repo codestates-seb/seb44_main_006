@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-import CatContainer from '../../components/ui/error/Catcontainer';
+import CatContainer from '../../components/ui/error/CatContainer';
 import ErrorBtnContainer from '../../components/ui/error/ErrorBtnContainer';
 import cssToken from '../../styles/cssToken';
 
