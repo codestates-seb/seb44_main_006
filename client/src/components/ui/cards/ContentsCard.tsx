@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 
 import cssToken from '../../../styles/cssToken';
 import TagButton from '../button/TagButton';
+import ThumbnailBox from '../thumbnail/ThumbnailBox';
 
 const ContensCardContainer = styled.section`
   display: flex;
@@ -61,26 +62,6 @@ const Tags = styled.div`
   gap: ${cssToken.SPACING['gap-10']};
 `;
 
-const Thumbnail = styled.div`
-  position: relative;
-  border-radius: ${cssToken.BORDER['rounded-s']};
-  overflow: hidden;
-  width: ${cssToken.WIDTH['w-full']};
-  height: 0;
-  padding-bottom: 50%;
-`;
-
-export const Img = styled.img`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  object-fit: cover;
-  width: ${cssToken.WIDTH['w-full']};
-  height: ${cssToken.HEIGHT['h-full']};
-`;
-
 const ContensBottom = styled.div`
   display: flex;
   justify-content: space-between;
@@ -119,9 +100,14 @@ const ContensCard = ({ title, text, heartCount, tag }: ContCard) => {
         ))}
       </Tags>
 
-      <Thumbnail>
-        <Img src="https://www.sungsimdangmall.co.kr/data/sungsimdang/goods/sungsimdang/big/202310454292163523295.jpg" />
-      </Thumbnail>
+      <ThumbnailBox
+        styles={{
+          width: '100%',
+          height: '0',
+          borderRadius: cssToken.BORDER['rounded-s'],
+        }}
+        src="https://www.sungsimdangmall.co.kr/data/sungsimdang/goods/sungsimdang/big/202310454292163523295.jpg"
+      />
 
       <ContensBottom>
         <div>
