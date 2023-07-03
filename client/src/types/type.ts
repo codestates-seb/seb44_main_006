@@ -3,7 +3,13 @@ import { ReactNode } from 'react';
 export type TextStyleT = {
   size?: string;
   color?: string;
-  weight?: '300' | '500' | '700';
+  weight?: number;
+};
+
+export type TextareaT = {
+  width?: string;
+  height?: string;
+  size?: string;
 };
 
 export interface Props {
