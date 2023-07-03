@@ -10,3 +10,7 @@ export const TextStyle = styled.h3<TextStyleT>`
   font-weight: ${(props) =>
     props.weight ? props.weight : cssToken.FONT_WEIGHT.bold};
 `;
+
+export const FlexDiv = styled.div`
+  display: flex;
+`;

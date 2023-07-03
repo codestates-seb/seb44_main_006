@@ -1,5 +1,7 @@
+import ErrorPage from './pages/error/ErrorPage';
+
 const App = () => {
-  return <>HI</>;
+  return <ErrorPage />;
 };
 
 export default App;
