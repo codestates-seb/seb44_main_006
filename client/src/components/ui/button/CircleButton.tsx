@@ -1,17 +1,9 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { Props } from '../../../types/type';
+import { IButtonStyle } from '../../../types/type';
 
-const CircleButton = ({
-  children,
-  width,
-  height,
-}: {
-  children: Props['children'];
-  width: string;
-  height: string;
-}) => {
+const CircleButton = ({ children, width, height }: IButtonStyle) => {
   return (
     <Button
       styles={{

@@ -1,7 +1,7 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { Props } from '../../../types/type';
+import { IButtonStyle } from '../../../types/type';
 
 const WhiteButton = ({
   children,
@@ -9,13 +9,7 @@ const WhiteButton = ({
   height,
   backgroundColor,
   borderRadius,
-}: {
-  children: Props['children'];
-  width: string;
-  height: string;
-  backgroundColor?: string;
-  borderRadius: string;
-}) => {
+}: IButtonStyle) => {
   return (
     <Button
       styles={{
