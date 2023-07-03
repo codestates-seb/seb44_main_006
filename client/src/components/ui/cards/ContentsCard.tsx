@@ -3,12 +3,15 @@ import styled, { css } from 'styled-components';
 import cssToken from '../../../styles/cssToken';
 import TagButton from '../button/TagButton';
 import ThumbnailBox from '../thumbnail/ThumbnailBox';
+import OptionButton from '../button/OptionButton';
+import StarButton from '../button/StarButton';
+import LikeButton from '../button/LikeButton';
 
 interface ContCard {
   userName?: string;
   title?: string;
   text?: string;
-  heartCount?: string;
+  likeCount?: string;
   tag?: string[];
 }
 
@@ -80,23 +83,28 @@ const ContensBottom = styled.div`
   align-items: center;
 `;
 
+const LikeBtnBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const DataText = styled.span`
   font-size: ${cssToken.TEXT_SIZE['text-14']};
 `;
 
-const ContensCard = ({ title, text, heartCount, tag, userName }: ContCard) => {
-  // 버튼 영역은 작업 완료 후 다시 한 번 수정 필요합니다.
-  // 컴포넌트 나누는 작업 필요합니다.
+const ContensCard = ({ title, text, likeCount, tag, userName }: ContCard) => {
+  // 컴포넌트 나누는 작업 필요 합니다.
   return (
     <ContensCardContainer>
       <ContensTop>
         <UserName>{userName || '탈퇴한 회원'}</UserName>
-        <button type="button">더보기 버튼</button>
+        <OptionButton isActive={false} />
       </ContensTop>
 
       <ContensHeader>
         <ContensTitle>{title}</ContensTitle>
-        <button type="button">즐찾 위치</button>
+        <StarButton width="60px" height="60px" isActive />
       </ContensHeader>
 
       <ContensText>{text}</ContensText>
@@ -124,10 +132,10 @@ const ContensCard = ({ title, text, heartCount, tag, userName }: ContCard) => {
       />
 
       <ContensBottom>
-        <div>
-          <button type="button">하트버튼</button>
-          <DataText>{heartCount}개</DataText>
-        </div>
+        <LikeBtnBox>
+          <LikeButton isActive />
+          <DataText>{likeCount}개</DataText>
+        </LikeBtnBox>
         <DataText>23.06.30</DataText>
       </ContensBottom>
     </ContensCardContainer>
