@@ -19,10 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -65,6 +62,18 @@ public class JwtTokenizer {
                 .setExpiration(expiration)
                 .signWith(key)
                 .compact();
+    }
+
+    public String generateAccessToken(String username, List<String> authorities) throws JsonProcessingException {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", username);
+        claims.put("roles", authorities);
+
+        Subject subject = new Subject(username, "AccessToken");
+        Date expiration = getTokenExpiration(getAccessTokenExpirationMinutes());
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+
+        return generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
     }
 
     //Access Token 이 만료되었을 경우, Access Token 을 새로 생성할 수 있게 해주는 Refresh Token 을 생성하는 메서드

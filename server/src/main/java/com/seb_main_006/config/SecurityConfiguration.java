@@ -3,8 +3,6 @@ package com.seb_main_006.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seb_main_006.domain.member.service.MemberService;
-import com.seb_main_006.global.auth.filter.JwtAuthenticationFilter;
-import com.seb_main_006.global.auth.filter.JwtReissueFilter;
 import com.seb_main_006.global.auth.filter.JwtVerificationFilter;
 import com.seb_main_006.global.auth.handler.OAuth2MemberSuccessHandler;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
@@ -56,7 +54,7 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.POST, "/auth/reissue").hasAnyRole("USER","ADMIN")
+//                        .antMatchers(HttpMethod.POST, "/auth/reissue").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.GET, "/auth/test").hasAnyRole("USER","ADMIN")
                         .anyRequest().permitAll()
                 )
@@ -90,19 +88,12 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtTokenizer, authorityUtils);
-
             // JWT 토큰 검증 필터 생성 및 필터 순서 설정 : 인증(일반로그인 or 소셜로그인) 필터 다음에 적용
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, redisUtil, authorityUtils);
 
-            JwtReissueFilter jwtReissueFilter = new JwtReissueFilter(objectMapper, jwtTokenizer, refreshTokenRedisRepository);
-
-//            builder.addFilterAfter(jwtReissueFilter, OAuth2LoginAuthenticationFilter.class);
-            builder.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
             builder.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class)
-                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+                    .addFilterAfter(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class);
         }
-
     }
 }
 
