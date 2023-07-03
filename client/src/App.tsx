@@ -1,5 +1,7 @@
+import ThumbnailBox from './components/ui/thumbnail/ThumbnailBox';
+
 const App = () => {
-  return <>HI</>;
+  return <ThumbnailBox />;
 };
 
 export default App;
