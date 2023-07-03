@@ -4,6 +4,8 @@ package com.seb_main_006.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seb_main_006.domain.member.service.MemberService;
 import com.seb_main_006.global.auth.filter.JwtVerificationFilter;
+import com.seb_main_006.global.auth.handler.MemberAccessDeniedHandler;
+import com.seb_main_006.global.auth.handler.MemberAuthenticationEntryPoint;
 import com.seb_main_006.global.auth.handler.OAuth2MemberSuccessHandler;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.auth.redis.RedisUtil;
@@ -51,10 +53,15 @@ public class SecurityConfiguration {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())  // (1) 추가
+                .accessDeniedHandler(new MemberAccessDeniedHandler())
+                .and()
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
 //                        .antMatchers(HttpMethod.POST, "/auth/reissue").hasAnyRole("USER","ADMIN")
+                        .antMatchers(HttpMethod.POST, "/auth/logout").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.GET, "/auth/test").hasAnyRole("USER","ADMIN")
                         .anyRequest().permitAll()
                 )

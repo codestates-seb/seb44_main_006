@@ -2,7 +2,6 @@ package com.seb_main_006.global.auth.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
-import com.seb_main_006.global.auth.jwt.Subject;
 import com.seb_main_006.global.auth.redis.RedisUtil;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.Claims;
@@ -13,7 +12,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -31,8 +29,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private final RedisUtil redisUtil;
     private final CustomAuthorityUtils authorityUtils;
 
-    public JwtVerificationFilter(JwtTokenizer jwtTokenizer,
-                                 RedisUtil redisUtil, CustomAuthorityUtils authorityUtils) {
+    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, RedisUtil redisUtil, CustomAuthorityUtils authorityUtils) {
         this.jwtTokenizer = jwtTokenizer;
         this.redisUtil = redisUtil;
         this.authorityUtils = authorityUtils;
@@ -78,10 +75,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     //조건에 부합하지 않으면 이 필터를 적용하지 않고 다음 필터로 넘어감
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization"); // 잘못된 헤더 요청 시 예외 처리 어떻게?
+        String refreshToken = request.getHeader("RefreshToken");
 
-        return authorization == null || request.getRequestURI().equals("/auth/reissue");
+        return authorization == null;
     }
 
     //JWT 를 검증하는 데 사용되는 private 메서드
@@ -96,11 +94,17 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected void setAuthenticationToContext(String token) throws JsonProcessingException {
         System.out.println("check6");
         Jws<Claims> claims = jwtTokenizer.getClaims(token);
-        List<String> roles = (List<String>) claims.getBody().get("roles");
+        System.out.println("check7");
+        List<String> roles = (List<String>) claims.getBody().get("roles"); // 문제 발생
+        System.out.println("roles = " + roles); // roles = null 왜???????? 왜 /auth/reissue 일 때만???
+        System.out.println("check8");
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities(roles);
+        System.out.println("check9");
 
         UserDetails principal = new User(claims.getBody().get("username").toString(), "", authorities);
+        System.out.println("check10");
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        System.out.println("check11");
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
