@@ -8,7 +8,13 @@ const H1 = styled.h1<TextStyleT>`
   font-weight: ${(props) => (props.weight ? props.weight : 'Bold')};
 `;
 
-const Title = ({ children, styles }: Props) => {
+const Title = ({
+  children,
+  styles,
+}: {
+  children: Props['children'];
+  styles?: TextStyleT;
+}) => {
   return <H1 {...styles}>{children}</H1>;
 };
 

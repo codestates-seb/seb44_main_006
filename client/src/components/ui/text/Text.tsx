@@ -9,7 +9,13 @@ const P = styled.p<TextStyleT>`
   font-weight: ${(props) => (props.weight ? props.weight : 'Medium')};
 `;
 
-const Text = ({ children, styles }: Props) => {
+const Text = ({
+  children,
+  styles,
+}: {
+  children: Props['children'];
+  styles?: TextStyleT;
+}) => {
   return <P {...styles}>{children}</P>;
 };
 

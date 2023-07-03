@@ -8,5 +8,4 @@ export type TextStyleT = {
 
 export interface Props {
   children: ReactNode;
-  styles?: TextStyleT;
 }
