@@ -5,9 +5,11 @@ import cssToken from '../../../styles/cssToken';
 
 const InputWrapper = styled.div`
   position: relative;
+  width: ${cssToken.WIDTH['min-w-fit']};
 `;
 
 const Input = styled.input`
+  background-color: ${cssToken.COLOR['gray-300']};
   width: ${(props) => props.width || '700px'};
   height: ${(props) => props.height};
   color: #424242;
