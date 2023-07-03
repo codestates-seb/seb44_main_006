@@ -8,7 +8,9 @@ import Text from '../text/Text';
 const Input = styled.input<TextareaT>`
   width: ${(props) => props.width || '50%'};
   height: ${(props) => props.height || '50%'};
+  font-size: ${(props) => props.size || '16px'};
   padding: ${cssToken.SPACING['gap-16']};
+  margin-bottom: 5px;
   border: solid 1px #dcdcdc;
   ::-webkit-input-placeholder {
     color: #c6c6c6;
@@ -16,7 +18,6 @@ const Input = styled.input<TextareaT>`
   &:focus {
     outline: none;
   }
-  margin-bottom: 5px;
 `;
 
 const InputContainer = ({

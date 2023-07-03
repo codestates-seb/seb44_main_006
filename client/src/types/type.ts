@@ -9,6 +9,7 @@ export type TextStyleT = {
 export type TextareaT = {
   width?: string;
   height?: string;
+  size?: string;
 };
 
 export interface Props {

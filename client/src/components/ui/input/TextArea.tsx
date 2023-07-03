@@ -9,12 +9,13 @@ const Content = styled.textarea<TextareaT>`
   width: ${(props) => props.width || '50%'};
   height: ${(props) => props.height || '230px'};
   padding: ${cssToken.SPACING['gap-12']};
+  font-size: ${(props) => props.size || '16px'};
+  margin-bottom: 5px;
   border: solid 1px #dcdcdc;
   resize: none;
   ::-webkit-input-placeholder {
     color: #c6c6c6;
   }
-  margin-bottom: 5px;
 `;
 
 const TextArea = ({
