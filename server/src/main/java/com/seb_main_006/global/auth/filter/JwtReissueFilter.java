@@ -1,15 +1,11 @@
 package com.seb_main_006.global.auth.filter;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seb_main_006.global.auth.handler.OAuth2MemberSuccessHandler;
 import com.seb_main_006.global.auth.jwt.CustomJwtErrorResponse;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.auth.jwt.Subject;
 import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
-import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,8 +16,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+// Filter 가 아니라 그냥 Controller, Service 에서 처리하도록 하는 것이 관리하기도, 예외처리하기도 편할 것 같다는 생각...
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,35 +30,24 @@ public class JwtReissueFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
     private final JwtTokenizer jwtTokenizer;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
-    private final OAuth2MemberSuccessHandler oAuth2MemberSuccessHandler; // Refactoring 이 필요할 수 있음..
 
-    // JWT 를 검증하고 Authentication 객체를 SecurityContext 에 저장하기 위한 private 메서드
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         String token = request.getHeader("Authorization").replace("Bearer ", "");
-
         Subject subject = null;
         try {
-            subject = jwtTokenizer.getSubject(token); // 500 에러
+            subject = jwtTokenizer.getSubject(token);
         } catch (ExpiredJwtException e) {
-            // ResponseBody 에 에러 메세지 세팅 및 에러 코드 설정
-            String errorMessage = "토큰이 만료되었습니다. 다시 로그인해주세요.";
-            setErrorMessageAndStatus(response, errorMessage);
+            setErrorMessageAndStatus(response, "토큰이 만료되었습니다. 다시 로그인해주세요.");
             return;
         }
 
         String requestURI = request.getRequestURI();
-
         log.info("requestURI = {}", requestURI);
 
         if (requestURI.equals("/auth/reissue") && !subject.getTokenType().equals("RefreshToken")) {
-            // 요청 URL 이 "/auth/reissue" 이지만, 토큰 타입이 "RefreshToken" 이 아닌 경우 -> 예외
-            log.info("RefreshToken 이 아님");
-
-            // ResponseBody 에 에러 메세지 세팅 및 에러 코드 설정
-            String errorMessage = "토큰을 확인해주세요";
-            setErrorMessageAndStatus(response, errorMessage);
+            // 요청 URL:  "/auth/reissue", BUT 토큰 타입이 "RefreshToken" 이 아님 -> 에러 메세지 + 401 status 리턴
+            setErrorMessageAndStatus(response, "토큰을 확인해주세요");
             return;
 
         } else if (requestURI.equals("/auth/reissue") && subject.getTokenType().equals("RefreshToken")) {
@@ -67,11 +56,18 @@ public class JwtReissueFilter extends OncePerRequestFilter {
             // AccessToken 재발급
             String username = subject.getUsername(); // 유저 email
             List<String> authorities = refreshTokenRedisRepository.findByRefreshToken(token).getAuthorities();
-            String newAccessToken = oAuth2MemberSuccessHandler.delegateAccessToken(username, authorities);
+
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("username", username);
+            claims.put("roles", authorities);
+
+            Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
+            String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+
+            String newAccessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
 
             // 응답 헤더에 재발급된 AccessToken 추가
             response.setHeader("Authorization", "Bearer " + newAccessToken);
-
             return;
         }
 

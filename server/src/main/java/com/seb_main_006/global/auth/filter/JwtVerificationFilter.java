@@ -21,11 +21,9 @@ import java.util.Map;
 
 //클라이언트 측에서 전송된 request header 에 포함된 JWT 에 대해 검증 작업을 수행하는 클래스
 public class JwtVerificationFilter extends OncePerRequestFilter {
-
     private final JwtTokenizer jwtTokenizer;
     private final RedisUtil redisUtil;
     private final CustomAuthorityUtils authorityUtils;
-
 
     public JwtVerificationFilter(JwtTokenizer jwtTokenizer,
                                  RedisUtil redisUtil, CustomAuthorityUtils authorityUtils) {
@@ -37,9 +35,12 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     // JWT 를 검증하고 Authentication 객체를 SecurityContext 에 저장하기 위한 private 메서드
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("JwtVerificationFilter.doFilterInternal");
         try {
             String jws = request.getHeader("Authorization").replace("Bearer ", "");
+            System.out.println("check1");
             if (redisUtil.hasKeyBlackList(jws)) {
+                System.out.println("check2");
                 throw new RuntimeException("다시 로그인 하십시오.");
             }
             Map<String, Object> claims = verifyJws(request);
@@ -54,12 +55,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-    //조건에 부합하지 않으면 Exception 을 던져주는 메서드
+
+    //조건에 부합하지 않으면 이 필터를 적용하지 않고 다음 필터로 넘어감
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String authorization = request.getHeader("Authorization");
 
-        return authorization == null || !authorization.startsWith("Bearer");
+        return authorization == null || !authorization.startsWith("Bearer") || request.getRequestURI().equals("/auth/reissue");
     }
 
     //JWT 를 검증하는 데 사용되는 private 메서드

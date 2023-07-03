@@ -73,13 +73,16 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String refreshToken = delegateRefreshToken(username);
 
         refreshTokenRedisRepository.save(RefreshToken.builder()
+                .id(username)
                 .username(username)
                 .authorities(authorities)
                 .refreshToken(refreshToken)
                 .build());
 
         RefreshToken findToken = refreshTokenRedisRepository.findByRefreshToken(refreshToken);
-        System.out.println("findToken.getId() = " + findToken.getUsername());
+        RefreshToken refreshToken2 = refreshTokenRedisRepository.findByUsername(findToken.getId());
+        System.out.println("findToken.getId() = " + findToken.getId());
+        System.out.println("refreshToken2 = " + refreshToken2);
 
         String uri = createURI(accessToken, refreshToken).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);

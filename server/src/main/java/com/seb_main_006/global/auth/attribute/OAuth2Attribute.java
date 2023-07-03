@@ -70,7 +70,6 @@ public class OAuth2Attribute {
 
         System.out.println("naverResponse = " + naverResponse);
 
-
         return OAuth2Attribute.builder()
                 .name((String) naverResponse.get("nickname"))
                 .email((String) naverResponse.get("email"))
@@ -79,8 +78,6 @@ public class OAuth2Attribute {
                 .attributeKey(String.valueOf(attributes.get(attributeKey)))
                 .provider("naver")
                 .build();
-
-
     }
 
     public Map<String, Object> convertToMap() {

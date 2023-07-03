@@ -2,6 +2,7 @@ package com.seb_main_006.global.auth.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -9,23 +10,27 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenizer {
 
     private final ObjectMapper objectMapper;
+    private final CustomAuthorityUtils authorityUtils;
 
-    public JwtTokenizer(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
 
     //환경 변수 정의
     @Getter
@@ -75,6 +80,9 @@ public class JwtTokenizer {
                 .compact();
     }
 
+    public Jws<Claims> getClaims(String token) {
+        return getClaims(token, encodeBase64SecretKey(secretKey));
+    }
 
     public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
@@ -121,5 +129,6 @@ public class JwtTokenizer {
         String subjectStr = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
         return objectMapper.readValue(subjectStr, Subject.class);
     }
+
 
 }
