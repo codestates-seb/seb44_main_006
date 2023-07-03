@@ -1,5 +1,7 @@
+import LocationCard from './components/ui/cards/LocationCard';
+
 const App = () => {
-  return <>HI</>;
+  return <LocationCard />;
 };
 
 export default App;
