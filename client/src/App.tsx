@@ -10,7 +10,7 @@ const App = () => {
         address="서울 강남구 테헤란로84길 17"
         phone="02-558-5476"
       />
-      <MapLocationCard />
+      <MapLocationCard indexNum={1} location="구림 빌라" />
     </>
   );
 };

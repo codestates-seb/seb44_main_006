@@ -2,6 +2,11 @@ import styled from 'styled-components';
 
 import cssToken from '../../../styles/cssToken';
 
+interface MapLocationCardInfo {
+  indexNum?: number;
+  location?: string;
+}
+
 const MapLocationCardContainer = styled.section`
   display: flex;
   align-items: center;
@@ -16,8 +21,8 @@ const NumCircle = styled.span`
   justify-content: center;
   color: ${cssToken.COLOR.white};
   border-radius: ${cssToken.BORDER['rounded-full']};
-  width: 35px;
-  height: 35px;
+  width: 2.1875rem;
+  height: 2.1875rem;
   background-color: ${cssToken.COLOR['point-900']};
 `;
 
@@ -37,12 +42,12 @@ const LocationText = styled.p`
   font-weight: ${cssToken.FONT_WEIGHT.medium};
 `;
 
-const MapLocationCard = () => {
+const MapLocationCard = ({ indexNum, location }: MapLocationCardInfo) => {
   return (
     <MapLocationCardContainer>
-      <NumCircle>1</NumCircle>
+      <NumCircle>{indexNum}</NumCircle>
       <LocationCard>
-        <LocationText>구림 빌라</LocationText>
+        <LocationText>{location}</LocationText>
       </LocationCard>
     </MapLocationCardContainer>
   );
