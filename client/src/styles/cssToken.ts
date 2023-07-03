@@ -45,6 +45,7 @@ const cssToken = {
     'gap-24': '1.5rem',
     'gap-16': '1rem',
     'gap-12': '0.75rem',
+    'gap-10': '0.625rem',
   },
   BORDER: {
     'rounded-none': '0px',
