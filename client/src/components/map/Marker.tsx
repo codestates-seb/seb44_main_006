@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -49,7 +44,11 @@ const Marker = ({
     };
   }, [map, lat, lng, image]);
 
-  return <div>{children}</div>;
+  if (children) {
+    return <div>{children}</div>;
+  }
+
+  return null;
 };
 
 export default Marker;
