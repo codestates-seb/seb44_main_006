@@ -58,6 +58,7 @@ public class CourseController {
                                       @AuthenticationPrincipal(expression = "username"
                                       ) String memberEmail) {
 
+
         coursePatchDto.setCourseId(courseId);
         courseService.updateCourse(coursePatchDto, memberEmail);
 
