@@ -18,6 +18,7 @@ type MarkerT = {
   children?: Props['children'];
 };
 
+// Todo 장소 추가했을 때 marker 리덕스 markerID 초기화하기
 const Marker = ({ lat, lng, id, img, children }: MarkerT) => {
   const map = useSelector((state: any) => state.map.map);
   const markerId = useSelector((state) => state.marker.markerId);
@@ -29,8 +30,21 @@ const Marker = ({ lat, lng, id, img, children }: MarkerT) => {
     const markerWidth = 20;
     const markerheight = 40;
 
-    const image =
-      img || (markerId === id && img ? MarkerOff[id + 1] : MarkerOn[id + 1]);
+    const setIamge = () => {
+      if (img) {
+        if (markerId === id) return MarkerOn[0];
+        return MarkerOff[0];
+      }
+      if (markerId === id) return MarkerOn[id + 1];
+      return MarkerOff[id + 1];
+    };
+
+    const image = setIamge();
+    // markerId === id && !img
+    //     ? MarkerOff[id + 1]
+    //     : MarkerOn[id + 1] || (markerId === id && img)
+    //     ? MarkerOn[0]
+    //     : MarkerOff[0];
 
     const markerImage = new kakao.maps.MarkerImage(
       image,
