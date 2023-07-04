@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { styled } from 'styled-components';
 
 import { Props } from '../../types/type';
 import defaultOptions from '../../utils/constant';
@@ -15,10 +16,17 @@ type MarkerT = {
   children?: Props['children'];
 };
 
+const Div = styled.div`
+  width: fit-content;
+  height: fit-content;
+  z-index: 10;
+`;
+
 const Marker = ({ lat, lng, id, children }: MarkerT) => {
   const map = useSelector((state: any) => state.map.map);
   const markerId = useSelector((state) => state.marker.markerId);
   const dispatch = useDispatch();
+  console.log(lat, lng);
 
   useEffect(() => {
     const markerLat = lat || defaultOptions.lat;
@@ -56,9 +64,9 @@ const Marker = ({ lat, lng, id, children }: MarkerT) => {
     };
   }, [map, lat, lng, markerId, dispatch, id]);
 
-  if (children) {
-    return <div>{children}</div>;
-  }
+  // if (children) {
+  //   return <Div>{children}</Div>;
+  // }
 
   return null;
 };
