@@ -1,5 +1,6 @@
 package com.seb_main_006.domain.course.controller;
 
+import com.seb_main_006.domain.course.dto.CoursePatchDto;
 import com.seb_main_006.domain.course.dto.CoursePostDto;
 import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.course.service.CourseService;
@@ -10,11 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 
 @Slf4j
@@ -25,8 +25,9 @@ import java.net.URI;
 public class CourseController {
 
     private final CourseService courseService;
+
     @PostMapping
-    public ResponseEntity postCourse(@Valid @RequestBody CoursePostDto coursePostDto, @AuthenticationPrincipal(expression = "username") String memberEmail){
+    public ResponseEntity postCourse(@Valid @RequestBody CoursePostDto coursePostDto, @AuthenticationPrincipal(expression = "username") String memberEmail) {
         //@AuthenticationPrincipal로 현재 저장되어있는 이메일 가져옴 -> customUserDetail이 없어서 @AuthenticationPrincipal를 통해 userDetail 구현한후 객체를 주입함
 
         Course createdCourse = courseService.createCourse(coursePostDto, memberEmail);
@@ -38,7 +39,26 @@ public class CourseController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    @PatchMapping("/{course-id}")
+    public ResponseEntity patchCourse(@Valid @PathVariable("course-id") long courseId,
+                                      @RequestBody CoursePatchDto coursePatchDto,
+                                      @AuthenticationPrincipal(expression = "username"
+                                      ) String memberEmail) {
 
+        coursePatchDto.setCourseId(courseId);
+        courseService.updateCourse(coursePatchDto, memberEmail);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{course-id}")
+    public ResponseEntity patchCourse(@PathVariable("course-id") @Positive long courseId,
+                                      @AuthenticationPrincipal(expression = "username") String memberEmail) {
+
+        courseService.deleteCourse(courseId, memberEmail);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 
 }
