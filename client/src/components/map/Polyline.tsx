@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux';
 
-const Polyline = ({ linePos }) => {
-  const map = useSelector((state: any) => state.map.map);
+const Polyline = ({ linePos }: { linePos: { lat: number; lng: number }[] }) => {
+  const map = useSelector((state) => state.map.map);
 
   const linePath = linePos.map(
-    (pos) => new kakao.maps.LatLng(pos.lat, pos.lng)
+    (pos: { lat: number; lng: number }) =>
+      new kakao.maps.LatLng(pos.lat, pos.lng)
   );
 
   const polyline = new kakao.maps.Polyline({
