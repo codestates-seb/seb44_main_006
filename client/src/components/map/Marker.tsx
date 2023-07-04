@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -11,7 +12,7 @@ type MarkerT = {
   lat?: number;
   lng?: number;
   image?: string | undefined;
-  children: Props['children'];
+  children?: Props['children'];
 };
 
 const Marker = ({
@@ -22,7 +23,11 @@ const Marker = ({
   ...options
 }: MarkerT) => {
   const map = useSelector((state: any) => state.map.map);
-  const [state, setState] = useState({
+  const [state, setState] = useState<{
+    marker: any;
+    width?: number;
+    height?: number;
+  }>({
     marker: null,
     width: 0,
     height: 0,
@@ -51,7 +56,7 @@ const Marker = ({
     // return () => {
     //   if (state && state.marker) state.marker.setMap(null);
     // };
-  }, [map, image, lat, lng]);
+  }, [map]);
 
   return <div>{children}</div>;
 };

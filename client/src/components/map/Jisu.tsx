@@ -21,6 +21,7 @@ type KakaoMapT = {
 };
 
 const KakaoMap = ({ width, height, children, ...options }: KakaoMapT) => {
+  const [state, setState] = useState(false);
   const dispatch = useDispatch();
   const loadHandler = useCallback(
     (element: HTMLElement) => {
@@ -31,13 +32,14 @@ const KakaoMap = ({ width, height, children, ...options }: KakaoMapT) => {
         center: new kakao.maps.LatLng(lat, lng),
       });
       dispatch(mapActions.setMap(newMap));
+      setState(true);
     },
     [dispatch]
   );
 
   return (
     <MapContainer width={width} height={height} ref={loadHandler} {...options}>
-      {children}
+      {state && children}
     </MapContainer>
   );
 };
