@@ -1,6 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { Draft, PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+import { MarkerT } from '../types/type';
+
+const initialState: MarkerT = {
   markerId: null,
 };
 
@@ -8,7 +10,7 @@ const markerSlice = createSlice({
   name: 'marker',
   initialState,
   reducers: {
-    selectMarker(state, action) {
+    selectMarker(state: Draft<MarkerT>, action: PayloadAction<number | null>) {
       if (state.markerId === action.payload) {
         state.markerId = null;
       } else state.markerId = action.payload;

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
@@ -51,7 +54,7 @@ const Marker = ({ lat, lng, id, children }: MarkerT) => {
         kakao.maps.event.removeListener(marker, 'click', setMarkerId);
       }
     };
-  }, [map, lat, lng, markerId]);
+  }, [map, lat, lng, markerId, dispatch, id]);
 
   if (children) {
     return <div>{children}</div>;

@@ -41,3 +41,7 @@ export interface IButtonStyle {
   onClick?: () => void;
   onSubmit?: () => void;
 }
+
+export type MarkerT = {
+  markerId: number | null;
+};

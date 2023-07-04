@@ -1,4 +1,4 @@
-import KakaoMap from './components/map/Jisu';
+import KakaoMap from './components/map/KakaoMap';
 import Marker from './components/map/Marker';
 import Polyline from './components/map/Polyline';
 
