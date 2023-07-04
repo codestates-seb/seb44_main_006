@@ -12,8 +12,6 @@ const MapContainer = styled.section<TextareaT>`
   position: relative;
 `;
 
-const { kakao } = window;
-
 type KakaoMapT = {
   width: string;
   height: string;
