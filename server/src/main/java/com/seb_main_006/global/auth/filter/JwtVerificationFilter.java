@@ -3,11 +3,19 @@ package com.seb_main_006.global.auth.filter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.auth.redis.RedisUtil;
+import com.seb_main_006.global.auth.redis.RefreshToken;
+import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
+import com.seb_main_006.global.auth.utils.ErrorResponder;
+import com.seb_main_006.global.exception.BusinessLogicException;
+import com.seb_main_006.global.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -15,40 +23,50 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 //클라이언트 측에서 전송된 request header 에 포함된 JWT 에 대해 검증 작업을 수행하는 클래스
+@Slf4j
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final RedisUtil redisUtil;
     private final CustomAuthorityUtils authorityUtils;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
-    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, RedisUtil redisUtil, CustomAuthorityUtils authorityUtils) {
+    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, RedisUtil redisUtil, CustomAuthorityUtils authorityUtils, RefreshTokenRedisRepository refreshTokenRedisRepository) {
         this.jwtTokenizer = jwtTokenizer;
         this.redisUtil = redisUtil;
         this.authorityUtils = authorityUtils;
+        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     }
 
     // JWT 를 검증하고 Authentication 객체를 SecurityContext 에 저장하기 위한 private 메서드
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("JwtVerificationFilter.doFilterInternal");
+        log.info("requestURI = {}", request.getRequestURI());
 
-        System.out.println("request.getRequestURI() = " + request.getRequestURI()); // 왜 /auth/reissue 만 /login 으로 바뀌는지? /auth/test 는 잘 동작하는데...
+        boolean isReissue = request.getRequestURI().equals("/auth/reissue");
+        String token = "";
+
+        if (request.getHeader("Authorization") == null || request.getHeader("Authorization").replaceAll("Bearer ", "").length() == 0) {
+            ErrorResponder.sendErrorResponse(response, ExceptionCode.IM_A_TEAPOT);
+            return;
+        }
 
         try {
-            String token = "";
-            if (!request.getRequestURI().equals("/auth/reissue")) {
-                System.out.println("check00");
+            if (!isReissue) {
+                System.out.println("check: not reissue");
                 token = request.getHeader("Authorization").replace("Bearer ", "");
             } else {
-                System.out.println("check01");
+                System.out.println("check: reissue");
                 token = request.getHeader("RefreshToken");
             }
 
@@ -58,13 +76,21 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                 throw new RuntimeException("다시 로그인 하십시오.");
             }
 
-            verifyJws(request);// 토큰 유효성 검증
-            System.out.println("check3");
-            setAuthenticationToContext(token);
+            verifyJws(request, token);// 토큰 유효성 검증
+            setAuthenticationToContext(token, isReissue);
+
         } catch (SignatureException se) {
-            request.setAttribute("exception", se);
-        } catch (ExpiredJwtException ee) { //만료된 것은 추가처리 필요함
+            request.setAttribute("signatureException", se);
+        } catch (ExpiredJwtException ee) {
+            log.info("expiredJwtException 발생");
             request.setAttribute("exception", ee);
+            ErrorResponder.sendErrorResponse(response, ExceptionCode.TOKEN_EXPIRED);
+            return;
+        } catch (IllegalArgumentException ie) {
+            log.info("IllegalArgumentException 발생(토큰 없음)");
+            request.setAttribute("exception", ie);
+            ErrorResponder.sendErrorResponse(response, ExceptionCode.IM_A_TEAPOT);
+            return;
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
@@ -74,37 +100,43 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     //조건에 부합하지 않으면 이 필터를 적용하지 않고 다음 필터로 넘어감
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization"); // 잘못된 헤더 요청 시 예외 처리 어떻게?
-        String refreshToken = request.getHeader("RefreshToken");
-
-        return authorization == null;
-    }
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) {
+//        String authorization = request.getHeader("Authorization"); // 잘못된 헤더 요청 시 예외 처리 어떻게?
+//        String refreshToken = request.getHeader("RefreshToken");
+//
+//        return authorization == null;
+//    }
 
     //JWT 를 검증하는 데 사용되는 private 메서드
-    private Map<String, Object> verifyJws(HttpServletRequest request) {
-        String jws = request.getHeader("Authorization").replace("Bearer ", "");
+    private Map<String, Object> verifyJws(HttpServletRequest request, String token) {
+//        String jws = request.getHeader("Authorization").replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
-        return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
+        return jwtTokenizer.getClaims(token, base64EncodedSecretKey).getBody();
     }
 
     //Authentication 객체를 SecurityContext 에 저장하기 위한 private 메서드
-    protected void setAuthenticationToContext(String token) throws JsonProcessingException {
+    protected void setAuthenticationToContext(String token, Boolean isReissue) throws JsonProcessingException {
         System.out.println("check6");
         Jws<Claims> claims = jwtTokenizer.getClaims(token);
-        System.out.println("check7");
-        List<String> roles = (List<String>) claims.getBody().get("roles"); // 문제 발생
-        System.out.println("roles = " + roles); // roles = null 왜???????? 왜 /auth/reissue 일 때만???
-        System.out.println("check8");
-        List<GrantedAuthority> authorities = authorityUtils.createAuthorities(roles);
-        System.out.println("check9");
+        List<String> roles = null;
+        String username = null;
 
-        UserDetails principal = new User(claims.getBody().get("username").toString(), "", authorities);
-        System.out.println("check10");
+        if (isReissue) {
+            RefreshToken refreshTokenInfo = refreshTokenRedisRepository.findByRefreshToken(token);
+            roles = refreshTokenInfo.getAuthorities();
+            username = refreshTokenInfo.getUsername();
+        } else {
+            roles = (List<String>) claims.getBody().get("roles");
+            username = claims.getBody().get("username").toString();
+        }
+
+        System.out.println("roles = " + roles);
+        List<GrantedAuthority> authorities = authorityUtils.createAuthorities(roles);
+
+        UserDetails principal = new User(username, "", authorities);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal, "", authorities);
-        System.out.println("check11");
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
