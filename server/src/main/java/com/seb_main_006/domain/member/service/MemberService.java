@@ -3,6 +3,8 @@ package com.seb_main_006.domain.member.service;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.repository.MemberRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
+import com.seb_main_006.global.exception.BusinessLogicException;
+import com.seb_main_006.global.exception.ExceptionCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,5 +41,10 @@ public class MemberService {
         return user.isPresent();
     }
 
+    // 회원 정보 조회
+    public Member getMeber(String memberEmail){
+        Optional<Member> optional = memberRepository.findByMemberEmail(memberEmail);
+        return optional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBERS_NOT_VALID));
+    }
 
 }
