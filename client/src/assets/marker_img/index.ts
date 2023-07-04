@@ -1,0 +1,48 @@
+const enum MarkerSvg {
+  markeroff_1 = 'marker_off_1.svg',
+  markeroff_2 = 'marker_off_2.svg',
+  markeroff_3 = 'marker_off_3.svg',
+  markeroff_4 = 'marker_off_4.svg',
+  markeroff_5 = 'marker_off_5.svg',
+  markeroff_6 = 'marker_off_6.svg',
+  markeroff_7 = 'marker_off_7.svg',
+  markeroff_8 = 'marker_off_8.svg',
+  markeroff_9 = 'marker_off_9.svg',
+  markeroff_10 = 'marker_off_10.svg',
+  markeron_1 = 'marker_on_1.svg',
+  markeron_2 = 'marker_on_2.svg',
+  markeron_3 = 'marker_on_3.svg',
+  markeron_4 = 'marker_on_4.svg',
+  markeron_5 = 'marker_on_5.svg',
+  markeron_6 = 'marker_on_6.svg',
+  markeron_7 = 'marker_on_7.svg',
+  markeron_8 = 'marker_on_8.svg',
+  markeron_9 = 'marker_on_9.svg',
+  markeron_10 = 'marker_on_10.svg',
+}
+
+export const MarkerOff = [
+  MarkerSvg.markeroff_1,
+  MarkerSvg.markeroff_2,
+  MarkerSvg.markeroff_3,
+  MarkerSvg.markeroff_4,
+  MarkerSvg.markeroff_5,
+  MarkerSvg.markeroff_6,
+  MarkerSvg.markeroff_7,
+  MarkerSvg.markeroff_8,
+  MarkerSvg.markeroff_9,
+  MarkerSvg.markeroff_10,
+];
+
+export const MarkerOn = [
+  MarkerSvg.markeron_1,
+  MarkerSvg.markeron_2,
+  MarkerSvg.markeron_3,
+  MarkerSvg.markeron_4,
+  MarkerSvg.markeron_5,
+  MarkerSvg.markeron_6,
+  MarkerSvg.markeron_7,
+  MarkerSvg.markeron_8,
+  MarkerSvg.markeron_9,
+  MarkerSvg.markeron_10,
+];

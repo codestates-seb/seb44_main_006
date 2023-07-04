@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+import cssToken from '../../styles/cssToken';
+
 const Polyline = ({ linePos }: { linePos: { lat: number; lng: number }[] }) => {
   const map = useSelector((state) => state.map.map);
 
@@ -12,7 +14,7 @@ const Polyline = ({ linePos }: { linePos: { lat: number; lng: number }[] }) => {
     const polyline = new kakao.maps.Polyline({
       path: linePath,
       strokeWeight: 2,
-      strokeColor: '#FFAE00',
+      strokeColor: cssToken.COLOR['point-900'],
       strokeOpacity: 0.7,
       strokeStyle: 'solid',
     });

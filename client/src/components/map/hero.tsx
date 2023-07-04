@@ -7,8 +7,8 @@ import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import KakaoMap from './KakaoMap';
-import Marker from './Marker';
 import PlaceList from './PlaceList';
+import Marker from './Marker';
 
 import { PlacesSearchResultItem } from '../../types/type';
 
