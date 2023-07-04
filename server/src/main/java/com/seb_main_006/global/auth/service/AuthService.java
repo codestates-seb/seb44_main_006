@@ -1,6 +1,10 @@
 package com.seb_main_006.global.auth.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.seb_main_006.domain.bookmark.service.BookmarkService;
+import com.seb_main_006.domain.member.entity.Member;
+import com.seb_main_006.domain.member.service.MemberService;
+import com.seb_main_006.global.auth.attribute.MemberInfoResponseDto;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.auth.jwt.Subject;
 import com.seb_main_006.global.auth.redis.RedisUtil;
@@ -9,6 +13,7 @@ import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,14 +27,18 @@ public class AuthService {
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final RedisUtil redisUtil;
     private final JwtTokenizer jwtTokenizer;
+    private final MemberService memberService;
+    private final BookmarkService bookmarkService;
 
     @Value("jwt.key")
     String secretKey;
 
-    public AuthService(RefreshTokenRedisRepository refreshTokenRedisRepository, RedisUtil redisUtil, JwtTokenizer jwtTokenizer) {
+    public AuthService(RefreshTokenRedisRepository refreshTokenRedisRepository, RedisUtil redisUtil, JwtTokenizer jwtTokenizer, MemberService memberService, BookmarkService bookmarkService) {
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
         this.redisUtil = redisUtil;
         this.jwtTokenizer = jwtTokenizer;
+        this.memberService = memberService;
+        this.bookmarkService = bookmarkService;
     }
 
     public void logout(String accessToken, String refreshToken) {
@@ -65,5 +74,13 @@ public class AuthService {
         List<String> authorities = refreshTokenRedisRepository.findByRefreshToken(refreshToken).getAuthorities();
 
         return jwtTokenizer.generateAccessToken(userEmail, authorities);
+    }
+
+    public MemberInfoResponseDto getMemberInfo(String accessToken) throws JsonProcessingException {
+        String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+        Member findMember = memberService.findVerifiedMember(memberEmail);
+        int myBookmarkCount = bookmarkService.getBookmarkCount(findMember);
+
+        return MemberInfoResponseDto.of(findMember, myBookmarkCount);
     }
 }
