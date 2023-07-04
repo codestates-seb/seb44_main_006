@@ -7,29 +7,23 @@ import com.seb_main_006.global.auth.redis.RefreshToken;
 import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import com.seb_main_006.global.auth.utils.ErrorResponder;
-import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import javax.security.sasl.AuthenticationException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,10 +47,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("requestURI = {}", request.getRequestURI());
 
+        String AuthorizationHeader = request.getHeader("Authorization");
         boolean isReissue = request.getRequestURI().equals("/auth/reissue");
         String token = "";
 
-        if (request.getHeader("Authorization") == null || request.getHeader("Authorization").replaceAll("Bearer ", "").length() == 0) {
+        if (AuthorizationHeader == null || AuthorizationHeader.replaceAll("Bearer ", "").length() == 0) {
             ErrorResponder.sendErrorResponse(response, ExceptionCode.IM_A_TEAPOT);
             return;
         }
@@ -64,15 +59,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try {
             if (!isReissue) {
                 System.out.println("check: not reissue");
-                token = request.getHeader("Authorization").replace("Bearer ", "");
+                token = AuthorizationHeader.replace("Bearer ", "");
             } else {
                 System.out.println("check: reissue");
                 token = request.getHeader("RefreshToken");
             }
 
-            System.out.println("check1");
-            if (redisUtil.hasKeyBlackList(token)) {
-                System.out.println("check2");
+            // AccessToken이 블랙리스트에 토큰이 저장되어 있다면 -> 토큰 만료 에러
+            if (redisUtil.hasKeyBlackList(AuthorizationHeader.replaceAll("Bearer", ""))) {
+                System.out.println("check: 로그아웃된 AccessToken");
                 ErrorResponder.sendErrorResponse(response, ExceptionCode.TOKEN_EXPIRED);
                 return;
             }
@@ -96,7 +91,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", e);
         }
 
-        System.out.println("check5");
+        System.out.println("check3");
         filterChain.doFilter(request, response);
     }
 
@@ -119,7 +114,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     //Authentication 객체를 SecurityContext 에 저장하기 위한 private 메서드
     protected void setAuthenticationToContext(String token, Boolean isReissue) throws JsonProcessingException {
-        System.out.println("check6");
+        System.out.println("check2");
         Jws<Claims> claims = jwtTokenizer.getClaims(token);
         List<String> roles = null;
         String username = null;
