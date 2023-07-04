@@ -73,7 +73,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             System.out.println("check1");
             if (redisUtil.hasKeyBlackList(token)) {
                 System.out.println("check2");
-                throw new RuntimeException("다시 로그인 하십시오.");
+                ErrorResponder.sendErrorResponse(response, ExceptionCode.TOKEN_EXPIRED);
+                return;
             }
 
             verifyJws(request, token);// 토큰 유효성 검증
