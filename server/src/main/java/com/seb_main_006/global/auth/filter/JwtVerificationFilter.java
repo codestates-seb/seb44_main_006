@@ -96,13 +96,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     //조건에 부합하지 않으면 이 필터를 적용하지 않고 다음 필터로 넘어감
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) {
-//        String authorization = request.getHeader("Authorization"); // 잘못된 헤더 요청 시 예외 처리 어떻게?
-//        String refreshToken = request.getHeader("RefreshToken");
-//
-//        return authorization == null;
-//    }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization"); // 잘못된 헤더 요청 시 예외 처리 어떻게?
+        String refreshToken = request.getHeader("RefreshToken");
+
+        return request.getRequestURI().equals("/auth/members");
+    }
 
     //JWT 를 검증하는 데 사용되는 private 메서드
     private Map<String, Object> verifyJws(HttpServletRequest request, String token) {

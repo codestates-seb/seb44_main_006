@@ -60,15 +60,14 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-//                        .antMatchers(HttpMethod.POST, "/auth/reissue").hasAnyRole("USER","ADMIN")
+                        .antMatchers(HttpMethod.POST, "/auth/reissue").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.POST, "/auth/logout").hasAnyRole("USER","ADMIN")
-                        .antMatchers(HttpMethod.GET, "/auth/test").hasAnyRole("USER","ADMIN")
+//                        .antMatchers(HttpMethod.GET, "/auth/test").hasAnyRole("USER","ADMIN")
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         // 소셜 로그인 성공 시 수행되는 핸들러 설정
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, refreshTokenRedisRepository)));
-
 
         return http.build();
     }

@@ -1,10 +1,13 @@
 package com.seb_main_006.global.auth.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.seb_main_006.domain.member.entity.Member;
+import com.seb_main_006.global.auth.attribute.MemberInfoResponseDto;
 import com.seb_main_006.global.auth.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,9 +56,17 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/test")
-    public void test(@AuthenticationPrincipal(expression = "username") String email) {
-        System.out.println("AuthController.test");
-        System.out.println("email = " + email); // OK
+    @GetMapping("/members")
+    public ResponseEntity getMemberInfoForFront(HttpServletRequest request) throws JsonProcessingException {
+        String authorization = request.getHeader("Authorization");
+
+        if (authorization == null) {
+            return new ResponseEntity<>(new MemberInfoResponseDto(), HttpStatus.OK);
+        }
+
+        String accessToken = authorization.replaceAll("Bearer ", "");
+        MemberInfoResponseDto memberInfo = authService.getMemberInfo(accessToken);
+
+        return new ResponseEntity<>(memberInfo, HttpStatus.OK);
     }
 }
