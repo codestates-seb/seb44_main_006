@@ -1,6 +1,7 @@
 import KakaoMap from './components/map/KakaoMap';
 import Marker from './components/map/Marker';
 import Polyline from './components/map/Polyline';
+import SearchPlace from './components/map/SearchPlace';
 
 const App = () => {
   const array = [
@@ -18,6 +19,7 @@ const App = () => {
       ))}
       <Polyline linePos={array} />
     </KakaoMap>
+    // <SearchPlace />
   );
 };
 
