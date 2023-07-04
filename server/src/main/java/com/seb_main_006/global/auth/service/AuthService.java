@@ -9,13 +9,14 @@ import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 
+@Slf4j
 @Service
 public class AuthService {
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
@@ -31,8 +32,8 @@ public class AuthService {
         this.jwtTokenizer = jwtTokenizer;
     }
 
-    public void logout(String accessToken, String refreshToken) throws JsonProcessingException {
-        System.out.println("AuthService.logout");
+    public void logout(String accessToken, String refreshToken) {
+        log.info("accessToken = {}, refreshToken = {}", accessToken, refreshToken);
 
         // refreshToken 테이블의 refreshToken 삭제
         RefreshToken findRefreshToken = refreshTokenRedisRepository.findByRefreshToken(refreshToken);
@@ -51,27 +52,18 @@ public class AuthService {
         redisUtil.setBlackList(accessToken, "accessToken", remainingTime);
     }
 
-    public String reissue(String refreshToken) throws JsonProcessingException {
-        System.out.println("AuthService.reissue");
+    public String reissue(String refreshToken, String userEmail) throws JsonProcessingException {
+        log.info("refreshToken = {}", refreshToken);
 
-        Subject subject = null;
+        String tokenType = jwtTokenizer.getSubject(refreshToken).getTokenType();
 
-        if (refreshToken == null) { //RefreshToken 이 비어있을시 에러
-            throw new BusinessLogicException(ExceptionCode.IM_A_TEAPOT);
-        }
-        try { //RefreshToken 이 만료시 에러
-            subject = jwtTokenizer.getSubject(refreshToken);
-        } catch (ExpiredJwtException e) {
-            throw new BusinessLogicException(ExceptionCode.TOKEN_EXPIRED);
-        }
-        if (!subject.getTokenType().equals("RefreshToken")) { // "RefreshToken" 이 아님 -> 에러 메세지 + 418 status 리턴
+        if (!tokenType.equals("RefreshToken")) { // "RefreshToken" 이 아님 -> 에러 메세지 + 418 status 리턴
             throw new BusinessLogicException(ExceptionCode.IM_A_TEAPOT);
         }
 
         // "RefreshToken" 인 경우 -> AccessToken 재발급 후 리턴
-        String username = subject.getUsername(); // 유저 email
         List<String> authorities = refreshTokenRedisRepository.findByRefreshToken(refreshToken).getAuthorities();
 
-        return jwtTokenizer.generateAccessToken(username, authorities);
+        return jwtTokenizer.generateAccessToken(userEmail, authorities);
     }
 }
