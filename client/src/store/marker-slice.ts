@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Draft, PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { MarkerT } from '../types/type';

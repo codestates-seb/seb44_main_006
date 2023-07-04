@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
+import { RootState } from '../../store';
 
 const Polyline = ({ linePos }: { linePos: { lat: number; lng: number }[] }) => {
-  const map = useSelector((state) => state.map.map);
+  const map = useSelector((state: RootState) => state.map.map);
 
   useEffect(() => {
     const linePath = linePos.map(

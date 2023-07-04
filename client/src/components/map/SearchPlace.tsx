@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -11,13 +6,14 @@ import Marker from './Marker';
 import PlaceList from './PlaceList';
 
 import { PlacesSearchResultItem } from '../../types/type';
+import { RootState } from '../../store';
 
 import { MarkerOff } from '.';
 
 const SearchPlace = () => {
   const [searchPlace, setSearchPlace] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const places = useSelector((state: any) => state.placeList.list);
+  const places = useSelector((state: RootState) => state.placeList.list);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -1,6 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+interface IInitial {
+  map: any;
+}
+
+const initialState: IInitial = {
   map: {},
 };
 
@@ -8,7 +13,7 @@ const mapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
-    setMap(state, action) {
+    setMap(state, action: PayloadAction<any>) {
       state.map = action.payload;
     },
   },

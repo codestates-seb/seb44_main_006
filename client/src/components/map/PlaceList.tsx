@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -7,22 +7,23 @@ import {
   PlacesSearchResultItem,
 } from '../../types/type';
 import { placeListActions } from '../../store/placeList-slice';
+import { RootState } from '../../store';
 
 const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
-  const map = useSelector((state: any) => state.map.map);
-  const places = useSelector((state: any) => state.placeList.list);
+  const map = useSelector((state: RootState) => state.map.map);
+  const places = useSelector((state: RootState) => state.placeList.list);
   const ps = new kakao.maps.services.Places();
   const dispatch = useDispatch();
-  console.log(places);
+  const paginationRef = useRef<HTMLDivElement>(null);
 
   // 검색결과 목록 하단에 페이지 번호 표시
   function displayPagination(pagination: Pagination) {
-    const paginationEl = document.getElementById('pagination')!;
+    // const paginationEl: HTMLElement = document.getElementById('pagination');
     const fragment = document.createDocumentFragment();
 
     // 기존에 추가된 페이지 번호 삭제
-    while (paginationEl.hasChildNodes()) {
-      paginationEl.removeChild(paginationEl.lastChild);
+    while (paginationRef.current?.hasChildNodes()) {
+      paginationRef.current.removeChild(paginationRef.current?.lastChild);
     }
 
     for (let i = 1; i <= pagination.last; i += 1) {
@@ -42,7 +43,7 @@ const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
 
       fragment.appendChild(el);
     }
-    paginationEl.appendChild(fragment);
+    paginationRef.current?.appendChild(fragment);
   }
 
   function placesSearchCB(
@@ -91,7 +92,7 @@ const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
           </div>
         </div>
       ))}
-      <div id="pagination" />
+      <div ref={paginationRef} />
     </div>
   );
 };
