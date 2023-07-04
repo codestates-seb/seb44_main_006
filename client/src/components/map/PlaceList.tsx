@@ -18,12 +18,10 @@ const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
 
   // 검색결과 목록 하단에 페이지 번호 표시
   function displayPagination(pagination: Pagination) {
-    // const paginationEl: HTMLElement = document.getElementById('pagination');
     const fragment = document.createDocumentFragment();
 
-    // 기존에 추가된 페이지 번호 삭제
-    while (paginationRef.current?.hasChildNodes()) {
-      paginationRef.current.removeChild(paginationRef.current?.lastChild);
+    while (paginationRef.current?.firstChild) {
+      paginationRef.current.removeChild(paginationRef.current.firstChild);
     }
 
     for (let i = 1; i <= pagination.last; i += 1) {
