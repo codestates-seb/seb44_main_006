@@ -1,18 +1,45 @@
-import { useEffect } from 'react';
+import { useCallback, useState } from 'react';
+import { styled } from 'styled-components';
+import { useDispatch } from 'react-redux';
+
+import { Props, TextareaT } from '../../types/type';
+import defaultOptions from '../../utils/constant';
+import { mapActions } from '../../store/map-slice';
+
+const MapContainer = styled.section<TextareaT>`
+  width: ${(props) => props.width || '100vw'};
+  height: ${(props) => props.height || '100vh'};
+  position: relative;
+`;
 
 const { kakao } = window;
 
-const Map = () => {
-  useEffect(() => {
-    const container = document.getElementById('map')!;
-    const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
-    };
-
-    const map = new kakao.maps.Map(container, options);
-  }, []);
-  return <div id="map" style={{ width: '100vw', height: '100vh' }} />;
+type KakaoMapT = {
+  width: string;
+  height: string;
+  children: Props['children'];
 };
 
-export default Map;
+const KakaoMap = ({ width, height, children, ...options }: KakaoMapT) => {
+  const dispatch = useDispatch();
+  const loadHandler = useCallback(
+    (element: HTMLElement) => {
+      if (!kakao || !element) return;
+      const { level, lat, lng } = defaultOptions;
+      const newMap = new kakao.maps.Map(element, {
+        level,
+        center: new kakao.maps.LatLng(lat, lng),
+      });
+      dispatch(mapActions.setMap(newMap));
+    },
+    [dispatch]
+  );
+
+  return (
+    <MapContainer width={width} height={height} ref={loadHandler} {...options}>
+      {children}
+    </MapContainer>
+  );
+};
+
+export default KakaoMap;
