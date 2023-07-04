@@ -80,7 +80,7 @@ public class CourseService {
     public CoursePostDto findCourse(Long courseId, String memberEmail) {
 
         Member findmember = memberService.findVerifiedMember(memberEmail);
-        Course findCourse = findVerifiedcourse(courseId);
+        Course findCourse = findVerifiedCourse(courseId);
         verifyMyCourse(findmember, findCourse); // 본인의 일정인지 확인
 
         String dateString = DateConverter.LocalDateToStringWithDay(findCourse.getCourseDday()); // Dday를 요일 정보 추가한 String 으로 변환
@@ -97,8 +97,9 @@ public class CourseService {
     @Transactional
     public Course updateCourse(CoursePatchDto coursePatchDto, String memberEmail) {
 
+        Member findmember = memberService.findVerifiedMember(memberEmail);
         Course findCourse = findVerifiedCourse(coursePatchDto.getCourseId());
-        verifyMember(memberEmail, findCourse);
+        verifyMyCourse(findmember, findCourse);
 
         //Course 테이블 수정
         Optional.ofNullable(coursePatchDto.getCourseData().getCourseDday()).ifPresent(courseDday -> {
@@ -138,25 +139,18 @@ public class CourseService {
     //일정 삭제
     @Transactional
     public void deleteCourse(long courseId, String memberEmail) {
+        Member findmember = memberService.findVerifiedMember(memberEmail);
         Course findCourse = findVerifiedCourse(courseId);
-        verifyMember(memberEmail, findCourse);
+        verifyMyCourse(findmember, findCourse);
 
         courseRepository.delete(findCourse);
     }
-  
-  
 
-  
-    private void verifyMember(String memberEmail, Course findCourse) {
-        if (!findCourse.getMember().getMemberEmail().equals(memberEmail)) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_DOES_NOT_MATCH);
-        }
-    }
 
     // 본인의 일정이 아닐 경우 예외 발생
     private void verifyMyCourse(Member member, Course course) {
         if (member.getMemberId().longValue() != course.getMember().getMemberId().longValue()) {
-            throw new BusinessLogicException(ExceptionCode.COURSE_CANNOT_READ);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_DOES_NOT_MATCH);
         }
     }
 
@@ -165,5 +159,4 @@ public class CourseService {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COURSE_NOT_FOUND));
     }
-
 }
