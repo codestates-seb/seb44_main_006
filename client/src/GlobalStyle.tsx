@@ -67,6 +67,11 @@ const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
+  button {
+    border: 0;
+    outline: 0;
+    background-color: transparent
+  }
 `;
 
 export default GlobalStyle;

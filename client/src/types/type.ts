@@ -21,3 +21,44 @@ export type IconStyle = {
   height: number;
   color: string;
 };
+
+export interface IButtonStyle {
+  children?: ReactNode;
+  width?: string;
+  height?: string;
+  svgWidth?: string;
+  svgHeight?: string;
+  padding?: string;
+  margin?: string;
+  color?: string;
+  backgroundColor?: string;
+  boxShadow?: string;
+  border?: string;
+  borderRadius?: string;
+  gap?: string;
+  isActive?: boolean;
+  title?: string;
+  onClick?: () => void;
+  onSubmit?: () => void;
+}
+
+export interface ContCardInfo {
+  userName?: string;
+  title?: string;
+  text?: string;
+  likeCount?: string;
+  tag?: string[];
+}
+
+export interface LocationCardInfo {
+  title?: string;
+  category?: string;
+  address?: string;
+  phone?: string;
+  isAction?: boolean;
+}
+
+export interface MapLocationCardInfo {
+  indexNum?: number;
+  location?: string;
+}

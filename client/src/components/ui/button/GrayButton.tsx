@@ -1,21 +1,18 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { Props } from '../../../types/type';
+import { IButtonStyle } from '../../../types/type';
 
 const GrayButton = ({
   children,
   width,
   height,
   borderRadius,
-}: {
-  children: Props['children'];
-  width: string;
-  height: string;
-  borderRadius: string;
-}) => {
+  onClick,
+}: IButtonStyle) => {
   return (
     <Button
+      onClick={onClick}
       styles={{
         width,
         height,
