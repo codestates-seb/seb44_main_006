@@ -1,23 +1,14 @@
 package com.seb_main_006.domain.course.dto;
 
-import lombok.Data;
-import lombok.Getter;
-
-import java.time.LocalDate;
+import lombok.*;
 import java.util.List;
 
-
-@Data
+@Getter
+@Setter
 public class CoursePostDto {
 
-    private LocalDate courseDday;
+    private CourseData courseData;
 
-    private String courseTitle;
-
-    private String courseContent;
-
-    private String courseThumbnail;
-
-    private List<DestinationPostDto> destinations;
+    private List<DestinationPostDto> destinationList;
 
 }
