@@ -21,7 +21,11 @@ import markeron_10 from '../../assets/marker_img/marker_on_10.svg';
 import markeroff from '../../assets/marker_img/marker_off.svg';
 import markeron from '../../assets/marker_img/marker_on.svg';
 
-export const MarkerOff = {
+type MarkerSrcT = {
+  [key: number]: string;
+};
+
+export const MarkerOff: MarkerSrcT = {
   0: markeroff,
   1: markeroff_1,
   2: markeroff_2,
@@ -35,7 +39,7 @@ export const MarkerOff = {
   10: markeroff_10,
 };
 
-export const MarkerOn = {
+export const MarkerOn: MarkerSrcT = {
   0: markeron,
   1: markeron_1,
   2: markeron_2,
