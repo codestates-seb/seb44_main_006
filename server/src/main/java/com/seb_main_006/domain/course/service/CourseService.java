@@ -3,11 +3,15 @@ package com.seb_main_006.domain.course.service;
 import com.seb_main_006.domain.course.dto.CoursePostDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.course.entity.Course;
+import com.seb_main_006.domain.course.mapper.CourseMapper;
 import com.seb_main_006.domain.course.repository.CourseRepository;
 import com.seb_main_006.domain.destination.entity.Destination;
 import com.seb_main_006.domain.destination.respository.DestinationRepository;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
+import com.seb_main_006.global.exception.BusinessLogicException;
+import com.seb_main_006.global.exception.ExceptionCode;
+import com.seb_main_006.global.util.DateConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +26,7 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final DestinationRepository destinationRepository;
     private final MemberService memberService;
+    private final CourseMapper courseMapper;
 
     @Transactional
     public Course createCourse(CoursePostDto coursePostDto, String memberEmail){
@@ -63,5 +68,38 @@ public class CourseService {
         }
 
         return courseRepository.save(course);
+    }
+
+    @Transactional(readOnly = true)
+    public CoursePostDto findCourse(Long courseId, String memberEmail) {
+
+        Member findmember = memberService.findVerifiedMember(memberEmail);
+        Course findCourse = findVerifiedcourse(courseId);
+        verifyMyCourse(findmember, findCourse); // 본인의 일정인지 확인
+
+        String dateString = DateConverter.LocalDateToStringWithDay(findCourse.getCourseDday()); // Dday를 요일 정보 추가한 String 으로 변환
+
+        // Course -> CoursePostDto (응답 데이터 형식)
+        CoursePostDto response = courseMapper.courseToCourseDto(findCourse);
+        List<DestinationPostDto> destinationPostDtos = courseMapper.destinationsToDestinationDtos(findCourse.getDestinations());
+        response.setDestinationList(destinationPostDtos);
+        response.getCourseData().setCourseDday(dateString);
+
+        return response;
+    }
+
+
+
+    // 본인의 일정이 아닐 경우 예외 발생
+    private void verifyMyCourse(Member member, Course course) {
+        if (member.getMemberId().longValue() != course.getMember().getMemberId().longValue()) {
+            throw new BusinessLogicException(ExceptionCode.COURSE_CANNOT_READ);
+        }
+    }
+
+    // courseId 로 Course 조회, DB 에 없을 경우 예외 발생
+    public Course findVerifiedcourse(Long courseId) {
+        return courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COURSE_NOT_FOUND));
     }
 }
