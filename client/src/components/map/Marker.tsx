@@ -7,7 +7,8 @@ import { useEffect } from 'react';
 import { Props } from '../../types/type';
 import defaultOptions from '../../utils/constant';
 import { markerActions } from '../../store/marker-slice';
-import { MarkerOff, MarkerOn } from '../../assets/marker_img';
+
+import { MarkerOff, MarkerOn } from '.';
 
 type MarkerT = {
   lat?: number;
@@ -27,10 +28,7 @@ const Marker = ({ lat, lng, id, children }: MarkerT) => {
     const markerWidth = 20;
     const markerheight = 40;
 
-    const image =
-      markerId === id
-        ? MarkerOff[id - 1]
-        : `../../assets/marker_img/${MarkerOff[id - 1]}`;
+    const image = markerId === id ? MarkerOff[id + 1] : MarkerOn[id + 1];
 
     const markerImage = new kakao.maps.MarkerImage(
       image,
