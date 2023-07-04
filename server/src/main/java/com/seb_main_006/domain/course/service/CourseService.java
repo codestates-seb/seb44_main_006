@@ -87,8 +87,7 @@ public class CourseService {
 
         // Course -> CoursePostDto (응답 데이터 형식)
         CoursePostDto response = courseMapper.courseToCourseDto(findCourse);
-        List<DestinationPostDto> destinationPostDtos = courseMapper.destinationsToDestinationDtos(findCourse.getDestinations());
-        response.setDestinationList(destinationPostDtos);
+        response.setDestinationList(courseMapper.destinationsToDestinationDtos(findCourse.getDestinations()));
         response.getCourseData().setCourseDday(dateString);
 
         return response;
