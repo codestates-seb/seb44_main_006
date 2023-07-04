@@ -1,6 +1,7 @@
 package com.seb_main_006.global.auth.utils;
 
 import com.google.gson.Gson;
+import com.seb_main_006.global.exception.ExceptionCode;
 import com.seb_main_006.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,7 +14,17 @@ public class ErrorResponder {
         Gson gson = new Gson();
         ErrorResponse errorResponse = ErrorResponse.of(status);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
         response.setStatus(status.value());
+        response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
+    }
+
+    public static void sendErrorResponse(HttpServletResponse response, ExceptionCode status) throws IOException {
+        Gson gson = new Gson();
+        ErrorResponse errorResponse = ErrorResponse.of(status);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(status.getStatus());
         response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
     }
 }

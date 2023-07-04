@@ -40,11 +40,10 @@ public class MemberService {
         Optional<Member> user= memberRepository.findByMemberEmail(userEmail);
         return user.isPresent();
     }
+    public Member findVerifiedMember(String memberEmail) {
+        return memberRepository.findByMemberEmail(memberEmail)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
-    // 회원 정보 조회
-    public Member getMeber(String memberEmail){
-        Optional<Member> optional = memberRepository.findByMemberEmail(memberEmail);
-        return optional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBERS_NOT_VALID));
     }
 
 }
