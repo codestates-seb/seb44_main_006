@@ -1,5 +1,6 @@
 package com.seb_main_006.domain.course.controller;
 
+import com.seb_main_006.domain.course.dto.CoursePatchDto;
 import com.seb_main_006.domain.course.dto.CoursePostDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.course.entity.Course;
@@ -50,4 +51,26 @@ public class CourseController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PatchMapping("/{course-id}")
+    public ResponseEntity patchCourse(@Valid @PathVariable("course-id") long courseId,
+                                      @RequestBody CoursePatchDto coursePatchDto,
+                                      @AuthenticationPrincipal(expression = "username"
+                                      ) String memberEmail) {
+
+        coursePatchDto.setCourseId(courseId);
+        courseService.updateCourse(coursePatchDto, memberEmail);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{course-id}")
+    public ResponseEntity patchCourse(@PathVariable("course-id") @Positive long courseId,
+                                      @AuthenticationPrincipal(expression = "username") String memberEmail) {
+
+        courseService.deleteCourse(courseId, memberEmail);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
