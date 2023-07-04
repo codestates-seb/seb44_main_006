@@ -1,5 +1,8 @@
 package com.seb_main_006.domain.course.dto;
 
+import lombok.*;
+@Getter
+@Setter
 public class DestinationPostDto {
 
     private String placeName;

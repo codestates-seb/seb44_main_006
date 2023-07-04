@@ -35,7 +35,6 @@ import java.util.*;
 public class SecurityConfiguration {
 
     private final RedisUtil redisUtil;
-    private final ObjectMapper objectMapper;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
@@ -62,7 +61,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/auth/reissue").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.POST, "/auth/logout").hasAnyRole("USER","ADMIN")
-//                        .antMatchers(HttpMethod.GET, "/auth/test").hasAnyRole("USER","ADMIN")
+                        .antMatchers(HttpMethod.POST, "/courses").hasAnyRole("USER","ADMIN")
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
@@ -86,7 +85,6 @@ public class SecurityConfiguration {
         return source;
 
     }
-
 
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
 
