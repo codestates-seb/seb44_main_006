@@ -1,5 +1,6 @@
 package com.seb_main_006.domain.course.service;
 
+import com.seb_main_006.domain.course.dto.CoursePatchDto;
 import com.seb_main_006.domain.course.dto.CoursePostDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.course.entity.Course;
@@ -8,11 +9,16 @@ import com.seb_main_006.domain.destination.entity.Destination;
 import com.seb_main_006.domain.destination.respository.DestinationRepository;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
+import com.seb_main_006.global.exception.BusinessLogicException;
+import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 import static com.seb_main_006.global.util.DateConverter.stringToDateConverter;
 
 @Service
@@ -64,4 +70,39 @@ public class CourseService {
 
         return courseRepository.save(course);
     }
+
+
+    @Transactional
+    public Course updateCourse(CoursePatchDto coursePatchDto, String memberEmail) {
+
+        Course findCourse = findVerifiedCourse(coursePatchDto.getCourseId());
+        verifyMember(memberEmail, findCourse);
+
+        Optional.ofNullable(coursePatchDto.getCourseTitle()).ifPresent(findCourse::setCourseTitle);
+        Optional.ofNullable(coursePatchDto.getCourseContent()).ifPresent(findCourse::setCourseContent);
+
+        findCourse.setCourseUpdatedAt((LocalDateTime.now()));
+        return courseRepository.save(findCourse);
+    }
+
+    private void verifyMember(String memberEmail, Course findCourse) {
+        if (!findCourse.getMember().getMemberEmail().equals(memberEmail)) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_DOES_NOT_MATCH);
+        }
+    }
+
+    public Course findVerifiedCourse(Long courseId) {
+        Optional<Course> course = courseRepository.findById(courseId);
+
+        return course.orElseThrow(()-> new BusinessLogicException(ExceptionCode.COURSE_NOT_FOUND));
+    }
+
+    @Transactional
+    public void deleteCourse(long courseId, String memberEmail) {
+        Course findCourse = findVerifiedCourse(courseId);
+        verifyMember(memberEmail, findCourse);
+
+        courseRepository.delete(findCourse);
+    }
+
 }
