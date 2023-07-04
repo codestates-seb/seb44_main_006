@@ -14,10 +14,11 @@ type MarkerT = {
   lat?: number;
   lng?: number;
   id: number;
+  img?: string;
   children?: Props['children'];
 };
 
-const Marker = ({ lat, lng, id, children }: MarkerT) => {
+const Marker = ({ lat, lng, id, img, children }: MarkerT) => {
   const map = useSelector((state: any) => state.map.map);
   const markerId = useSelector((state) => state.marker.markerId);
   const dispatch = useDispatch();
@@ -28,7 +29,8 @@ const Marker = ({ lat, lng, id, children }: MarkerT) => {
     const markerWidth = 20;
     const markerheight = 40;
 
-    const image = markerId === id ? MarkerOff[id + 1] : MarkerOn[id + 1];
+    const image =
+      img || (markerId === id && img ? MarkerOff[id + 1] : MarkerOn[id + 1]);
 
     const markerImage = new kakao.maps.MarkerImage(
       image,

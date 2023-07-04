@@ -12,6 +12,8 @@ import PlaceList from './PlaceList';
 
 import { PlacesSearchResultItem } from '../../types/type';
 
+import { MarkerOff } from '.';
+
 const SearchPlace = () => {
   const [searchPlace, setSearchPlace] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,6 +36,7 @@ const SearchPlace = () => {
       <KakaoMap width="100vw" height="50vh">
         {places.map((place: PlacesSearchResultItem) => (
           <Marker
+            img={MarkerOff[0]}
             key={place.id}
             lat={Number(place.y)}
             lng={Number(place.x)}
