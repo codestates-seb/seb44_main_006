@@ -15,17 +15,18 @@ const CursorContainer = styled.div<CursorInfo>`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 83px;
-  height: 83px;
+  width: ${(props) => (props.isMouseHover ? `83px` : `73px`)};
+  height: ${(props) => (props.isMouseHover ? `83px` : `73px`)};
   border: 1px solid ${cssToken.COLOR['gray-500']};
   background-color: ${cssToken.COLOR.white};
   border-radius: 50%;
-  opacity: 1;
-  transition: opacity 0.2s;
   box-shadow: ${cssToken.SHADOW['shadow-lg']};
+  transition: width 0.2s, height 0.2s;
   &::after {
     content: '';
     position: absolute;
+    left: 50%;
+    top: 50%;
     background-image: ${(props) =>
       props.isMouseHover ? `url(${cursorOff})` : `url(${cursorOn})`};
     background-size: cover;
@@ -34,9 +35,8 @@ const CursorContainer = styled.div<CursorInfo>`
     display: block;
     width: 25px;
     height: 25px;
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
+    transition: background-image 0.2s;
   }
 `;
 
