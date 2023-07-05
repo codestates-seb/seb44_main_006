@@ -24,7 +24,8 @@ public enum ExceptionCode {
     GOOGLE_ACCOUNT_EXISTS(409,"이미 구글로 가입된 사용자입니다."),
     NAVER_ACCOUNT_EXISTS(409,"이미 네이버로 가입된 사용자입니다."),
     KAKAO_ACCOUNT_EXISTS(409,"이미 카카오로 가입된 사용자입니다."),
-    POST_EXISTS(409,"선택하신 코스로 작성한 게시글이 이미 존재합니다.");
+    POST_EXISTS(409,"선택하신 코스로 작성한 게시글이 이미 존재합니다."),
+    POST_NOT_FOUND(404,"게시글을 찾을 수 없습니다."),;
 
 
 

@@ -1,5 +1,8 @@
 package com.seb_main_006.domain.post.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.seb_main_006.domain.course.dto.CoursePostDto;
+import com.seb_main_006.domain.post.dto.PostDetailResponseDto;
 import com.seb_main_006.domain.post.dto.PostPostDto;
 import com.seb_main_006.domain.post.entity.Post;
 import com.seb_main_006.domain.post.service.PostService;
@@ -10,12 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 
 @Slf4j
@@ -39,5 +41,22 @@ public class PostController {
         headers.setLocation(URI.create("/posts/" + createdPost.getPostId()));
 
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{post-id}")
+    public ResponseEntity<?> getPost(@PathVariable("post-id") @Positive Long postId,
+                                     HttpServletRequest request) throws JsonProcessingException {
+
+        String accessToken = null;
+        String authorization = request.getHeader("Authorization");
+
+        if (authorization != null) {
+            accessToken = authorization.replaceAll("Bearer", "");
+        }
+
+
+        PostDetailResponseDto response = postService.findPost(postId, accessToken);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

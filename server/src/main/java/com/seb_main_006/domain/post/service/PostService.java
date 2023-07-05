@@ -1,23 +1,34 @@
 package com.seb_main_006.domain.post.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.seb_main_006.domain.answer.dto.AnswerPostDto;
+import com.seb_main_006.domain.course.dto.CourseInfoDto;
+import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.course.entity.Course;
+import com.seb_main_006.domain.course.mapper.CourseMapper;
+import com.seb_main_006.domain.course.repository.CourseRepository;
 import com.seb_main_006.domain.course.service.CourseService;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
+import com.seb_main_006.domain.post.dto.PostDetailResponseDto;
 import com.seb_main_006.domain.post.dto.PostPostDto;
 import com.seb_main_006.domain.post.entity.Post;
 import com.seb_main_006.domain.post.entity.PostTag;
+import com.seb_main_006.domain.post.mapper.PostMapper;
 import com.seb_main_006.domain.post.repository.PostRepository;
 import com.seb_main_006.domain.tag.entity.Tag;
 import com.seb_main_006.domain.tag.repository.TagRepository;
+import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +37,10 @@ public class PostService {
     private final CourseService courseService;
     private final TagRepository tagRepository;
     private final PostRepository postRepository;
+    private final PostMapper postMapper;
+    private final CourseRepository courseRepository;
+    private final JwtTokenizer jwtTokenizer;
+
 
     public Post createPost(PostPostDto postPostDto, String memberEmail) {
 
@@ -69,10 +84,59 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    @Transactional
+    public PostDetailResponseDto findPost(Long postId, String accessToken) throws JsonProcessingException {
+
+        Member member = new Member();
+
+        if (accessToken != null) {
+            String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+            member = memberService.findVerifiedMember(memberEmail);
+        }
+
+        Post findPost = findVerifiedPost(postId);
+        Course course = updateCourseViewCount(findPost.getCourse());
+        List<String> tags = findPost.getPostTagsInPost().stream()
+                .map(postTag -> postTag.getTag().getTagName())
+                .collect(Collectors.toList());
+        PostDetailResponseDto response = postMapper.postToPostDetailResponseDto(findPost);
+        CourseInfoDto courseInfoDto = new CourseInfoDto();
+        courseInfoDto.setCourseId(course.getCourseId());
+
+        List<DestinationPostDto> destinationPostDtos = postMapper.destinationsToDestinationDtos(course.getDestinations());
+        courseInfoDto.setDestinationList(destinationPostDtos);
+        List<AnswerPostDto> answerPostDtos = postMapper.answersToAnswerDtos(findPost.getAnswersInPost());
+
+        response.setAnswerList(answerPostDtos);
+        response.setCourseInfo(courseInfoDto);
+        response.setTags(tags);
+
+        return response;
+    }
+
+
+
+
     //해당 코스로 작성된 게시글이 있는지 확인하는 메소드
     private void verifyExistCourse(Course course){
         if(postRepository.findByCourse(course).isPresent()){
             throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
         }
+    }
+    public Post findVerifiedPost(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+    }
+
+    @Transactional
+    public Course updateCourseViewCount(Course findCourse) {
+
+        long courseCount= findCourse.getCourseViewCount();
+        System.out.println("조회수 테스트중:"+courseCount);
+        findCourse.setCourseViewCount(courseCount+1);
+        System.out.println("조회수 테스트중:"+courseCount);
+        return courseRepository.save(findCourse);
+
+
     }
 }
