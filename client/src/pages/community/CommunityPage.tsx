@@ -32,6 +32,9 @@ const FixedDiv = styled.div`
 const CommunityPage = () => {
   const { selectTab, setTab } = useHandleTab();
   const goToSelect = useMovePage('/community/select');
+  const test = () => {
+    console.log('검색 아이콘 클릭');
+  };
   return (
     <>
       <Wrapper>
@@ -43,6 +46,7 @@ const CommunityPage = () => {
             height: '86px',
             fontsize: cssToken.TEXT_SIZE['text-24'],
           }}
+          callback={test}
         />
         <FilterSection>
           <FilterTab
