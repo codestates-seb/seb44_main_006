@@ -13,6 +13,7 @@ const useKeywordSearch = (
   radius?: number
 ) => {
   const map = useSelector((state: RootState) => state.map.map);
+  const ps = new kakao.maps.services.Places();
   const dispatch = useDispatch();
 
   const placesSearchCB = (
@@ -34,7 +35,6 @@ const useKeywordSearch = (
   };
 
   useEffect(() => {
-    const ps = new kakao.maps.services.Places();
     ps.keywordSearch(searchPlace, placesSearchCB, {
       x: Number(x),
       y: Number(y),
