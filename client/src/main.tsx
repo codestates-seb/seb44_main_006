@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import App from './App';
 import GlobalStyle from './GlobalStyle';
 import store from './store';
-
 import Header from './components/common/Header';
 import Main from './pages/Main';
 
@@ -15,7 +14,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <BrowserRouter>
       <GlobalStyle />
       <Provider store={store}>
-        <Header isMainPage />
+        <Header ismainpage="true" />
         <Routes>
           <Route path="/" element={<Main />} />
         </Routes>
