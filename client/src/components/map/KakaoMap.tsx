@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 import { Props, TextareaT } from '../../types/type';
-import defaultOptions from '../../utils/constant';
+import defaultOptions from '../../utils/constant/constant';
 import { mapActions } from '../../store/map-slice';
 
 const MapContainer = styled.section<TextareaT>`
