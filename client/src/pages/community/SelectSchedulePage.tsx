@@ -7,6 +7,7 @@ import { CardWrapper, FlexDiv } from '../../styles/styles';
 import ContensCard from '../../components/ui/cards/ContentsCard';
 import GrayButton from '../../components/ui/button/GrayButton';
 import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
+import useMovePage from '../../hooks/useMovePage';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -37,6 +38,8 @@ const BtnDiv = styled(FlexDiv)`
 `;
 
 const SelectSchedulePage = () => {
+  const goToCommunity = useMovePage('/community');
+  const goToPostCommunity = useMovePage('/community/post');
   return (
     <OutsideWrap>
       <HeadDiv>
@@ -70,6 +73,7 @@ const SelectSchedulePage = () => {
           width="222px"
           height="53px"
           borderRadius={cssToken.BORDER['rounded-md']}
+          onClick={goToCommunity}
         >
           뒤로가기
         </GrayButton>
@@ -77,6 +81,7 @@ const SelectSchedulePage = () => {
           width="222px"
           height="53px"
           borderRadius={cssToken.BORDER['rounded-md']}
+          onClick={goToPostCommunity}
         >
           작성하기
         </SkyBlueButton>
