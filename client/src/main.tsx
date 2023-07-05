@@ -10,6 +10,7 @@ import Header from './components/common/Header';
 import Main from './pages/Main';
 import CommunityPage from './pages/community/CommunityPage';
 import SelectSchedulePage from './pages/community/SelectSchedulePage';
+import PostCommunitypage from './pages/community/PostCommunitypage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="/" element={<Main />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/community/select" element={<SelectSchedulePage />} />
+          <Route path="/community/post" element={<PostCommunitypage />} />
         </Routes>
         <App />
       </Provider>

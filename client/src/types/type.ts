@@ -19,7 +19,7 @@ export interface Props {
 export type IconStyle = {
   iconWidth: number;
   iconHeight: number;
-  color: string;
+  color?: string;
 };
 
 export interface IButtonStyle {

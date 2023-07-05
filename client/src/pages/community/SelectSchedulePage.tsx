@@ -41,7 +41,7 @@ const SelectSchedulePage = () => {
           <ContensCard />
         </CardWrapper>
       </OverFlowDiv>
-      <Btn />
+      <Btn backUrl="/community" nextUrl="/community/post" />
     </OutsideWrap>
   );
 };

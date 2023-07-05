@@ -13,16 +13,16 @@ const BtnDiv = styled(FlexDiv)`
   margin-bottom: ${cssToken.SPACING['gap-50']};
 `;
 
-const Btn = () => {
-  const goToCommunity = useMovePage('/community');
-  const goToPostCommunity = useMovePage('/community/post');
+const Btn = ({ backUrl, nextUrl }: { backUrl: string; nextUrl: string }) => {
+  const goToPrev = useMovePage(backUrl);
+  const goToNext = useMovePage(nextUrl);
   return (
     <BtnDiv>
       <GrayButton
         width="222px"
         height="53px"
         borderRadius={cssToken.BORDER['rounded-md']}
-        onClick={goToCommunity}
+        onClick={goToPrev}
       >
         뒤로가기
       </GrayButton>
@@ -30,7 +30,7 @@ const Btn = () => {
         width="222px"
         height="53px"
         borderRadius={cssToken.BORDER['rounded-md']}
-        onClick={goToPostCommunity}
+        onClick={goToNext}
       >
         작성하기
       </SkyBlueButton>

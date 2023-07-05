@@ -23,3 +23,13 @@ export const CardWrapper = styled.div`
   grid-auto-flow: row;
   gap: ${cssToken.SPACING['gap-50']};
 `;
+
+export const HeadDiv = styled(FlexDiv)`
+  flex-direction: column;
+  row-gap: 3px;
+`;
+
+export const GapDiv = styled(FlexDiv)`
+  flex-direction: column;
+  row-gap: ${cssToken.SPACING['gap-24']};
+`;
