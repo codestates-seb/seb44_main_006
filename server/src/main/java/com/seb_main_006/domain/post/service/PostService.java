@@ -8,11 +8,13 @@ import com.seb_main_006.domain.post.dto.PostPostDto;
 import com.seb_main_006.domain.post.entity.Post;
 import com.seb_main_006.domain.post.entity.PostTag;
 import com.seb_main_006.domain.post.repository.PostRepository;
+import com.seb_main_006.domain.post.repository.PostTagRepository;
 import com.seb_main_006.domain.tag.entity.Tag;
 import com.seb_main_006.domain.tag.repository.TagRepository;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 
@@ -26,6 +28,7 @@ public class PostService {
     private final CourseService courseService;
     private final TagRepository tagRepository;
     private final PostRepository postRepository;
+    private final PostTagRepository postTagRepository;
 
     public Post createPost(PostPostDto postPostDto, String memberEmail) {
 
@@ -74,5 +77,38 @@ public class PostService {
         if(postRepository.findByCourse(course).isPresent()){
             throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
         }
+    }
+
+    public void getPostListByTag(String tagName, int page, int limit, String sort) {
+
+        if (sort == null) {
+            sort = "course_updated_at";
+        } else {
+            sort = "course_like_count";
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, limit);
+
+        // 1. tagName 으로 tag 찾기 (이때 검색하는 키워드가 포함된 태그도 같이 검색되도록)  -> List<Tag>
+        List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
+
+        // 2. PostTag 테이블에서 1에서 찾은 태그들이 포함된 데이터 조회 -> List<PostTag> -> List<Post> 로 변환
+        List<Course> findResult = postTagRepository.findByTagIn(findTagList, sort, pageRequest);
+
+        System.out.println("findResult.size() = " + findResult.size());
+
+        for (Course course : findResult) {
+            System.out.println("courseId = " + course.getCourseId());
+        }
+
+        // 3. 응답 데이터 형식으로 변환해서 리턴
+        // 없는 데이터 : likeStatus, bookmarkStatus 끗
+        for (Course course : findResult) {
+
+
+
+        }
+
+
     }
 }

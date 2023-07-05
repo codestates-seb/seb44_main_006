@@ -32,6 +32,9 @@ public class CourseService {
     private final MemberService memberService;
     private final CourseMapper courseMapper;
 
+    /**
+     * 일정 생성
+     */
     @Transactional
     public Course createCourse(CoursePostDto coursePostDto, String memberEmail) {
 
@@ -62,6 +65,9 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
+    /**
+     * 일정 조회
+     */
     @Transactional(readOnly = true)
     public CoursePostDto findCourse(Long courseId, String memberEmail) {
 
@@ -80,6 +86,9 @@ public class CourseService {
         return response;
     }
 
+    /**
+     * 일정 수정
+     */
     @Transactional
     public Course updateCourse(CoursePostDto coursePostDto, String memberEmail, Long courseId) {
 
@@ -110,7 +119,9 @@ public class CourseService {
         return courseRepository.save(findCourse);
     }
 
-    //일정 삭제
+    /**
+     * 일정 삭제
+     */
     @Transactional
     public void deleteCourse(long courseId, String memberEmail) {
         Member findmember = memberService.findVerifiedMember(memberEmail);
@@ -119,6 +130,7 @@ public class CourseService {
 
         courseRepository.delete(findCourse);
     }
+
 
     // 본인의 일정이 아닐 경우 예외 발생
     public void verifyMyCourse(Member member, Course course) {

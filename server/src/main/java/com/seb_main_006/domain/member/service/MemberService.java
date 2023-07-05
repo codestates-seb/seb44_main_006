@@ -39,7 +39,6 @@ public class MemberService {
         return findExistMember(member.getMemberEmail());
     }
 
-
     // 이메일로 DB에서 회원을 조회하고, 현재 가입된 provider 정보 String으로 반환
     // (GOOGLE, NAVER, KAKAO, null), OAuth2MemberSuccessHandler에서 호출
     public String findExistEmailAndDiffProvider(String userEmail, String currentProvider) {

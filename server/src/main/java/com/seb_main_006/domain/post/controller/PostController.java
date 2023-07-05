@@ -10,12 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.net.URI;
 
 @Slf4j
@@ -39,5 +37,18 @@ public class PostController {
         headers.setLocation(URI.create("/posts/" + createdPost.getPostId()));
 
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/tagged/{tagName}")
+    public ResponseEntity getPostListByTag(@PathVariable String tagName,
+                                        @RequestParam @Positive Integer page,
+                                        @RequestParam @Positive Integer limit,
+                                        @RequestParam(required = false) String sort) {
+
+        log.info("page = {}, limit = {}, sort = {}", page, limit, sort);
+
+        postService.getPostListByTag(tagName, page - 1, limit, sort);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
