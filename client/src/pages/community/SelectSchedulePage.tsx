@@ -57,6 +57,8 @@ const SelectSchedulePage = () => {
       </HeadDiv>
       <OverFlowDiv>
         <CardWrapper>
+          {/* Todo 리액트쿼리로 유저 일정 가지고 와서 뿌려줘야함 */}
+          {/* Todo 카드 onClick callback 걸어야함 */}
           <ContensCard />
           <ContensCard />
           <ContensCard />
