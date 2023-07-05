@@ -4,7 +4,8 @@ import { IconStyle } from '../types/type';
 
 const Svg = styled.svg`
   position: absolute;
-  top: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 20px;
   cursor: pointer;
 `;
@@ -19,8 +20,8 @@ const Search = ({
   return (
     <Svg
       onClick={onClick}
-      width={style.width}
-      height={style.width}
+      width={style.iconWidth}
+      height={style.iconHeight}
       viewBox="0 0 27 27"
       fill={style.color}
       xmlns="http://www.w3.org/2000/svg"
