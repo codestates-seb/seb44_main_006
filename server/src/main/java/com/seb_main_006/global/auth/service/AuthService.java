@@ -79,8 +79,9 @@ public class AuthService {
     public MemberInfoResponseDto getMemberInfo(String accessToken) throws JsonProcessingException {
         String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
         Member findMember = memberService.findVerifiedMember(memberEmail);
+        int myCourseCount = findMember.getCourses().size();
         int myBookmarkCount = bookmarkService.getBookmarkCount(findMember);
 
-        return MemberInfoResponseDto.of(findMember, myBookmarkCount);
+        return MemberInfoResponseDto.of(findMember, myCourseCount, myBookmarkCount);
     }
 }
