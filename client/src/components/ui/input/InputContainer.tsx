@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { ForwardedRef, forwardRef, useState } from 'react';
+import { ForwardedRef, KeyboardEvent, forwardRef, useState } from 'react';
 
 import { TextareaT } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
@@ -27,14 +27,14 @@ const InputContainer = forwardRef(
       maxLength,
       styles,
       type,
-      onchange,
+      onkeypress,
     }: {
       description: string;
       maxLength?: number;
       styles?: TextareaT;
       type?: 'title';
       // tag 입력 칸과 구분하기 위함
-      onchange?: () => void;
+      onkeypress?: (e: KeyboardEvent<HTMLInputElement>) => void;
     },
     ref?: ForwardedRef<HTMLInputElement>
   ) => {
@@ -43,7 +43,7 @@ const InputContainer = forwardRef(
       <>
         <Input
           ref={ref}
-          onChange={onchange}
+          onKeyUp={onkeypress}
           placeholder={description}
           maxLength={maxLength || 524288}
           {...styles}

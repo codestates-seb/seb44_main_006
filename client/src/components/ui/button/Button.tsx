@@ -30,7 +30,7 @@ const Button = ({
 }: {
   children?: Props['children'];
   styles?: IButtonStyle;
-  onClick?: () => void;
+  onClick?: (arg0?: string) => void;
   onSubmit?: () => void;
 }) => {
   return (

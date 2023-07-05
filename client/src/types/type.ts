@@ -38,8 +38,9 @@ export interface IButtonStyle {
   gap?: string;
   isActive?: boolean;
   title?: string;
-  onClick?: () => void;
+  onClick?: (arg0?: string) => void;
   onSubmit?: () => void;
+  tagname?: string;
 }
 
 export type MarkerT = {
