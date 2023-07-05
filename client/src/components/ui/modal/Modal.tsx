@@ -2,11 +2,12 @@ import { styled } from 'styled-components';
 
 import { Props } from '../../../types/type';
 import CloseButton from '../button/CloseButton';
-import cssToken from '../../../styles/cssToken';
 
 interface IModalContainer {
   width?: string;
   height?: string;
+  borderradius?: string;
+  gap?: string;
 }
 
 const ModalWrapper = styled.div`
@@ -35,11 +36,12 @@ const ModalContainer = styled.section<IModalContainer>`
   position: relative;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  border-radius: ${(props) => props.borderradius};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: ${cssToken.SPACING['gap-16']};
+  gap: ${(props) => props.gap};
   background-color: #ffffff;
   z-index: 20;
 `;

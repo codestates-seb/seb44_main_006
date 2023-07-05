@@ -1,23 +1,17 @@
-import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRef } from 'react';
+import { useSelector } from 'react-redux';
 
-import {
-  Pagination,
-  PlacesSearchResult,
-  PlacesSearchResultItem,
-} from '../../types/type';
-import { placeListActions } from '../../store/placeList-slice';
+import useKeywordSearch from './useKeywordSearch';
+
+import { Pagination, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
 
 const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
-  const map = useSelector((state: RootState) => state.map.map);
   const places = useSelector((state: RootState) => state.placeList.list);
-  const ps = new kakao.maps.services.Places();
-  const dispatch = useDispatch();
   const paginationRef = useRef<HTMLDivElement>(null);
 
   // 검색결과 목록 하단에 페이지 번호 표시
-  function displayPagination(pagination: Pagination) {
+  const displayPagination = (pagination: Pagination) => {
     const fragment = document.createDocumentFragment();
 
     while (paginationRef.current?.firstChild) {
@@ -42,37 +36,12 @@ const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
       fragment.appendChild(el);
     }
     paginationRef.current?.appendChild(fragment);
-  }
+  };
 
-  function placesSearchCB(
-    datas: PlacesSearchResult,
-    status: string,
-    pagination: Pagination
-  ) {
-    if (status === kakao.maps.services.Status.OK) {
-      const bounds = new kakao.maps.LatLngBounds();
-      for (let i = 0; i < datas.length; i += 1) {
-        const data = datas[i];
-        const [dx, dy] = [data.x, data.y];
-        bounds.extend(new kakao.maps.LatLng(Number(dy), Number(dx)));
-      }
-      map.setBounds(bounds);
-      displayPagination(pagination);
-      // setPlaces(datas);
-      dispatch(placeListActions.addList(datas));
-    }
-  }
-
-  useEffect(() => {
-    ps.keywordSearch(searchPlace, placesSearchCB);
-
-    return () => {
-      dispatch(placeListActions.resetList());
-    };
-  }, [searchPlace]);
+  useKeywordSearch(displayPagination, searchPlace);
 
   return (
-    <div id="result-list">
+    <div>
       {places.map((item: PlacesSearchResultItem, i: number) => (
         <div key={item.id} style={{ marginTop: '20px' }}>
           <span>{i + 1}</span>
