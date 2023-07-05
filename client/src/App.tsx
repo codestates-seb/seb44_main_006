@@ -4,7 +4,6 @@ const App = () => {
   return (
     <>
       <Header isMainPage />
-      <Header isMainPage={false} />
     </>
   );
 };
