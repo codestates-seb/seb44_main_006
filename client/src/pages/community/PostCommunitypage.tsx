@@ -68,7 +68,6 @@ const PostCommunitypage = () => {
               제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다
             </Title>
             <div>
-              {/* Todo 장소 길이 길어졌을 때 어떻게 처리할지 태그해야함 */}
               <MapLocationCard indexNum={1} location="this is red too" />
               <MapLocationCard indexNum={2} location="길막마전부타비켜" />
               <MapLocationCard indexNum={3} location="여긴어디나는누구" />
