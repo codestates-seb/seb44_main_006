@@ -23,7 +23,9 @@ public enum ExceptionCode {
     IM_A_TEAPOT(418,"주전자가 비어있습니다. 커피를 넣어주세요"),
     GOOGLE_ACCOUNT_EXISTS(409,"이미 구글로 가입된 사용자입니다."),
     NAVER_ACCOUNT_EXISTS(409,"이미 네이버로 가입된 사용자입니다."),
-    KAKAO_ACCOUNT_EXISTS(409,"이미 카카오로 가입된 사용자입니다.");
+    KAKAO_ACCOUNT_EXISTS(409,"이미 카카오로 가입된 사용자입니다."),
+    POST_EXISTS(409,"선택하신 코스로 작성한 게시글이 이미 존재합니다.");
+
 
 
 

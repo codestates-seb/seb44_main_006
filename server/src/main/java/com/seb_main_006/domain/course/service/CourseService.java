@@ -121,7 +121,7 @@ public class CourseService {
     }
 
     // 본인의 일정이 아닐 경우 예외 발생
-    private void verifyMyCourse(Member member, Course course) {
+    public void verifyMyCourse(Member member, Course course) {
         if (member.getMemberId().longValue() != course.getMember().getMemberId().longValue()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_DOES_NOT_MATCH);
         }
