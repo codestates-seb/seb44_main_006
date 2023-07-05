@@ -8,6 +8,7 @@ import FilterTab from '../../components/community/FilterTab';
 import useHandleTab from '../../hooks/useHandleTab';
 import CircleButton from '../../components/ui/button/CircleButton';
 import Pen from '../../assets/Pen';
+import useMovePage from '../../hooks/useMovePage';
 
 const Wrapper = styled(FlexDiv)`
   width: 100%;
@@ -29,33 +30,36 @@ const FixedDiv = styled.div`
 
 const CommunityPage = () => {
   const { selectTab, setTab } = useHandleTab();
+  const goToSelect = useMovePage('/community/select');
   return (
-    <Wrapper>
-      <SearchContainer
-        iconWidth={39}
-        iconHeight={39}
-        styles={{
-          width: '740px',
-          height: '86px',
-          fontsize: cssToken.TEXT_SIZE['text-24'],
-        }}
-      />
-      <FilterSection>
-        <FilterTab
-          content="최신순"
-          selectTab={selectTab}
-          tab="Newest"
-          onClick={setTab}
+    <>
+      <Wrapper>
+        <SearchContainer
+          iconWidth={39}
+          iconHeight={39}
+          styles={{
+            width: '740px',
+            height: '86px',
+            fontsize: cssToken.TEXT_SIZE['text-24'],
+          }}
         />
-        <FilterTab
-          content="좋아요순"
-          selectTab={selectTab}
-          tab="Like"
-          onClick={setTab}
-        />
-      </FilterSection>
+        <FilterSection>
+          <FilterTab
+            content="최신순"
+            selectTab={selectTab}
+            tab="Newest"
+            onClick={setTab}
+          />
+          <FilterTab
+            content="좋아요순"
+            selectTab={selectTab}
+            tab="Like"
+            onClick={setTab}
+          />
+        </FilterSection>
+      </Wrapper>
       {/* TODO 로그인 상태에 따라 표시 여부 다르게 */}
-      <FixedDiv>
+      <FixedDiv onClick={goToSelect}>
         <CircleButton width="117px" height="117px">
           <Div>
             <Pen style={{ iconWidth: 28, iconHeight: 28, color: 'black' }} />
@@ -63,7 +67,7 @@ const CommunityPage = () => {
           <div>자랑하기</div>
         </CircleButton>
       </FixedDiv>
-    </Wrapper>
+    </>
   );
 };
 

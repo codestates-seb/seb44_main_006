@@ -1,4 +1,9 @@
 import CommunityPage from './pages/community/CommunityPage';
+import KakaoMap from './components/map/KakaoMap';
+import Marker from './components/map/Marker';
+import Polyline from './components/map/Polyline';
+import SearchPlace from './components/map/SearchPlace';
+import SelectSchedulePage from './pages/community/SelectSchedulePage';
 
 const App = () => {
   const array = [
@@ -16,7 +21,7 @@ const App = () => {
     //   <Polyline linePos={array} />
     // </KakaoMap>
     // <SearchPlace />
-    <CommunityPage />
+    <SelectSchedulePage />
   );
 };
 
