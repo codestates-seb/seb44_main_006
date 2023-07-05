@@ -26,7 +26,6 @@ public class LikesService {
 
     private final LikesRepository likesRepository;
     private final CourseRepository courseRepository;
-    private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final CourseService courseService;
     private final PostService postService;

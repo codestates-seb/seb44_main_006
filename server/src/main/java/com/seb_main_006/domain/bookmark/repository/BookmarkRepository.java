@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     Integer countBookmarksByMember(Member member);
-
+    Optional<Bookmark> findBookmarkByCourse(Course course);
     Optional<Bookmark> findByMemberAndCourse(Member member, Course course);
 }
