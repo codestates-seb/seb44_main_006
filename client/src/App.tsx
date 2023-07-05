@@ -1,7 +1,5 @@
-import Header from './components/common/Header';
-
 const App = () => {
-  return <Header isMainPage />;
+  return <></>;
 };
 
 export default App;

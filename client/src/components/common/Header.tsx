@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
@@ -47,12 +48,13 @@ const BtnBox = styled.div`
 `;
 
 const Header = ({ isMainPage }: HeaderInfo) => {
+
   return (
     <HeaderContainer isMainPage={isMainPage}>
       <LogoBox>
-        <a href="/">
+        <Link to="/">
           <LogoImg src={LogoBlack} alt="logo-harumate" />
-        </a>
+        </Link>
       </LogoBox>
       <BtnBox>
         {!isMainPage && (
