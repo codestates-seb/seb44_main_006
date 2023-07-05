@@ -11,6 +11,7 @@ import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
   /* height: 100vh; */
+  padding-top: ${cssToken.SPACING['px-50']};
   padding-left: ${cssToken.SPACING['py-100']};
   padding-right: ${cssToken.SPACING['py-100']};
   flex-direction: column;
@@ -32,6 +33,7 @@ const BtnDiv = styled(FlexDiv)`
   width: 100%;
   justify-content: center;
   column-gap: ${cssToken.SPACING['gap-12']};
+  margin-bottom: ${cssToken.SPACING['gap-50']};
 `;
 
 const SelectSchedulePage = () => {
