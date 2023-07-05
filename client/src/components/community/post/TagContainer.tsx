@@ -11,7 +11,7 @@ import cssToken from '../../../styles/cssToken';
 const TagDiv = styled(FlexDiv)`
   column-gap: 0.5rem;
 `;
-const TagContainer = ({}: {}) => {
+const TagContainer = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [tags, setTags] = useState<string[] | []>([]);
   const makeTag = (e: KeyboardEvent<HTMLInputElement>) => {
