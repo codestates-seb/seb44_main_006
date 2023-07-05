@@ -1,9 +1,8 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
-import useKeywordSearch from './useKeywordSearch';
-
+import useKeywordSearch from '../../hooks/useKeywordSearch';
 import { Pagination, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
 import LocationCard from '../ui/cards/LocationCard';
@@ -25,10 +24,13 @@ const PaginationWrapper = styled.section`
 
 const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
   const places = useSelector((state: RootState) => state.placeList.list);
+  const schedule = useSelector(
+    (state: RootState) => state.scheduleList.lastItem
+  );
   const paginationRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
-  const displayPagination = (pagination: Pagination) => {
+  const displayPagination = useCallback((pagination: Pagination) => {
     const fragment = document.createDocumentFragment();
 
     while (paginationRef.current?.firstChild) {
@@ -53,9 +55,16 @@ const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
       fragment.appendChild(el);
     }
     paginationRef.current?.appendChild(fragment);
-  };
+  }, []);
 
-  useKeywordSearch(displayPagination, searchPlace);
+  useKeywordSearch(
+    displayPagination,
+    searchPlace,
+    schedule.x,
+    schedule.y,
+    5000
+  );
+  // 이렇게 하면 마지막으로 등록한 일정 기준으로 검색할 수 있음
 
   return (
     <Wrapper>

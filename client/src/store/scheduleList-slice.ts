@@ -5,10 +5,22 @@ import { TScheduleList, IScheduleListItem } from '../types/type';
 
 interface IInitial {
   list: TScheduleList;
+  lastItem: IScheduleListItem;
 }
 
 const initialState: IInitial = {
   list: [],
+  lastItem: {
+    placeName: '',
+    placeUrl: '',
+    roadAddressName: '',
+    id: '',
+    phone: '',
+    categoryGroupCode: undefined,
+    categoryGroupName: '',
+    x: '',
+    y: '',
+  },
 };
 
 const scheduleListSlice = createSlice({
@@ -17,6 +29,7 @@ const scheduleListSlice = createSlice({
   reducers: {
     addList(state, action: PayloadAction<IScheduleListItem>) {
       state.list.push(action.payload);
+      state.lastItem = action.payload;
     },
     resetList(state) {
       state.list = [];
