@@ -4,7 +4,6 @@ import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import cssToken from '../../styles/cssToken';
 import { FlexDiv } from '../../styles/styles';
-import useMovePage from '../../hooks/useMovePage';
 
 const BtnDiv = styled(FlexDiv)`
   width: 100%;

@@ -24,6 +24,7 @@ const FilterSection = ({ children }: { children: Props['children'] }) => {
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
+      {/* Todo 리액트쿼리 데이터로 변경하기 */}
       <CardWrapper>
         <ContensCard />
         <ContensCard />
