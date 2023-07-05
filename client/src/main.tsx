@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <BrowserRouter>
       <GlobalStyle />
       <Provider store={store}>
-        <Header ismainpage="true" />
+        <Header />
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/community" element={<CommunityPage />} />
