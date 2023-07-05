@@ -35,7 +35,6 @@ import java.util.*;
 public class SecurityConfiguration {
 
     private final RedisUtil redisUtil;
-    private final ObjectMapper objectMapper;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
@@ -54,21 +53,20 @@ public class SecurityConfiguration {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())  // (1) 추가
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint(jwtTokenizer))  // (1) 추가
                 .accessDeniedHandler(new MemberAccessDeniedHandler())
                 .and()
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-//                        .antMatchers(HttpMethod.POST, "/auth/reissue").hasAnyRole("USER","ADMIN")
+                        .antMatchers(HttpMethod.POST, "/auth/reissue").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.POST, "/auth/logout").hasAnyRole("USER","ADMIN")
-                        .antMatchers(HttpMethod.GET, "/auth/test").hasAnyRole("USER","ADMIN")
+                        .antMatchers(HttpMethod.POST, "/courses").hasAnyRole("USER","ADMIN")
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         // 소셜 로그인 성공 시 수행되는 핸들러 설정
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, refreshTokenRedisRepository)));
-
 
         return http.build();
     }
@@ -88,7 +86,6 @@ public class SecurityConfiguration {
 
     }
 
-
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
 
         @Override
@@ -96,7 +93,7 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             // JWT 토큰 검증 필터 생성 및 필터 순서 설정 : 인증(일반로그인 or 소셜로그인) 필터 다음에 적용
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, redisUtil, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, redisUtil, authorityUtils, refreshTokenRedisRepository);
 
             builder.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class)
                     .addFilterAfter(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class);
