@@ -28,6 +28,6 @@ public class BookmarkController {
     public ResponseEntity postLikes(@PathVariable Long courseId, @AuthenticationPrincipal(expression = "username") String memberEmail){
         bookmarkService.clickBookmark(courseId, memberEmail);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

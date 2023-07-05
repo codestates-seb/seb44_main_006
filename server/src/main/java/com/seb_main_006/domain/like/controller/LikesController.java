@@ -26,6 +26,6 @@ public class LikesController {
     public ResponseEntity postLikes(@PathVariable Long courseId, @AuthenticationPrincipal(expression = "username") String memberEmail){
         likesService.clickLikes(courseId, memberEmail);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
