@@ -32,7 +32,6 @@ public enum ExceptionCode {
 
 
 
-
     @Getter
     private int status;
 

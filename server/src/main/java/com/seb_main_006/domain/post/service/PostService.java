@@ -1,30 +1,35 @@
 package com.seb_main_006.domain.post.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.seb_main_006.domain.answer.dto.AnswerPostDto;
+import com.seb_main_006.domain.course.dto.CourseInfoDto;
+import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
 import com.seb_main_006.domain.course.entity.Course;
+import com.seb_main_006.domain.course.repository.CourseRepository;
 import com.seb_main_006.domain.course.service.CourseService;
 import com.seb_main_006.domain.like.repository.LikesRepository;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
+import com.seb_main_006.domain.post.dto.PostDetailResponseDto;
 import com.seb_main_006.domain.post.dto.PostDataForList;
 import com.seb_main_006.domain.post.dto.PostListResponseDto;
 import com.seb_main_006.domain.post.dto.PostPostDto;
 import com.seb_main_006.domain.post.entity.Post;
 import com.seb_main_006.domain.post.entity.PostTag;
+import com.seb_main_006.domain.post.mapper.PostMapper;
 import com.seb_main_006.domain.post.repository.PostRepository;
 import com.seb_main_006.domain.post.repository.PostTagRepository;
 import com.seb_main_006.domain.tag.entity.Tag;
 import com.seb_main_006.domain.tag.repository.TagRepository;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
-import com.seb_main_006.global.auth.jwt.Subject;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -40,10 +45,13 @@ public class PostService {
     private final CourseService courseService;
     private final TagRepository tagRepository;
     private final PostRepository postRepository;
+    private final PostMapper postMapper;
+    private final CourseRepository courseRepository;
     private final PostTagRepository postTagRepository;
     private final LikesRepository likesRepository;
     private final BookmarkRepository bookmarkRepository;
     private final JwtTokenizer jwtTokenizer;
+
 
     public Post createPost(PostPostDto postPostDto, String memberEmail) {
 
@@ -87,6 +95,40 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    @Transactional
+    public PostDetailResponseDto findPost(Long postId, String accessToken) throws JsonProcessingException {
+
+        Member member = new Member();
+
+        if (accessToken != null) {
+            String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+            member = memberService.findVerifiedMember(memberEmail);
+        }
+
+        Post findPost = findVerifiedPost(postId);
+        Course course = updateCourseViewCount(findPost.getCourse());
+        List<String> tags = findPost.getPostTagsInPost().stream()
+                .map(postTag -> postTag.getTag().getTagName())
+                .collect(Collectors.toList());
+        PostDetailResponseDto response = postMapper.postToPostDetailResponseDto(findPost);
+        CourseInfoDto courseInfoDto = new CourseInfoDto();
+        courseInfoDto.setCourseId(course.getCourseId());
+
+        boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
+        boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
+
+        List<DestinationPostDto> destinationPostDtos = postMapper.destinationsToDestinationDtos(course.getDestinations());
+        courseInfoDto.setDestinationList(destinationPostDtos);
+        List<AnswerPostDto> answerPostDtos = postMapper.answersToAnswerDtos(findPost.getAnswersInPost());
+
+        response.setAnswerList(answerPostDtos);
+        response.setCourseInfo(courseInfoDto);
+        response.setTags(tags);
+        response.setLikeStatus(likeStatus);
+        response.setBookmarkStatus(bookmarkStatus);
+
+        return response;
+    }
 
     /**
      * 태그로 게시글 조회
@@ -100,7 +142,6 @@ public class PostService {
             String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
             member = memberService.findVerifiedMember(memberEmail);
         }
-
 
         // 1. tagName 으로 tag 찾기 (이때 검색하는 키워드가 포함된 태그도 같이 검색되도록)  -> List<Tag>
         List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
@@ -133,6 +174,7 @@ public class PostService {
         postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
     }
 
+
     //해당 코스로 작성된 게시글이 있는지 확인하는 메소드
     private void verifyExistCourse(Course course){
         if(postRepository.findByCourse(course).isPresent()){
@@ -140,9 +182,25 @@ public class PostService {
         }
     }
 
+    public Post findVerifiedPost(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+    }
+
+    @Transactional
+    public Course updateCourseViewCount(Course findCourse) {
+
+        long courseCount= findCourse.getCourseViewCount();
+        System.out.println("조회수 테스트중:"+courseCount);
+        findCourse.setCourseViewCount(courseCount+1);
+        System.out.println("조회수 테스트중:"+courseCount);
+        return courseRepository.save(findCourse);
+    }
+
     //코스로 작성된 게시글이 있으면 그 게시글 리턴 없으면 예외
     public Post findVerifiedPost(Course course) {
         return postRepository.findByCourse(course)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
+
 }
