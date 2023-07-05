@@ -5,7 +5,7 @@ import FilterTab from './FilterTab';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
-import { FlexDiv } from '../../styles/styles';
+import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
 
 const FilterWrapper = styled.div`
@@ -22,16 +22,6 @@ const FilterContainer = styled(FlexDiv)`
   top: -47px;
   column-gap: ${cssToken.SPACING['gap-50']};
 `;
-
-const CardWrapper = styled.div`
-  width: 90%;
-  place-items: center;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(405px, 405px));
-  grid-auto-flow: row;
-  gap: ${cssToken.SPACING['gap-50']};
-`;
-
 const FilterSection = ({ children }: { children: Props['children'] }) => {
   return (
     <FilterWrapper>

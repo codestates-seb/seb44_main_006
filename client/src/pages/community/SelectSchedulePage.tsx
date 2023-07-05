@@ -3,15 +3,35 @@ import { styled } from 'styled-components';
 import Title from '../../components/ui/text/Title';
 import cssToken from '../../styles/cssToken';
 import Text from '../../components/ui/text/Text';
-import { FlexDiv } from '../../styles/styles';
+import { CardWrapper, FlexDiv } from '../../styles/styles';
+import ContensCard from '../../components/ui/cards/ContentsCard';
+import GrayButton from '../../components/ui/button/GrayButton';
+import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 
-const OutsideWrap = styled.div`
-  height: 100vh;
+const OutsideWrap = styled(FlexDiv)`
+  margin-top: 77px;
+  /* height: 100vh; */
+  padding-left: ${cssToken.SPACING['py-100']};
+  padding-right: ${cssToken.SPACING['py-100']};
+  flex-direction: column;
+  /* justify-content: space-between; */
+  row-gap: ${cssToken.SPACING['gap-50']};
 `;
 
 const HeadDiv = styled(FlexDiv)`
   flex-direction: column;
   row-gap: 3px;
+`;
+
+const OverFlowDiv = styled.div`
+  height: 62vh;
+  overflow-y: scroll;
+`;
+
+const BtnDiv = styled(FlexDiv)`
+  width: 100%;
+  justify-content: center;
+  column-gap: ${cssToken.SPACING['gap-12']};
 `;
 
 const SelectSchedulePage = () => {
@@ -30,6 +50,35 @@ const SelectSchedulePage = () => {
           자랑할 일정을 선택해주세요.
         </Text>
       </HeadDiv>
+      <OverFlowDiv>
+        <CardWrapper>
+          <ContensCard />
+          <ContensCard />
+          <ContensCard />
+          <ContensCard />
+          <ContensCard />
+          <ContensCard />
+          <ContensCard />
+          <ContensCard />
+          <ContensCard />
+        </CardWrapper>
+      </OverFlowDiv>
+      <BtnDiv>
+        <GrayButton
+          width="222px"
+          height="53px"
+          borderRadius={cssToken.BORDER['rounded-md']}
+        >
+          뒤로가기
+        </GrayButton>
+        <SkyBlueButton
+          width="222px"
+          height="53px"
+          borderRadius={cssToken.BORDER['rounded-md']}
+        >
+          작성하기
+        </SkyBlueButton>
+      </BtnDiv>
     </OutsideWrap>
   );
 };

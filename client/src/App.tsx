@@ -21,7 +21,7 @@ const App = () => {
     //   <Polyline linePos={array} />
     // </KakaoMap>
     // <SearchPlace />
-    <SelectSchedulePage />
+    <></>
   );
 };
 
