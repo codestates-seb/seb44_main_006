@@ -80,7 +80,7 @@ const PostCommunitypage = () => {
             <Title styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
               제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다
             </Title>
-            <div>
+            <>
               <MapLocationCard indexNum={1} location="this is red too" />
               <MapLocationCard indexNum={2} location="길막마전부타비켜" />
               <MapLocationCard indexNum={3} location="여긴어디나는누구" />
@@ -88,7 +88,7 @@ const PostCommunitypage = () => {
                 indexNum={4}
                 location="여름이었다가을이었다겨울이었다봄이었다여름이었다가을이었다겨"
               />
-            </div>
+            </>
           </ScheduleDiv>
         </FlexDiv>
       </GapDiv>

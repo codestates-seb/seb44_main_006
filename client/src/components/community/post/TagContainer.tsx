@@ -11,12 +11,13 @@ const TagDiv = styled(FlexDiv)`
 `;
 const TagContainer = () => {
   const Tagarray = ['성심당', '성심당', '성심당', '성심당'];
-
+  const makeTag = () => {};
   return (
     <GapDiv>
       <ChooseTag />
       <>
         <InputContainer
+          onChange={makeTag}
           styles={{
             width: '100%',
           }}
