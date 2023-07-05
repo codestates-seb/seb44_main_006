@@ -3,18 +3,25 @@ import { styled } from 'styled-components';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
 import WhiteButton from '../ui/button/WhiteButton';
+import SkyBlueButton from '../ui/button/SkyBlueButton';
 
-const HeaderContainer = styled.header`
+type HeaderInfo = {
+  isMainPage?: boolean;
+};
+
+const HeaderContainer = styled.header<HeaderInfo>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
-  background: ${cssToken.COLOR.white};
-  position: fixed;
+  background: ${(props) =>
+    props.isMainPage ? 'transparent' : cssToken.COLOR.white};
+  /* position: fixed; */
   top: 0;
   left: 0;
   width: ${cssToken.WIDTH['w-full']};
-  box-shadow: ${cssToken.SHADOW['shadow-lg']};
+  box-shadow: ${(props) =>
+    props.isMainPage ? 'none' : cssToken.SHADOW['shadow-lg']};
 `;
 
 const LogoBox = styled.h1`
@@ -28,18 +35,48 @@ const LogoImg = styled.img`
 const BtnBox = styled.div`
   display: flex;
   gap: ${cssToken.SPACING['gap-10']};
+
+  > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13.5px 10px 10px;
+    white-space: nowrap;
+    transition: ${cssToken.TRANSITION.basic};
+  }
 `;
 
-const Header = () => {
+const Header = ({ isMainPage }: HeaderInfo) => {
   return (
-    <HeaderContainer>
+    <HeaderContainer isMainPage={isMainPage}>
       <LogoBox>
         <a href="/">
           <LogoImg src={LogoBlack} alt="logo-harumate" />
         </a>
       </LogoBox>
       <BtnBox>
-        <WhiteButton>로그인</WhiteButton>
+        {!isMainPage && (
+          <>
+            <WhiteButton
+              height="25px"
+              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            >
+              로그인
+            </WhiteButton>
+            <WhiteButton
+              height="25px"
+              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            >
+              로그아웃
+            </WhiteButton>
+            <SkyBlueButton
+              height="25px"
+              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            >
+              마이페이지
+            </SkyBlueButton>
+          </>
+        )}
       </BtnBox>
     </HeaderContainer>
   );
