@@ -7,7 +7,7 @@ import WhiteButton from '../ui/button/WhiteButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 
 type HeaderInfo = {
-  isMainPage?: boolean;
+  ismainpage?: string;
 };
 
 const HeaderContainer = styled.header<HeaderInfo>`
@@ -16,13 +16,13 @@ const HeaderContainer = styled.header<HeaderInfo>`
   justify-content: space-between;
   padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
   background: ${(props) =>
-    props.isMainPage ? 'transparent' : cssToken.COLOR.white};
+    props.ismainpage ? 'transparent' : cssToken.COLOR.white};
   position: fixed;
   top: 0;
   left: 0;
   width: ${cssToken.WIDTH['w-full']};
   box-shadow: ${(props) =>
-    props.isMainPage ? 'none' : cssToken.SHADOW['shadow-lg']};
+    props.ismainpage ? 'none' : cssToken.SHADOW['shadow-lg']};
 `;
 
 const LogoBox = styled.h1`
@@ -47,17 +47,23 @@ const BtnBox = styled.div`
   }
 `;
 
-const Header = ({ isMainPage }: HeaderInfo) => {
-
+const Header = ({ ismainpage }: HeaderInfo) => {
   return (
-    <HeaderContainer isMainPage={isMainPage}>
+    <HeaderContainer ismainpage={ismainpage}>
       <LogoBox>
         <Link to="/">
           <LogoImg src={LogoBlack} alt="logo-harumate" />
         </Link>
       </LogoBox>
       <BtnBox>
-        {!isMainPage && (
+        <WhiteButton
+          height="25px"
+          borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+        >
+          로그인
+        </WhiteButton>
+
+        {!ismainpage && (
           <>
             <WhiteButton
               height="25px"
@@ -65,7 +71,7 @@ const Header = ({ isMainPage }: HeaderInfo) => {
             >
               로그인
             </WhiteButton>
-            {/* <WhiteButton
+            <WhiteButton
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -76,7 +82,7 @@ const Header = ({ isMainPage }: HeaderInfo) => {
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
               마이페이지
-            </SkyBlueButton> */}
+            </SkyBlueButton>
           </>
         )}
       </BtnBox>
