@@ -1,9 +1,14 @@
 package com.seb_main_006.domain.post.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
 import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.course.service.CourseService;
+import com.seb_main_006.domain.like.repository.LikesRepository;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
+import com.seb_main_006.domain.post.dto.PostDataForList;
+import com.seb_main_006.domain.post.dto.PostListResponseDto;
 import com.seb_main_006.domain.post.dto.PostPostDto;
 import com.seb_main_006.domain.post.entity.Post;
 import com.seb_main_006.domain.post.entity.PostTag;
@@ -11,15 +16,22 @@ import com.seb_main_006.domain.post.repository.PostRepository;
 import com.seb_main_006.domain.post.repository.PostTagRepository;
 import com.seb_main_006.domain.tag.entity.Tag;
 import com.seb_main_006.domain.tag.repository.TagRepository;
+import com.seb_main_006.global.auth.jwt.JwtTokenizer;
+import com.seb_main_006.global.auth.jwt.Subject;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +41,9 @@ public class PostService {
     private final TagRepository tagRepository;
     private final PostRepository postRepository;
     private final PostTagRepository postTagRepository;
+    private final LikesRepository likesRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final JwtTokenizer jwtTokenizer;
 
     public Post createPost(PostPostDto postPostDto, String memberEmail) {
 
@@ -76,34 +91,41 @@ public class PostService {
     /**
      * 태그로 게시글 조회
      */
-    public void getPostListByTag(String tagName, int page, int limit, String sort) {
+    public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) throws JsonProcessingException {
 
-        if (sort == null) {
-            sort = "course_updated_at";
-        } else {
-            sort = "course_like_count";
+        Member member = new Member(0L);
+        PageRequest pageRequest = PageRequest.of(page, limit);
+
+        if (accessToken != null) {
+            String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+            member = memberService.findVerifiedMember(memberEmail);
         }
 
-        PageRequest pageRequest = PageRequest.of(page, limit);
 
         // 1. tagName 으로 tag 찾기 (이때 검색하는 키워드가 포함된 태그도 같이 검색되도록)  -> List<Tag>
         List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
 
         // 2. PostTag 테이블에서 1에서 찾은 태그들이 포함된 데이터 조회 -> List<PostTag> -> List<Post> 로 변환
-        List<Course> findResult = postTagRepository.findByTagIn(findTagList, sort, pageRequest);
-
-        System.out.println("findResult.size() = " + findResult.size());
-
-        for (Course course : findResult) {
-            System.out.println("courseId = " + course.getCourseId());
-        }
+        Page<Course> pageResult = postTagRepository.findByTagIn(findTagList, pageRequest);
 
         // 3. 응답 데이터 형식으로 변환해서 리턴
         // 없는 데이터 : likeStatus, bookmarkStatus 끗
-        for (Course course : findResult) {
+        List<PostDataForList> postDataList = new ArrayList<>();
 
-
+        for (Course course : pageResult.getContent()) {
+            boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
+            boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
+            PostDataForList postData = PostDataForList.of(course, likeStatus, bookmarkStatus);
+            postDataList.add(postData);
         }
+
+        if (sort == null) {
+            postDataList = postDataList.stream().sorted(Comparator.comparing(PostDataForList::getCourseUpdatedAt).reversed()).collect(Collectors.toList());
+        } else {
+            postDataList = postDataList.stream().sorted(Comparator.comparing(PostDataForList::getCourseLikeCount).reversed()).collect(Collectors.toList());
+        }
+
+        return new PostListResponseDto(postDataList, pageResult);
     }
 
 
