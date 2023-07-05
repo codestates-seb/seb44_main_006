@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useRef } from 'react';
+import { ForwardedRef, forwardRef, useRef } from 'react';
 
 import Search from '../../../assets/Search';
 import cssToken from '../../../styles/cssToken';
@@ -31,8 +31,8 @@ const Input = styled.input<StylesT>`
 `;
 
 type StylesT = {
-  width: string;
-  height: string;
+  width?: string;
+  height?: string;
   fontsize?: string;
   pt?: string;
   pb?: string;
@@ -41,31 +41,27 @@ type StylesT = {
 type SearchT = {
   iconWidth?: number;
   iconHeight?: number;
-  styles: StylesT;
+  styles?: StylesT;
 };
 
-const SearchContainer = ({ iconWidth, iconHeight, styles }: SearchT) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const PostSearch = () => {
-    if (inputRef.current) {
-      if (inputRef.current.value.trim().length) {
-        // Todo 입력값이 제대로 있는 경우 POST하도록
-      }
-    }
-  };
-  return (
-    <InputWrapper>
-      <Input ref={inputRef} type="text" placeholder="성심당" {...styles} />
-      <Search
-        style={{
-          iconWidth: iconWidth || 25,
-          iconHeight: iconHeight || 25,
-          color: 'none',
-        }}
-        onClick={PostSearch}
-      />
-    </InputWrapper>
-  );
-};
+const SearchContainer = forwardRef(
+  (
+    { iconWidth, iconHeight, styles }: SearchT,
+    ref: ForwardedRef<HTMLInputElement>
+  ) => {
+    return (
+      <InputWrapper>
+        <Input ref={ref} type="text" placeholder="성심당" {...styles} />
+        <Search
+          style={{
+            iconWidth: iconWidth || 25,
+            iconHeight: iconHeight || 25,
+            color: 'none',
+          }}
+        />
+      </InputWrapper>
+    );
+  }
+);
 
 export default SearchContainer;
