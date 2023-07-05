@@ -21,6 +21,9 @@ const MainLink = styled(Link)`
   outline: none;
   font-size: 80px;
   font-weight: ${cssToken.FONT_WEIGHT.bold};
+  &:hover span {
+    display: none;
+  }
 `;
 
 const CommunitySection = styled(SectionBox)`
@@ -28,6 +31,9 @@ const CommunitySection = styled(SectionBox)`
   flex: 1;
   > a {
     color: ${cssToken.COLOR['point-900']};
+    &:hover::after {
+      content: '커뮤니티';
+    }
   }
 `;
 
@@ -39,6 +45,9 @@ const ScheduleSection = styled(SectionBox)`
   flex: 2;
   > a {
     color: ${cssToken.COLOR.white};
+    &:hover::after {
+      content: '일정 등록';
+    }
   }
 `;
 
@@ -46,10 +55,14 @@ const Main = () => {
   return (
     <MainContainer>
       <CommunitySection>
-        <MainLink to="/">Community</MainLink>
+        <MainLink to="/">
+          <span>Community</span>
+        </MainLink>
       </CommunitySection>
       <ScheduleSection>
-        <MainLink to="/">Schedule</MainLink>
+        <MainLink to="/">
+          <span>Schedule</span>
+        </MainLink>
       </ScheduleSection>
     </MainContainer>
   );
