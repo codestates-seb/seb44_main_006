@@ -73,6 +73,10 @@ public class Member {
         }
     }
 
+    public Member(Long memberId) {
+        this.memberId = memberId;
+    }
+
     @Getter
     public enum MemberStatus {
         ACTIVE, DELETED;

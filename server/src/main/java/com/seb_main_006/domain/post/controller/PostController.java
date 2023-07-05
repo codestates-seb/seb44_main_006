@@ -3,6 +3,7 @@ package com.seb_main_006.domain.post.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.seb_main_006.domain.course.dto.CoursePostDto;
 import com.seb_main_006.domain.post.dto.PostDetailResponseDto;
+import com.seb_main_006.domain.post.dto.PostListResponseDto;
 import com.seb_main_006.domain.post.dto.PostPostDto;
 import com.seb_main_006.domain.post.entity.Post;
 import com.seb_main_006.domain.post.service.PostService;
@@ -54,8 +55,26 @@ public class PostController {
             accessToken = authorization.replaceAll("Bearer", "");
         }
 
-
         PostDetailResponseDto response = postService.findPost(postId, accessToken);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/tagged/{tagName}")
+    public ResponseEntity getPostListByTag(@PathVariable String tagName,
+                                           @RequestParam @Positive Integer page,
+                                           @RequestParam @Positive Integer limit,
+                                           @RequestParam(required = false) String sort,
+                                           HttpServletRequest request) throws JsonProcessingException {
+
+        log.info("page = {}, limit = {}, sort = {}", page, limit, sort);
+        String accessToken = null;
+        String authorization = request.getHeader("Authorization");
+
+        if (authorization != null) {
+            accessToken = authorization.replaceAll("Bearer ", "");
+        }
+
+        PostListResponseDto response = postService.getPostListByTag(tagName, page - 1, limit, sort, accessToken);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
