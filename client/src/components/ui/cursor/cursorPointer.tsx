@@ -6,7 +6,7 @@ import cursorOn from '../../../assets/cursor_on.svg';
 import cursorOff from '../../../assets/cursor_off.svg';
 
 interface CursorInfo {
-  isMouseHover?: string | boolean;
+  isMouseHover?: boolean;
 }
 
 const CursorContainer = styled.div<CursorInfo>`
@@ -41,60 +41,72 @@ const CursorContainer = styled.div<CursorInfo>`
 `;
 
 const CursorPointer = ({ isMouseHover }: CursorInfo) => {
-  const dot = useRef<HTMLDivElement>(null);
-  const coursorEnlarged = useRef<boolean>(false);
-  const endX = useRef<number>(window.innerWidth / 2);
-  const endY = useRef<number>(window.innerHeight / 2);
-
-  const handleMouseOver = () => {
-    coursorEnlarged.current = true;
-  };
-
-  const handleMouseOut = () => {
-    coursorEnlarged.current = false;
-  };
+  const circleCursor = useRef<HTMLDivElement>(null);
+  const cursorEnlarged = useRef<boolean>(false);
+  const endX = useRef<number>(0);
+  const endY = useRef<number>(0);
 
   const handleMouseEnter = () => {
-    coursorEnlarged.current = true;
+    cursorEnlarged.current = true;
   };
 
   const handleMouseLeave = () => {
-    coursorEnlarged.current = false;
+    cursorEnlarged.current = false;
+
+    if (circleCursor.current) {
+      localStorage.removeItem('cursorPosition');
+    }
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    coursorEnlarged.current = true;
+    cursorEnlarged.current = true;
 
     const { clientX, clientY } = e;
 
     endX.current = clientX;
     endY.current = clientY;
 
-    if (dot.current) {
-      dot.current.style.top = `${endY.current}px`;
-      dot.current.style.left = `${endX.current}px`;
+    if (circleCursor.current) {
+      circleCursor.current.style.top = `${endY.current}px`;
+      circleCursor.current.style.left = `${endX.current}px`;
+      localStorage.setItem(
+        'cursorPosition',
+        JSON.stringify({ x: endX.current, y: endY.current })
+      );
     }
   };
 
   useEffect(() => {
+    const storedPosition = localStorage.getItem('cursorPosition');
+
+    if (storedPosition) {
+      const { x, y } = JSON.parse(storedPosition);
+
+      endX.current = x;
+      endY.current = y;
+
+      if (circleCursor.current) {
+        circleCursor.current.style.top = `${endY.current}px`;
+        circleCursor.current.style.left = `${endX.current}px`;
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     // 이벤트 함수 호출
-    document.addEventListener('mouseover', handleMouseOver);
-    document.addEventListener('mouseout', handleMouseOut);
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mousemove', handleMouseMove);
 
     // 컴포넌트 언마운트 시 이벤트 리스너 및 애니메이션 정리
     return () => {
-      document.removeEventListener('mouseover', handleMouseOver);
-      document.removeEventListener('mouseout', handleMouseOut);
       document.removeEventListener('mouseenter', handleMouseEnter);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
-  return <CursorContainer isMouseHover={isMouseHover} ref={dot} />;
+  return <CursorContainer isMouseHover={isMouseHover} ref={circleCursor} />;
 };
 
 export default CursorPointer;
