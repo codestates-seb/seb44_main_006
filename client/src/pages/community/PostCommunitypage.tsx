@@ -7,7 +7,7 @@ import { FlexDiv, GapDiv } from '../../styles/styles';
 import KakaoMap from '../../components/map/KakaoMap';
 import Marker from '../../components/map/Marker';
 import Polyline from '../../components/map/Polyline';
-import Btn from '../../components/community/PageMoveButton';
+import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import {
   ExampleDescription,
   MyCourseBoast,
@@ -86,7 +86,10 @@ const PostCommunitypage = () => {
       </QuillDiv>
       <TagContainer />
       <Warning />
-      <Btn backUrl="/community/select" nextUrl="/community/{post된게시글ID}" />
+      <PageMoveBtnDiv
+        backUrl="/community/select"
+        nextUrl="/community/{post된게시글ID}"
+      />
     </OutsideWrap>
   );
 };

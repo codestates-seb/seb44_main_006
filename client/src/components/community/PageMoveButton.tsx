@@ -13,7 +13,13 @@ const BtnDiv = styled(FlexDiv)`
   margin-bottom: ${cssToken.SPACING['gap-50']};
 `;
 
-const Btn = ({ backUrl, nextUrl }: { backUrl: string; nextUrl: string }) => {
+const PageMoveBtnDiv = ({
+  backUrl,
+  nextUrl,
+}: {
+  backUrl: string;
+  nextUrl: string;
+}) => {
   const goToPrev = useMovePage(backUrl);
   const goToNext = useMovePage(nextUrl);
   return (
@@ -38,4 +44,4 @@ const Btn = ({ backUrl, nextUrl }: { backUrl: string; nextUrl: string }) => {
   );
 };
 
-export default Btn;
+export default PageMoveBtnDiv;

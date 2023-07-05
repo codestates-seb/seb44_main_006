@@ -4,7 +4,7 @@ import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import ContensCard from '../../components/ui/cards/ContentsCard';
 import Head from '../../components/community/Head';
-import Btn from '../../components/community/PageMoveButton';
+import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -41,7 +41,7 @@ const SelectSchedulePage = () => {
           <ContensCard />
         </CardWrapper>
       </OverFlowDiv>
-      <Btn backUrl="/community" nextUrl="/community/post" />
+      <PageMoveBtnDiv backUrl="/community" nextUrl="/community/post" />
     </OutsideWrap>
   );
 };
