@@ -1,7 +1,4 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
-
-import FilterTab from './FilterTab';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -22,6 +19,7 @@ const FilterContainer = styled(FlexDiv)`
   top: -47px;
   column-gap: ${cssToken.SPACING['gap-50']};
 `;
+
 const FilterSection = ({ children }: { children: Props['children'] }) => {
   return (
     <FilterWrapper>
