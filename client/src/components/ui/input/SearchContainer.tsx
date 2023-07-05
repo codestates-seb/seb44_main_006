@@ -9,14 +9,14 @@ const InputWrapper = styled.div`
   width: ${cssToken.WIDTH['min-w-fit']};
 `;
 
-const Input = styled.input`
+const Input = styled.input<StylesT>`
   background-color: ${cssToken.COLOR['gray-300']};
-  width: ${(props) => props.width || '700px'};
+  width: ${(props) => props.width};
   height: ${(props) => props.height};
   color: #424242;
-  font-size: ${cssToken.TEXT_SIZE['text-16']};
-  padding-top: ${cssToken.SPACING['gap-16']};
-  padding-bottom: ${cssToken.SPACING['gap-16']};
+  font-size: ${(props) => props.fontsize || cssToken.TEXT_SIZE['text-16']};
+  padding-top: ${(props) => props.pt || cssToken.SPACING['gap-16']};
+  padding-bottom: ${(props) => props.pb || cssToken.SPACING['gap-16']};
   padding-left: 1.125rem;
   padding-right: 3.2rem;
   border: none;
@@ -30,7 +30,21 @@ const Input = styled.input`
   }
 `;
 
-const SearchContainer = () => {
+type StylesT = {
+  width: string;
+  height: string;
+  fontsize?: string;
+  pt?: string;
+  pb?: string;
+};
+
+type SearchT = {
+  iconWidth?: number;
+  iconHeight?: number;
+  styles: StylesT;
+};
+
+const SearchContainer = ({ iconWidth, iconHeight, styles }: SearchT) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const PostSearch = () => {
     if (inputRef.current) {
@@ -41,9 +55,13 @@ const SearchContainer = () => {
   };
   return (
     <InputWrapper>
-      <Input ref={inputRef} type="text" placeholder="성심당" />
+      <Input ref={inputRef} type="text" placeholder="성심당" {...styles} />
       <Search
-        style={{ width: 25, height: 25, color: 'none' }}
+        style={{
+          iconWidth: iconWidth || 25,
+          iconHeight: iconHeight || 25,
+          color: 'none',
+        }}
         onClick={PostSearch}
       />
     </InputWrapper>
