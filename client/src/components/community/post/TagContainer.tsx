@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
-import { KeyboardEvent, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
-import { ChooseTag } from './HEADzip';
+import { ChooseTag } from './DescriptionZip';
 
 import { FlexDiv, GapDiv } from '../../../styles/styles';
 import InputContainer from '../../ui/input/InputContainer';
@@ -11,17 +11,18 @@ import cssToken from '../../../styles/cssToken';
 const TagDiv = styled(FlexDiv)`
   column-gap: 0.5rem;
 `;
-const TagContainer = () => {
+const TagContainer = ({}: {}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [tags, setTags] = useState<string[] | []>([]);
-
   const makeTag = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (!inputRef.current) return;
       const { current } = inputRef;
       if (current && current?.value.trim().length > 0) {
         const newTag = current.value;
-        setTags((prev) => [...prev, newTag]);
+        if (!tags.find((tas) => tas === newTag)) {
+          setTags((prev) => [...prev, newTag]);
+        }
         current.value = '';
       }
     }
@@ -30,6 +31,15 @@ const TagContainer = () => {
     const filterTag = tags.filter((tag) => tag !== selectTag);
     setTags(filterTag);
   };
+
+  useEffect(() => {
+    if (tags.length >= 5) {
+      inputRef.current!.readOnly = true;
+    } else {
+      inputRef.current!.readOnly = false;
+    }
+  }, [tags]);
+
   return (
     <GapDiv>
       <ChooseTag />

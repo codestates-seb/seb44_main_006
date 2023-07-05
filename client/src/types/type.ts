@@ -41,6 +41,7 @@ export interface IButtonStyle {
   onClick?: (arg0?: string) => void;
   onSubmit?: () => void;
   tagname?: string;
+  disabled?: 'true' | 'false';
 }
 
 export type MarkerT = {

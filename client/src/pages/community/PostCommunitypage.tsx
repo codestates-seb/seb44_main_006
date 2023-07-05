@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useRef } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import { FlexDiv, GapDiv } from '../../styles/styles';
@@ -12,7 +13,7 @@ import {
   ExampleDescription,
   MyCourseBoast,
   WritePost,
-} from '../../components/community/post/HEADzip';
+} from '../../components/community/post/DescriptionZip';
 import Warning from '../../components/community/post/Warning';
 import TagContainer from '../../components/community/post/TagContainer';
 import Title from '../../components/ui/text/Title';
@@ -45,6 +46,7 @@ const MapDiv = styled.div`
 `;
 
 const PostCommunitypage = () => {
+  const quillRef = useRef<ReactQuill>(null);
   const gotoBack = useMovePage('/community/select');
   const gotoNext = useMovePage('/community/post/id');
 
@@ -53,8 +55,18 @@ const PostCommunitypage = () => {
     gotoBack();
   };
   const HandleNext = () => {
-    // content랑 태그 입력 했다면
-    gotoNext();
+    if (!quillRef?.current) return;
+    const inputString = String(quillRef.current.value);
+    const sanitizedValue: string = inputString
+      .replace(/<\/?[^>]+(>|$)/g, '')
+      .trim();
+
+    if (sanitizedValue.length > 0) {
+      gotoNext();
+      return;
+    }
+    // content랑 태그 입력했다면
+    quillRef.current.focus();
   };
 
   const array = [
@@ -94,7 +106,7 @@ const PostCommunitypage = () => {
       </GapDiv>
       <QuillDiv>
         <WritePost />
-        <ReactQuill style={{ height: '200px' }} />
+        <ReactQuill ref={quillRef} style={{ height: '200px' }} />
       </QuillDiv>
       <TagContainer />
       <Warning />

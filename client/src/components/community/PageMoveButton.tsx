@@ -16,9 +16,11 @@ const BtnDiv = styled(FlexDiv)`
 const PageMoveBtnDiv = ({
   grayCallback,
   skyblueCallback,
+  disabled,
 }: {
   grayCallback: () => void;
   skyblueCallback: () => void;
+  disabled?: 'true' | 'false';
 }) => {
   return (
     <BtnDiv>
@@ -35,6 +37,7 @@ const PageMoveBtnDiv = ({
         height="53px"
         borderRadius={cssToken.BORDER['rounded-md']}
         onClick={skyblueCallback}
+        disabled={disabled}
       >
         작성하기
       </SkyBlueButton>
