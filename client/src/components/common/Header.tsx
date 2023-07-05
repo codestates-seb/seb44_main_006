@@ -55,7 +55,7 @@ const Header = ({ isMainPage }: HeaderInfo) => {
         </a>
       </LogoBox>
       <BtnBox>
-      {!isMainPage && (
+        {!isMainPage && (
           <>
             <WhiteButton
               height="25px"
@@ -77,7 +77,6 @@ const Header = ({ isMainPage }: HeaderInfo) => {
             </SkyBlueButton> */}
           </>
         )}
-
       </BtnBox>
     </HeaderContainer>
   );
