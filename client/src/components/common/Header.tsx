@@ -16,7 +16,7 @@ const HeaderContainer = styled.header<HeaderInfo>`
   padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
   background: ${(props) =>
     props.isMainPage ? 'transparent' : cssToken.COLOR.white};
-  /* position: fixed; */
+  position: fixed;
   top: 0;
   left: 0;
   width: ${cssToken.WIDTH['w-full']};
@@ -55,7 +55,7 @@ const Header = ({ isMainPage }: HeaderInfo) => {
         </a>
       </LogoBox>
       <BtnBox>
-        {!isMainPage && (
+      {!isMainPage && (
           <>
             <WhiteButton
               height="25px"
@@ -63,7 +63,7 @@ const Header = ({ isMainPage }: HeaderInfo) => {
             >
               로그인
             </WhiteButton>
-            <WhiteButton
+            {/* <WhiteButton
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -74,9 +74,10 @@ const Header = ({ isMainPage }: HeaderInfo) => {
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
               마이페이지
-            </SkyBlueButton>
+            </SkyBlueButton> */}
           </>
         )}
+
       </BtnBox>
     </HeaderContainer>
   );
