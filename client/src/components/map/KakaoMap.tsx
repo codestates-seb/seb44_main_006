@@ -9,7 +9,6 @@ import { mapActions } from '../../store/map-slice';
 const MapContainer = styled.section<TextareaT>`
   width: ${(props) => props.width || '100vw'};
   height: ${(props) => props.height || '100vh'};
-  position: relative;
 `;
 
 type KakaoMapT = {

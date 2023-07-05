@@ -6,9 +6,9 @@ import { Provider } from 'react-redux';
 import App from './App';
 import GlobalStyle from './GlobalStyle';
 import store from './store';
-
 import Header from './components/common/Header';
 import Main from './pages/Main';
+import ScheduleRegister from './pages/schedule/ScheduleRegister';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -18,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Header isMainPage />
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/register" element={<ScheduleRegister />} />
         </Routes>
         <App />
       </Provider>

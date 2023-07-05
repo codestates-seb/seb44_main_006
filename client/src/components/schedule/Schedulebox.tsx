@@ -4,9 +4,9 @@ import cssToken from '../../styles/cssToken';
 import SubTitle from '../ui/text/SubTitle';
 import Text from '../ui/text/Text';
 import GrayButton from '../ui/button/GrayButton';
+import { Props } from '../../types/type';
 
 const ScheduleContainer = styled.section`
-  position: fixed;
   left: 0;
   top: 0;
   width: 450px;
@@ -14,6 +14,7 @@ const ScheduleContainer = styled.section`
   background: #fff;
   z-index: 1;
   padding: 15px;
+  overflow: auto;
 `;
 
 const ScheduleInfoBox = styled.div`
@@ -39,7 +40,7 @@ const ScheduleTitle = styled.div`
   justify-content: space-between;
 `;
 
-const ScheduleBox = () => {
+const ScheduleBox = ({ children }: { children: Props['children'] }) => {
   return (
     <ScheduleContainer>
       <ScheduleInfoBox>
@@ -86,6 +87,8 @@ const ScheduleBox = () => {
           직접 검색
         </GrayButton>
       </Btnbox>
+
+      {children}
     </ScheduleContainer>
   );
 };
