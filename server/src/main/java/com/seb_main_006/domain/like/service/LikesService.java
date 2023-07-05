@@ -71,10 +71,6 @@ public class LikesService {
             findMember.getLikesInMember().add(newlikes);
             findCourse.getLikesInCourse().add(newlikes);
 
-            memberRepository.save(findMember);
-            courseRepository.save(findCourse);
-//            likesRepository.save(newlikes);
-
             //Course테이블의 좋아요수 +1
             findCourse.setCourseLikeCount(findCourseLikeCount+1);
             courseRepository.save(findCourse);
