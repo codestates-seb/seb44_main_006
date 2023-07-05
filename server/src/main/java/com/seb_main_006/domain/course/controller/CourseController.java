@@ -1,10 +1,7 @@
 package com.seb_main_006.domain.course.controller;
 
-import com.seb_main_006.domain.course.dto.CoursePatchDto;
 import com.seb_main_006.domain.course.dto.CoursePostDto;
-import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.course.entity.Course;
-import com.seb_main_006.domain.course.mapper.CourseMapper;
 import com.seb_main_006.domain.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,13 +51,9 @@ public class CourseController {
 
     @PatchMapping("/{course-id}")
     public ResponseEntity patchCourse(@Valid @PathVariable("course-id") long courseId,
-                                      @RequestBody CoursePatchDto coursePatchDto,
-                                      @AuthenticationPrincipal(expression = "username"
-                                      ) String memberEmail) {
-
-
-        coursePatchDto.setCourseId(courseId);
-        courseService.updateCourse(coursePatchDto, memberEmail);
+                                      @RequestBody CoursePostDto coursePostDto,
+                                      @AuthenticationPrincipal(expression = "username") String memberEmail) {
+        courseService.updateCourse(coursePostDto, memberEmail, courseId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

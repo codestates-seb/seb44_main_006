@@ -17,8 +17,8 @@ export interface Props {
 }
 
 export type IconStyle = {
-  width: number;
-  height: number;
+  iconWidth: number;
+  iconHeight: number;
   color: string;
 };
 
@@ -97,6 +97,7 @@ export interface Pagination {
   current: number;
   first: number;
   last: number;
+}
 
 export interface ContCardInfo {
   userName?: string;

@@ -31,9 +31,6 @@ public class Member {
     @Column
     private String memberImageUrl; // 회원 프로필 이미지 URL
 
-    @Column
-    private int myCourseCount; // 생성한 코스 수
-
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus = MemberStatus.ACTIVE; // 회원 활동 상태, 기본값이 활동중
 

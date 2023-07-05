@@ -1,8 +1,6 @@
 package com.seb_main_006.domain.course.service;
 
-import com.seb_main_006.domain.course.dto.CoursePatchDto;
 import com.seb_main_006.domain.course.dto.CoursePostDto;
-import com.seb_main_006.domain.course.dto.DestinationPatchDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.course.mapper.CourseMapper;
@@ -58,19 +56,7 @@ public class CourseService {
         List<Destination> desList = course.getDestinations();
 
         for (int i = 0; i < des.size(); i++) {
-            Destination newDes = new Destination();
-            newDes.setPlaceSequence(i + 1);
-            newDes.setCategoryGroupCode(des.get(i).getCategoryGroupCode());
-            newDes.setCategoryGroupName(des.get(i).getCategoryGroupName());
-            newDes.setId(des.get(i).getId());
-            newDes.setPlaceName(des.get(i).getPlaceName());
-            newDes.setPlaceUrl(des.get(i).getPlaceUrl());
-            newDes.setX(des.get(i).getX());
-            newDes.setY(des.get(i).getY());
-            newDes.setRoadAddressName((des.get(i).getRoadAddressName()));
-            newDes.setPhone((des.get(i).getPhone()));
-            newDes.setCourse(course);
-            desList.add(newDes);
+            desPost(i, des, course, desList);
         }
 
         return courseRepository.save(course);
@@ -95,41 +81,29 @@ public class CourseService {
     }
 
     @Transactional
-    public Course updateCourse(CoursePatchDto coursePatchDto, String memberEmail) {
+    public Course updateCourse(CoursePostDto coursePostDto, String memberEmail, Long courseId) {
 
         Member findmember = memberService.findVerifiedMember(memberEmail);
-        Course findCourse = findVerifiedCourse(coursePatchDto.getCourseId());
+        Course findCourse = findVerifiedCourse(courseId);
         verifyMyCourse(findmember, findCourse);
 
         //Course 테이블 수정
-        Optional.ofNullable(coursePatchDto.getCourseData().getCourseDday()).ifPresent(courseDday -> {
+        Optional.ofNullable(coursePostDto.getCourseData().getCourseDday()).ifPresent(courseDday -> {
             LocalDate date = stringToDateConverter(courseDday);
             findCourse.setCourseDday(date);
         });
-        Optional.ofNullable(coursePatchDto.getCourseData().getCourseTitle()).ifPresent(findCourse::setCourseTitle);
-        Optional.ofNullable(coursePatchDto.getCourseData().getCourseContent()).ifPresent(findCourse::setCourseContent);
-        Optional.ofNullable(coursePatchDto.getCourseData().getCourseThumbnail()).ifPresent(findCourse::setCourseThumbnail);
+        Optional.ofNullable(coursePostDto.getCourseData().getCourseTitle()).ifPresent(findCourse::setCourseTitle);
+        Optional.ofNullable(coursePostDto.getCourseData().getCourseContent()).ifPresent(findCourse::setCourseContent);
+        Optional.ofNullable(coursePostDto.getCourseData().getCourseThumbnail()).ifPresent(findCourse::setCourseThumbnail);
 
-        List<DestinationPatchDto> des = coursePatchDto.getDestinationList();
+        List<DestinationPostDto> des = coursePostDto.getDestinationList();
         List<Destination> desList = findCourse.getDestinations();
         desList.clear();
         destinationRepository.deleteAllByCourse(findCourse);
 
         //Destination 테이블 수정
         for (int i = 0; i < des.size(); i++) {
-            Destination updateDes = new Destination();
-            updateDes.setPlaceSequence(i + 1);
-            updateDes.setCategoryGroupCode(des.get(i).getCategoryGroupCode());
-            updateDes.setCategoryGroupName(des.get(i).getCategoryGroupName());
-            updateDes.setId(des.get(i).getId());
-            updateDes.setPlaceName(des.get(i).getPlaceName());
-            updateDes.setPlaceUrl(des.get(i).getPlaceUrl());
-            updateDes.setX(des.get(i).getX());
-            updateDes.setY(des.get(i).getY());
-            updateDes.setRoadAddressName((des.get(i).getRoadAddressName()));
-            updateDes.setPhone((des.get(i).getPhone()));
-            updateDes.setCourse(findCourse);
-            desList.add(updateDes);
+            desPost(i, des, findCourse, desList);
         }
 
         findCourse.setCourseUpdatedAt((LocalDateTime.now()));
@@ -146,7 +120,6 @@ public class CourseService {
         courseRepository.delete(findCourse);
     }
 
-
     // 본인의 일정이 아닐 경우 예외 발생
     private void verifyMyCourse(Member member, Course course) {
         if (member.getMemberId().longValue() != course.getMember().getMemberId().longValue()) {
@@ -158,5 +131,22 @@ public class CourseService {
     public Course findVerifiedCourse(Long courseId) {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COURSE_NOT_FOUND));
+    }
+
+    //Post랑 Patch에서 사용할 목적지 저장 메소드
+    private void desPost(int i, List<DestinationPostDto> des, Course course, List<Destination> desList) {
+        Destination newDes = new Destination();
+        newDes.setPlaceSequence(i + 1);
+        newDes.setCategoryGroupCode(des.get(i).getCategoryGroupCode());
+        newDes.setCategoryGroupName(des.get(i).getCategoryGroupName());
+        newDes.setId(des.get(i).getId());
+        newDes.setPlaceName(des.get(i).getPlaceName());
+        newDes.setPlaceUrl(des.get(i).getPlaceUrl());
+        newDes.setX(des.get(i).getX());
+        newDes.setY(des.get(i).getY());
+        newDes.setRoadAddressName((des.get(i).getRoadAddressName()));
+        newDes.setPhone((des.get(i).getPhone()));
+        newDes.setCourse(course);
+        desList.add(newDes);
     }
 }
