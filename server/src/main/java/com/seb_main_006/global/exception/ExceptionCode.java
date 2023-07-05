@@ -1,6 +1,7 @@
 package com.seb_main_006.global.exception;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public enum ExceptionCode {
     MEMBER_NOT_FOUND(404,"사용자를 찾을 수 없습니다."),
@@ -19,13 +20,20 @@ public enum ExceptionCode {
     ANSWER_CANNOT_DELETE(403,"답변을 삭제 할 수 없습니다."),
     NOT_IMPLEMENTATION(501,"Not Implementation"),
     TOKEN_EXPIRED(444,"토큰이 만료되었습니다. 다시 로그인해주세요."),
-    IM_A_TEAPOT(418,"주전자가 비어있습니다. 커피를 넣어주세요");
+    IM_A_TEAPOT(418,"주전자가 비어있습니다. 커피를 넣어주세요"),
+    GOOGLE_ACCOUNT_EXISTS(409,"이미 구글로 가입된 사용자입니다."),
+    NAVER_ACCOUNT_EXISTS(409,"이미 네이버로 가입된 사용자입니다."),
+    KAKAO_ACCOUNT_EXISTS(409,"이미 카카오로 가입된 사용자입니다."),
+    POST_EXISTS(409,"선택하신 코스로 작성한 게시글이 이미 존재합니다.");
+
+
 
 
     @Getter
     private int status;
 
     @Getter
+    @Setter
     private String message;
 
     ExceptionCode(int code, String message) {

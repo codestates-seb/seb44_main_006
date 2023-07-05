@@ -20,8 +20,11 @@ public class Tag {
     @Column(columnDefinition = "TEXT")
     private String tagName; // 태그 이름
 
-    @OneToMany(mappedBy = "tag")
-    private List<PostTag> postTagsInTag = new ArrayList<>(); // postTag entity와 연관관계 매핑(1:다)
+//    @OneToMany(mappedBy = "tag")
+//    private List<PostTag> postTagsInTag = new ArrayList<>(); // postTag entity와 연관관계 매핑(1:다)/ 양방향이 아니라 단방향으로 바꾸면서 제거
 
+    public Tag(String tagName){
+        this.tagName = tagName;
+    }
 }
 

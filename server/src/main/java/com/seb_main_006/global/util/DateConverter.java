@@ -13,4 +13,12 @@ public class DateConverter {
 
         return date;
     }
+
+    public static String LocalDateToStringWithDay(LocalDate date) {
+
+        DateTimeFormatter myFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, E");
+        String dateStringWithDay = date.format(myFormatter);
+
+        return dateStringWithDay;
+    }
 }
