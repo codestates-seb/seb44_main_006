@@ -97,6 +97,7 @@ export interface Pagination {
   current: number;
   first: number;
   last: number;
+}
 
 export interface ContCardInfo {
   userName?: string;
