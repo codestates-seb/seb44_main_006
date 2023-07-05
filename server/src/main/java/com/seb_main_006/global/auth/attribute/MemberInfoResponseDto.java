@@ -16,13 +16,13 @@ public class MemberInfoResponseDto {
     private Integer myBookmarkCount;
     private Integer myCourseCount;
 
-    public static MemberInfoResponseDto of(Member member, int myBookmarkCount) {
+    public static MemberInfoResponseDto of(Member member, int myCourseCount, int myBookmarkCount) {
         return MemberInfoResponseDto.builder()
                 .memberId(member.getMemberId())
                 .memberEmail(member.getMemberEmail())
                 .memberNickname(member.getMemberNickname())
                 .memberImageUrl(member.getMemberImageUrl())
-                .myCourseCount(member.getMyCourseCount())
+                .myCourseCount(myCourseCount)
                 .myBookmarkCount(myBookmarkCount)
                 .build();
     }
