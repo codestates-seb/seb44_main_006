@@ -54,13 +54,9 @@ public class CourseController {
 
     @PatchMapping("/{course-id}")
     public ResponseEntity patchCourse(@Valid @PathVariable("course-id") long courseId,
-                                      @RequestBody CoursePatchDto coursePatchDto,
-                                      @AuthenticationPrincipal(expression = "username"
-                                      ) String memberEmail) {
-
-
-        coursePatchDto.setCourseId(courseId);
-        courseService.updateCourse(coursePatchDto, memberEmail);
+                                      @RequestBody CoursePostDto coursePostDto,
+                                      @AuthenticationPrincipal(expression = "username") String memberEmail) {
+        courseService.updateCourse(coursePostDto, memberEmail, courseId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
