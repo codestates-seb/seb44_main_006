@@ -63,6 +63,23 @@ export interface PlacesSearchResultItem {
   distance: string;
 }
 
+export type TScheduleList = IScheduleListItem[];
+
+export interface IScheduleListItem {
+  placeName: string; // 장소 이름
+  placeUrl: string; // 카카오API place_url,
+  roadAddressName: string; // 장소 도로명 주소,, ex) "서울 강남구 테헤란로84길 17"
+  id: string; // 카카오API의 장소 고유번호
+  phone: string; // 장소 전화번호, ex) "02-558-5476"
+  categoryGroupCode:
+    | `${CategoryCode}`
+    | `${Exclude<CategoryCode, ''>}`[]
+    | undefined; // 카카오API 장소 그룹코드
+  categoryGroupName: string; // 카카오API 장소 그룹이름
+  x: string; // 경도
+  y: string; // 위도
+}
+
 export enum CategoryCode {
   BLANK = '',
   MT1 = 'MT1',
@@ -113,6 +130,7 @@ export interface LocationCardInfo {
   address?: string;
   phone?: string;
   isAction?: boolean;
+  onClick?: () => void;
 }
 
 export interface MapLocationCardInfo {
