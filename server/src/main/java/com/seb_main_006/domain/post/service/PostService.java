@@ -75,4 +75,13 @@ public class PostService {
             throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
         }
     }
+    public void verifyNoExistPost(Course course){
+        postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
+    }
+
+    //코스로 작성된 게시글이 있으면 그 게시글 리턴 없으면 예외
+    public Post findVerifiedPost(Course course) {
+        return postRepository.findByCourse(course)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+    }
 }
