@@ -23,6 +23,7 @@ const HeaderContainer = styled.header<HeaderInfo>`
   width: ${cssToken.WIDTH['w-full']};
   box-shadow: ${(props) =>
     props.ismainpage ? 'none' : cssToken.SHADOW['shadow-lg']};
+  z-index: 999;
 `;
 
 const LogoBox = styled.h1`
