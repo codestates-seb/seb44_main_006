@@ -10,6 +10,9 @@ import com.seb_main_006.global.auth.jwt.Subject;
 import com.seb_main_006.global.auth.redis.RefreshToken;
 import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
+import com.seb_main_006.global.auth.utils.ErrorResponder;
+import com.seb_main_006.global.exception.BusinessLogicException;
+import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -51,19 +54,41 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
         log.info("oAuth2User.getAttributes()={}" , oAuth2User.getAttributes().get("id"));
+        log.info("provider = {}", oAuth2User.getAttributes().get("provider")); // google, naver, kakao
 
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
         String nickname = String.valueOf(oAuth2User.getAttributes().get("name"));
         String imgURL = String.valueOf(oAuth2User.getAttributes().get("picture"));
+        String provider = String.valueOf(oAuth2User.getAttributes().get("provider"));
         List<String> authorities = authorityUtils.createRoles(email);
 
-        saveMember(email, nickname, imgURL);
+        // DB에 같은 이메일로 저장된 회원 정보가 존재하고, 현재 로그인하려는 Provider와 다를 경우 -> 이미 가입된 정보가 있음 예외 던지기
+        String existProvider = memberService.findExistEmailAndDiffProvider(email, provider);
+        log.info("existProvider = {}", existProvider);
+
+        if (existProvider != null) {
+            switch (existProvider) {
+                case "GOOGLE":
+                    ErrorResponder.sendErrorResponse(response, ExceptionCode.GOOGLE_ACCOUNT_EXISTS);
+                    return;
+                case "KAKAO":
+                    ErrorResponder.sendErrorResponse(response, ExceptionCode.KAKAO_ACCOUNT_EXISTS);
+                    return;
+                case "NAVER":
+                    ErrorResponder.sendErrorResponse(response, ExceptionCode.NAVER_ACCOUNT_EXISTS);
+                    return;
+                default:
+                    break;
+            }
+        }
+
+        saveMember(email, nickname, imgURL, provider);
         redirect(request, response, email, authorities);
     }
 
     //DB에 해당하는 사용자 정보 저장
-    private Member saveMember(String email, String nickname, String imgURL) {
-        Member member = new Member(email, nickname, imgURL);
+    private Member saveMember(String email, String nickname, String imgURL, String provider) {
+        Member member = new Member(email, nickname, imgURL, provider);
         return memberService.createMember(member);
     }
 
