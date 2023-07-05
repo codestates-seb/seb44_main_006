@@ -4,7 +4,7 @@ import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import ContensCard from '../../components/ui/cards/ContentsCard';
 import Head from '../../components/community/Head';
-import Btn from '../../components/community/Btn';
+import Btn from '../../components/community/PageMoveButton';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
