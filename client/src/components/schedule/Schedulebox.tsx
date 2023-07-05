@@ -1,4 +1,7 @@
 import { styled } from 'styled-components';
+import { useState } from 'react';
+
+import ScheduleListBox from './ScheduleListBox';
 
 import cssToken from '../../styles/cssToken';
 import SubTitle from '../ui/text/SubTitle';
@@ -9,12 +12,18 @@ import { Props } from '../../types/type';
 const ScheduleContainer = styled.section`
   left: 0;
   top: 0;
-  width: 450px;
+  width: 550px;
   height: 100vh;
   background: #fff;
-  z-index: 1;
   padding: 15px;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: ${cssToken.SPACING['gap-16']};
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const ScheduleInfoBox = styled.div`
@@ -41,6 +50,19 @@ const ScheduleTitle = styled.div`
 `;
 
 const ScheduleBox = ({ children }: { children: Props['children'] }) => {
+  const [choiceCategory, setChoiceCategory] = useState(false);
+  const [choiceDirect, setChoiceDirect] = useState(false);
+
+  const handleCategory = () => {
+    setChoiceCategory(true);
+    setChoiceDirect(false);
+  };
+
+  const handleDirect = () => {
+    setChoiceCategory(false);
+    setChoiceDirect(true);
+  };
+
   return (
     <ScheduleContainer>
       <ScheduleInfoBox>
@@ -79,16 +101,29 @@ const ScheduleBox = ({ children }: { children: Props['children'] }) => {
         장소 추가
       </SubTitle>
 
+      <ScheduleListBox />
+
       <Btnbox>
-        <GrayButton width="100%" height="50px" borderRadius="10px">
+        <GrayButton
+          width="100%"
+          height="50px"
+          borderRadius="10px"
+          isActive={choiceCategory}
+          onClick={handleCategory}
+        >
           카테고리 검색
         </GrayButton>
-        <GrayButton width="100%" height="50px" borderRadius="10px">
+        <GrayButton
+          width="100%"
+          height="50px"
+          borderRadius="10px"
+          isActive={choiceDirect}
+          onClick={handleDirect}
+        >
           직접 검색
         </GrayButton>
       </Btnbox>
-
-      {children}
+      {choiceDirect && children}
     </ScheduleContainer>
   );
 };

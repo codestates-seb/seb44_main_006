@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import KakaoMap from '../../components/map/KakaoMap';
 import Marker from '../../components/map/Marker';
 import PlaceList from '../../components/map/PlaceList';
-import { PlacesSearchResultItem } from '../../types/type';
+import { IScheduleListItem, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
 import ScheduleBox from '../../components/schedule/Schedulebox';
 import cssToken from '../../styles/cssToken';
@@ -20,10 +20,19 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const FormContainer = styled.form`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ScheduleRegister = () => {
   const [searchPlace, setSearchPlace] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const places = useSelector((state: RootState) => state.placeList.list);
+  const scheduleList = useSelector(
+    (state: RootState) => state.scheduleList.list
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,10 +45,9 @@ const ScheduleRegister = () => {
   return (
     <Wrapper>
       <ScheduleBox>
-        <form className="inputForm" onSubmit={handleSubmit}>
+        <FormContainer onSubmit={handleSubmit}>
           <SearchContainer ref={inputRef} />
-          <button type="submit">검색</button>
-        </form>
+        </FormContainer>
         <PlaceList searchPlace={searchPlace} />
       </ScheduleBox>
       <KakaoMap width="100vw" height="100vh">
@@ -50,6 +58,15 @@ const ScheduleRegister = () => {
             lat={Number(place.y)}
             lng={Number(place.x)}
             id={Number(place.id)}
+          />
+        ))}
+        {scheduleList.map((place: IScheduleListItem, idx: number) => (
+          <Marker
+            key={place.id}
+            lat={Number(place.y)}
+            lng={Number(place.x)}
+            id={Number(place.id)}
+            idx={idx}
           />
         ))}
       </KakaoMap>
