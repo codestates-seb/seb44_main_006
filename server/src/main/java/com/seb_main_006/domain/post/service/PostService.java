@@ -72,13 +72,10 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    //해당 코스로 작성된 게시글이 있는지 확인하는 메소드
-    private void verifyExistCourse(Course course){
-        if(postRepository.findByCourse(course).isPresent()){
-            throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
-        }
-    }
 
+    /**
+     * 태그로 게시글 조회
+     */
     public void getPostListByTag(String tagName, int page, int limit, String sort) {
 
         if (sort == null) {
@@ -106,9 +103,24 @@ public class PostService {
         for (Course course : findResult) {
 
 
-
         }
+    }
 
 
+    public void verifyNoExistPost(Course course){
+        postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
+    }
+
+    //해당 코스로 작성된 게시글이 있는지 확인하는 메소드
+    private void verifyExistCourse(Course course){
+        if(postRepository.findByCourse(course).isPresent()){
+            throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
+        }
+    }
+
+    //코스로 작성된 게시글이 있으면 그 게시글 리턴 없으면 예외
+    public Post findVerifiedPost(Course course) {
+        return postRepository.findByCourse(course)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 }
