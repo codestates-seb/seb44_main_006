@@ -99,6 +99,8 @@ export interface Pagination {
   last: number;
 }
 
+
+
 export interface ContCardInfo {
   userName?: string;
   title?: string;
