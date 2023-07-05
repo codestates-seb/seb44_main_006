@@ -5,6 +5,7 @@ import { CardWrapper, FlexDiv } from '../../styles/styles';
 import ContensCard from '../../components/ui/cards/ContentsCard';
 import Head from '../../components/community/Head';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
+import useMovePage from '../../hooks/useMovePage';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -23,6 +24,8 @@ const OverFlowDiv = styled.div`
 `;
 
 const SelectSchedulePage = () => {
+  const gotoBack = useMovePage('/community');
+  const gotoNext = useMovePage('/community/post');
   return (
     <OutsideWrap>
       <Head />
@@ -41,7 +44,7 @@ const SelectSchedulePage = () => {
           <ContensCard />
         </CardWrapper>
       </OverFlowDiv>
-      <PageMoveBtnDiv backUrl="/community" nextUrl="/community/post" />
+      <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={gotoNext} />
     </OutsideWrap>
   );
 };

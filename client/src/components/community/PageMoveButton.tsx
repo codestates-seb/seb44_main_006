@@ -14,21 +14,19 @@ const BtnDiv = styled(FlexDiv)`
 `;
 
 const PageMoveBtnDiv = ({
-  backUrl,
-  nextUrl,
+  grayCallback,
+  skyblueCallback,
 }: {
-  backUrl: string;
-  nextUrl: string;
+  grayCallback: () => void;
+  skyblueCallback: () => void;
 }) => {
-  const goToPrev = useMovePage(backUrl);
-  const goToNext = useMovePage(nextUrl);
   return (
     <BtnDiv>
       <GrayButton
         width="222px"
         height="53px"
         borderRadius={cssToken.BORDER['rounded-md']}
-        onClick={goToPrev}
+        onClick={grayCallback}
       >
         뒤로가기
       </GrayButton>
@@ -36,7 +34,7 @@ const PageMoveBtnDiv = ({
         width="222px"
         height="53px"
         borderRadius={cssToken.BORDER['rounded-md']}
-        onClick={goToNext}
+        onClick={skyblueCallback}
       >
         작성하기
       </SkyBlueButton>

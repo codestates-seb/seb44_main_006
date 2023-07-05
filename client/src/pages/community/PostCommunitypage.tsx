@@ -17,6 +17,7 @@ import Warning from '../../components/community/post/Warning';
 import TagContainer from '../../components/community/post/TagContainer';
 import Title from '../../components/ui/text/Title';
 import MapLocationCard from '../../components/ui/cards/MapLocationCard';
+import useMovePage from '../../hooks/useMovePage';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -44,6 +45,18 @@ const MapDiv = styled.div`
 `;
 
 const PostCommunitypage = () => {
+  const gotoBack = useMovePage('/community/select');
+  const gotoNext = useMovePage('/community/post/id');
+
+  const HandleBack = () => {
+    // 뒤로 가겠냐 확인하고 문제 없을 경우
+    gotoBack();
+  };
+  const HandleNext = () => {
+    // content랑 태그 입력 했다면
+    gotoNext();
+  };
+
   const array = [
     { lat: 33.450701, lng: 126.570667 },
     { lat: 33.450701, lng: 126.570867 },
@@ -85,10 +98,7 @@ const PostCommunitypage = () => {
       </QuillDiv>
       <TagContainer />
       <Warning />
-      <PageMoveBtnDiv
-        backUrl="/community/select"
-        nextUrl="/community/{post된게시글ID}"
-      />
+      <PageMoveBtnDiv grayCallback={HandleBack} skyblueCallback={HandleNext} />
     </OutsideWrap>
   );
 };
