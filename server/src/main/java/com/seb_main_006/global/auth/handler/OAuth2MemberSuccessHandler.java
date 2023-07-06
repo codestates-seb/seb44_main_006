@@ -153,7 +153,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
-//                .port(5173)
+                .port(5173)
                 .queryParams(queryParams)
                 .build()
                 .toUri();

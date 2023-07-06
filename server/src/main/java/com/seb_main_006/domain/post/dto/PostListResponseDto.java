@@ -8,7 +8,6 @@ import java.util.List;
 
 @Data
 public class PostListResponseDto {
-
     private List<PostDataForList> data;
     private PageInfo pageInfo;
 

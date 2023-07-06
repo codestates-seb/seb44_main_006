@@ -16,11 +16,10 @@ export const FlexDiv = styled.div`
 `;
 
 export const CardWrapper = styled.div`
-  width: 90%;
-  place-items: center;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(405px, 405px));
-  grid-auto-flow: row;
+  justify-content: center;
   gap: ${cssToken.SPACING['gap-50']};
 `;
 
@@ -32,4 +31,17 @@ export const HeadDiv = styled(FlexDiv)`
 export const GapDiv = styled(FlexDiv)`
   flex-direction: column;
   row-gap: ${cssToken.SPACING['gap-24']};
+`;
+
+export const OutsideWrap = styled(FlexDiv)`
+  margin-top: 77px;
+  padding-top: ${cssToken.SPACING['px-50']};
+  padding-left: ${cssToken.SPACING['py-100']};
+  padding-right: ${cssToken.SPACING['py-100']};
+  flex-direction: column;
+  row-gap: ${cssToken.SPACING['gap-50']};
+`;
+
+export const TagDiv = styled(FlexDiv)`
+  column-gap: 0.5rem;
 `;
