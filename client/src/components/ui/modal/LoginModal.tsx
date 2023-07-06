@@ -107,9 +107,9 @@ const LoginModal = ({
   styles?: IModalContainer;
   handleClose?: () => void;
 }) => {
-  const handlekakaoLogin = () => {
-    window.location.href =
-      'http://ec2-52-78-64-106.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/kakao';
+  const handleLogin = ({ path }: { path: string }) => {
+    const srcServerPath: string = import.meta.env.VITE_API_SERVER_KEY;
+    window.location.href = `${srcServerPath}/oauth2/authorization/${path}`;
   };
 
   return (
@@ -119,15 +119,15 @@ const LoginModal = ({
         <SubTitle styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
           3초만에 끝!
         </SubTitle>
-        <KaKaoBtn onClick={handlekakaoLogin}>
+        <KaKaoBtn onClick={() => handleLogin({ path: 'kakao' })}>
           <KakaoIcon />
           카카오톡 로그인
         </KaKaoBtn>
-        <NaverBtn>
+        <NaverBtn onClick={() => handleLogin({ path: 'naver' })}>
           <NaverIcon />
           네이버 로그인
         </NaverBtn>
-        <GooleBtn>
+        <GooleBtn onClick={() => handleLogin({ path: 'google' })}>
           <GoogleIcon />
           구글 로그인
         </GooleBtn>
