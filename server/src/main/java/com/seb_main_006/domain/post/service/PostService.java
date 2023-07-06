@@ -163,7 +163,9 @@ public class PostService {
         if (sort == null) {
             postDataList = postDataList.stream().sorted(Comparator.comparing(PostDataForList::getCourseUpdatedAt).reversed()).collect(Collectors.toList());
         } else {
-            postDataList = postDataList.stream().sorted(Comparator.comparing(PostDataForList::getCourseLikeCount).reversed()).collect(Collectors.toList());
+            postDataList = postDataList.stream()
+                    .sorted(Comparator.comparing(PostDataForList::getCourseLikeCount).reversed().thenComparing(PostDataForList::getCourseUpdatedAt))
+                    .collect(Collectors.toList());
         }
 
         return new PostListResponseDto(postDataList, pageResult);
