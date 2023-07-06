@@ -1,6 +1,6 @@
 package com.seb_main_006.domain.post.mapper;
 
-import com.seb_main_006.domain.answer.dto.AnswerPostDto;
+import com.seb_main_006.domain.answer.dto.AnswerResponsePostDto;
 import com.seb_main_006.domain.answer.entity.Answer;
 import com.seb_main_006.domain.course.dto.CourseData;
 import com.seb_main_006.domain.course.dto.CourseInfoDto;
@@ -25,9 +25,9 @@ public interface PostMapper {
 
     List<DestinationPostDto> destinationsToDestinationDtos(List<Destination> destinationList);
 
-    AnswerPostDto answerToAnswerDto(Answer answer);
+    AnswerResponsePostDto answerToAnswerDto(Answer answer);
 
-    List<AnswerPostDto> answersToAnswerDtos(List<Answer> answerList);
+    List<AnswerResponsePostDto> answersToAnswerDtos(List<Answer> answerList);
 
     @Mapping(source = "course.courseTitle" , target = "courseTitle")
     @Mapping(source = "course.courseContent" , target = "courseContent")
@@ -38,14 +38,6 @@ public interface PostMapper {
     @Mapping(source = "course.member.memberEmail" , target = "memberEmail")
     @Mapping(source = "course.member.memberImageUrl" , target = "memberImageUrl")
     PostDetailResponseDto postToPostDetailResponseDto(Post post);
-
-    List<PostDetailResponseDto> postsToResponseDtos(List<Post> postList);
-
-    CourseInfoDto postToCourseInfoDto(Post post);
-
-
-
-
 
 
 }
