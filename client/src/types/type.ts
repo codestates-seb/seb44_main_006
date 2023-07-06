@@ -152,3 +152,7 @@ export type CommentT = {
   date: string;
   content: string;
 };
+
+export interface RouteState {
+  state?: string | number | undefined;
+}

@@ -21,14 +21,11 @@ import Modal from '../../components/ui/modal/Modal';
 import { RootState } from '../../store';
 import ModalChildren from '../../components/community/post/ModalChildren';
 import useToggleModal from '../../hooks/useToggleModal';
+import { RouteState } from '../../types/type';
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: ${cssToken.SPACING['gap-50']};
 `;
-
-interface RouteState {
-  state?: string | number | undefined;
-}
 
 const PostCommunitypage = () => {
   const scheduleid = useLocation().state as RouteState;
