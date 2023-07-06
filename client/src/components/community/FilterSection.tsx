@@ -6,7 +6,6 @@ import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
-import useMovePage from '../../hooks/useMovePage';
 
 const FilterWrapper = styled.div`
   width: 100%;
