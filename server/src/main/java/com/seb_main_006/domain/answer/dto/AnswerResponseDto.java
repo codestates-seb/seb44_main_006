@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AnswerResponsePostDto {
+public class AnswerResponseDto {
     private String answerId;
     private String answererEmail;
     private String answererNickname;

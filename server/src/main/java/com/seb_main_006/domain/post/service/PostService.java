@@ -1,7 +1,7 @@
 package com.seb_main_006.domain.post.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.seb_main_006.domain.answer.dto.AnswerResponsePostDto;
+import com.seb_main_006.domain.answer.dto.AnswerResponseDto;
 import com.seb_main_006.domain.course.dto.CourseInfoDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
@@ -93,6 +93,12 @@ public class PostService {
             newPostTag.setPost(post); // new PostTag에 Post세팅(연관관계 매핑)
             post.getPostTagsInPost().add(newPostTag);// post의 PostTagsInpost리스트에 newPostTag 추가(연관관계 매핑)
         }
+
+        //포스팅 여부 처리
+        boolean posted = findcourse.isPosted();
+        findcourse.setPosted(!posted);
+        courseRepository.save(findcourse);
+
         //Post 테이블에 저장
         return postRepository.save(post);
     }
@@ -124,9 +130,9 @@ public class PostService {
 
         List<DestinationPostDto> destinationPostDtos = postMapper.destinationsToDestinationDtos(course.getDestinations());
         courseInfoDto.setDestinationList(destinationPostDtos);
-        List<AnswerResponsePostDto> answerResponsePostDtos = postMapper.answersToAnswerDtos(findPost.getAnswersInPost());
+        List<AnswerResponseDto> answerResponseDtos = postMapper.answersToAnswerDtos(findPost.getAnswersInPost());
 
-        response.setAnswerList(answerResponsePostDtos);
+        response.setAnswerList(answerResponseDtos);
         response.setCourseInfo(courseInfoDto);
         response.setTags(tags);
         response.setLikeStatus(likeStatus);

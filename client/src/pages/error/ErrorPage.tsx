@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useParams } from 'react-router-dom';
 
 import CatContainer from '../../components/ui/error/CatContainer';
 import ErrorBtnContainer from '../../components/ui/error/ErrorBtnContainer';
@@ -15,9 +16,10 @@ const ErrorWrapper = styled.div`
 `;
 
 const ErrorPage = () => {
+  const { status } = useParams();
   return (
     <ErrorWrapper>
-      <CatContainer status={404} />
+      <CatContainer status={Number(status)} />
       <ErrorBtnContainer />
     </ErrorWrapper>
   );

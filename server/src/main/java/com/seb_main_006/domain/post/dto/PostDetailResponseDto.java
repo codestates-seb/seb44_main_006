@@ -1,6 +1,6 @@
 package com.seb_main_006.domain.post.dto;
 
-import com.seb_main_006.domain.answer.dto.AnswerResponsePostDto;
+import com.seb_main_006.domain.answer.dto.AnswerResponseDto;
 import com.seb_main_006.domain.course.dto.CourseInfoDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +24,5 @@ public class PostDetailResponseDto {
     private boolean bookmarkStatus; //유저가 이 글에 즐겨찾기했는지 안했는지
     private LocalDateTime courseUpdatedAt;
     private CourseInfoDto courseInfo;
-    private List<AnswerResponsePostDto> answerList;
+    private List<AnswerResponseDto> answerList;
 }
