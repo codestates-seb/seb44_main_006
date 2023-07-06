@@ -95,6 +95,9 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    /**
+     * 게시글 상세 조회
+     */
     @Transactional
     public PostDetailResponseDto findPost(Long postId, String accessToken) throws JsonProcessingException {
 
@@ -143,14 +146,11 @@ public class PostService {
             member = memberService.findVerifiedMember(memberEmail);
         }
 
-        // 1. tagName 으로 tag 찾기 (이때 검색하는 키워드가 포함된 태그도 같이 검색되도록)  -> List<Tag>
+        // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
         List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
-
-        // 2. PostTag 테이블에서 1에서 찾은 태그들이 포함된 데이터 조회 -> List<PostTag> -> List<Post> 로 변환
         Page<Course> pageResult = postTagRepository.findByTagIn(findTagList, pageRequest);
 
-        // 3. 응답 데이터 형식으로 변환해서 리턴
-        // 없는 데이터 : likeStatus, bookmarkStatus 끗
+        // 응답 데이터 형식으로 변환해서 리턴 (없는 데이터 : likeStatus, bookmarkStatus < 이부분 때문에 쿼리가 많이 날라감...)
         List<PostDataForList> postDataList = new ArrayList<>();
 
         for (Course course : pageResult.getContent()) {
@@ -160,6 +160,7 @@ public class PostService {
             postDataList.add(postData);
         }
 
+        // 정렬 조건에 따라 정렬
         if (sort == null) {
             postDataList = postDataList.stream().sorted(Comparator.comparing(PostDataForList::getCourseUpdatedAt).reversed()).collect(Collectors.toList());
         } else {
@@ -169,24 +170,36 @@ public class PostService {
         return new PostListResponseDto(postDataList, pageResult);
     }
 
+    /**
+     * 게시글 삭제
+     */
+    public void deletePost(Long postId, String memberEmail) {
+        Post findPost = findVerifiedPost(postId);
+        Member findMember = memberService.findVerifiedMember(memberEmail);
+        courseService.verifyMyCourse(findMember, findPost.getCourse());
+        postRepository.delete(findPost);
+    }
+
 
     public void verifyNoExistPost(Course course){
         postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
     }
 
 
-    //해당 코스로 작성된 게시글이 있는지 확인하는 메소드
+    // 해당 코스로 작성된 게시글이 있는지 확인하는 메소드
     private void verifyExistCourse(Course course){
         if(postRepository.findByCourse(course).isPresent()){
             throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
         }
     }
 
+    // 게시글 존재여부 확인 : 존재하면 게시글 리턴, 없으면 예외
     public Post findVerifiedPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
+    // 조회수 + 1 업데이트
     @Transactional
     public Course updateCourseViewCount(Course findCourse) {
 
