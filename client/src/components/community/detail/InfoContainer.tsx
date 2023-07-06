@@ -1,8 +1,8 @@
 import { styled } from 'styled-components';
 
-import Text from '../../components/ui/text/Text';
-import cssToken from '../../styles/cssToken';
-import { FlexDiv } from '../../styles/styles';
+import Text from '../../ui/text/Text';
+import cssToken from '../../../styles/cssToken';
+import { FlexDiv } from '../../../styles/styles';
 
 const InfoDiv = styled(FlexDiv)`
   height: 100%;

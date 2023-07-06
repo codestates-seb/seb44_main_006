@@ -8,6 +8,7 @@ const SkyBlueButton = ({
   width,
   height,
   borderRadius,
+  fontsize,
   onClick,
   disabled,
 }: IButtonStyle) => {
@@ -18,6 +19,7 @@ const SkyBlueButton = ({
       styles={{
         width,
         height,
+        fontsize,
         color: cssToken.COLOR.white,
         backgroundColor: cssToken.COLOR['point-900'],
         borderRadius,
