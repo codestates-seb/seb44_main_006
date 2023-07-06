@@ -10,21 +10,25 @@ import MapLocationCard from '../ui/cards/MapLocationCard';
 
 const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
-  overflow-y: scroll;
   flex: 1;
   margin-left: ${cssToken.SPACING['gap-24']};
-  gap: ${cssToken.SPACING['gap-10']};
+  row-gap: ${cssToken.SPACING['gap-12']};
+  height: 60vh;
 `;
 
 const MapDiv = styled.div`
   flex: 3;
 `;
 
+const LocationCardWrapper = styled.div`
+  overflow-y: scroll;
+`;
+
 const MapContainer = ({ array }: { array: { lat: number; lng: number }[] }) => {
   return (
     <FlexDiv>
       <MapDiv>
-        <KakaoMap width="100%" height="50vh">
+        <KakaoMap width="100%" height="60vh">
           {array.map((pos, idx) => (
             <Marker key={idx} lat={pos.lat} lng={pos.lng} id={idx} />
           ))}
@@ -35,7 +39,7 @@ const MapContainer = ({ array }: { array: { lat: number; lng: number }[] }) => {
         <Title styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
           제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다
         </Title>
-        <>
+        <LocationCardWrapper>
           <MapLocationCard indexNum={1} location="this is red too" />
           <MapLocationCard indexNum={2} location="길막마전부타비켜" />
           <MapLocationCard indexNum={3} location="여긴어디나는누구" />
@@ -43,7 +47,15 @@ const MapContainer = ({ array }: { array: { lat: number; lng: number }[] }) => {
             indexNum={4}
             location="여름이었다가을이었다겨울이었다봄이었다여름이었다가을이었다겨"
           />
-        </>
+          <MapLocationCard
+            indexNum={5}
+            location="여름이었다가을이었다겨울이었다봄이었다여름이었다가을이었다겨"
+          />
+          <MapLocationCard
+            indexNum={6}
+            location="여름이었다가을이었다겨울이었다봄이었다여름이었다가을이었다겨"
+          />
+        </LocationCardWrapper>
       </ScheduleDiv>
     </FlexDiv>
   );
