@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import axios from 'axios';
 
 import CloseButton from '../button/CloseButton';
 import cssToken from '../../../styles/cssToken';
@@ -108,7 +107,6 @@ const LoginModal = ({
   styles?: IModalContainer;
   handleClose?: () => void;
 }) => {
-
   const handlekakaoLogin = () => {
     window.location.href =
       'http://ec2-52-78-64-106.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/kakao';

@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { overlayActions } from '../../store/overlay-slice';
 import { RootState } from '../../store';
@@ -16,6 +16,10 @@ import useMovePage from '../../hooks/useMovePage';
 type HeaderInfo = {
   ismainpage?: string;
 };
+
+interface ErrorResponse {
+  status: number;
+}
 
 const HeaderContainer = styled.header<HeaderInfo>`
   display: flex;
@@ -56,10 +60,11 @@ const BtnBox = styled.div`
 `;
 
 const Header = ({ ismainpage }: HeaderInfo) => {
-  const navigate = useNavigate();
   const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
-  const [searchParams, setSertchParams] = useSearchParams<string>();
+  const [searchParams] = useSearchParams();
   const accessToken = searchParams.get('access_token');
+  const isLogin: string = localStorage.getItem('isLogin') || '';
+  const navigate = useNavigate();
   const gotoMain = useMovePage('/');
   const modalIsOpen = useSelector(
     (state: RootState): boolean => state.overlay.isOpen
@@ -71,10 +76,13 @@ const Header = ({ ismainpage }: HeaderInfo) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('isLogin');
-    return gotoMain();
+    if (JSON.parse(isLogin)) {
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('isLogin');
+      gotoMain();
+      return window.location.reload();
+    }
   };
 
   useEffect(() => {
@@ -93,8 +101,9 @@ const Header = ({ ismainpage }: HeaderInfo) => {
           localStorage.setItem('userInfo', JSON.stringify(res.data));
           return gotoMain();
         })
-        .catch((err) => {
-          return navigate(`/error/${err.response.status}`);
+        .catch((err: AxiosError<ErrorResponse>) => {
+          const errStatus: number = err.response.status || 500;
+          return navigate(`/error/${errStatus}`);
         });
     }
   });
@@ -118,37 +127,32 @@ const Header = ({ ismainpage }: HeaderInfo) => {
         </Link>
       </LogoBox>
       <BtnBox>
-        <WhiteButton
-          onClick={toggleModal}
-          height="25px"
-          borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-        >
-          로그인
-        </WhiteButton>
-
-        {!ismainpage && (
-          <>
+        {!ismainpage &&
+          (!isLogin ? (
             <WhiteButton
+              onClick={toggleModal}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
               로그인
             </WhiteButton>
-            <WhiteButton
-              onClick={handleLogout}
-              height="25px"
-              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-            >
-              로그아웃
-            </WhiteButton>
-            <SkyBlueButton
-              height="25px"
-              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-            >
-              마이페이지
-            </SkyBlueButton>
-          </>
-        )}
+          ) : (
+            <>
+              <WhiteButton
+                onClick={handleLogout}
+                height="25px"
+                borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+              >
+                로그아웃
+              </WhiteButton>
+              <SkyBlueButton
+                height="25px"
+                borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+              >
+                마이페이지
+              </SkyBlueButton>
+            </>
+          ))}
       </BtnBox>
     </HeaderContainer>
   );
