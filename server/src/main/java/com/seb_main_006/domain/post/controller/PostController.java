@@ -63,11 +63,19 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity getPosts(@Positive @RequestParam int page,
-                                   @Positive @RequestParam int limit) {
-        Page<Post> pagePosts = postService.findPosts(page-1, limit);
-        List<Post> postList = pagePosts.getContent();
+                                   @Positive @RequestParam int limit,
+                                   @RequestParam(required = false) String sort,
+                                   HttpServletRequest request) throws JsonProcessingException  {
 
-        return new ResponseEntity<>(new )
+        String accessToken = null;
+        String authorization = request.getHeader("Authorization");
+
+        if (authorization != null) {
+            accessToken = authorization.replaceAll("Bearer ", "");
+        }
+        PostListResponseDto response = postService.findPosts(page-1, limit, sort, accessToken);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/tagged/{tagName}")

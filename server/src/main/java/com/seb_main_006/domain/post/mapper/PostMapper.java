@@ -18,9 +18,6 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PostMapper {
 
-
-    CourseData courseToCourseData(Course course);
-
     DestinationPostDto destinationToDestinationDto(Destination destination);
 
     List<DestinationPostDto> destinationsToDestinationDtos(List<Destination> destinationList);
@@ -30,7 +27,7 @@ public interface PostMapper {
     List<AnswerResponsePostDto> answersToAnswerDtos(List<Answer> answerList);
 
     @Mapping(source = "course.courseTitle" , target = "courseTitle")
-    @Mapping(source = "course.courseContent" , target = "courseContent")
+    @Mapping(source = "post.postContent" , target = "postContent")
     @Mapping(source = "course.courseViewCount" , target = "courseViewCount")
     @Mapping(source = "course.courseLikeCount" , target = "courseLikeCount")
     @Mapping(source = "course.courseUpdatedAt" , target = "courseUpdatedAt")
