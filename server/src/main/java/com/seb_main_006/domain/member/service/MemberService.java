@@ -30,6 +30,13 @@ public class MemberService {
      */
     public Member createMember(Member member) {
 
+        // 탈퇴한 회원일 경우 기존 탈퇴 상태를 ACTIVE 로 전환
+        if (findDeletedMember(member.getMemberEmail()).isPresent()) {
+            Member findDeletedMember = findDeletedMember(member.getMemberEmail()).get();
+            findDeletedMember.activateMember(member); // 탈퇴한 회원 상태 활성화
+            return memberRepository.save(findDeletedMember);
+        }
+
         // DB에 이메일이 존재하지 않을 때만 회원 가입 로직 수행
         if (!verifyExistEmail(member.getMemberEmail())) {
 
@@ -47,6 +54,15 @@ public class MemberService {
 
         Member findMember = findVerifiedMember(memberEmail);
         findMember.setMemberNickname(memberPatchDto.getMemberNickname());
+    }
+
+    /**
+     * 회원 탈퇴 (상태변경 ACTIVE -> DELETED)
+     */
+    public void deleteMember(String memberEmail) {
+        Member findMember = findVerifiedMember(memberEmail);
+        findMember.setMemberStatus(Member.MemberStatus.DELETED);
+        findMember.setMemberNickname("탈퇴한 사용자");
     }
 
 
@@ -71,7 +87,7 @@ public class MemberService {
     }
 
     // DB에서 회원 조회 (해당 email을 가진 회원이 없을 경우 예외X -> null 반환)
-    private Member findExistMember(String userEmail) {
+    public Member findExistMember(String userEmail) {
 
         Optional<Member> optionalMember = memberRepository.findByMemberEmail(userEmail);
         return optionalMember.isEmpty() ? null : optionalMember.get();
@@ -82,4 +98,10 @@ public class MemberService {
         return memberRepository.findByMemberEmail(memberEmail)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
+
+    // 탈퇴한 회원의 재가입인지 확인 -> 탈퇴상태 회원 리턴
+    private Optional<Member> findDeletedMember(String memberEmail) {
+        return memberRepository.findDeletedUserByMemberEmail(memberEmail);
+    }
+
 }
