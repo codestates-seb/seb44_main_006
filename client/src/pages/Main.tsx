@@ -40,9 +40,6 @@ const CommunitySection = styled(SectionBox)`
   transition: 0.3s;
   > a {
     color: ${cssToken.COLOR['point-900']};
-    &::after {
-      content: '';
-    }
     &:hover::after {
       content: '커뮤니티';
     }
@@ -58,9 +55,6 @@ const ScheduleSection = styled(SectionBox)`
   transition: 0.3s;
   > a {
     color: ${cssToken.COLOR.white};
-    &::after {
-      content: '';
-    }
     &:hover::after {
       content: '일정 등록';
     }
@@ -82,7 +76,7 @@ const Main = () => {
       <CursorPointer isMouseHover={isHovered} />
       <CommunitySection>
         <MainLink
-          to="/"
+          to="/community"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -91,7 +85,7 @@ const Main = () => {
       </CommunitySection>
       <ScheduleSection>
         <MainLink
-          to="/"
+          to="/register"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
