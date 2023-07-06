@@ -149,19 +149,17 @@ public class PostService {
             String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
             member = memberService.findVerifiedMember(memberEmail);
         }
-        System.out.println(0);
-        Page<Course> pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit ,Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount")));
-        List<PostDataForList> postDataList = new ArrayList<>();
-        System.out.println(1);
-        for (Course course : pageResult.getContent()) {
-            boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();  System.out.println(2);
-            boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();   System.out.println(3);
-            PostDataForList postData = PostDataForList.of(course, likeStatus, bookmarkStatus);   System.out.println(4);
-            postDataList.add(postData);  System.out.println(5);
-        }
-        System.out.println(6);
 
-        System.out.println(7);
+        Page<Course> pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount")));
+        List<PostDataForList> postDataList = new ArrayList<>();
+
+        for (Course course : pageResult.getContent()) {
+            boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
+            boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
+            PostDataForList postData = PostDataForList.of(course, likeStatus, bookmarkStatus);
+            postDataList.add(postData);
+        }
+
         return new PostListResponseDto(postDataList, pageResult);
     }
 
@@ -220,7 +218,6 @@ public class PostService {
     public void verifyNoExistPost(Course course) {
         postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
     }
-
 
 
     //해당 코스로 작성된 게시글이 있는지 확인하는 메소드
