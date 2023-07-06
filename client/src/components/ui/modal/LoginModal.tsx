@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import axios from 'axios';
 
 import CloseButton from '../button/CloseButton';
 import cssToken from '../../../styles/cssToken';
@@ -107,6 +108,14 @@ const LoginModal = ({
   styles?: IModalContainer;
   handleClose?: () => void;
 }) => {
+
+
+  const handlekakaoLogin = () => {
+    axios.post('/oauth2/authorization/kakao')
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+  }
+
   return (
     <ModalWrapper>
       <Backdrop onClick={handleClose} />
@@ -114,7 +123,7 @@ const LoginModal = ({
         <SubTitle styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
           3초만에 끝!
         </SubTitle>
-        <KaKaoBtn>
+        <KaKaoBtn onClick={handlekakaoLogin}>
           <KakaoIcon />
           카카오톡 로그인
         </KaKaoBtn>
