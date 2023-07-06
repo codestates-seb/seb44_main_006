@@ -92,6 +92,12 @@ public class PostService {
             newPostTag.setPost(post); // new PostTag에 Post세팅(연관관계 매핑)
             post.getPostTagsInPost().add(newPostTag);// post의 PostTagsInpost리스트에 newPostTag 추가(연관관계 매핑)
         }
+
+        //포스팅 여부 처리
+        boolean posted = findcourse.isPosted();
+        findcourse.setPosted(!posted);
+        courseRepository.save(findcourse);
+
         //Post 테이블에 저장
         return postRepository.save(post);
     }
