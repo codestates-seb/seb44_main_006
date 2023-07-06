@@ -13,7 +13,7 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
-      '/auth/logout': {
+      '/api': {
         target:
           'http://ec2-52-78-64-106.ap-northeast-2.compute.amazonaws.com:8080',
         changeOrigin: true,

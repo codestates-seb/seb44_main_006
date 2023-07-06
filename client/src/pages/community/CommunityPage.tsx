@@ -1,4 +1,6 @@
 import { styled } from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
+import { useRef, useState } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -9,6 +11,7 @@ import useHandleTab from '../../hooks/useHandleTab';
 import CircleButton from '../../components/ui/button/CircleButton';
 import Pen from '../../assets/Pen';
 import useMovePage from '../../hooks/useMovePage';
+import { GetCommunityList, GetSearch } from '../../apis/api';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -30,15 +33,41 @@ const FixedDiv = styled.div`
 `;
 
 const CommunityPage = () => {
+  const [tagName, setTagName] = useState<string>('');
   const { selectTab, setTab } = useHandleTab();
   const goToSelect = useMovePage('/community/select');
-  const test = () => {
-    console.log('검색 아이콘 클릭');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const { data: communityData } = useQuery({
+    queryKey: ['community', selectTab],
+    queryFn: () => GetCommunityList({ page: 1, limit: 6, sort: selectTab }),
+    enabled: !tagName,
+    refetchOnWindowFocus: false,
+  });
+
+  console.log('data', communityData);
+
+  const { data: searchData } = useQuery({
+    queryKey: ['search', tagName, selectTab],
+    queryFn: () => GetSearch({ tagName, page: 1, limit: 6, sort: selectTab }),
+    enabled: !!tagName,
+    refetchOnWindowFocus: false,
+  });
+
+  const SearchPost = () => {
+    if (searchInputRef.current) {
+      const keyword = searchInputRef.current?.value;
+      setTagName(keyword);
+    }
   };
+
+  console.log('searchData', searchData);
+
   return (
     <>
       <Wrapper>
         <SearchContainer
+          ref={searchInputRef}
           iconWidth={39}
           iconHeight={39}
           styles={{
@@ -46,7 +75,7 @@ const CommunityPage = () => {
             height: '86px',
             fontsize: cssToken.TEXT_SIZE['text-24'],
           }}
-          callback={test}
+          callback={SearchPost}
         />
         <FilterSection>
           <FilterTab
