@@ -5,7 +5,12 @@ import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
-import { GapDiv, OutsideWrap } from '../../styles/styles';
+import {
+  BtnDiv,
+  GapDiv,
+  ModalChildrenDiv,
+  OutsideWrap,
+} from '../../styles/styles';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import {
   ExampleDescription,
@@ -19,9 +24,7 @@ import MapContainer from '../../components/community/MapContainer';
 import Modal from '../../components/ui/modal/Modal';
 import { overlayActions } from '../../store/overlay-slice';
 import { RootState } from '../../store';
-import Text from '../../components/ui/text/Text';
-import GrayButton from '../../components/ui/button/GrayButton';
-import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
+import ModalChildren from '../../components/community/post/ModalChildren';
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: ${cssToken.SPACING['gap-50']};
@@ -33,6 +36,7 @@ const PostCommunitypage = () => {
   const gotoNext = useMovePage('/community/post/id');
   const modalIsOpen = useSelector((state: RootState) => state.overlay.isOpen);
   const dispatch = useDispatch();
+
   const toggleModal = () => {
     dispatch(overlayActions.toggleOverlay());
   };
@@ -48,7 +52,6 @@ const PostCommunitypage = () => {
       gotoBack();
       return;
     }
-    // Todo 작성하신 내용이 삭제됩니다 모달 띄우기
     toggleModal();
   };
   const HandleNext = () => {
@@ -58,7 +61,10 @@ const PostCommunitypage = () => {
     }
     quillRef.current?.focus();
   };
-
+  const goToback = () => {
+    gotoBack();
+    toggleModal();
+  };
   const array = [
     { lat: 33.450701, lng: 126.570667 },
     { lat: 33.450701, lng: 126.570867 },
@@ -85,12 +91,15 @@ const PostCommunitypage = () => {
         />
       </OutsideWrap>
       {modalIsOpen && (
-        <Modal>
-          <Text>작성하신 내용이 사라집니다.</Text>
-          {/* 모달닫기 */}
-          <GrayButton onClick={toggleModal}>아니오</GrayButton>
-          {/* 뒤로가기 */}
-          <SkyBlueButton>예</SkyBlueButton>
+        <Modal
+          backdropCallback={toggleModal}
+          handleCloseBtn={toggleModal}
+          styles={{
+            width: '47.0625rem',
+            height: '28.375rem',
+          }}
+        >
+          <ModalChildren toggleModal={toggleModal} gotoBack={goToback} />
         </Modal>
       )}
     </>

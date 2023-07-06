@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+export type Voidfunc = () => void;
+
 export type TextStyleT = {
   size?: string;
   color?: string;
@@ -42,6 +44,7 @@ export interface IButtonStyle {
   onSubmit?: () => void;
   tagname?: string;
   disabled?: 'true' | 'false';
+  fontsize?: string;
 }
 
 export type MarkerT = {
