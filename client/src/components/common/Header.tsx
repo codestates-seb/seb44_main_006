@@ -1,8 +1,6 @@
 import { styled } from 'styled-components';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
 
 import { overlayActions } from '../../store/overlay-slice';
 import { RootState } from '../../store';
@@ -11,15 +9,12 @@ import LogoBlack from '../../assets/common_img/logo_black.svg';
 import WhiteButton from '../ui/button/WhiteButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import LoginModal from '../ui/modal/LoginModal';
+import useAuthInfo from '../../hooks/useAuthInfo';
 import useMovePage from '../../hooks/useMovePage';
 
 type HeaderInfo = {
   ismainpage?: string;
 };
-
-interface ErrorResponse {
-  status: number;
-}
 
 const HeaderContainer = styled.header<HeaderInfo>`
   display: flex;
@@ -58,14 +53,9 @@ const BtnBox = styled.div`
     transition: ${cssToken.TRANSITION.basic};
   }
 `;
-
 const Header = ({ ismainpage }: HeaderInfo) => {
-  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
-  const [searchParams] = useSearchParams();
-  const accessToken = searchParams.get('access_token');
-  const isLogin: string = localStorage.getItem('isLogin') || '';
-  const navigate = useNavigate();
   const gotoMain = useMovePage('/');
+  const isLogin: string = localStorage.getItem('isLogin') || '';
   const modalIsOpen = useSelector(
     (state: RootState): boolean => state.overlay.isOpen
   );
@@ -85,28 +75,7 @@ const Header = ({ ismainpage }: HeaderInfo) => {
     }
   };
 
-  useEffect(() => {
-    if (accessToken) {
-      localStorage.setItem('accessToken', JSON.stringify(accessToken));
-      localStorage.setItem('isLogin', JSON.stringify(true));
-
-      axios
-        .get(`${PROXY}/auth/members`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // AccessToken
-            RefreshToken: `${accessToken}`, // RefreshToken
-          },
-        })
-        .then((res) => {
-          localStorage.setItem('userInfo', JSON.stringify(res.data));
-          return gotoMain();
-        })
-        .catch((err: AxiosError<ErrorResponse>) => {
-          const errStatus: number = err.response.status || 500;
-          return navigate(`/error/${errStatus}`);
-        });
-    }
-  });
+  useAuthInfo();
 
   return (
     <HeaderContainer ismainpage={ismainpage}>
