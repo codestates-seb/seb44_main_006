@@ -26,6 +26,7 @@ import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -178,9 +180,18 @@ public class PostService {
 
         // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
         List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
-        Page<Course> pageResult = postTagRepository.findByTagIn(findTagList, pageRequest);
 
-        // 응답 데이터 형식으로 변환해서 리턴 (없는 데이터 : likeStatus, bookmarkStatus < 이부분 때문에 쿼리가 많이 날라감...)
+        // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
+        Page<Course> pageResult = null;
+        if (sort == null) {
+            log.info("sort == null");
+            pageResult = postTagRepository.findByTagInOrderByUpdatedAt(findTagList, pageRequest);
+        } else {
+            log.info("sort != null (like)");
+            pageResult = postTagRepository.findByTagInOrderByLikeCount(findTagList, pageRequest);
+        }
+
+        // 응답 데이터 형식으로 변환해서 리턴 (없는 데이터 : likeStatus, bookmarkStatus)
         List<PostDataForList> postDataList = new ArrayList<>();
 
         for (Course course : pageResult.getContent()) {
@@ -188,13 +199,6 @@ public class PostService {
             boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
             PostDataForList postData = PostDataForList.of(course, likeStatus, bookmarkStatus);
             postDataList.add(postData);
-        }
-
-        // 정렬 조건에 따라 정렬
-        if (sort == null) {
-            postDataList = postDataList.stream().sorted(Comparator.comparing(PostDataForList::getCourseUpdatedAt).reversed()).collect(Collectors.toList());
-        } else {
-            postDataList = postDataList.stream().sorted(Comparator.comparing(PostDataForList::getCourseLikeCount).reversed()).collect(Collectors.toList());
         }
 
         return new PostListResponseDto(postDataList, pageResult);
