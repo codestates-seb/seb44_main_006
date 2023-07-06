@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 
-import InfoContainer from './InfoContainer';
-
+import InfoContainer from '../../components/community/detail/InfoContainer';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
 import Title from '../../components/ui/text/Title';
 import cssToken from '../../styles/cssToken';

@@ -16,7 +16,6 @@ const ButtonTemplate = styled.button<IButtonStyle>`
   box-shadow: ${(props) => props.boxShadow};
   border: ${(props) => props.border || 'none'};
   border-radius: ${(props) => props.borderRadius};
-
   cursor: pointer;
 
   display: flex;
@@ -24,6 +23,8 @@ const ButtonTemplate = styled.button<IButtonStyle>`
   justify-content: center;
   align-items: center;
   gap: ${(props) => props.gap};
+
+  font-size: ${(props) => props.fontsize || cssToken.TEXT_SIZE['text-16']};
 `;
 
 const Button = ({

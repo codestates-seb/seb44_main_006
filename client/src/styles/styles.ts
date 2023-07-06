@@ -45,3 +45,17 @@ export const OutsideWrap = styled(FlexDiv)`
 export const TagDiv = styled(FlexDiv)`
   column-gap: 0.5rem;
 `;
+
+export const BtnDiv = styled(FlexDiv)`
+  width: 100%;
+  justify-content: center;
+  column-gap: ${cssToken.SPACING['gap-12']};
+  margin-bottom: ${cssToken.SPACING['gap-50']};
+`;
+
+export const ModalChildrenDiv = styled(FlexDiv)`
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-top: ${cssToken.SPACING['py-100']};
+`;
