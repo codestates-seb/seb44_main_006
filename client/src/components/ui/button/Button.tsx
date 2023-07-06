@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 
 import { IButtonStyle, Props } from '../../../types/type';
+import cssToken from '../../../styles/cssToken';
 
 const ButtonTemplate = styled.button<IButtonStyle>`
   width: ${(props) => props.width || 'fit-content'};
@@ -8,7 +9,10 @@ const ButtonTemplate = styled.button<IButtonStyle>`
   margin: ${(props) => props.margin};
   padding: ${(props) => props.padding};
   color: ${(props) => props.color};
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props) =>
+    props.disabled === 'true'
+      ? cssToken.COLOR['gray-700']
+      : props.backgroundColor};
   box-shadow: ${(props) => props.boxShadow};
   border: ${(props) => props.border || 'none'};
   border-radius: ${(props) => props.borderRadius};
@@ -27,14 +31,21 @@ const Button = ({
   styles,
   onClick,
   onSubmit,
+  disabled,
 }: {
   children?: Props['children'];
   styles?: IButtonStyle;
-  onClick?: () => void;
+  onClick?: (arg0?: string) => void;
   onSubmit?: () => void;
+  disabled?: 'true' | 'false';
 }) => {
   return (
-    <ButtonTemplate {...styles} onClick={onClick} onSubmit={onSubmit}>
+    <ButtonTemplate
+      {...styles}
+      onClick={onClick}
+      onSubmit={onSubmit}
+      disabled={disabled}
+    >
       {children}
     </ButtonTemplate>
   );

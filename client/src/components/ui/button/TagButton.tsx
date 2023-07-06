@@ -3,9 +3,17 @@ import Button from './Button';
 import cssToken from '../../../styles/cssToken';
 import { IButtonStyle } from '../../../types/type';
 
-const TagButton = ({ children, width, height, isActive }: IButtonStyle) => {
+const TagButton = ({
+  children,
+  width,
+  height,
+  isActive,
+  onClick,
+  tagname,
+}: IButtonStyle) => {
   return (
     <Button
+      onClick={() => (onClick ? onClick(tagname) : '')}
       styles={{
         width,
         height,

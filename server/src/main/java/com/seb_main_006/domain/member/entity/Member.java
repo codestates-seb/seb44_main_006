@@ -73,6 +73,10 @@ public class Member {
         }
     }
 
+    public Member(Long memberId) {
+        this.memberId = memberId;
+    }
+
     @Getter
     public enum MemberStatus {
         ACTIVE, DELETED;
@@ -81,5 +85,14 @@ public class Member {
     @Getter
     public enum Provider {
         GOOGLE, NAVER, KAKAO;
+    }
+
+    // 탈퇴한 유저 재가입 (기존 정보를 신규 가입 정보로 변경)
+    public void activateMember(Member newMember) {
+        this.setMemberStatus(Member.MemberStatus.ACTIVE);
+        this.setMemberNickname(newMember.getMemberNickname());
+        this.setRoles(newMember.getRoles());
+        this.setMemberImageUrl(newMember.getMemberImageUrl());
+        this.setMemberProvider(newMember.getMemberProvider());
     }
 }

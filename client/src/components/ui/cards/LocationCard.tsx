@@ -43,10 +43,10 @@ const LocationCard = ({
   category,
   address,
   phone,
-  isAction,
+  onClick,
 }: LocationCardInfo) => {
   return (
-    <LocationCardContainer>
+    <LocationCardContainer onClick={onClick}>
       <LocationTop>
         <LocationTitle>{title}</LocationTitle>
         <TagButton>{category}</TagButton>

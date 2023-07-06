@@ -9,6 +9,7 @@ const GrayButton = ({
   height,
   borderRadius,
   onClick,
+  isActive,
 }: IButtonStyle) => {
   return (
     <Button
@@ -16,8 +17,10 @@ const GrayButton = ({
       styles={{
         width,
         height,
-        color: cssToken.COLOR.black,
-        backgroundColor: cssToken.COLOR['gray-500'],
+        color: isActive ? cssToken.COLOR.white : cssToken.COLOR.black,
+        backgroundColor: isActive
+          ? cssToken.COLOR['point-900']
+          : cssToken.COLOR['gray-500'],
         borderRadius,
       }}
     >

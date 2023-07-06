@@ -13,7 +13,6 @@ import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -61,6 +60,9 @@ public class AuthService {
         redisUtil.setBlackList(accessToken, "accessToken", remainingTime);
     }
 
+    /**
+     * AccessToken 재발급
+     */
     public String reissue(String refreshToken, String userEmail) throws JsonProcessingException {
         log.info("refreshToken = {}", refreshToken);
 
@@ -76,12 +78,19 @@ public class AuthService {
         return jwtTokenizer.generateAccessToken(userEmail, authorities);
     }
 
+    /**
+     * 프론트 저장용 유저 정보 조회
+     */
     public MemberInfoResponseDto getMemberInfo(String accessToken) throws JsonProcessingException {
         String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
-        Member findMember = memberService.findVerifiedMember(memberEmail);
+        Member findMember = memberService.findExistMember(memberEmail);
+
+        if (findMember == null) {
+            return new MemberInfoResponseDto();
+        }
+
         int myCourseCount = findMember.getCourses().size();
         int myBookmarkCount = bookmarkService.getBookmarkCount(findMember);
-
         return MemberInfoResponseDto.of(findMember, myCourseCount, myBookmarkCount);
     }
 }

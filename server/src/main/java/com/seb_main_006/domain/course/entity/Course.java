@@ -8,6 +8,7 @@ import com.seb_main_006.domain.post.entity.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
@@ -54,21 +55,30 @@ public class Course {
     @Column
     private long courseViewCount; // 조회 수
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member; // member entity와 연관관계 매핑(다:1)
 
-    @OneToOne(mappedBy = "course", cascade = CascadeType.ALL)
+    @BatchSize(size = 100)
+    @OneToOne(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Post post; // post entity와 연관관계 매핑(1:1)
 
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Destination> destinations = new ArrayList<>(); // destination entity와 연관관계 매핑(1:다)
 
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Likes> likesInCourse = new ArrayList<>(); // like entity와 연관관계 매핑(1:다)
 
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarksInCourse = new ArrayList<>(); // bookmark entity와 연관관계 매핑(1:다)
+
+    public void removePost() {
+        this.setPosted(false);
+        this.setPost(null);
+    }
 
 }
 

@@ -65,8 +65,5 @@ module.exports = {
         "newlines-between": "always",
       },
     ],
-    // 카카오는 어쩔 수 없음... 다른 거에서 any 안쓰게 항상 생각하고 있음...
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
   },
 };
