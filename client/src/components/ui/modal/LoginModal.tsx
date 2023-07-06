@@ -109,12 +109,10 @@ const LoginModal = ({
   handleClose?: () => void;
 }) => {
 
-
   const handlekakaoLogin = () => {
-    axios.post('/oauth2/authorization/kakao')
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
-  }
+    window.location.href =
+      'http://ec2-52-78-64-106.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/kakao';
+  };
 
   return (
     <ModalWrapper>
