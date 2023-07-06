@@ -28,6 +28,7 @@ import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -128,6 +129,10 @@ public class PostService {
         response.setBookmarkStatus(bookmarkStatus);
 
         return response;
+    }
+
+    public Page<Post> findPosts(int page, int limit) {
+        return postRepository.findAll(PageRequest.of(page, limit, Sort.by("postId").descending()));
     }
 
     /**

@@ -9,6 +9,7 @@ import com.seb_main_006.domain.post.entity.Post;
 import com.seb_main_006.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -32,7 +34,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity postCourse(@Valid @RequestBody PostPostDto postPostDto,
-                                     @AuthenticationPrincipal(expression = "username") String memberEmail){
+                                     @AuthenticationPrincipal(expression = "username") String memberEmail) {
         //@AuthenticationPrincipal로 현재 저장되어있는 이메일 가져옴 -> customUserDetail이 없어서 @AuthenticationPrincipal를 통해 userDetail 구현한후 객체를 주입함
 
         Post createdPost = postService.createPost(postPostDto, memberEmail);
@@ -57,6 +59,15 @@ public class PostController {
 
         PostDetailResponseDto response = postService.findPost(postId, accessToken);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity getPosts(@Positive @RequestParam int page,
+                                   @Positive @RequestParam int limit) {
+        Page<Post> pagePosts = postService.findPosts(page-1, limit);
+        List<Post> postList = pagePosts.getContent();
+
+        return new ResponseEntity<>(new )
     }
 
     @GetMapping("/tagged/{tagName}")
