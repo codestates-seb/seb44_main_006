@@ -41,7 +41,7 @@ const ScheduleRegister = () => {
       inputRef.current.value = '';
     }
   };
-
+  // FIXME 숫자 마커가 일반 마커에 가려지는 현상 수정해야함
   return (
     <Wrapper>
       <ScheduleBox>
