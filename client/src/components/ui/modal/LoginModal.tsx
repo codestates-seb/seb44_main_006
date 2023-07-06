@@ -70,6 +70,7 @@ const Button = styled.button`
   padding: ${cssToken.SPACING['gap-10']};
   border-radius: ${cssToken.BORDER['rounded-s']};
   width: 70%;
+  cursor: pointer;
 `;
 
 const GooleBtn = styled(Button)`
@@ -82,6 +83,7 @@ const GooleBtn = styled(Button)`
 `;
 
 const KaKaoBtn = styled(Button)`
+  margin-top: 30px;
   background: #fae100;
   border: 1px solid #fae100;
   > svg {
