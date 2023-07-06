@@ -1,7 +1,7 @@
 package com.seb_main_006.domain.post.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.seb_main_006.domain.answer.dto.AnswerPostDto;
+import com.seb_main_006.domain.answer.dto.AnswerResponsePostDto;
 import com.seb_main_006.domain.course.dto.CourseInfoDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
@@ -71,7 +71,7 @@ public class PostService {
         List<String> inputTags = postPostDto.getTags(); //입력받은 태그 리스트를 postPostDto에서 꺼내옴
 
         //입력받은 태그 리스트의 길이만큼 반복
-        for(int i=0; i<inputTags.size(); i++){
+        for (int i = 0; i < inputTags.size(); i++) {
 
             String tagName = inputTags.get(i); //입력받은 태그 이름 인덱스로 꺼내옴
 
@@ -80,12 +80,12 @@ public class PostService {
             Optional<Tag> optionalTag = tagRepository.findByTagName(tagName); //Tag테이블에서 tagName으로 값이 존재하는 지 확인
 
             // 존재할 경우 newPostTag에 가져온 tag 저장
-            if(optionalTag.isPresent()){
-               Tag findTag = optionalTag.get();
+            if (optionalTag.isPresent()) {
+                Tag findTag = optionalTag.get();
                 newPostTag.setTag(findTag);
             }
             // 존재하지 않을 경우 tag테이블에 저장 후 newPostTag에 저장
-            else{
+            else {
                 newPostTag.setTag(tagRepository.save(new Tag(tagName)));
             }
             newPostTag.setPost(post); // new PostTag에 Post세팅(연관관계 매핑)
@@ -119,9 +119,9 @@ public class PostService {
 
         List<DestinationPostDto> destinationPostDtos = postMapper.destinationsToDestinationDtos(course.getDestinations());
         courseInfoDto.setDestinationList(destinationPostDtos);
-        List<AnswerPostDto> answerPostDtos = postMapper.answersToAnswerDtos(findPost.getAnswersInPost());
+        List<AnswerResponsePostDto> answerResponsePostDtos = postMapper.answersToAnswerDtos(findPost.getAnswersInPost());
 
-        response.setAnswerList(answerPostDtos);
+        response.setAnswerList(answerResponsePostDtos);
         response.setCourseInfo(courseInfoDto);
         response.setTags(tags);
         response.setLikeStatus(likeStatus);
@@ -170,14 +170,14 @@ public class PostService {
     }
 
 
-    public void verifyNoExistPost(Course course){
+    public void verifyNoExistPost(Course course) {
         postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
     }
 
 
     //해당 코스로 작성된 게시글이 있는지 확인하는 메소드
-    private void verifyExistCourse(Course course){
-        if(postRepository.findByCourse(course).isPresent()){
+    private void verifyExistCourse(Course course) {
+        if (postRepository.findByCourse(course).isPresent()) {
             throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
         }
     }
@@ -190,10 +190,8 @@ public class PostService {
     @Transactional
     public Course updateCourseViewCount(Course findCourse) {
 
-        long courseCount= findCourse.getCourseViewCount();
-        System.out.println("조회수 테스트중:"+courseCount);
-        findCourse.setCourseViewCount(courseCount+1);
-        System.out.println("조회수 테스트중:"+courseCount);
+        long courseCount = findCourse.getCourseViewCount();
+        findCourse.setCourseViewCount(courseCount + 1);
         return courseRepository.save(findCourse);
     }
 
