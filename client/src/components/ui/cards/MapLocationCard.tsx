@@ -53,9 +53,10 @@ const LocationText = styled.p`
 `;
 
 const MapLocationCard = ({ indexNum, location }: MapLocationCardInfo) => {
+  const index = indexNum ?? -1;
   return (
     <MapLocationCardContainer>
-      <NumCircle className={indexNum ?? indexNum >= 0 ? 'last-circle' : ''}>
+      <NumCircle className={index >= 0 ? 'last-circle' : ''}>
         {indexNum}
       </NumCircle>
       <LocationCard>

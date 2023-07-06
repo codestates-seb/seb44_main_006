@@ -30,12 +30,13 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
     const markerheight = 40;
 
     const setIamge = () => {
+      const index = idx ?? -1;
       if (img) {
         if (markerId === id) return MarkerOn[0];
         return MarkerOff[0];
       }
-      if (markerId === id) return MarkerOn[idx + 1];
-      return MarkerOff[idx + 1];
+      if (markerId === id) return MarkerOn[index + 1];
+      return MarkerOff[index + 1];
     };
 
     const image = setIamge();

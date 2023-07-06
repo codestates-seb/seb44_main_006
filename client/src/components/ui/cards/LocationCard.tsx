@@ -43,7 +43,6 @@ const LocationCard = ({
   category,
   address,
   phone,
-  isAction,
   onClick,
 }: LocationCardInfo) => {
   return (
