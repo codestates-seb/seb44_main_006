@@ -10,7 +10,7 @@ import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
 
-const ContensCardContainer = styled.section`
+const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
   gap: ${cssToken.SPACING['gap-24']};
   flex-direction: column;
@@ -19,6 +19,10 @@ const ContensCardContainer = styled.section`
   flex-grow: 0;
   width: 25.2813rem;
   ${CardCommonBox}
+  border: ${(props) =>
+    props.selected
+      ? `0.125rem solid ${cssToken.COLOR['point-900']}`
+      : `0.0625rem solid ${cssToken.COLOR['gray-500']};`}
 `;
 
 const UserName = styled.span`
@@ -89,10 +93,19 @@ const ContensCard = ({
   likeCount,
   tag,
   userName,
+  onClick,
+  selectId,
+  id,
 }: ContCardInfo) => {
-  // Todo 컴포넌트 나누는 작업 필요 합니다.
+  // Todo 컴포넌트 나누는 작업 필요 합니다. id는 나중에 넘겨줄것임.
+  const selected = selectId !== undefined && selectId === id;
   return (
-    <ContensCardContainer>
+    <ContensCardContainer
+      onClick={() => {
+        if (onClick && id) onClick(id);
+      }}
+      selected={selected}
+    >
       <ContensTop>
         <UserName>{userName || '탈퇴한 회원'}</UserName>
         <OptionButton isActive={false} />
