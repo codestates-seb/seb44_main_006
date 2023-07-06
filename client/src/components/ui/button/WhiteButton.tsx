@@ -9,9 +9,11 @@ const WhiteButton = ({
   height,
   backgroundColor,
   borderRadius,
+  onClick,
 }: IButtonStyle) => {
   return (
     <Button
+      onClick={onClick}
       styles={{
         width,
         height,

@@ -1,10 +1,12 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
 import WhiteButton from '../ui/button/WhiteButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
+import LoginModal from '../ui/modal/LoginModal';
 
 type HeaderInfo = {
   ismainpage?: string;
@@ -49,8 +51,24 @@ const BtnBox = styled.div`
 `;
 
 const Header = ({ ismainpage }: HeaderInfo) => {
+  const [isModal, setIsModal] = useState<boolean>(false);
+  const handleLogin = () => {
+    setIsModal((prev) => !prev);
+  };
+
   return (
     <HeaderContainer ismainpage={ismainpage}>
+      {isModal && (
+        <LoginModal
+          setIsModal={setIsModal}
+          styles={{
+            width: '500px',
+            height: '500px',
+            borderradius: '15px',
+            gap: '10px',
+          }}
+        />
+      )}
       <LogoBox>
         <Link to="/">
           <LogoImg src={LogoBlack} alt="logo-harumate" />
@@ -58,6 +76,7 @@ const Header = ({ ismainpage }: HeaderInfo) => {
       </LogoBox>
       <BtnBox>
         <WhiteButton
+          onClick={handleLogin}
           height="25px"
           borderRadius={`${cssToken.BORDER['rounded-tag']}`}
         >
