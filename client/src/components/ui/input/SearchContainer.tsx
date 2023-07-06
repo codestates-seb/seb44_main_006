@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { ForwardedRef, forwardRef, useRef } from 'react';
+import { forwardRef, ForwardedRef } from 'react';
 
 import Search from '../../../assets/Search';
 import cssToken from '../../../styles/cssToken';
@@ -42,11 +42,12 @@ type SearchT = {
   iconWidth?: number;
   iconHeight?: number;
   styles?: StylesT;
+  callback?: () => void;
 };
 
 const SearchContainer = forwardRef(
   (
-    { iconWidth, iconHeight, styles }: SearchT,
+    { iconWidth, iconHeight, styles, callback }: SearchT,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
@@ -58,6 +59,7 @@ const SearchContainer = forwardRef(
             iconHeight: iconHeight || 25,
             color: 'none',
           }}
+          onClick={callback}
         />
       </InputWrapper>
     );

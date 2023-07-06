@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { ForwardedRef, KeyboardEvent, forwardRef, useState } from 'react';
 
 import { TextareaT } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
@@ -20,35 +20,42 @@ const Input = styled.input<TextareaT>`
   }
 `;
 
-const InputContainer = ({
-  description,
-  maxLength,
-  styles,
-  type,
-}: {
-  description: string;
-  maxLength?: number;
-  styles?: TextareaT;
-  type?: 'title';
-  // tag 입력 칸과 구분하기 위함
-}) => {
-  // Todo 작성하기 버튼 클릭 시 글자 수 확인 후 조건 만족 못하면 TexT 에러 박스 show 나중에 페이지에서 forward Ref 써야할듯
-  const [isValidate] = useState(true);
-
-  return (
-    <>
-      <Input
-        placeholder={description}
-        maxLength={maxLength || 524288}
-        {...styles}
-      />
-      {type === 'title' && !isValidate && (
-        <Text styles={{ color: cssToken.COLOR['red-900'] }}>
-          글자 수를 만족하지 못했습니다.
-        </Text>
-      )}
-    </>
-  );
-};
+const InputContainer = forwardRef(
+  (
+    {
+      description,
+      maxLength,
+      styles,
+      type,
+      onkeypress,
+    }: {
+      description: string;
+      maxLength?: number;
+      styles?: TextareaT;
+      type?: 'title';
+      // tag 입력 칸과 구분하기 위함
+      onkeypress?: (e: KeyboardEvent<HTMLInputElement>) => void;
+    },
+    ref?: ForwardedRef<HTMLInputElement>
+  ) => {
+    const [isValidate] = useState(true);
+    return (
+      <>
+        <Input
+          ref={ref}
+          onKeyUp={onkeypress}
+          placeholder={description}
+          maxLength={maxLength || 524288}
+          {...styles}
+        />
+        {type === 'title' && !isValidate && (
+          <Text styles={{ color: cssToken.COLOR['red-900'] }}>
+            글자 수를 만족하지 못했습니다.
+          </Text>
+        )}
+      </>
+    );
+  }
+);
 
 export default InputContainer;

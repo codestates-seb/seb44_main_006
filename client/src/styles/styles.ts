@@ -14,3 +14,22 @@ export const TextStyle = styled.h3<TextStyleT>`
 export const FlexDiv = styled.div`
   display: flex;
 `;
+
+export const CardWrapper = styled.div`
+  width: 90%;
+  place-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(405px, 405px));
+  grid-auto-flow: row;
+  gap: ${cssToken.SPACING['gap-50']};
+`;
+
+export const HeadDiv = styled(FlexDiv)`
+  flex-direction: column;
+  row-gap: 3px;
+`;
+
+export const GapDiv = styled(FlexDiv)`
+  flex-direction: column;
+  row-gap: ${cssToken.SPACING['gap-24']};
+`;
