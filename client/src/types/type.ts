@@ -19,7 +19,7 @@ export interface Props {
 export type IconStyle = {
   iconWidth: number;
   iconHeight: number;
-  color: string;
+  color?: string;
 };
 
 export interface IButtonStyle {
@@ -38,8 +38,10 @@ export interface IButtonStyle {
   gap?: string;
   isActive?: boolean;
   title?: string;
-  onClick?: () => void;
+  onClick?: (arg0?: string) => void;
   onSubmit?: () => void;
+  tagname?: string;
+  disabled?: 'true' | 'false';
 }
 
 export type MarkerT = {

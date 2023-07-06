@@ -9,9 +9,11 @@ const SkyBlueButton = ({
   height,
   borderRadius,
   onClick,
+  disabled,
 }: IButtonStyle) => {
   return (
     <Button
+      disabled={disabled}
       onClick={onClick}
       styles={{
         width,
