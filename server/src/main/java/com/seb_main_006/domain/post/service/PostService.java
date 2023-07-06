@@ -1,7 +1,7 @@
 package com.seb_main_006.domain.post.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.seb_main_006.domain.answer.dto.AnswerResponsePostDto;
+import com.seb_main_006.domain.answer.dto.AnswerResponseDto;
 import com.seb_main_006.domain.course.dto.CourseInfoDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
@@ -122,9 +122,9 @@ public class PostService {
 
         List<DestinationPostDto> destinationPostDtos = postMapper.destinationsToDestinationDtos(course.getDestinations());
         courseInfoDto.setDestinationList(destinationPostDtos);
-        List<AnswerResponsePostDto> answerResponsePostDtos = postMapper.answersToAnswerDtos(findPost.getAnswersInPost());
+        List<AnswerResponseDto> answerResponseDtos = postMapper.answersToAnswerDtos(findPost.getAnswersInPost());
 
-        response.setAnswerList(answerResponsePostDtos);
+        response.setAnswerList(answerResponseDtos);
         response.setCourseInfo(courseInfoDto);
         response.setTags(tags);
         response.setLikeStatus(likeStatus);

@@ -28,6 +28,7 @@ public class AnswerController {
 
     private final AnswerService answerService;
 
+    // 댓글 생성
     @PostMapping("/{post-id}")
     public ResponseEntity postAnswer(@PathVariable("post-id") @Positive Long postId, @Valid @RequestBody AnswerPostDto answerPostDto,
                                      @AuthenticationPrincipal(expression = "username") String memberEmail){
@@ -41,6 +42,7 @@ public class AnswerController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    // 댓글 수정
     @PatchMapping("/{answer-id}")
     public ResponseEntity patchAnswer(@PathVariable("answer-id") @Positive Long answerId, @Valid @RequestBody AnswerPatchDto answerPatchDto,
                                      @AuthenticationPrincipal(expression = "username") String memberEmail){
@@ -48,5 +50,14 @@ public class AnswerController {
         Answer updateAnswer = answerService.updateAnswer(answerPatchDto, memberEmail, answerId);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/{answer-id}")
+    public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive Long answerId,
+                                       @AuthenticationPrincipal(expression = "username") String memberEmail){
+        answerService.deleteAnswer(memberEmail, answerId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
