@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { ForwardedRef, forwardRef, useState } from 'react';
 
 import cssToken from '../../../styles/cssToken';
 import Text from '../text/Text';
@@ -21,32 +21,41 @@ const Content = styled.textarea<TextareaT>`
   }
 `;
 
-const TextArea = ({
-  description,
-  maxLength,
-  styles,
-}: {
-  description: string;
-  maxLength?: number;
-  styles?: TextareaT;
-}) => {
-  // Todo 작성하기 버튼 클릭 시 글자 수 확인 후 조건 만족 못하면 TexT 에러 박스 show 나중에 페이지에서 forward Ref 써야할듯
-  const [isValidate] = useState<boolean>(true);
-  return (
-    <>
-      <Content
-        {...styles}
-        placeholder={description}
-        maxLength={maxLength || 5124288}
-        wrap="vertical"
-      />
-      {!isValidate && (
-        <Text styles={{ color: cssToken.COLOR['red-900'] }}>
-          글자 수를 만족하지 못했습니다.
-        </Text>
-      )}
-    </>
-  );
-};
+const TextArea = forwardRef(
+  (
+    {
+      description,
+      maxLength,
+      styles,
+      disabled,
+    }: {
+      description: string;
+      maxLength?: number;
+      styles?: TextareaT;
+      disabled?: boolean;
+    },
+    ref?: ForwardedRef<HTMLTextAreaElement>
+  ) => {
+    // Todo 작성하기 버튼 클릭 시 글자 수 확인 후 조건 만족 못하면 TexT 에러 박스 show 나중에 페이지에서 forward Ref 써야할듯
+    const [isValidate] = useState<boolean>(true);
+    return (
+      <>
+        <Content
+          ref={ref}
+          {...styles}
+          placeholder={description}
+          maxLength={maxLength || 5124288}
+          wrap="vertical"
+          disabled={disabled}
+        />
+        {!isValidate && (
+          <Text styles={{ color: cssToken.COLOR['red-900'] }}>
+            글자 수를 만족하지 못했습니다.
+          </Text>
+        )}
+      </>
+    );
+  }
+);
 
 export default TextArea;

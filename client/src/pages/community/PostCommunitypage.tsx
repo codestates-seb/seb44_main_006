@@ -5,12 +5,7 @@ import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
-import {
-  BtnDiv,
-  GapDiv,
-  ModalChildrenDiv,
-  OutsideWrap,
-} from '../../styles/styles';
+import { GapDiv, OutsideWrap } from '../../styles/styles';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import {
   ExampleDescription,
