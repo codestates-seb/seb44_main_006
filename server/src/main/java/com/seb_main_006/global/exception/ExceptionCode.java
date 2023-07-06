@@ -27,6 +27,7 @@ public enum ExceptionCode {
     POST_EXISTS(409,"선택하신 코스로 작성한 게시글이 이미 존재합니다."),
     CANT_LIKE(403,"본인글에는 좋아요를 할 수 없습니다."),
     CANT_BOOKMARK(403,"본인글에는 즐겨찾기를 할 수 없습니다."),
+    ANSWER_CANT_UPDATE_DELETE(403,"본인글이 아니면 수정,삭제 할 수 없습니다."),
     CANT_LIKE_NOT_FOUND(404,"선택한 코스로 작성된 게시글이 없어 좋아요를 할 수 없습니다."),
     POST_NOT_FOUND(404,"게시글을 찾을 수 없습니다.");
 
