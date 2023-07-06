@@ -89,4 +89,15 @@ public class PostController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity deletePost(@PathVariable @Positive Long postId,
+                                     @AuthenticationPrincipal(expression = "username") String memberEmail) {
+
+        log.info("memberEmail = {}", memberEmail); // OK
+
+        postService.deletePost(postId, memberEmail);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
