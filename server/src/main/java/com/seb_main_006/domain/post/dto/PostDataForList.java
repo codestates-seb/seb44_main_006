@@ -20,7 +20,7 @@ public class PostDataForList {
     private Long courseId;
     private Long postId;
     private String courseTitle;
-    private String courseContent;
+    private String postContent;
     private String courseThumbnail;
     private String memberNickname;
     private Long courseLikeCount; // 받은 좋아요 수
@@ -35,7 +35,7 @@ public class PostDataForList {
                 .courseId(course.getCourseId())
                 .postId(course.getPost().getPostId())
                 .courseTitle(course.getCourseTitle())
-                .courseContent(course.getCourseContent())
+                .postContent(course.getPost().getPostContent())
                 .courseThumbnail(course.getCourseThumbnail())
                 .memberNickname(course.getMember().getMemberNickname())
                 .courseLikeCount(course.getCourseLikeCount())

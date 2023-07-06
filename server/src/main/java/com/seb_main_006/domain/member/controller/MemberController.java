@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -28,6 +25,13 @@ public class MemberController {
 
         memberService.updateMember(memberPatchDto, memberEmail);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteMember(@AuthenticationPrincipal(expression = "username") String memberEmail) {
+
+        memberService.deleteMember(memberEmail);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
