@@ -127,6 +127,9 @@ export interface ContCardInfo {
   text?: string;
   likeCount?: string;
   tag?: string[];
+  onClick?: (arg0?: number) => void;
+  selectId?: number | null;
+  id?: number;
 }
 
 export interface LocationCardInfo {
