@@ -102,19 +102,14 @@ const NaverBtn = styled(Button)`
 
 const LoginModal = ({
   styles,
-  setIsModal,
+  handleClose,
 }: {
   styles?: IModalContainer;
-  setIsModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  handleClose?: () => void;
 }) => {
-  const handleClose = () => {
-    if (setIsModal) {
-      setIsModal((prev) => !prev);
-    }
-  };
   return (
     <ModalWrapper>
-      <Backdrop />
+      <Backdrop onClick={handleClose} />
       <ModalContainer {...styles}>
         <SubTitle styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
           3초만에 끝!

@@ -1,7 +1,9 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { overlayActions } from '../../store/overlay-slice';
+import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
 import WhiteButton from '../ui/button/WhiteButton';
@@ -51,16 +53,20 @@ const BtnBox = styled.div`
 `;
 
 const Header = ({ ismainpage }: HeaderInfo) => {
-  const [isModal, setIsModal] = useState<boolean>(false);
-  const handleLogin = () => {
-    setIsModal((prev) => !prev);
+  const modalIsOpen = useSelector(
+    (state: RootState): boolean => state.overlay.isOpen
+  );
+  const dispatch = useDispatch();
+
+  const toggleModal = () => {
+    dispatch(overlayActions.toggleOverlay());
   };
 
   return (
     <HeaderContainer ismainpage={ismainpage}>
-      {isModal && (
+      {modalIsOpen && (
         <LoginModal
-          setIsModal={setIsModal}
+          handleClose={toggleModal}
           styles={{
             width: '500px',
             height: '500px',
@@ -76,7 +82,7 @@ const Header = ({ ismainpage }: HeaderInfo) => {
       </LogoBox>
       <BtnBox>
         <WhiteButton
-          onClick={handleLogin}
+          onClick={toggleModal}
           height="25px"
           borderRadius={`${cssToken.BORDER['rounded-tag']}`}
         >
