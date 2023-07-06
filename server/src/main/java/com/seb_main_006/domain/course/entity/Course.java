@@ -75,6 +75,11 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarksInCourse = new ArrayList<>(); // bookmark entity와 연관관계 매핑(1:다)
 
+    public void removePost() {
+        this.setPosted(false);
+        this.setPost(null);
+    }
+
 }
 
 
