@@ -20,7 +20,7 @@ const ModalWrapper = styled.div`
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  z-index: 1002;
+  z-index: 1000;
 `;
 
 const Backdrop = styled.div`
@@ -55,7 +55,6 @@ const CloseButtonDiv = styled.div`
   padding: 8px;
   top: 0;
   right: 0;
-  z-index: 1002;
 `;
 
 const Modal = ({
