@@ -33,3 +33,16 @@ export const GapDiv = styled(FlexDiv)`
   flex-direction: column;
   row-gap: ${cssToken.SPACING['gap-24']};
 `;
+
+export const OutsideWrap = styled(FlexDiv)`
+  margin-top: 77px;
+  padding-top: ${cssToken.SPACING['px-50']};
+  padding-left: ${cssToken.SPACING['py-100']};
+  padding-right: ${cssToken.SPACING['py-100']};
+  flex-direction: column;
+  row-gap: ${cssToken.SPACING['gap-50']};
+`;
+
+export const TagDiv = styled(FlexDiv)`
+  column-gap: 0.5rem;
+`;

@@ -8,9 +8,11 @@ const ButtonTemplate = styled.button<IButtonStyle>`
   height: ${(props) => props.height || 'fit-content'};
   margin: ${(props) => props.margin};
   padding: ${(props) => props.padding};
-  color: ${(props) =>
-    props.disabled === 'true' ? cssToken.COLOR['gray-700'] : props.color};
-  background-color: ${(props) => props.backgroundColor};
+  color: ${(props) => props.color};
+  background-color: ${(props) =>
+    props.disabled === 'true'
+      ? cssToken.COLOR['gray-700']
+      : props.backgroundColor};
   box-shadow: ${(props) => props.boxShadow};
   border: ${(props) => props.border || 'none'};
   border-radius: ${(props) => props.borderRadius};

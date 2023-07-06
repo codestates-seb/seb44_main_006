@@ -139,3 +139,10 @@ export interface MapLocationCardInfo {
   indexNum?: number;
   location?: string;
 }
+
+export type CommentT = {
+  src: string;
+  nickName: string;
+  date: string;
+  content: string;
+};
