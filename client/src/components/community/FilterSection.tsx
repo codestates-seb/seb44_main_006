@@ -16,7 +16,7 @@ const FilterWrapper = styled.div`
 `;
 const FilterContainer = styled(FlexDiv)`
   position: absolute;
-  top: -47px;
+  top: -2.9375rem;
   column-gap: ${cssToken.SPACING['gap-50']};
 `;
 

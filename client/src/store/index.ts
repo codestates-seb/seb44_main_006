@@ -4,6 +4,7 @@ import { mapReducer } from './map-slice';
 import { markerReducer } from './marker-slice';
 import { placeListReducer } from './placeList-slice';
 import { scheduleListReducer } from './scheduleList-slice';
+import { overlayReducer } from './overlay-slice';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     marker: markerReducer,
     placeList: placeListReducer,
     scheduleList: scheduleListReducer,
+    overlay: overlayReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -16,11 +16,10 @@ export const FlexDiv = styled.div`
 `;
 
 export const CardWrapper = styled.div`
-  width: 90%;
-  place-items: center;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(405px, 405px));
-  grid-auto-flow: row;
+  justify-content: center;
   gap: ${cssToken.SPACING['gap-50']};
 `;
 

@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import ReactDOM from 'react-dom';
 
 import { Props } from '../../../types/type';
 import CloseButton from '../button/CloseButton';
@@ -19,6 +20,7 @@ const ModalWrapper = styled.div`
   justify-content: center;
   width: 100vw;
   height: 100vh;
+  z-index: 1000;
 `;
 
 const Backdrop = styled.div`
@@ -29,7 +31,7 @@ const Backdrop = styled.div`
   height: 100vh;
   background-color: #000000;
   opacity: 0.3;
-  z-index: 10;
+  z-index: 1001;
 `;
 
 const ModalContainer = styled.section<IModalContainer>`
@@ -43,7 +45,7 @@ const ModalContainer = styled.section<IModalContainer>`
   justify-content: center;
   gap: ${(props) => props.gap};
   background-color: #ffffff;
-  z-index: 20;
+  z-index: 1002;
 `;
 
 const CloseButtonDiv = styled.div`
@@ -53,29 +55,30 @@ const CloseButtonDiv = styled.div`
   padding: 8px;
   top: 0;
   right: 0;
-  z-index: 20;
 `;
 
 const Modal = ({
   children,
   styles,
+  backdropCallback,
+  handleCloseBtn,
 }: {
   children?: Props['children'];
   styles?: IModalContainer;
+  backdropCallback?: () => void;
+  handleCloseBtn?: () => void;
 }) => {
-  const handleClick = () => {
-    console.log('click');
-  };
-  return (
+  return ReactDOM.createPortal(
     <ModalWrapper>
-      <Backdrop />
+      <Backdrop onClick={backdropCallback} />
       <ModalContainer {...styles}>
         {children}
         <CloseButtonDiv>
-          <CloseButton onClick={handleClick} />
+          <CloseButton onClick={handleCloseBtn} />
         </CloseButtonDiv>
       </ModalContainer>
-    </ModalWrapper>
+    </ModalWrapper>,
+    document.getElementById('overlay-root')!
   );
 };
 
