@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 import { Props } from '../../types/type';
-import defaultOptions from '../../utils/constant';
+import defaultOptions from '../../utils/constant/constant';
 import { markerActions } from '../../store/marker-slice';
 import { RootState } from '../../store';
 
@@ -13,11 +13,12 @@ type MarkerT = {
   lng?: number;
   id: number;
   img?: string;
+  idx?: number;
   children?: Props['children'];
 };
 
 // Todo 장소 추가했을 때 marker 리덕스 markerID 초기화하기
-const Marker = ({ lat, lng, id, img, children }: MarkerT) => {
+const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
   const map = useSelector((state: RootState) => state.map.map);
   const markerId = useSelector((state: RootState) => state.marker.markerId);
   const dispatch = useDispatch();
@@ -33,8 +34,8 @@ const Marker = ({ lat, lng, id, img, children }: MarkerT) => {
         if (markerId === id) return MarkerOn[0];
         return MarkerOff[0];
       }
-      if (markerId === id) return MarkerOn[id + 1];
-      return MarkerOff[id + 1];
+      if (markerId === id) return MarkerOn[idx + 1];
+      return MarkerOff[idx + 1];
     };
 
     const image = setIamge();
@@ -62,7 +63,7 @@ const Marker = ({ lat, lng, id, img, children }: MarkerT) => {
         kakao.maps.event.removeListener(marker, 'click', setMarkerId);
       }
     };
-  }, [map, lat, lng, markerId, dispatch, id, img]);
+  }, [map, lat, lng, markerId, dispatch, id, img, idx]);
 
   if (children) {
     return <div>{children}</div>;
