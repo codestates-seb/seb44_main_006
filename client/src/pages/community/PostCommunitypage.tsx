@@ -4,7 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useRef } from 'react';
 
 import cssToken from '../../styles/cssToken';
-import { FlexDiv, GapDiv } from '../../styles/styles';
+import { GapDiv, OutsideWrap } from '../../styles/styles';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import {
   ExampleDescription,
@@ -15,15 +15,6 @@ import Warning from '../../components/community/post/Warning';
 import TagContainer from '../../components/community/post/TagContainer';
 import useMovePage from '../../hooks/useMovePage';
 import MapContainer from '../../components/community/MapContainer';
-
-const OutsideWrap = styled(FlexDiv)`
-  margin-top: 77px;
-  padding-top: ${cssToken.SPACING['px-50']};
-  padding-left: ${cssToken.SPACING['py-100']};
-  padding-right: ${cssToken.SPACING['py-100']};
-  flex-direction: column;
-  row-gap: ${cssToken.SPACING['gap-50']};
-`;
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: ${cssToken.SPACING['gap-50']};
@@ -42,18 +33,16 @@ const PostCommunitypage = () => {
     return sanitizedValue.length === 0;
   };
   const HandleBack = () => {
-    // 뒤로 가겠냐 확인하고 문제 없을 경우
     if (isEditorEmpty()) {
       gotoBack();
     }
-    // 작성하신 내용이 삭제됩니다 모달 띄우기
+    // Todo 작성하신 내용이 삭제됩니다 모달 띄우기
   };
   const HandleNext = () => {
     if (!isEditorEmpty()) {
       gotoNext();
       return;
     }
-    // content랑 태그 입력했다면
     quillRef.current?.focus();
   };
 

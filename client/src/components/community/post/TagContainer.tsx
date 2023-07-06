@@ -1,16 +1,11 @@
-import { styled } from 'styled-components';
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
 import { ChooseTag } from './DescriptionZip';
 
-import { FlexDiv, GapDiv } from '../../../styles/styles';
+import { GapDiv, TagDiv } from '../../../styles/styles';
 import InputContainer from '../../ui/input/InputContainer';
 import TagButton from '../../ui/button/TagButton';
 import cssToken from '../../../styles/cssToken';
-
-const TagDiv = styled(FlexDiv)`
-  column-gap: 0.5rem;
-`;
 
 const TagContainer = () => {
   const inputRef = useRef<HTMLInputElement>(null);

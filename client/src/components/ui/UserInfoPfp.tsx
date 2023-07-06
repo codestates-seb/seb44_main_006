@@ -19,6 +19,7 @@ export const UserImgContainer = styled.div<UserInfoStyle>`
   align-items: center;
   justify-content: center;
   width: ${(props) => (props.size ? props.size : '5.3125rem')};
+  height: ${(props) => (props.size ? props.size : '5.3125rem')};
 `;
 
 export const Img = styled.img`
