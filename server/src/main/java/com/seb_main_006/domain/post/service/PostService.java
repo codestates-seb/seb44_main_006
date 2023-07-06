@@ -39,6 +39,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PostService {
     private final MemberService memberService;
@@ -173,10 +174,14 @@ public class PostService {
     /**
      * 게시글 삭제
      */
+    @Transactional
     public void deletePost(Long postId, String memberEmail) {
         Post findPost = findVerifiedPost(postId);
         Member findMember = memberService.findVerifiedMember(memberEmail);
-        courseService.verifyMyCourse(findMember, findPost.getCourse());
+        Course course = findPost.getCourse();
+
+        courseService.verifyMyCourse(findMember, course);
+        course.removePost();
         postRepository.delete(findPost);
     }
 
