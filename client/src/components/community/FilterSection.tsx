@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useInView } from 'react-intersection-observer';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -21,6 +22,7 @@ const FilterContainer = styled(FlexDiv)`
 `;
 
 const FilterSection = ({ children }: { children: Props['children'] }) => {
+  const [ref, inView] = useInView();
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
@@ -32,6 +34,7 @@ const FilterSection = ({ children }: { children: Props['children'] }) => {
         <ContensCard />
         <ContensCard />
       </CardWrapper>
+      <div ref={ref} />
     </FilterWrapper>
   );
 };
