@@ -65,7 +65,7 @@ public class PostController {
     public ResponseEntity getPosts(@Positive @RequestParam int page,
                                    @Positive @RequestParam int limit,
                                    @RequestParam(required = false) String sort,
-                                   HttpServletRequest request) throws JsonProcessingException  {
+                                   HttpServletRequest request) throws JsonProcessingException {
 
         String accessToken = null;
         String authorization = request.getHeader("Authorization");
@@ -73,7 +73,7 @@ public class PostController {
         if (authorization != null) {
             accessToken = authorization.replaceAll("Bearer ", "");
         }
-        PostListResponseDto response = postService.findPosts(page-1, limit, sort, accessToken);
+        PostListResponseDto response = postService.findPosts(page - 1, limit, sort, accessToken);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
