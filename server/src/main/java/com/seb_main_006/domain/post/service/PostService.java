@@ -28,6 +28,7 @@ import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -138,6 +139,30 @@ public class PostService {
         response.setBookmarkStatus(bookmarkStatus);
 
         return response;
+    }
+
+    public PostListResponseDto findPosts(int page, int limit, String sort, String accessToken) throws JsonProcessingException {
+
+        Member member = new Member(0L);
+
+        if (accessToken != null) {
+            String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+            member = memberService.findVerifiedMember(memberEmail);
+        }
+        System.out.println(0);
+        Page<Course> pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit ,Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount")));
+        List<PostDataForList> postDataList = new ArrayList<>();
+        System.out.println(1);
+        for (Course course : pageResult.getContent()) {
+            boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();  System.out.println(2);
+            boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();   System.out.println(3);
+            PostDataForList postData = PostDataForList.of(course, likeStatus, bookmarkStatus);   System.out.println(4);
+            postDataList.add(postData);  System.out.println(5);
+        }
+        System.out.println(6);
+
+        System.out.println(7);
+        return new PostListResponseDto(postDataList, pageResult);
     }
 
     /**
