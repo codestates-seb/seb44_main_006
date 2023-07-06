@@ -34,23 +34,27 @@ const PostCommunitypage = () => {
   const gotoBack = useMovePage('/community/select');
   const gotoNext = useMovePage('/community/post/id');
 
-  const HandleBack = () => {
-    // 뒤로 가겠냐 확인하고 문제 없을 경우
-    gotoBack();
-  };
-  const HandleNext = () => {
-    if (!quillRef?.current) return;
-    const inputString = String(quillRef.current.value);
+  const isEditorEmpty = () => {
+    const inputString = String(quillRef.current?.value);
     const sanitizedValue: string = inputString
       .replace(/<\/?[^>]+(>|$)/g, '')
       .trim();
-
-    if (sanitizedValue.length > 0) {
+    return sanitizedValue.length === 0;
+  };
+  const HandleBack = () => {
+    // 뒤로 가겠냐 확인하고 문제 없을 경우
+    if (isEditorEmpty()) {
+      gotoBack();
+    }
+    // 작성하신 내용이 삭제됩니다 모달 띄우기
+  };
+  const HandleNext = () => {
+    if (!isEditorEmpty()) {
       gotoNext();
       return;
     }
     // content랑 태그 입력했다면
-    quillRef.current.focus();
+    quillRef.current?.focus();
   };
 
   const array = [

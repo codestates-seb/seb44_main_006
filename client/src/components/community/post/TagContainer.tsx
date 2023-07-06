@@ -38,6 +38,7 @@ const TagContainer = () => {
 
   useEffect(() => {
     if (tags.length >= 5) {
+      //
       inputRef.current!.readOnly = true;
       setPlaceholder('최대 태그 개수를 만족하였습니다.');
     } else {
