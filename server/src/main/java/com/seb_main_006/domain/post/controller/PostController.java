@@ -38,7 +38,7 @@ public class PostController {
 
         // 응답 헤더에 리소스 위치 추가
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/posts/" + createdPost.getPostId()));
+        headers.setLocation(URI.create(Long.toString(createdPost.getPostId())));
 
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
