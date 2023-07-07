@@ -21,6 +21,9 @@ public interface PostMapper {
 
     List<DestinationPostDto> destinationsToDestinationDtos(List<Destination> destinationList);
 
+    @Mapping(source = "member.memberNickname", target = "answererNickname")
+    @Mapping(source = "member.memberEmail", target = "answererEmail")
+    @Mapping(source = "member.memberImageUrl", target = "answererImageUrl")
     AnswerResponseDto answerToAnswerDto(Answer answer);
 
     List<AnswerResponseDto> answersToAnswerDtos(List<Answer> answerList);

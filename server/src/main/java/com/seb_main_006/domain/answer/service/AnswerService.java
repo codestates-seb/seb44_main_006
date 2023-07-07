@@ -7,12 +7,16 @@ import com.seb_main_006.domain.answer.repository.AnswerRepository;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
 import com.seb_main_006.domain.post.entity.Post;
+import com.seb_main_006.domain.post.repository.PostRepository;
 import com.seb_main_006.domain.post.service.PostService;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +27,7 @@ public class AnswerService {
     private final MemberService memberService;
     private final PostService postService;
     private final AnswerRepository answerRepository;
+    private final PostRepository postRepository;
 
     // 댓글 생성
     public Answer createAnswer(AnswerPostDto answerPostDto, String memberEmail, Long postId) {
@@ -63,8 +68,14 @@ public class AnswerService {
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Answer findAnswer = findVerifiedAnswer(answerId);
 
-        // 로그인한 작성자와 answer 작성자가 동일한지 확인
-        verifyUser(findMember, findAnswer);
+        // 멤버 권한 체크
+        List<String> findRole = findMember.getRoles();
+
+        // ADMIN 권한이 없을 경우에만 본인 일정 여부 검증
+        if (!findRole.contains("ADMIN")) {
+            // 로그인한 작성자와 answer 작성자가 동일한지 확인
+            verifyUser(findMember, findAnswer);
+        }
 
         // 동일할 경우 삭제
         answerRepository.delete(findAnswer);
@@ -73,7 +84,7 @@ public class AnswerService {
     // AnswerId로 answer찾는 메소드
     private Answer findVerifiedAnswer(Long answerId) {
         return answerRepository.findById(answerId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
     }
 
     // 로그인한 사용자와 answer의 작성자가 동일한지 확인하는 메소드
