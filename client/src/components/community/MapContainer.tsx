@@ -7,6 +7,8 @@ import Polyline from '../map/Polyline';
 import cssToken from '../../styles/cssToken';
 import Title from '../ui/text/Title';
 import MapLocationCard from '../ui/cards/MapLocationCard';
+import { IScheduleListItem } from '../../types/type';
+import makePolyline from '../../utils/makePolyline';
 
 const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
@@ -24,37 +26,45 @@ const LocationCardWrapper = styled.div`
   overflow-y: scroll;
 `;
 
-const MapContainer = ({ array }: { array: { lat: number; lng: number }[] }) => {
+const MapContainer = ({
+  destinationList,
+  title,
+}: {
+  destinationList: IScheduleListItem[];
+  title: string;
+}) => {
   return (
     <FlexDiv>
       <MapDiv>
-        <KakaoMap width="100%" height="60vh">
-          {array.map((pos, idx) => (
-            <Marker key={idx} lat={pos.lat} lng={pos.lng} id={idx} />
+        <KakaoMap
+          center={{
+            lat: destinationList[0].y,
+            lng: destinationList[0].x,
+            level: 3,
+          }}
+          width="100%"
+          height="60vh"
+        >
+          {destinationList.map((destination, idx) => (
+            <Marker
+              key={uuid}
+              lat={destination.y}
+              lng={destination.x}
+              id={destination.id ?? ''}
+              idx={idx}
+            />
           ))}
-          <Polyline linePos={array} />
+          <Polyline linePos={makePolyline(destinationList)} />
         </KakaoMap>
       </MapDiv>
       <ScheduleDiv>
         <Title styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
-          제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다제목이들어갈겁니다
+          {title || ''}
         </Title>
         <LocationCardWrapper>
-          <MapLocationCard indexNum={1} location="this is red too" />
-          <MapLocationCard indexNum={2} location="길막마전부타비켜" />
-          <MapLocationCard indexNum={3} location="여긴어디나는누구" />
-          <MapLocationCard
-            indexNum={4}
-            location="여름이었다가을이었다겨울이었다봄이었다여름이었다가을이었다겨"
-          />
-          <MapLocationCard
-            indexNum={5}
-            location="여름이었다가을이었다겨울이었다봄이었다여름이었다가을이었다겨"
-          />
-          <MapLocationCard
-            indexNum={6}
-            location="여름이었다가을이었다겨울이었다봄이었다여름이었다가을이었다겨"
-          />
+          {destinationList.map((destination, idx) => (
+            <MapLocationCard indexNum={idx} location={destination.placeName} />
+          ))}
         </LocationCardWrapper>
       </ScheduleDiv>
     </FlexDiv>

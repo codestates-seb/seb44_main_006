@@ -125,7 +125,8 @@ export interface ContCardInfo {
   userName?: string;
   title?: string;
   text?: string;
-  likeCount?: string;
+  likeCount?: number;
+  thumbnail?: string;
   tag?: string[];
   onClick?: (arg0?: number) => void;
   selectId?: number | null;
