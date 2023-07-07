@@ -29,7 +29,8 @@ const SelectSchedulePage = () => {
   const gotoBack = useMovePage('/community');
   const gotoNext = useMovePage('/community/post', selectId);
   const handleClickCard = (id: number | undefined) => {
-    setSelectId(id);
+    if (id === selectId) setSelectId(null);
+    else setSelectId(id);
   };
   const goToWrite = () => {
     if (selectId) {

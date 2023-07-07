@@ -7,7 +7,8 @@
     "allowJs": true,
     "skipLibCheck": true,
     "types": [
-      "kakao.maps.d.ts"
+      "kakao.maps.d.ts",
+      "vite/client"
     ],
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -25,5 +26,6 @@
   },
   "include": ["src"],
   "exclude": ["node_modules"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "lib": ["WebWorker"]
 }

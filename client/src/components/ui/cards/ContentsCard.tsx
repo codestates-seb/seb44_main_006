@@ -10,7 +10,7 @@ import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
 
-const ContensCardContainer = styled.section<{ selected?: boolean }>`
+const ContensCardContainer = styled.section`
   display: flex;
   gap: ${cssToken.SPACING['gap-24']};
   flex-direction: column;
@@ -19,10 +19,6 @@ const ContensCardContainer = styled.section<{ selected?: boolean }>`
   flex-grow: 0;
   width: 25.2813rem;
   ${CardCommonBox}
-  border: ${(props) =>
-    props.selected
-      ? `0.125rem solid ${cssToken.COLOR['point-900']}`
-      : `0.0625rem solid ${cssToken.COLOR['gray-500']};`}
 `;
 
 const UserName = styled.span`
