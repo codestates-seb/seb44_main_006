@@ -58,6 +58,7 @@ public class MemberService {
             boolean likeStatus = likesRepository.findByMemberAndCourse(findMember, findBookmark.getCourse()).isPresent();
             MemberBookmarked newMemberBookmarked = new MemberBookmarked(findBookmark.getCourse(), findMember.getMemberNickname(), likeStatus);
             newMemberBookmarkedList.add(newMemberBookmarked);
+
         }
         //업데이트시간 기준 정렬(최근 업데이트가 빠른 기준 내림차순 정렬)
         Collections.sort(newMemberCourseList, Comparator.comparing(MemberCourse::getCourseUpdatedAt).reversed());

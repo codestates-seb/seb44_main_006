@@ -14,7 +14,7 @@ public enum ExceptionCode {
     COURSE_CANNOT_CHANGE(403,"일정을 수정 할 수 없습니다."),
     COURSE_CANNOT_DELETE(403,"일정을 삭제 할 수 없습니다."),
     COURSE_HAS_BEEN_DELETED(403,"일정이 삭제 되었습니다."),
-    ANSWER_NOT_FOUND(404,"답변을 찾을 수 없습니다."),
+    ANSWER_NOT_FOUND(404,"댓글을 찾을 수 없습니다."),
     ANSWER_EXISTS(409, "답변이 이미 존재 합니다."),
     ANSWER_CANNOT_CHANGE(403,"답변을 수정 할 수 없습니다."),
     ANSWER_CANNOT_DELETE(403,"답변을 삭제 할 수 없습니다."),
@@ -30,6 +30,7 @@ public enum ExceptionCode {
     ANSWER_CANT_UPDATE_DELETE(403,"본인글이 아니면 수정,삭제 할 수 없습니다."),
     CANT_LIKE_NOT_FOUND(404,"선택한 코스로 작성된 게시글이 없어 좋아요를 할 수 없습니다."),
     POST_NOT_FOUND(404,"게시글을 찾을 수 없습니다.");
+
 
 
 

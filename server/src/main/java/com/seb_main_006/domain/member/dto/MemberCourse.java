@@ -19,6 +19,7 @@ public class MemberCourse {
     private String memberNickname;
     private Long courseLikeCount;
     private Long courseViewCount;
+    private Boolean isPosted;
     private LocalDateTime courseUpdatedAt;
 
     public MemberCourse(Course course, String memberNickname){
@@ -31,6 +32,7 @@ public class MemberCourse {
         this.memberNickname = memberNickname;
         this.courseLikeCount = course.getCourseLikeCount();
         this.courseViewCount = course.getCourseViewCount();
+        this.isPosted = course.isPosted();
         this.courseUpdatedAt = course.getCourseUpdatedAt();
 
     }

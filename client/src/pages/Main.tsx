@@ -1,7 +1,10 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { overlayActions } from '../store/overlay-slice';
+import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
@@ -63,12 +66,22 @@ const ScheduleSection = styled(SectionBox)`
 
 const Main = () => {
   const [isHovered, setIsHovered] = useState<boolean>(true);
+  const isLoggedIn = useSelector((state: RootState) => state.isLogin);
+  const modalIsOpen = useSelector(
+    (state: RootState): boolean => state.overlay.isOpen
+  );
+  const dispatch = useDispatch();
 
   const handleMouseEnter = () => {
     setIsHovered((prev) => !prev);
   };
+
   const handleMouseLeave = () => {
     setIsHovered((prev) => !prev);
+  };
+
+  const toggleModal = () => {
+    dispatch(overlayActions.toggleOverlay());
   };
 
   return (
@@ -85,7 +98,8 @@ const Main = () => {
       </CommunitySection>
       <ScheduleSection>
         <MainLink
-          to="/register"
+          onClick={isLoggedIn.isLogin ? null : toggleModal}
+          to={isLoggedIn.isLogin ? '/register' : '/'}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
