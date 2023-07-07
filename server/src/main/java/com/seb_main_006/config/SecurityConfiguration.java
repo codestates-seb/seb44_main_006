@@ -82,9 +82,9 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(""));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("")); // 클라이언트에서 요청할 때 허용할 요청 헤더 설정
+        configuration.setAllowedHeaders(Arrays.asList("*")); // 클라이언트에서 요청할 때 허용할 요청 헤더 설정
         configuration.setExposedHeaders(Arrays.asList("*")); // 클라이언트로 노출할 응답 헤더 설정
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
