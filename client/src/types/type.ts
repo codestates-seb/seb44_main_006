@@ -43,8 +43,11 @@ export interface IButtonStyle {
   onClick?: (arg0?: string) => void;
   onSubmit?: () => void;
   tagname?: string;
+  categoryname?: string;
   disabled?: 'true' | 'false';
   fontsize?: string;
+  selectedid?: string | undefined;
+  isreset?: boolean;
 }
 
 export type MarkerT = {
@@ -149,3 +152,8 @@ export type CommentT = {
   date: string;
   content: string;
 };
+
+export interface ICSearchState {
+  radius?: number;
+  category?: string;
+}
