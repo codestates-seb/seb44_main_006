@@ -67,7 +67,6 @@ public class LikesService {
             newlikes.setMember(findMember);
             newlikes.setPostId(findCourse.getPost().getPostId());
 
-            findMember.getLikesInMember().add(newlikes);
             findCourse.getLikesInCourse().add(newlikes);
 
             //Course테이블의 좋아요수 +1
