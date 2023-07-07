@@ -213,9 +213,19 @@ public class PostService {
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Course course = findPost.getCourse();
 
-        courseService.verifyMyCourse(findMember, course);
-        course.removePost();
-        postRepository.delete(findPost);
+        // 멤버 권한 체크
+        List<String> findRole = findMember.getRoles();
+
+        // 권한에 admin이 있으면 멤버 비교 안하고 삭제바로 가능하게 구현
+        if(findRole.contains("ADMIN")){
+            course.removePost();
+            postRepository.delete(findPost);
+        }
+        else{
+            courseService.verifyMyCourse(findMember, course);
+            course.removePost();
+            postRepository.delete(findPost);
+        }
     }
 
 
