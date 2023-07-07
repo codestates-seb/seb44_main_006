@@ -10,7 +10,7 @@ import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
 
-const ContensCardContainer = styled.section`
+const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
   gap: ${cssToken.SPACING['gap-24']};
   flex-direction: column;
@@ -89,10 +89,19 @@ const ContensCard = ({
   likeCount,
   tag,
   userName,
+  thumbnail,
+  onClick,
+  selectId,
+  id,
 }: ContCardInfo) => {
-  // Todo 컴포넌트 나누는 작업 필요 합니다.
+  const selected = selectId !== undefined && selectId === id;
   return (
-    <ContensCardContainer>
+    <ContensCardContainer
+      onClick={() => {
+        if (onClick && id) onClick(id);
+      }}
+      selected={selected}
+    >
       <ContensTop>
         <UserName>{userName || '탈퇴한 회원'}</UserName>
         <OptionButton isActive={false} />
@@ -124,7 +133,7 @@ const ContensCard = ({
           height: '0',
           borderRadius: cssToken.BORDER['rounded-s'],
         }}
-        src="https://www.sungsimdangmall.co.kr/data/sungsimdang/goods/sungsimdang/big/202310454292163523295.jpg"
+        src={thumbnail}
       />
 
       <ContensBottom>

@@ -1,28 +1,75 @@
 package com.seb_main_006.domain.member.service;
 
+import com.seb_main_006.domain.bookmark.entity.Bookmark;
+import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
+import com.seb_main_006.domain.course.entity.Course;
+import com.seb_main_006.domain.course.repository.CourseRepository;
+import com.seb_main_006.domain.like.repository.LikesRepository;
+import com.seb_main_006.domain.member.dto.MemberBookmarked;
+import com.seb_main_006.domain.member.dto.MemberCourse;
 import com.seb_main_006.domain.member.dto.MemberPatchDto;
+import com.seb_main_006.domain.member.dto.MyPageResponseDto;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.repository.MemberRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class MemberService {
-
 
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils customAuthorityUtils;
+    private final CourseRepository courseRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final LikesRepository likesRepository;
 
-    public MemberService(MemberRepository memberRepository, CustomAuthorityUtils customAuthorityUtils) {
-        this.memberRepository = memberRepository;
-        this.customAuthorityUtils = customAuthorityUtils;
+    /**
+     * 마이페이지 조회
+     */
+    public MyPageResponseDto getMyPage(String memberEmail) {
+
+        //memberEmail로 Member 찾아옴
+        Member findMember = findVerifiedMember(memberEmail);
+
+        //찾아온 Member로 mycourseList와 myBookmarkedList 찾아옴
+        List<Course> myCourseList = courseRepository.findAllByMember(findMember);
+        List<Bookmark> myBookmarkedList = bookmarkRepository.findAllByMember(findMember);
+
+        //myCourseList를 순회하면서 newMemberCourseList에 값넣음
+        List<MemberCourse> newMemberCourseList = new ArrayList<>();
+        for(int i=0; i<myCourseList.size(); i++){
+            Course findCourse = myCourseList.get(i);
+            MemberCourse newMemberCourse = new MemberCourse(findCourse, findMember.getMemberNickname());
+            newMemberCourseList.add(newMemberCourse);
+        }
+
+        //myBookmarkedList를 순회하면서 newMemberBookmarkedList에 값넣음
+        List<MemberBookmarked> newMemberBookmarkedList = new ArrayList<>();
+        for(int i=0; i<myBookmarkedList.size(); i++){
+            Bookmark findBookmark = myBookmarkedList.get(i);
+            boolean likeStatus = likesRepository.findByMemberAndCourse(findMember, findBookmark.getCourse()).isPresent();
+            MemberBookmarked newMemberBookmarked = new MemberBookmarked(findBookmark.getCourse(), findMember.getMemberNickname(), likeStatus);
+            newMemberBookmarkedList.add(newMemberBookmarked);
+
+        }
+        //업데이트시간 기준 정렬(최근 업데이트가 빠른 기준 내림차순 정렬)
+        Collections.sort(newMemberCourseList, Comparator.comparing(MemberCourse::getCourseUpdatedAt).reversed());
+        Collections.sort(newMemberBookmarkedList, Comparator.comparing(MemberBookmarked::getCourseUpdatedAt).reversed());
+
+        //MypageResponseDto에 값넣고 리턴
+        MyPageResponseDto myPageResponseDto = new MyPageResponseDto();
+        myPageResponseDto.setMemberCourseList(newMemberCourseList);
+        myPageResponseDto.setMemberBookmarkedList(newMemberBookmarkedList);
+
+        return myPageResponseDto;
     }
 
     /**
@@ -103,5 +150,4 @@ public class MemberService {
     private Optional<Member> findDeletedMember(String memberEmail) {
         return memberRepository.findDeletedUserByMemberEmail(memberEmail);
     }
-
 }

@@ -50,10 +50,6 @@ export interface IButtonStyle {
   isreset?: boolean;
 }
 
-export type MarkerT = {
-  markerId: number | null;
-};
-
 export type PlacesSearchResult = PlacesSearchResultItem[];
 
 export interface PlacesSearchResultItem {
@@ -128,8 +124,12 @@ export interface ContCardInfo {
   userName?: string;
   title?: string;
   text?: string;
-  likeCount?: string;
+  likeCount?: number;
+  thumbnail?: string;
   tag?: string[];
+  onClick?: (arg0?: number) => void;
+  selectId?: number | null;
+  id?: number;
 }
 
 export interface LocationCardInfo {
@@ -144,6 +144,8 @@ export interface LocationCardInfo {
 export interface MapLocationCardInfo {
   indexNum?: number;
   location?: string;
+  id?: string;
+  onClick?: ({ id }: { id: string | undefined }) => void;
 }
 
 export type CommentT = {
@@ -151,6 +153,16 @@ export type CommentT = {
   nickName: string;
   date: string;
   content: string;
+};
+
+export interface RouteState {
+  state?: string | number | undefined;
+}
+
+export type IdT = string | undefined;
+
+export type MarkerT = {
+  markerId: IdT;
 };
 
 export interface ICSearchState {

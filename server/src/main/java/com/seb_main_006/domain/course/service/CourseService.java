@@ -75,7 +75,7 @@ public class CourseService {
         Course findCourse = findVerifiedCourse(courseId);
         verifyMyCourse(findmember, findCourse); // 본인의 일정인지 확인
 
-        String dateString = DateConverter.LocalDateToStringWithDay(findCourse.getCourseDday()); // Dday를 요일 정보 추가한 String 으로 변환
+        String dateString = DateConverter.localDateToStringWithDay(findCourse.getCourseDday()); // Dday를 요일 정보 추가한 String 으로 변환
 
         // Course -> CoursePostDto (응답 데이터 형식)
         CoursePostDto response = courseMapper.courseToCourseDto(findCourse);

@@ -78,6 +78,8 @@ public class Course {
     public void removePost() {
         this.setPosted(false);
         this.setPost(null);
+        this.getLikesInCourse().clear();
+        this.getBookmarksInCourse().clear();
     }
 
 }

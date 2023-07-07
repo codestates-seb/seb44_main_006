@@ -1,4 +1,6 @@
 import { styled } from 'styled-components';
+import { useInView } from 'react-intersection-observer';
+import { useNavigate } from 'react-router-dom';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -21,17 +23,23 @@ const FilterContainer = styled(FlexDiv)`
 `;
 
 const FilterSection = ({ children }: { children: Props['children'] }) => {
+  const navigate = useNavigate();
+  const [ref, inView] = useInView();
+  const moveToDetail = (id: number | undefined) => {
+    if (id) navigate(`/community/${id}`);
+  };
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
       {/* Todo 리액트쿼리 데이터로 변경하기 */}
       <CardWrapper>
-        <ContensCard />
+        <ContensCard onClick={moveToDetail} id={1} />
         <ContensCard />
         <ContensCard />
         <ContensCard />
         <ContensCard />
       </CardWrapper>
+      <div ref={ref} />
     </FilterWrapper>
   );
 };

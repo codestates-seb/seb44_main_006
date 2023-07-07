@@ -1,4 +1,6 @@
 import { styled } from 'styled-components';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -6,6 +8,8 @@ import ContensCard from '../../components/ui/cards/ContentsCard';
 import Head from '../../components/community/Head';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import useMovePage from '../../hooks/useMovePage';
+import { GetMyList } from '../../apis/api';
+import { MemberListT } from '../../types/apitype';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -24,27 +28,48 @@ const OverFlowDiv = styled.div`
 `;
 
 const SelectSchedulePage = () => {
+  const [selectId, setSelectId] = useState<number | null | undefined>(null);
   const gotoBack = useMovePage('/community');
-  const gotoNext = useMovePage('/community/post');
+  const gotoNext = useMovePage('/community/post', selectId);
+
+  // FixMe: select type
+  const { data: courses } = useQuery({
+    queryKey: ['selectList'],
+    queryFn: GetMyList,
+    refetchOnWindowFocus: false,
+    select: (data) => data.data.memberCourseList,
+  });
+
+  const handleClickCard = (id: number | undefined) => {
+    if (id === selectId) setSelectId(null);
+    else setSelectId(id);
+  };
+  const goToWrite = () => {
+    if (selectId) {
+      gotoNext();
+    }
+  };
   return (
     <OutsideWrap>
       <Head />
       <OverFlowDiv>
         <CardWrapper>
-          {/* Todo 리액트쿼리로 유저 일정 가지고 와서 뿌려줘야함 */}
-          {/* Todo 카드 onClick callback 걸어야함 */}
-          <ContensCard />
-          <ContensCard />
-          <ContensCard />
-          <ContensCard />
-          <ContensCard />
-          <ContensCard />
-          <ContensCard />
-          <ContensCard />
-          <ContensCard />
+          {courses &&
+            courses.map((course: MemberListT) => (
+              <ContensCard
+                title={course.courseTitle}
+                text={course.courseContent}
+                likeCount={course.courseLikeCount}
+                userName={course.memberNickname}
+                thumbnail={course.courseThumbnail}
+                id={course.courseId}
+                selectId={selectId}
+                onClick={handleClickCard}
+              />
+            ))}
         </CardWrapper>
       </OverFlowDiv>
-      <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={gotoNext} />
+      <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />
     </OutsideWrap>
   );
 };

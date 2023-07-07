@@ -19,6 +19,12 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @GetMapping
+    public ResponseEntity getMember(@AuthenticationPrincipal(expression = "username") String memberEmail) {
+
+        return new ResponseEntity<>(memberService.getMyPage(memberEmail), HttpStatus.OK);
+    }
+
     @PatchMapping
     public ResponseEntity updateMember(@RequestBody MemberPatchDto memberPatchDto,
                                        @AuthenticationPrincipal(expression = "username") String memberEmail) {
