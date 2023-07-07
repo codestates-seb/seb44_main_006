@@ -58,16 +58,16 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         try {
             if (!isReissue) {
-                System.out.println("check: not reissue");
+                log.info("check: not reissue");
                 token = AuthorizationHeader.replace("Bearer ", "");
             } else {
-                System.out.println("check: reissue");
+                log.info("check: reissue");
                 token = request.getHeader("RefreshToken");
             }
 
             // AccessToken이 블랙리스트에 토큰이 저장되어 있다면 -> 토큰 만료 에러
             if (redisUtil.hasKeyBlackList(AuthorizationHeader.replaceAll("Bearer", ""))) {
-                System.out.println("check: 로그아웃된 AccessToken");
+                log.info("check: 로그아웃된 AccessToken");
                 ErrorResponder.sendErrorResponse(response, ExceptionCode.TOKEN_EXPIRED);
                 return;
             }
@@ -91,7 +91,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", e);
         }
 
-        System.out.println("check3");
+        log.info("check2");
         filterChain.doFilter(request, response);
     }
 
@@ -113,7 +113,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     //Authentication 객체를 SecurityContext 에 저장하기 위한 private 메서드
     protected void setAuthenticationToContext(String token, Boolean isReissue) throws JsonProcessingException {
-        System.out.println("check2");
+        log.info("check1");
         Jws<Claims> claims = jwtTokenizer.getClaims(token);
         List<String> roles = null;
         String username = null;
