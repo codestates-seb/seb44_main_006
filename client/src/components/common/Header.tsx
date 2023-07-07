@@ -1,28 +1,35 @@
 import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 
+import { overlayActions } from '../../store/overlay-slice';
+import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
 import WhiteButton from '../ui/button/WhiteButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
+import LoginModal from '../ui/modal/LoginModal';
+import useAuthInfo from '../../hooks/useAuthInfo';
+import useMovePage from '../../hooks/useMovePage';
 
-type HeaderInfo = {
-  ismainpage?: string;
+type HeaderStyle = {
+  isPath?: string;
 };
 
-const HeaderContainer = styled.header<HeaderInfo>`
-  display: flex;
+const HeaderContainer = styled.header<HeaderStyle>`
+  display: ${(props) => (props?.isPath === '/register' ? 'none' : 'flex')};
   align-items: center;
   justify-content: space-between;
   padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
   background: ${(props) =>
-    props.ismainpage ? 'transparent' : cssToken.COLOR.white};
+    props?.isPath === '/' ? 'transparent' : cssToken.COLOR.white};
   position: fixed;
   top: 0;
   left: 0;
   width: ${cssToken.WIDTH['w-full']};
   box-shadow: ${(props) =>
-    props.ismainpage ? 'none' : cssToken.SHADOW['shadow-lg']};
+    props?.isPath === '/' ? 'none' : cssToken.SHADOW['shadow-lg']};
   z-index: 999;
 `;
 
@@ -48,31 +55,60 @@ const BtnBox = styled.div`
   }
 `;
 
-const Header = ({ ismainpage }: HeaderInfo) => {
+const Header = () => {
+  const [isPath, setIsPath] = useState<string>('');
+  const location = useLocation();
+  const gotoMain = useMovePage('/');
+  const isLoggedIn = useSelector((state: RootState) => state.isLogin);
+  const modalIsOpen = useSelector(
+    (state: RootState): boolean => state.overlay.isOpen
+  );
+  const dispatch = useDispatch();
+
+  const toggleModal = () => {
+    dispatch(overlayActions.toggleOverlay());
+  };
+
+  const handleLogout = () => {
+    if (isLoggedIn.isLogin) {
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('isLogin');
+      gotoMain();
+      return window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    setIsPath(location.pathname);
+  }, [location]);
+
+  useAuthInfo();
+
   return (
-    <HeaderContainer ismainpage={ismainpage}>
+    <HeaderContainer isPath={isPath}>
+      {modalIsOpen && (
+        <LoginModal
+          handleClose={toggleModal}
+          styles={{
+            width: '500px',
+            height: '500px',
+            borderradius: '15px',
+            gap: '10px',
+          }}
+        />
+      )}
       <LogoBox>
         <Link to="/">
           <LogoImg src={LogoBlack} alt="logo-harumate" />
         </Link>
       </LogoBox>
       <BtnBox>
-        <WhiteButton
-          height="25px"
-          borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-        >
-          로그인
-        </WhiteButton>
-
-        {!ismainpage && (
+        {isPath === '/' && isLoggedIn.isLogin && (
+          // 메인 페이지인 경우
           <>
             <WhiteButton
-              height="25px"
-              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-            >
-              로그인
-            </WhiteButton>
-            <WhiteButton
+              onClick={handleLogout}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -85,6 +121,33 @@ const Header = ({ ismainpage }: HeaderInfo) => {
               마이페이지
             </SkyBlueButton>
           </>
+        )}
+        {isPath !== '/' && isLoggedIn.isLogin && (
+          // 메인 페이지가 아닌 나머지
+          <>
+            <WhiteButton
+              onClick={handleLogout}
+              height="25px"
+              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            >
+              로그아웃
+            </WhiteButton>
+            <SkyBlueButton
+              height="25px"
+              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            >
+              마이페이지
+            </SkyBlueButton>
+          </>
+        )}
+        {isPath !== '/' && !isLoggedIn.isLogin && (
+          <WhiteButton
+            onClick={toggleModal}
+            height="25px"
+            borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+          >
+            로그인
+          </WhiteButton>
         )}
       </BtnBox>
     </HeaderContainer>
