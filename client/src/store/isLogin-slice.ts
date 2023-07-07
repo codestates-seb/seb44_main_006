@@ -9,7 +9,7 @@ const isLoginSlice = createSlice({
   name: 'Login',
   initialState,
   reducers: {
-    toggleOverlay(state) {
+    toggIsLogin(state) {
       state.isLogin = !state.isLogin;
     },
   },
