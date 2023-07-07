@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useState } from 'react';
 
 import KakaoMap from '../../components/map/KakaoMap';
 import Marker from '../../components/map/Marker';
@@ -11,6 +12,7 @@ import { MarkerOff } from '../../components/map/index';
 import CircleButton from '../../components/ui/button/CircleButton';
 import SaveIcon from '../../assets/SaveIcon';
 import CloseIcon from '../../assets/CloseIcon';
+import ScheduleCreateModal from '../../components/schedule/ScheduleCreateModal';
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-screen']};
@@ -35,36 +37,40 @@ const ButtonDiv = styled.div`
 `;
 
 const ScheduleRegister = () => {
+  const [isSave, setIsSave] = useState(false);
   const places = useSelector((state: RootState) => state.placeList.list);
   const scheduleList = useSelector(
     (state: RootState) => state.scheduleList.list
   );
   // FIXME 숫자 마커가 일반 마커에 가려지는 현상 수정해야함
-  console.log(places);
 
   return (
     <Wrapper>
+      {isSave && <ScheduleCreateModal />}
+
       <ScheduleBox />
+
       <KakaoMap width="100vw" height="100vh">
         {places.map((place: PlacesSearchResultItem) => (
           <Marker
             img={MarkerOff[0]}
             key={place.id}
-            lat={Number(place.y)}
-            lng={Number(place.x)}
-            id={Number(place.id)}
+            lat={place.y}
+            lng={place.x}
+            id={place.id}
           />
         ))}
         {scheduleList.map((place: IScheduleListItem, idx: number) => (
           <Marker
             key={place.id}
-            lat={Number(place.y)}
-            lng={Number(place.x)}
-            id={Number(place.id)}
+            lat={place.y}
+            lng={place.x}
+            id={place.id}
             idx={idx}
           />
         ))}
       </KakaoMap>
+
       <FixedDiv>
         <CircleButton width="100px" height="100px">
           <ButtonDiv>
@@ -74,7 +80,11 @@ const ScheduleRegister = () => {
           </ButtonDiv>
           <div>취소하기</div>
         </CircleButton>
-        <CircleButton width="100px" height="100px">
+        <CircleButton
+          width="100px"
+          height="100px"
+          onClick={() => setIsSave(true)}
+        >
           <ButtonDiv>
             <SaveIcon
               style={{ iconWidth: 22, iconHeight: 22, color: 'black' }}
