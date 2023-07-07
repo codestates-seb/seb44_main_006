@@ -37,7 +37,7 @@ public class AnswerController {
 
         // 응답 헤더에 리소스 위치 추가
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/posts/" + postId));
+        headers.setLocation(URI.create(Long.toString(postId)));
 
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
