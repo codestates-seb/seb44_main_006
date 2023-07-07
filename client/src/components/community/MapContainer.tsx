@@ -47,7 +47,7 @@ const MapContainer = ({
         >
           {destinationList.map((destination, idx) => (
             <Marker
-              key={uuid}
+              key={idx}
               lat={destination.y}
               lng={destination.x}
               id={destination.id ?? ''}
@@ -63,7 +63,11 @@ const MapContainer = ({
         </Title>
         <LocationCardWrapper>
           {destinationList.map((destination, idx) => (
-            <MapLocationCard indexNum={idx} location={destination.placeName} />
+            <MapLocationCard
+              key={idx}
+              indexNum={idx + 1}
+              location={destination.placeName}
+            />
           ))}
         </LocationCardWrapper>
       </ScheduleDiv>

@@ -4,7 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import cssToken from '../../styles/cssToken';
 import { GapDiv, OutsideWrap } from '../../styles/styles';
@@ -22,7 +22,7 @@ import Modal from '../../components/ui/modal/Modal';
 import { RootState } from '../../store';
 import ModalChildren from '../../components/community/post/ModalChildren';
 import useToggleModal from '../../hooks/useToggleModal';
-import { GetCourse } from '../../apis/api';
+import { GetCourse, PostCommunity } from '../../apis/api';
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: ${cssToken.SPACING['gap-50']};
@@ -44,6 +44,12 @@ const PostCommunitypage = () => {
     select: (data) => data.data,
   });
 
+  const mutation = useMutation(PostCommunity, {
+    onSuccess(data) {
+      console.log(data);
+    },
+  });
+
   const isEditorEmpty = () => {
     const inputString = String(quillRef.current?.value);
     const sanitizedValue: string = inputString
@@ -60,9 +66,13 @@ const PostCommunitypage = () => {
   };
   const HandleNext = () => {
     if (!isEditorEmpty()) {
-      // Todo Post
-      gotoNext();
-      return;
+      mutation.mutate({
+        courseId: Number(scheduleid),
+        postContent: String(quillRef.current!.value),
+        tags,
+      });
+      // gotoNext();
+      // return;
     }
     quillRef.current?.focus();
   };
