@@ -71,6 +71,7 @@ const PostCommunitypage = () => {
         postContent: String(quillRef.current!.value),
         tags,
       });
+      // Todo post 잘될 경우 해당 커뮤니티 게시글 페이지로 이동
       // gotoNext();
       // return;
     }
