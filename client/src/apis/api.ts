@@ -4,8 +4,7 @@ import { PostReqT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 
-const accessToken = `Bearer ${import.meta.env.VITE_API_SERVER_KEY}`;
-
+const accessToken = `Bearer 키넣어야함`;
 export const instance = axios.create({
   baseURL: PROXY,
   headers: {

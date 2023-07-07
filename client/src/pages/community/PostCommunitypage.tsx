@@ -45,8 +45,8 @@ const PostCommunitypage = () => {
   });
 
   const mutation = useMutation(PostCommunity, {
-    onSuccess(data) {
-      console.log(data);
+    onSuccess(data, variables, context) {
+      console.log(data, variables, context);
     },
   });
 
