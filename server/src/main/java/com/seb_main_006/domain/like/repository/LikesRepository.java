@@ -11,4 +11,6 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
     Optional<Likes> findLikesByCourse(Course course);
 
     Optional<Likes> findByMemberAndCourse(Member member, Course course);
+
+    Optional<Likes> deleteAllByCourse(Course course);
 }

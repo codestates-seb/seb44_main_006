@@ -213,9 +213,19 @@ public class PostService {
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Course course = findPost.getCourse();
 
-        courseService.verifyMyCourse(findMember, course);
+        // 멤버 권한 체크
+        List<String> findRole = findMember.getRoles();
+
+        // ADMIN 권한이 없을 경우에만 본인 일정 여부 검증
+        if (!findRole.contains("ADMIN")) {
+            courseService.verifyMyCourse(findMember, course);
+        }
+
         course.removePost();
+        likesRepository.deleteAllByCourse(course);
+        bookmarkRepository.deleteAllByCourse(course);
         postRepository.delete(findPost);
+
     }
 
 
