@@ -47,10 +47,6 @@ export interface IButtonStyle {
   fontsize?: string;
 }
 
-export type MarkerT = {
-  markerId: number | null;
-};
-
 export type PlacesSearchResult = PlacesSearchResultItem[];
 
 export interface PlacesSearchResultItem {
@@ -145,6 +141,8 @@ export interface LocationCardInfo {
 export interface MapLocationCardInfo {
   indexNum?: number;
   location?: string;
+  id?: string;
+  onClick?: ({ id }: { id: string | undefined }) => void;
 }
 
 export type CommentT = {
@@ -157,3 +155,9 @@ export type CommentT = {
 export interface RouteState {
   state?: string | number | undefined;
 }
+
+export type IdT = string | undefined;
+
+export type MarkerT = {
+  markerId: IdT;
+};

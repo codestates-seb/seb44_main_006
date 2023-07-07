@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import { FlexDiv } from '../../styles/styles';
 import KakaoMap from '../map/KakaoMap';
@@ -7,8 +8,9 @@ import Polyline from '../map/Polyline';
 import cssToken from '../../styles/cssToken';
 import Title from '../ui/text/Title';
 import MapLocationCard from '../ui/cards/MapLocationCard';
-import { IScheduleListItem } from '../../types/type';
+import { IScheduleListItem, IdT } from '../../types/type';
 import makePolyline from '../../utils/makePolyline';
+import { markerActions } from '../../store/marker-slice';
 
 const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
@@ -33,6 +35,10 @@ const MapContainer = ({
   destinationList: IScheduleListItem[];
   title: string;
 }) => {
+  const dispatch = useDispatch();
+  const handleHighlight = ({ id }: { id: IdT }) => {
+    dispatch(markerActions.selectMarker(id));
+  };
   return (
     <FlexDiv>
       <MapDiv>
@@ -65,8 +71,10 @@ const MapContainer = ({
           {destinationList.map((destination, idx) => (
             <MapLocationCard
               key={idx}
+              id={destination.id}
               indexNum={idx + 1}
               location={destination.placeName}
+              onClick={handleHighlight}
             />
           ))}
         </LocationCardWrapper>
