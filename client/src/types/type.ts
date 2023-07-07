@@ -149,12 +149,14 @@ export interface MapLocationCardInfo {
   onClick?: ({ id }: { id: string | undefined }) => void;
 }
 
-export type CommentT = {
-  src: string;
-  nickName: string;
-  date: string;
-  content: string;
-};
+export interface CommentT {
+  answerId?: number; // 고유값(댓글 식별자)
+  answererEmail?: string; // 고유값(댓글 작성자 이메일)
+  answererNickname: string; // 댓글 작성자 닉네임
+  answerContent: string; // 댓글 내용
+  answererImageUrl: string; // 댓글 작성자 이미지 URL
+  answerUpdatedAt: string; // 댓글 수정한 날짜, ex) "2023-06-30 Fri"
+}
 
 export interface RouteState {
   state?: string | number | undefined;

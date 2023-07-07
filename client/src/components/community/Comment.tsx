@@ -27,7 +27,13 @@ const FlexAround = styled(FlexDiv)`
 `;
 
 // Todo 수정 삭제버튼
-const Comment = ({ src, nickName, date, content }: CommentT) => {
+const Comment = ({
+  answererImageUrl: src,
+  answererNickname: nickName,
+  answerUpdatedAt: date,
+  answerContent: content,
+  answererEmail: email,
+}: CommentT) => {
   return (
     <CommentWrapper>
       <div>

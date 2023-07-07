@@ -33,6 +33,7 @@ const SelectSchedulePage = () => {
   const gotoNext = useMovePage('/community/post', selectId);
 
   // FixMe: select type
+  // Todo 텅 비었을 때 봉줄 컴포넌트 만들기
   const { data: courses } = useQuery({
     queryKey: ['selectList'],
     queryFn: GetMyList,

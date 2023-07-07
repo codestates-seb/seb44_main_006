@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -11,7 +11,7 @@ import useHandleTab from '../../hooks/useHandleTab';
 import CircleButton from '../../components/ui/button/CircleButton';
 import Pen from '../../assets/Pen';
 import useMovePage from '../../hooks/useMovePage';
-import { GetCommunityList, GetSearch } from '../../apis/api';
+import { GetCommunityList } from '../../apis/api';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
