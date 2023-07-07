@@ -92,6 +92,7 @@ public class PostService {
             else {
                 newPostTag.setTag(tagRepository.save(new Tag(tagName)));
             }
+            findcourse.setPost(post);
             newPostTag.setPost(post); // new PostTag에 Post세팅(연관관계 매핑)
             post.getPostTagsInPost().add(newPostTag);// post의 PostTagsInpost리스트에 newPostTag 추가(연관관계 매핑)
         }
@@ -147,9 +148,16 @@ public class PostService {
 
         Member member = new Member(0L);
 
-        if (accessToken != null) {
-            String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
-            member = memberService.findVerifiedMember(memberEmail);
+        // 리스트 조회시 토큰비어있을떄랑 잘못 됬을 때 예외 모두 통과시키기
+        if (accessToken != null && !accessToken.equals("")) {
+            String memberEmail = "";
+            try {
+                memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+                member = memberService.findVerifiedMember(memberEmail);
+            }
+            catch (Exception e){
+
+            }
         }
 
         Page<Course> pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount")));
@@ -173,9 +181,16 @@ public class PostService {
         Member member = new Member(0L);
         PageRequest pageRequest = PageRequest.of(page, limit);
 
-        if (accessToken != null) {
-            String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
-            member = memberService.findVerifiedMember(memberEmail);
+        // 태그검색시 토큰비어있을떄랑 잘못 됬을 때 예외 모두 통과시키기
+        if (accessToken != null && !accessToken.equals("")) {
+            String memberEmail = "";
+            try {
+                memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+                member = memberService.findVerifiedMember(memberEmail);
+            }
+            catch (Exception e){
+
+            }
         }
 
         // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
