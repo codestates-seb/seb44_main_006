@@ -14,7 +14,8 @@ public class DateConverter {
         return date;
     }
 
-    public static String LocalDateToStringWithDay(LocalDate date) {
+    //LocalDate 형태를 요일을 붙여서 String으로 return
+    public static String localDateToStringWithDay(LocalDate date) {
 
         DateTimeFormatter myFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, E");
         String dateStringWithDay = date.format(myFormatter);

@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useEffect, useState } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -24,8 +25,18 @@ const OverFlowDiv = styled.div`
 `;
 
 const SelectSchedulePage = () => {
+  const [selectId, setSelectId] = useState<number | null | undefined>(null);
   const gotoBack = useMovePage('/community');
-  const gotoNext = useMovePage('/community/post');
+  const gotoNext = useMovePage('/community/post', selectId);
+  const handleClickCard = (id: number | undefined) => {
+    if (id === selectId) setSelectId(null);
+    else setSelectId(id);
+  };
+  const goToWrite = () => {
+    if (selectId) {
+      gotoNext();
+    }
+  };
   return (
     <OutsideWrap>
       <Head />
@@ -33,8 +44,8 @@ const SelectSchedulePage = () => {
         <CardWrapper>
           {/* Todo 리액트쿼리로 유저 일정 가지고 와서 뿌려줘야함 */}
           {/* Todo 카드 onClick callback 걸어야함 */}
-          <ContensCard />
-          <ContensCard />
+          <ContensCard selectId={selectId} id={1} onClick={handleClickCard} />
+          <ContensCard selectId={selectId} id={2} onClick={handleClickCard} />
           <ContensCard />
           <ContensCard />
           <ContensCard />
@@ -44,7 +55,7 @@ const SelectSchedulePage = () => {
           <ContensCard />
         </CardWrapper>
       </OverFlowDiv>
-      <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={gotoNext} />
+      <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />
     </OutsideWrap>
   );
 };
