@@ -7,10 +7,12 @@ const TagButton = ({
   children,
   width,
   height,
-  isActive,
   onClick,
   tagname,
+  selectedid,
 }: IButtonStyle) => {
+  const isActive = !!(selectedid && selectedid === tagname);
+
   return (
     <Button
       onClick={() => (onClick ? onClick(tagname) : '')}
@@ -22,7 +24,7 @@ const TagButton = ({
         borderRadius: cssToken.BORDER['rounded-tag'],
         border: isActive
           ? `${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['point-900']}`
-          : '',
+          : `${cssToken.BORDER['weight-1']} solid transparent`,
       }}
     >
       {children}
