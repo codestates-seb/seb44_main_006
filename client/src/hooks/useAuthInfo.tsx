@@ -12,7 +12,6 @@ import {
 } from '../store/isLogin-slice';
 import { RootState } from '../store';
 
-
 const useAuthentication = () => {
   const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const [searchParams] = useSearchParams();
@@ -34,7 +33,7 @@ const useAuthentication = () => {
       localStorage.setItem('isLogin', JSON.stringify(true));
 
       axios
-        .get(`${PROXY}/auth/members`, {
+        .get(`/api/auth/members`, {
           headers: {
             Authorization: `Bearer ${accessToken}`, // AccessToken
             RefreshToken: `${accessToken}`, // RefreshToken

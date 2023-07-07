@@ -3,7 +3,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import cssToken from '../../styles/cssToken';
@@ -32,7 +32,7 @@ const PostCommunitypage = () => {
   const scheduleid = useLocation().state as string;
   const quillRef = useRef<ReactQuill>(null);
   const gotoBack = useMovePage('/community/select');
-  const gotoNext = useMovePage('/community/post/id');
+  const navigate = useNavigate();
   const modalIsOpen = useSelector((state: RootState) => state.overlay.isOpen);
   const toggleModal = useToggleModal();
   const [tags, setTags] = useState<string[] | []>([]);
@@ -41,12 +41,12 @@ const PostCommunitypage = () => {
     queryKey: ['course'],
     queryFn: () => GetCourse({ courseId: scheduleid }),
     refetchOnWindowFocus: false,
-    select: (data) => data.data,
+    select: (data: TData) => data.data,
   });
 
   const mutation = useMutation(PostCommunity, {
-    onSuccess(data, variables, context) {
-      console.log(data, variables, context);
+    onSuccess(data) {
+      navigate(`/community/${data.headers.location}`);
     },
   });
 

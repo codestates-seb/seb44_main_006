@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -40,19 +40,17 @@ const CommunityPage = () => {
 
   const { data: communityData } = useQuery({
     queryKey: ['community', selectTab],
-    queryFn: () => GetCommunityList({ page: 1, limit: 6, sort: selectTab }),
-    enabled: !tagName,
+    queryFn: () =>
+      GetCommunityList({
+        page: 1,
+        limit: 6,
+        sort: selectTab,
+        tagName,
+      }),
     refetchOnWindowFocus: false,
   });
 
   console.log('data', communityData);
-
-  const { data: searchData } = useQuery({
-    queryKey: ['search', tagName, selectTab],
-    queryFn: () => GetSearch({ tagName, page: 1, limit: 6, sort: selectTab }),
-    enabled: !!tagName,
-    refetchOnWindowFocus: false,
-  });
 
   const SearchPost = () => {
     if (searchInputRef.current) {
@@ -60,8 +58,6 @@ const CommunityPage = () => {
       setTagName(keyword);
     }
   };
-
-  console.log('searchData', searchData);
 
   return (
     <>

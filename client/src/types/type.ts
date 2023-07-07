@@ -78,7 +78,8 @@ export interface IScheduleListItem {
   categoryGroupCode:
     | `${CategoryCode}`
     | `${Exclude<CategoryCode, ''>}`[]
-    | undefined; // 카카오API 장소 그룹코드
+    | undefined
+    | string; // 카카오API 장소 그룹코드
   categoryGroupName: string; // 카카오API 장소 그룹이름
   x: string; // 경도
   y: string; // 위도

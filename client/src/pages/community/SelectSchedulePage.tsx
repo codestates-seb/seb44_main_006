@@ -40,6 +40,10 @@ const SelectSchedulePage = () => {
     select: (data) => data.data.memberCourseList,
   });
 
+  const registerCourses = courses
+    ? courses.filter((course: MemberListT) => course.isPosted === false)
+    : [];
+
   const handleClickCard = (id: number | undefined) => {
     if (id === selectId) setSelectId(null);
     else setSelectId(id);
@@ -54,8 +58,8 @@ const SelectSchedulePage = () => {
       <Head />
       <OverFlowDiv>
         <CardWrapper>
-          {courses &&
-            courses.map((course: MemberListT) => (
+          {registerCourses.length > 0 &&
+            registerCourses.map((course) => (
               <ContensCard
                 title={course.courseTitle}
                 text={course.courseContent}
@@ -67,6 +71,7 @@ const SelectSchedulePage = () => {
                 onClick={handleClickCard}
               />
             ))}
+          {registerCourses.length < 1 && <p>텅</p>}
         </CardWrapper>
       </OverFlowDiv>
       <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />
