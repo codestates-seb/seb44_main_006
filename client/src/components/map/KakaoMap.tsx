@@ -15,25 +15,30 @@ type KakaoMapT = {
   width: string;
   height: string;
   children: Props['children'];
+  center?: { lat: string; lng: string; level: number };
 };
-
-const KakaoMap = ({ width, height, children, ...options }: KakaoMapT) => {
+const KakaoMap = ({
+  center,
+  width,
+  height,
+  children,
+  ...options
+}: KakaoMapT) => {
   const [state, setState] = useState(false);
   const dispatch = useDispatch();
   const loadHandler = useCallback(
     (element: HTMLElement) => {
       if (!kakao || !element) return;
-      const { level, lat, lng } = defaultOptions;
+      const { level = 3, lat, lng } = center ?? defaultOptions;
       const newMap = new kakao.maps.Map(element, {
         level,
-        center: new kakao.maps.LatLng(lat, lng),
+        center: new kakao.maps.LatLng(Number(lat), Number(lng)),
       });
       dispatch(mapActions.setMap(newMap));
       setState(true);
     },
-    [dispatch]
+    [dispatch, center]
   );
-
   return (
     <MapContainer width={width} height={height} ref={loadHandler} {...options}>
       {state && children}

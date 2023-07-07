@@ -6,6 +6,7 @@ import { placeListReducer } from './placeList-slice';
 import { scheduleListReducer } from './scheduleList-slice';
 import { overlayReducer } from './overlay-slice';
 import { isLoginReducer } from './isLogin-slice';
+import { selectedIdReducer } from './selectedId-slice';
 
 const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
     scheduleList: scheduleListReducer,
     overlay: overlayReducer,
     isLogin: isLoginReducer,
+    selectedId: selectedIdReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

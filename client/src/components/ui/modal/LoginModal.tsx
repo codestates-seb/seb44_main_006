@@ -108,7 +108,7 @@ const LoginModal = ({
   handleClose?: () => void;
 }) => {
   const handleLogin = ({ path }: { path: string }) => {
-    const srcServerPath = import.meta.env.VITE_API_SERVER_KEY;
+    const srcServerPath = import.meta.env.VITE_LOGIN_URL;
     window.location.href = `${srcServerPath}/oauth2/authorization/${path}`;
   };
 
