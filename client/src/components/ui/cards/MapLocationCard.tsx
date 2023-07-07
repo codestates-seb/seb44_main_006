@@ -1,9 +1,11 @@
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import { CardCommonBox } from './Card.styled';
 
 import cssToken from '../../../styles/cssToken';
 import { MapLocationCardInfo } from '../../../types/type';
+import { RootState } from '../../../store';
 
 const MapLocationCardContainer = styled.section`
   display: flex;
@@ -40,7 +42,7 @@ const NumCircle = styled.span`
   }
 `;
 
-const LocationCard = styled.div`
+const LocationCard = styled.div<{ selected?: boolean }>`
   flex: 1;
   width: ${cssToken.WIDTH['w-full']};
   padding: ${cssToken.SPACING['gap-24']};
@@ -52,14 +54,26 @@ const LocationText = styled.p`
   font-weight: ${cssToken.FONT_WEIGHT.medium};
 `;
 
-const MapLocationCard = ({ indexNum, location }: MapLocationCardInfo) => {
+const MapLocationCard = ({
+  indexNum,
+  location,
+  id,
+  onClick,
+}: MapLocationCardInfo) => {
   const index = indexNum ?? -1;
+  const markerId = useSelector((state: RootState) => state.marker.markerId);
+  const selected = !!(id && id === markerId);
   return (
     <MapLocationCardContainer>
       <NumCircle className={index >= 0 ? 'last-circle' : ''}>
         {indexNum}
       </NumCircle>
-      <LocationCard>
+      <LocationCard
+        selected={selected}
+        onClick={() => {
+          if (onClick) onClick({ id });
+        }}
+      >
         <LocationText>{location}</LocationText>
       </LocationCard>
     </MapLocationCardContainer>
