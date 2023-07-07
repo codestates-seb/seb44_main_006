@@ -153,6 +153,7 @@ public class PostService {
      */
     public PostListResponseDto findPosts(int page, int limit, String sort, String accessToken, String tagName) {
 
+
         Member member = new Member(0L);
 
         // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
@@ -168,7 +169,7 @@ public class PostService {
         Page<Course> pageResult = null;
 
         if (tagName == null) {
-            pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount")));
+            pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending()));
         } else {
             // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
             List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
@@ -199,7 +200,8 @@ public class PostService {
     /**
      * 태그로 게시글 조회
      */
-    public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) throws JsonProcessingException {
+    public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) {
+        log.info("tagName = {}", tagName);
 
         Member member = new Member(0L);
         PageRequest pageRequest = PageRequest.of(page, limit);
