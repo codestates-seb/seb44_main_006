@@ -54,11 +54,12 @@ const BtnBox = styled.div`
     transition: ${cssToken.TRANSITION.basic};
   }
 `;
+
 const Header = () => {
   const [isPath, setIsPath] = useState<string>('');
   const location = useLocation();
   const gotoMain = useMovePage('/');
-  const isLogin: string = localStorage.getItem('isLogin') || '';
+  const isLoggedIn = useSelector((state: RootState) => state.isLogin);
   const modalIsOpen = useSelector(
     (state: RootState): boolean => state.overlay.isOpen
   );
@@ -69,7 +70,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    if (JSON.parse(isLogin)) {
+    if (isLoggedIn.isLogin) {
       localStorage.removeItem('userInfo');
       localStorage.removeItem('accessToken');
       localStorage.removeItem('isLogin');
@@ -80,9 +81,7 @@ const Header = () => {
 
   useEffect(() => {
     setIsPath(location.pathname);
-    console.log(isPath);
-    console.log('login', isLogin);
-  }, [isLogin, isPath, location]);
+  }, [location]);
 
   useAuthInfo();
 
@@ -105,27 +104,8 @@ const Header = () => {
         </Link>
       </LogoBox>
       <BtnBox>
-        {isPath === '/' ? (
-          isLogin ? (
-            // '/'경로이며 로인 상태
-            <>
-              <WhiteButton
-                onClick={handleLogout}
-                height="25px"
-                borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-              >
-                로그아웃
-              </WhiteButton>
-              <SkyBlueButton
-                height="25px"
-                borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-              >
-                마이페이지
-              </SkyBlueButton>
-            </>
-          ) : null
-        ) : isLogin ? (
-          // '/'경로가 아니며 로그인 상태
+        {isPath === '/' && isLoggedIn.isLogin && (
+          // 메인 페이지인 경우
           <>
             <WhiteButton
               onClick={handleLogout}
@@ -141,7 +121,26 @@ const Header = () => {
               마이페이지
             </SkyBlueButton>
           </>
-        ) : (
+        )}
+        {isPath !== '/' && isLoggedIn.isLogin && (
+          // 메인 페이지가 아닌 나머지
+          <>
+            <WhiteButton
+              onClick={handleLogout}
+              height="25px"
+              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            >
+              로그아웃
+            </WhiteButton>
+            <SkyBlueButton
+              height="25px"
+              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            >
+              마이페이지
+            </SkyBlueButton>
+          </>
+        )}
+        {isPath !== '/' && !isLoggedIn.isLogin && (
           <WhiteButton
             onClick={toggleModal}
             height="25px"
