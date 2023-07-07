@@ -10,7 +10,7 @@ import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
 
-const ContensCardContainer = styled.section`
+const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
   gap: ${cssToken.SPACING['gap-24']};
   flex-direction: column;
