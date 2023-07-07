@@ -63,7 +63,6 @@ public class BookmarkService {
             newBookmark.setMember(findMember);
             newBookmark.setPostId(findCourse.getPost().getPostId());
 
-            findMember.getBookmarksInMember().add(newBookmark);
             findCourse.getBookmarksInCourse().add(newBookmark);
 
             courseRepository.save(findCourse);
