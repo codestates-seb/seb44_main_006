@@ -22,7 +22,13 @@ const PaginationWrapper = styled.section`
   align-items: center;
 `;
 
-const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
+const PlaceList = ({
+  searchPlace,
+  radius,
+}: {
+  searchPlace: string | undefined;
+  radius?: number;
+}) => {
   const places = useSelector((state: RootState) => state.placeList.list);
   const schedule = useSelector(
     (state: RootState) => state.scheduleList.lastItem
@@ -62,14 +68,15 @@ const PlaceList = ({ searchPlace }: { searchPlace: string }) => {
     searchPlace,
     schedule.x,
     schedule.y,
-    5000
+    radius ? radius * 1000 : undefined
   );
   // 이렇게 하면 마지막으로 등록한 일정 기준으로 검색할 수 있음
-
+  // FIXME 리스트가 초기화 됐을 때 페이지네이션은 남는 현상을 수정해야함
   return (
     <Wrapper>
       {places.map((item: PlacesSearchResultItem) => (
         <LocationCard
+          key={item.id}
           title={item.place_name}
           category={item.category_name.split('>')[0]}
           address={item.road_address_name}
