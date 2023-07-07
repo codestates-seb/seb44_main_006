@@ -1,7 +1,14 @@
 import { styled } from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import {
+  useNavigate,
+  Link,
+  useLocation,
+  useSearchParams,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 import { overlayActions } from '../../store/overlay-slice';
 import { RootState } from '../../store';
@@ -10,8 +17,9 @@ import LogoBlack from '../../assets/common_img/logo_black.svg';
 import WhiteButton from '../ui/button/WhiteButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import LoginModal from '../ui/modal/LoginModal';
-import useAuthInfo from '../../hooks/useAuthInfo';
 import useMovePage from '../../hooks/useMovePage';
+import { GetUserInfo } from '../../apis/api';
+import { toggleIsLogin, setAccessToken, setUserInfo } from '../../store/isLogin-slice'
 
 type HeaderStyle = {
   isPath?: string;
@@ -56,14 +64,20 @@ const BtnBox = styled.div`
 `;
 
 const Header = () => {
+  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+  const [searchParams] = useSearchParams();
+  const userInfoData = useSelector((state: RootState) => state.isLogin);
+  const accessToken = searchParams.get('access_token');
+  const refreshToken = searchParams.get('refresh_token');
+  const navigate = useNavigate();
+  const gotoMain = useMovePage('/');
+  const dispatch = useDispatch();
   const [isPath, setIsPath] = useState<string>('');
   const location = useLocation();
-  const gotoMain = useMovePage('/');
   const isLoggedIn = useSelector((state: RootState) => state.isLogin);
   const modalIsOpen = useSelector(
     (state: RootState): boolean => state.overlay.isOpen
   );
-  const dispatch = useDispatch();
 
   const toggleModal = () => {
     dispatch(overlayActions.toggleOverlay());
@@ -79,11 +93,39 @@ const Header = () => {
     }
   };
 
+  const { data } = useQuery({
+    queryKey: ['userInfoData'],
+    queryFn: GetUserInfo,
+  });
+
   useEffect(() => {
     setIsPath(location.pathname);
   }, [location]);
 
-  useAuthInfo();
+  useEffect(() => {
+    if (accessToken) {
+      localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
+      localStorage.setItem('accessToken', JSON.stringify(`Bearer ${accessToken}`));
+      localStorage.setItem('isLogin', JSON.stringify(true));
+
+      axios
+        .get(`${PROXY}/api/auth/members`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // AccessToken
+            RefreshToken: `${refreshToken}`, // RefreshToken
+          },
+        })
+        .then((res) => {
+          localStorage.setItem('userInfo', JSON.stringify(res.data));
+          // return gotoMain();
+        })
+        .catch((err) => {
+          const errStatus: number = err.response.status;
+          return navigate(`/error/${errStatus}`);
+        });
+    }
+  }, []);
+
 
   return (
     <HeaderContainer isPath={isPath}>

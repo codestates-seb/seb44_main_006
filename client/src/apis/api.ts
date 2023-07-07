@@ -3,19 +3,32 @@ import axios from 'axios';
 import { PostReqT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+const accessToken = localStorage.getItem('accessToken');
+const refreshToken = localStorage.getItem('refreshToken');
 
-const accessToken = `Bearer 키넣어야함`;
 export const instance = axios.create({
   baseURL: PROXY,
   headers: {
     'Content-Type': 'application/json',
     Authorization: accessToken,
+    Authorization: refreshToken,
   },
 });
 
-// instance.interceptors.request.use((config) => {
+instance.interceptors.request.use(
+  (config) => {
+    config.headers['Authorization'] = `${accessToken}` || '';
+    config.headers['RefreshToken'] = `${refreshToken}` || '';
+    return config;
+  },
 
-// })
+  (error) => {
+    console.log('error token', error);
+    return Promise.reject(error);
+  }
+);
+
+export const GetUserInfo = async () => instance.post('/api/auth/members');
 
 export const GetMyList = async () => instance.get(`/api/members`);
 export const GetCourse = async ({ courseId }: { courseId: string }) =>
@@ -31,8 +44,7 @@ export const GetCommunityList = async ({
   sort: string;
 }) =>
   instance.get(
-    `/api/posts?page=${page}&limit=${limit}${
-      sort === 'Like' ? '&sort=like' : ''
+    `/api/posts/read?page=${page}&limit=${limit}${sort === 'Like' ? '&sort=like' : ''
     }`
   );
 
@@ -48,8 +60,7 @@ export const GetSearch = async ({
   sort: string;
 }) =>
   instance.get(
-    `/api/posts/tagged/${tagName}?page=${page}&limit=${limit}${
-      sort === 'Like' ? '&sort=like' : ''
+    `/api/posts/tagged/${tagName}?page=${page}&limit=${limit}${sort === 'Like' ? '&sort=like' : ''
     }`
   );
 
@@ -57,4 +68,4 @@ export const PostCommunity = async ({
   courseId,
   postContent,
   tags,
-}: PostReqT) => instance.post(`/api/posts`, { courseId, postContent, tags });
+}: PostReqT) => instance.post(`/api/posts/read`, { courseId, postContent, tags });
