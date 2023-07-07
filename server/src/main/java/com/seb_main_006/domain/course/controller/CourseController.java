@@ -35,7 +35,7 @@ public class CourseController {
 
         // 응답 헤더에 리소스 위치 추가
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/courses/" + createdCourse.getCourseId()));
+        headers.setLocation(URI.create(Long.toString(createdCourse.getCourseId())));
 
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
