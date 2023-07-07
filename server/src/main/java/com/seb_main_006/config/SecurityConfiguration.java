@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
@@ -65,6 +66,7 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.POST, "/courses").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.PATCH, "/courses/**").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.DELETE, "/courses/**").hasAnyRole("USER","ADMIN")
+                        .antMatchers(HttpMethod.POST, "/posts").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.DELETE, "/posts/**").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.GET, "/members").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.PATCH, "/members").hasAnyRole("USER","ADMIN")
@@ -77,6 +79,14 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return ((web) -> web
+                .ignoring()
+                .antMatchers("/posts/read/**"));
+    }
+
 
     //CORS 설정(초기라서 우선 다 열어놓음)
     @Bean

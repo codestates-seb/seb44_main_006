@@ -9,9 +9,9 @@ import { RootState } from '../../store';
 import { MarkerOff, MarkerOn } from '.';
 
 type MarkerT = {
-  lat?: number;
-  lng?: number;
-  id: number;
+  lat?: string;
+  lng?: string;
+  id: string;
   img?: string;
   idx?: number;
   children?: Props['children'];
@@ -24,8 +24,8 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const markerLat = lat || defaultOptions.lat;
-    const markerLng = lng || defaultOptions.lng;
+    const markerLat = Number(lat) || defaultOptions.lat;
+    const markerLng = Number(lng) || defaultOptions.lng;
     const markerWidth = 20;
     const markerheight = 40;
 

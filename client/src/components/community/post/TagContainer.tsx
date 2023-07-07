@@ -7,9 +7,14 @@ import InputContainer from '../../ui/input/InputContainer';
 import TagButton from '../../ui/button/TagButton';
 import cssToken from '../../../styles/cssToken';
 
-const TagContainer = () => {
+const TagContainer = ({
+  tags,
+  setTags,
+}: {
+  tags: string[];
+  setTags: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [tags, setTags] = useState<string[] | []>([]);
   const [placeholder, setPlaceholder] = useState<string>(
     '태그 작성 후 엔터를 해주세요. 추가된 태그 클릭시 삭제 됩니다.'
   );

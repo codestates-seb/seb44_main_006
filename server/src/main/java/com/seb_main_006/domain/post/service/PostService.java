@@ -35,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -92,7 +91,7 @@ public class PostService {
             else {
                 newPostTag.setTag(tagRepository.save(new Tag(tagName)));
             }
-            findcourse.setPost(post);
+//            findcourse.setPost(post);
             newPostTag.setPost(post); // new PostTag에 Post세팅(연관관계 매핑)
             post.getPostTagsInPost().add(newPostTag);// post의 PostTagsInpost리스트에 newPostTag 추가(연관관계 매핑)
         }
@@ -112,11 +111,16 @@ public class PostService {
     @Transactional
     public PostDetailResponseDto findPost(Long postId, String accessToken) throws JsonProcessingException {
 
-        Member member = new Member();
+        Member member = new Member(0L);
 
-        if (accessToken != null) {
-            String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
-            member = memberService.findVerifiedMember(memberEmail);
+        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
+        if (accessToken != null && !accessToken.equals("")) {
+            try {
+                String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+                member = memberService.findVerifiedMember(memberEmail);
+            } catch (Exception e) {
+
+            }
         }
 
         Post findPost = findVerifiedPost(postId);
@@ -144,23 +148,42 @@ public class PostService {
         return response;
     }
 
-    public PostListResponseDto findPosts(int page, int limit, String sort, String accessToken) throws JsonProcessingException {
+    /**
+     * 게시글 리스트 조회 (+ 태그 검색)
+     */
+    public PostListResponseDto findPosts(int page, int limit, String sort, String accessToken, String tagName) {
 
         Member member = new Member(0L);
 
-        // 리스트 조회시 토큰비어있을떄랑 잘못 됬을 때 예외 모두 통과시키기
+        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
-            String memberEmail = "";
             try {
-                memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+                String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
 
-        Page<Course> pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount")));
+        Page<Course> pageResult = null;
+
+        if (tagName == null) {
+            pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount")));
+        } else {
+            // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
+            List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
+
+            // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
+            if (sort == null) {
+                log.info("sort == null");
+                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(findTagList, PageRequest.of(page, limit));
+            } else {
+                log.info("sort != null (like)");
+                pageResult = postTagRepository.findByTagInOrderByLikeCount(findTagList, PageRequest.of(page, limit));
+            }
+        }
+
+        // 응답 데이터 형식으로 변환해서 리턴 (없는 데이터 : likeStatus, bookmarkStatus)
         List<PostDataForList> postDataList = new ArrayList<>();
 
         for (Course course : pageResult.getContent()) {
@@ -181,7 +204,7 @@ public class PostService {
         Member member = new Member(0L);
         PageRequest pageRequest = PageRequest.of(page, limit);
 
-        // 태그검색시 토큰비어있을떄랑 잘못 됬을 때 예외 모두 통과시키기
+        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             String memberEmail = "";
             try {

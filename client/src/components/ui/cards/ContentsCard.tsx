@@ -89,11 +89,11 @@ const ContensCard = ({
   likeCount,
   tag,
   userName,
+  thumbnail,
   onClick,
   selectId,
   id,
 }: ContCardInfo) => {
-  // Todo 컴포넌트 나누는 작업 필요 합니다. id는 나중에 넘겨줄것임.
   const selected = selectId !== undefined && selectId === id;
   return (
     <ContensCardContainer
@@ -133,7 +133,7 @@ const ContensCard = ({
           height: '0',
           borderRadius: cssToken.BORDER['rounded-s'],
         }}
-        src="https://www.sungsimdangmall.co.kr/data/sungsimdang/goods/sungsimdang/big/202310454292163523295.jpg"
+        src={thumbnail}
       />
 
       <ContensBottom>

@@ -2,12 +2,13 @@ import { styled } from 'styled-components';
 import { useState } from 'react';
 
 import ScheduleListBox from './ScheduleListBox';
+import DirectSearch from './DirectSearch';
+import CategorySearch from './CategorySearch';
 
 import cssToken from '../../styles/cssToken';
 import SubTitle from '../ui/text/SubTitle';
 import Text from '../ui/text/Text';
 import GrayButton from '../ui/button/GrayButton';
-import { Props } from '../../types/type';
 
 const ScheduleContainer = styled.section`
   left: 0;
@@ -49,7 +50,7 @@ const ScheduleTitle = styled.div`
   justify-content: space-between;
 `;
 
-const ScheduleBox = ({ children }: { children: Props['children'] }) => {
+const ScheduleBox = () => {
   const [choiceCategory, setChoiceCategory] = useState(false);
   const [choiceDirect, setChoiceDirect] = useState(false);
 
@@ -92,6 +93,8 @@ const ScheduleBox = ({ children }: { children: Props['children'] }) => {
         </ScheduleInfoTxt>
       </ScheduleInfoBox>
 
+      <ScheduleListBox />
+
       <SubTitle
         styles={{
           size: cssToken.COLOR['gray-900'],
@@ -100,8 +103,6 @@ const ScheduleBox = ({ children }: { children: Props['children'] }) => {
       >
         장소 추가
       </SubTitle>
-
-      <ScheduleListBox />
 
       <Btnbox>
         <GrayButton
@@ -123,7 +124,8 @@ const ScheduleBox = ({ children }: { children: Props['children'] }) => {
           직접 검색
         </GrayButton>
       </Btnbox>
-      {choiceDirect && children}
+      {choiceCategory && <CategorySearch />}
+      {choiceDirect && <DirectSearch />}
     </ScheduleContainer>
   );
 };
