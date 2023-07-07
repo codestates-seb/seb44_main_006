@@ -8,7 +8,7 @@ import { RootState } from '../store';
 
 const useKeywordSearch = (
   displayPagination: (pagination: Pagination) => void,
-  searchPlace: string,
+  searchPlace: string | undefined,
   x?: string,
   y?: string,
   radius?: number
@@ -17,6 +17,7 @@ const useKeywordSearch = (
 
   const dispatch = useDispatch();
 
+  // FIXME ps를 고쳐서 useEffect의 종속성 배열로 넣어줘야함
   const ps = new kakao.maps.services.Places();
 
   const placesSearchCB = useCallback(
@@ -31,6 +32,7 @@ const useKeywordSearch = (
 
         map.setBounds(bounds);
       }
+
       if (datas.length) {
         displayPagination(pagination);
         dispatch(placeListActions.addList(datas));
@@ -41,11 +43,12 @@ const useKeywordSearch = (
   );
 
   useEffect(() => {
-    ps.keywordSearch(searchPlace, placesSearchCB, {
-      x: Number(x),
-      y: Number(y),
-      radius,
-    });
+    if (searchPlace)
+      ps.keywordSearch(searchPlace, placesSearchCB, {
+        x: Number(x),
+        y: Number(y),
+        radius,
+      });
 
     return () => {
       dispatch(placeListActions.resetList());
