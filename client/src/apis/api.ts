@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 import { PostReqT } from '../types/apitype';
 
@@ -9,19 +9,19 @@ const refreshToken = localStorage.getItem('refreshToken');
 export const instance = axios.create({
   baseURL: PROXY,
   headers: {
-    'Content-Type': 'application/json;',
+    'Content-Type': 'application/json',
     Authorization: accessToken,
     RefreshToken: refreshToken,
   },
 });
 
 instance.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig) => {
     config.headers.Authorization = accessToken;
     config.headers.RefreshToken = refreshToken;
     return config;
   },
-  (error) => {
+  (error: AxiosError) => {
     return Promise.reject(error);
   }
 );
@@ -29,6 +29,8 @@ instance.interceptors.request.use(
 export const GetUserInfo = async () => instance.get(`/api/auth/members`);
 
 export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
+
+export const GetAainUserToken = async () => instance.post('/auth/reissue');
 
 export const GetMyList = async () => instance.get(`/api/members`);
 
