@@ -65,7 +65,7 @@ public class PostService {
 
         Post post = new Post(); //새로 저장할 Post 선언
 
-        post.setPostContent(postPostDto.getCourseContent()); //저장할 post에 게시글내용과 코스 저장
+        post.setPostContent(postPostDto.getPostContent()); //저장할 post에 게시글내용과 코스 저장
 
         post.setCourse(findcourse); //Post에 코스 저장(연관관계 매핑)
 

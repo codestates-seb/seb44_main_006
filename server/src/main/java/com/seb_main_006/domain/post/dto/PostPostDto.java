@@ -11,7 +11,7 @@ public class PostPostDto {
 
     private Long courseId;
 
-    private String courseContent;
+    private String postContent;
 
     private List<String> tags;
 
