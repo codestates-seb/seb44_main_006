@@ -59,11 +59,13 @@ const CloseButtonDiv = styled.div`
 
 const Modal = ({
   children,
+  displayclosebtn,
   styles,
   backdropCallback,
   handleCloseBtn,
 }: {
   children?: Props['children'];
+  displayclosebtn?: boolean;
   styles?: IModalContainer;
   backdropCallback?: () => void;
   handleCloseBtn?: () => void;
@@ -73,9 +75,11 @@ const Modal = ({
       <Backdrop onClick={backdropCallback} />
       <ModalContainer {...styles}>
         {children}
-        <CloseButtonDiv>
-          <CloseButton onClick={handleCloseBtn} />
-        </CloseButtonDiv>
+        {displayclosebtn && (
+          <CloseButtonDiv>
+            <CloseButton onClick={handleCloseBtn} />
+          </CloseButtonDiv>
+        )}
       </ModalContainer>
     </ModalWrapper>,
     document.getElementById('overlay-root')!

@@ -75,10 +75,8 @@ const ScheduleBox = () => {
                 color: cssToken.COLOR.black,
               }}
             >
-              하루일정
+              일정 등록
             </SubTitle>
-
-            <span>23.07.04</span>
           </ScheduleTitle>
 
           <Text
