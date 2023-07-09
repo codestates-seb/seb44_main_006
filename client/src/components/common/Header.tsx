@@ -60,9 +60,10 @@ const BtnBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.8438rem 0.625rem 0.625rem;
+    padding: 1.2rem 0.95rem 0.95rem;
     white-space: nowrap;
     transition: ${cssToken.TRANSITION.basic};
+    font-size: 14px;
   }
 `;
 
