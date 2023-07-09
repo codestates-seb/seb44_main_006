@@ -34,10 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -68,7 +65,7 @@ public class PostService {
 
         Post post = new Post(); //새로 저장할 Post 선언
 
-        post.setPostContent(postPostDto.getCourseContent()); //저장할 post에 게시글내용과 코스 저장
+        post.setPostContent(postPostDto.getPostContent()); //저장할 post에 게시글내용과 코스 저장
 
         post.setCourse(findcourse); //Post에 코스 저장(연관관계 매핑)
 
@@ -92,7 +89,7 @@ public class PostService {
             else {
                 newPostTag.setTag(tagRepository.save(new Tag(tagName)));
             }
-            findcourse.setPost(post);
+//            findcourse.setPost(post);
             newPostTag.setPost(post); // new PostTag에 Post세팅(연관관계 매핑)
             post.getPostTagsInPost().add(newPostTag);// post의 PostTagsInpost리스트에 newPostTag 추가(연관관계 매핑)
         }
@@ -112,11 +109,16 @@ public class PostService {
     @Transactional
     public PostDetailResponseDto findPost(Long postId, String accessToken) throws JsonProcessingException {
 
-        Member member = new Member();
+        Member member = new Member(0L);
 
-        if (accessToken != null) {
-            String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
-            member = memberService.findVerifiedMember(memberEmail);
+        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
+        if (accessToken != null && !accessToken.equals("")) {
+            try {
+                String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+                member = memberService.findVerifiedMember(memberEmail);
+            } catch (Exception e) {
+
+            }
         }
 
         Post findPost = findVerifiedPost(postId);
@@ -144,23 +146,50 @@ public class PostService {
         return response;
     }
 
-    public PostListResponseDto findPosts(int page, int limit, String sort, String accessToken) throws JsonProcessingException {
+    /**
+     * 게시글 리스트 조회 (+ 태그 검색)
+     */
+    public PostListResponseDto findPosts(int page, int limit, String sort, String accessToken, String tagName) {
 
         Member member = new Member(0L);
 
-        // 리스트 조회시 토큰비어있을떄랑 잘못 됬을 때 예외 모두 통과시키기
+        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
-            String memberEmail = "";
             try {
-                memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+                String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
 
-        Page<Course> pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount")));
+        Page<Course> pageResult = null;
+
+        if (tagName == null) {
+            PageRequest pageRequest = PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending());
+            pageResult = courseRepository.findAllByPosted(true, pageRequest);
+        } else {
+            // 입력받은 태그 String 을 공백 기준으로 분리
+            String[] inputTags = tagName.split(" ");
+
+            // 각각의 tagName 으로 tag 찾은 후, 찾은 태그들을 Set으로 통합 (중복 제거)
+            Set<Tag> findTagSet = new HashSet<>();
+
+            for (String inputTag : inputTags) {
+                findTagSet.addAll(tagRepository.findByTagNameContaining(inputTag));
+            }
+
+            // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
+            if (sort == null) {
+                log.info("sort == null");
+                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
+            } else {
+                log.info("sort != null (like)");
+                pageResult = postTagRepository.findByTagInOrderByLikeCount(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
+            }
+        }
+
+        // 응답 데이터 형식으로 변환해서 리턴 (없는 데이터 : likeStatus, bookmarkStatus)
         List<PostDataForList> postDataList = new ArrayList<>();
 
         for (Course course : pageResult.getContent()) {
@@ -174,14 +203,15 @@ public class PostService {
     }
 
     /**
-     * 태그로 게시글 조회
+     * 태그로 게시글  (미사용)
      */
-    public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) throws JsonProcessingException {
+    public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) {
+        log.info("tagName = {}", tagName);
 
         Member member = new Member(0L);
         PageRequest pageRequest = PageRequest.of(page, limit);
 
-        // 태그검색시 토큰비어있을떄랑 잘못 됬을 때 예외 모두 통과시키기
+        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             String memberEmail = "";
             try {
@@ -219,6 +249,7 @@ public class PostService {
         return new PostListResponseDto(postDataList, pageResult);
     }
 
+
     /**
      * 게시글 삭제
      */
@@ -244,6 +275,7 @@ public class PostService {
     }
 
 
+    // 해당 Course 로 등록된 게시글이 존재하는지 확인 (존재하지 않을 경우 예외 발생)
     public void verifyNoExistPost(Course course) {
         postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
     }

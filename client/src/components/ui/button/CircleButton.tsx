@@ -3,9 +3,10 @@ import Button from './Button';
 import cssToken from '../../../styles/cssToken';
 import { IButtonStyle } from '../../../types/type';
 
-const CircleButton = ({ children, width, height }: IButtonStyle) => {
+const CircleButton = ({ children, width, height, onClick }: IButtonStyle) => {
   return (
     <Button
+      onClick={onClick}
       styles={{
         width,
         height,

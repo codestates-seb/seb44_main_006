@@ -4,6 +4,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 const initialState = {
   tagId: '',
   categoryId: '',
+  thumbnailId: '',
 };
 
 const selectedIdSlice = createSlice({
@@ -15,6 +16,9 @@ const selectedIdSlice = createSlice({
     },
     setCategoryId(state, action: PayloadAction<string>) {
       state.categoryId = action.payload;
+    },
+    setThumbnailId(state, action: PayloadAction<string>) {
+      state.thumbnailId = action.payload;
     },
   },
 });

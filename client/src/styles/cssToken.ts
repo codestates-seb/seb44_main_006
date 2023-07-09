@@ -40,6 +40,7 @@ const cssToken = {
   SPACING: {
     'px-50': '3.125rem',
     'py-100': '6.5rem',
+    'gap-90': '5.625rem',
     'gap-50': '3.125rem',
     'gap-40': '2.5rem',
     'gap-24': '1.5rem',

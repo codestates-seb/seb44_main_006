@@ -4,6 +4,7 @@ package com.seb_main_006.domain.tag.repository;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.tag.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;

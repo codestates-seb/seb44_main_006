@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import { FlexDiv } from '../../../styles/styles';
 import Comment from '../Comment';
 import { CommentT } from '../../../types/type';
+import manufactureDate from '../../../utils/manufactureDate';
 
 const CommentDiv = styled(FlexDiv)`
   flex-direction: column;
@@ -11,12 +12,14 @@ const CommentDiv = styled(FlexDiv)`
 const CommentContainer = ({ comments }: { comments: CommentT[] }) => {
   return (
     <CommentDiv>
-      {comments.map((comment) => (
+      {comments.map((comment: CommentT) => (
         <Comment
-          src={comment.src}
-          nickName={comment.nickName}
-          date={comment.date}
-          content={comment.content}
+          key={comment.answerId}
+          answererEmail={comment.answererEmail}
+          answererImageUrl={comment.answererImageUrl}
+          answererNickname={comment.answererNickname}
+          answerUpdatedAt={manufactureDate(comment.answerUpdatedAt)}
+          answerContent={comment.answerContent}
         />
       ))}
     </CommentDiv>
