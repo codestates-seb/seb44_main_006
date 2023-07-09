@@ -20,11 +20,23 @@ public class Tag {
     @Column(columnDefinition = "TEXT")
     private String tagName; // 태그 이름
 
-//    @OneToMany(mappedBy = "tag")
-//    private List<PostTag> postTagsInTag = new ArrayList<>(); // postTag entity와 연관관계 매핑(1:다)/ 양방향이 아니라 단방향으로 바꾸면서 제거
-
     public Tag(String tagName){
         this.tagName = tagName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tag tag = (Tag) o;
+
+        return Objects.equals(tagName, tag.tagName);
+    }
+
+    @Override
+    public int hashCode() {
+        return tagName != null ? tagName.hashCode() : 0;
     }
 }
 
