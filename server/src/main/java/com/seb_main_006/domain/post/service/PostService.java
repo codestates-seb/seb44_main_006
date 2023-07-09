@@ -164,6 +164,8 @@ public class PostService {
         }
 
         Page<Course> pageResult = null;
+
+        // 입력받은 태그 String 을 공백 기준으로 분리
         String[] inputTags = tagName.split(" ");
         for (String inputTag : inputTags) {
             log.info("inputTag = {}", inputTag);
@@ -172,7 +174,7 @@ public class PostService {
         if (tagName == null) {
             pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending()));
         } else {
-            // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
+            // 각각의 tagName 으로 tag 찾은 후, 찾은 태그들을 Set으로 통합 (중복 제거)
             Set<Tag> findTagSet = new HashSet<>();
 
             for (String inputTag : inputTags) {
@@ -203,7 +205,7 @@ public class PostService {
     }
 
     /**
-     * 태그로 게시글 조회
+     * 태그로 게시글  (미사용)
      */
     public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) {
         log.info("tagName = {}", tagName);
@@ -248,6 +250,7 @@ public class PostService {
 
         return new PostListResponseDto(postDataList, pageResult);
     }
+
 
     /**
      * 게시글 삭제
