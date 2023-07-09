@@ -5,11 +5,7 @@ import axios from 'axios';
 
 import useMovePage from './useMovePage';
 
-import {
-  toggleIsLogin,
-  setAccessToken,
-  setUserInfo,
-} from '../store/isLogin-slice';
+import { toggleIsLogin } from '../store/userAuth-slice';
 import { RootState } from '../store';
 
 
