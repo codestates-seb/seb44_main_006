@@ -66,7 +66,7 @@ const ScheduleSection = styled(SectionBox)`
 
 const Main = () => {
   const [isHovered, setIsHovered] = useState<boolean>(true);
-  const isLoggedIn = useSelector((state: RootState) => state.isLogin);
+  const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
   const modalIsOpen = useSelector(
     (state: RootState): boolean => state.overlay.isOpen
   );
@@ -98,8 +98,8 @@ const Main = () => {
       </CommunitySection>
       <ScheduleSection>
         <MainLink
-          onClick={isLoggedIn.isLogin ? null : toggleModal}
-          to={isLoggedIn.isLogin ? '/register' : '/'}
+          onClick={isLoggedIn ? null : toggleModal}
+          to={isLoggedIn ? '/register' : '/'}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >

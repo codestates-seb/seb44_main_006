@@ -3,15 +3,32 @@ import axios from 'axios';
 import { PostReqT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+const accessToken = localStorage.getItem('accessToken');
+const refreshToken = localStorage.getItem('refreshToken');
 
-const accessToken = import.meta.env.VITE_KEY;
 export const instance = axios.create({
   baseURL: PROXY,
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json;',
     Authorization: accessToken,
+    RefreshToken: refreshToken,
   },
 });
+
+instance.interceptors.request.use(
+  (config) => {
+    config.headers.Authorization = accessToken;
+    config.headers.RefreshToken = refreshToken;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export const GetUserInfo = async () => instance.get(`/api/auth/members`);
+
+export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
 
 export const GetMyList = async () => instance.get(`/api/members`);
 
