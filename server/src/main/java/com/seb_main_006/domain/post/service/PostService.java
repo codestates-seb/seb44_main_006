@@ -167,16 +167,14 @@ public class PostService {
 
         // 입력받은 태그 String 을 공백 기준으로 분리
         String[] inputTags = tagName.split(" ");
-        for (String inputTag : inputTags) {
-            log.info("inputTag = {}", inputTag);
-        }
 
         if (tagName == null) {
-            pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending()));
+            PageRequest pageRequest = PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending());
+            pageResult = courseRepository.findAllByPosted(true, pageRequest);
         } else {
             // 각각의 tagName 으로 tag 찾은 후, 찾은 태그들을 Set으로 통합 (중복 제거)
             Set<Tag> findTagSet = new HashSet<>();
-
+            
             for (String inputTag : inputTags) {
                 findTagSet.addAll(tagRepository.findByTagNameContaining(inputTag));
             }
@@ -277,6 +275,7 @@ public class PostService {
     }
 
 
+    // 해당 Course 로 등록된 게시글이 존재하는지 확인 (존재하지 않을 경우 예외 발생)
     public void verifyNoExistPost(Course course) {
         postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
     }
