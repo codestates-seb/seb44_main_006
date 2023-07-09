@@ -36,7 +36,6 @@ const setUserOAuthSlice = createSlice({
     },
     setUserOAuth: (state, action: PayloadAction<UserQAuthInfo>) => {
       state.userInfo = { ...state.userInfo, ...action.payload };
-      console.log(action.payload);
     },
     toggleIsLogin(state) {
       state.isLoginOpen = !state.isLoginOpen;
@@ -45,5 +44,4 @@ const setUserOAuthSlice = createSlice({
 });
 
 export const setUserOAuthReducer = setUserOAuthSlice.reducer;
-// export const { setIsLogin, setUserOAuth, toggleIsLogin } = setUserOAuthSlice.actions;
 export const setUserOAuthActions = setUserOAuthSlice.actions;
