@@ -41,15 +41,17 @@ const PostCommunitypage = () => {
     queryKey: ['course'],
     queryFn: () => GetCourse({ courseId: scheduleid }),
     refetchOnWindowFocus: false,
-    select: (data: TData) => data.data,
+    select: (data) => data.data,
   });
-
   const mutation = useMutation(PostCommunity, {
     onSuccess(data) {
       navigate(`/community/${data.headers.location}`);
     },
   });
-
+  /**
+   * 웹에디터 입력이 공백인지 확인하는 함수
+   * @returns 웹에디터 입력이 공백일 경우 true, 아닐 경우 false
+   */
   const isEditorEmpty = () => {
     const inputString = String(quillRef.current?.value);
     const sanitizedValue: string = inputString
@@ -71,9 +73,7 @@ const PostCommunitypage = () => {
         postContent: String(quillRef.current!.value),
         tags,
       });
-      // Todo post 잘될 경우 해당 커뮤니티 게시글 페이지로 이동
-      // gotoNext();
-      // return;
+      return;
     }
     quillRef.current?.focus();
   };
@@ -115,7 +115,11 @@ const PostCommunitypage = () => {
             height: '28.375rem',
           }}
         >
-          <ModalChildren toggleModal={toggleModal} gotoBack={goToback} />
+          <ModalChildren
+            leftBtnCallback={toggleModal}
+            rightBtnCallback={goToback}
+            content="작성하신 내용이 사라집니다."
+          />
         </Modal>
       )}
     </>

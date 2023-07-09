@@ -9,6 +9,7 @@ import OptionButton from '../button/OptionButton';
 import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
+import getLoginStatus from '../../../utils/getLoginStatus';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
@@ -94,6 +95,7 @@ const ContensCard = ({
   selectId,
   id,
 }: ContCardInfo) => {
+  const isLogin = getLoginStatus();
   const selected = selectId !== undefined && selectId === id;
   return (
     <ContensCardContainer
@@ -109,7 +111,7 @@ const ContensCard = ({
 
       <ContensHeader>
         <ContensTitle>{title}</ContensTitle>
-        <StarButton width="60px" height="60px" isActive />
+        {isLogin && <StarButton width="60px" height="60px" isActive />}
       </ContensHeader>
 
       <ContensText>{text}</ContensText>
@@ -138,7 +140,7 @@ const ContensCard = ({
 
       <ContensBottom>
         <LikeBtnBox>
-          <LikeButton isActive />
+          {isLogin && <LikeButton isActive />}
           <DataText>{likeCount}개</DataText>
         </LikeBtnBox>
         <DataText>23.06.30</DataText>

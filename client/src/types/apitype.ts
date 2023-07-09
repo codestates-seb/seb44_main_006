@@ -49,3 +49,30 @@ export type CommunityDetailT = {
   };
   answerList: CommentT[];
 };
+
+export type CommunitySummaryT = {
+  bookmarkStatus: boolean;
+  courseId: number;
+  courseLikeCount: number;
+  courseThumbnail: string;
+  courseTitle: string;
+  courseUpdatedAt: string;
+  courseViewCount: number;
+  likeStatus: boolean;
+  memberNickname: string;
+  postContent: string;
+  postId: number;
+  tags: string[];
+};
+
+export type PageInfoT = {
+  limit: number;
+  page: number;
+  totalElement: number;
+  totalPages: number;
+};
+
+export type CommunityListT = {
+  data: CommunitySummaryT[];
+  pageInfo: PageInfoT;
+};

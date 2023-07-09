@@ -44,7 +44,7 @@ export interface IButtonStyle {
   onSubmit?: () => void;
   tagname?: string;
   categoryname?: string;
-  disabled?: 'true' | 'false';
+  disabled?: 'true' | 'false' | boolean;
   fontsize?: string;
   selectedid?: string | undefined;
   isreset?: boolean;

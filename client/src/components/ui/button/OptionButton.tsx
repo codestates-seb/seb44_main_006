@@ -24,15 +24,14 @@ const OptionButton = ({
   svgHeight,
   isActive,
   onClick,
+  children,
 }: IButtonStyle) => {
   return (
     <Container>
       {isActive && (
         <OptionDiv>
           {/* 수정 필요 */}
-          <div>수정</div>
-          <div>삭제</div>
-          <div>공유</div>
+          {children}
         </OptionDiv>
       )}
       <Button onClick={onClick}>

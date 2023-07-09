@@ -13,7 +13,7 @@ import TextArea from '../../components/ui/input/TextArea';
 import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 import PageMoveButton from '../../components/community/detail/PageMoveButton';
 import CommentContainer from '../../components/community/detail/CommentContainer';
-import LikeStarButtonContainer from '../../components/community/detail/LikeStarButtonContainer';
+import ActionButtonContainer from '../../components/community/detail/ActionButtonContainer';
 import TagContainer from '../../components/community/detail/TagContainer';
 import { GetCommunityPost, PostComment } from '../../apis/api';
 import manufactureDate from '../../utils/manufactureDate';
@@ -38,6 +38,7 @@ const CommentBtn = styled(FlexDiv)`
   justify-content: flex-end;
 `;
 
+// FixMe select type 설정
 const DetailPage = () => {
   const isLogin = getLoginStatus();
   const { postId } = useParams<{ postId: string }>();
@@ -83,7 +84,15 @@ const DetailPage = () => {
           )}
         </UersDiv>
         {/* Todo 좋아요 즐겨찾기 POST 연결해야함 */}
-        <LikeStarButtonContainer LikeCount={130} isCheck isLogin={!!isLogin} />
+        {detailData && postId && (
+          <ActionButtonContainer
+            bookmarkStatus={detailData.bookmarkStatus}
+            likeStatus={detailData.likeStatus}
+            LikeCount={130}
+            isLogin={!!isLogin}
+            postId={postId}
+          />
+        )}
       </HEADDiv>
 
       {detailData && (
@@ -94,7 +103,6 @@ const DetailPage = () => {
       )}
 
       <ContentDiv>
-        {/* FixME postContent null로 나오는 이유 확인해야함 */}
         {detailData && (
           <>
             <div dangerouslySetInnerHTML={{ __html: detailData.postContent }} />
@@ -114,7 +122,6 @@ const DetailPage = () => {
           disabled={!isLogin}
           styles={{ width: '100%' }}
         />
-        {/* TODO button type지정? */}
         <CommentBtn>
           <SkyBlueButton
             width="13.875rem"

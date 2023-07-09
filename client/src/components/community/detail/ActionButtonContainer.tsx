@@ -1,10 +1,12 @@
 import { styled } from 'styled-components';
+import { useState } from 'react';
 
 import { FlexDiv } from '../../../styles/styles';
 import cssToken from '../../../styles/cssToken';
 import StarButton from '../../ui/button/StarButton';
 import LikeButton from '../../ui/button/LikeButton';
 import Text from '../../ui/text/Text';
+import DeleteButton from '../DeleteButton';
 
 const BtnDiv = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-12']};
@@ -21,27 +23,34 @@ const StarDiv = styled(FlexDiv)`
   column-gap: 0.25rem;
 `;
 
-const LikeStarButtonContainer = ({
+const ActionButtonContainer = ({
   LikeCount,
-  isCheck,
   isLogin,
+  postId,
+  bookmarkStatus,
+  likeStatus,
 }: {
   LikeCount: number;
-  isCheck: boolean;
   isLogin: boolean;
+  postId: string;
+  bookmarkStatus: boolean;
+  likeStatus: boolean;
 }) => {
   return (
     <BtnDiv>
       {/* Todo 작성자와 관리자에게만 보이도록 */}
-      {/* Todo 클릭 시 확인 모달 띄우기 */}
-      {/* Todo 삭제버튼 */}
+      <DeleteButton postId={postId} />
       {isLogin && (
-        <StarButton width="3.75rem" height="3.75rem" isActive={isCheck} />
+        <StarButton
+          width="3.75rem"
+          height="3.75rem"
+          isActive={bookmarkStatus}
+        />
       )}
       <StarDiv>
         {isLogin && (
           <>
-            <LikeButton />
+            <LikeButton isActive={likeStatus} />
             {LikeCount}
           </>
         )}
@@ -56,4 +65,4 @@ const LikeStarButtonContainer = ({
   );
 };
 
-export default LikeStarButtonContainer;
+export default ActionButtonContainer;
