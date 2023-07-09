@@ -11,7 +11,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 import { overlayActions } from '../../store/overlay-slice';
-import { toggleIsLogin, setUserOAuth } from '../../store/userAuth-slice';
+import { setUserOAuthActions } from '../../store/userAuth-slice';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
@@ -21,7 +21,8 @@ import LoginModal from '../ui/modal/LoginModal';
 import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
 import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
-import GrayButton from '../ui/button/GrayButton';
+// import GrayButton from '../ui/button/GrayButton';
+// import SkyBlueButton from '../ui/button/SkyBlueButton';
 
 type HeaderStyle = {
   isPath?: string;
@@ -80,14 +81,14 @@ const Header = () => {
     (state: RootState) => state.userAuth.userInfo
   );
   const LoginmodalIsOpen = useSelector(
-    (state: RootState): boolean => state.overlay.isOpen
+    (state: RootState): boolean => state.userAuth.isLoginOpen
   );
   const modalIsOpen = useSelector(
     (state: RootState): boolean => state.overlay.isOpen
   );
 
   const LogintoggleModal = () => {
-    dispatch(overlayActions.toggleOverlay());
+    dispatch(setUserOAuthActions.toggleIsLogin());
   };
 
   const toggleModal = () => {
@@ -96,10 +97,9 @@ const Header = () => {
 
   const mutation = useMutation(RemoveUserInfo, {
     onSuccess(data) {
-      localStorage.removeItem('userInfo');
       localStorage.removeItem('accessToken');
-      localStorage.removeItem('isLogin');
       localStorage.removeItem('refreshToken');
+      localStorage.removeItem('isLogin');
       gotoMain();
       return window.location.reload();
     },
@@ -107,6 +107,7 @@ const Header = () => {
 
   const handleLogout = () => {
     mutation.mutate();
+    dispatch(setUserOAuthActions.setIsLogin(false));
   };
 
   // TODO: React Query 이용해서 리팩토링하기
@@ -115,18 +116,17 @@ const Header = () => {
     queryKey: ['oauthInfoData'],
     queryFn: () => GetUserInfo(),
     onSuccess: (data) => {
+      dispatch(setUserOAuthActions.setUserOAuth(data.data));
       if (accessToken) {
-        localStorage.setItem('refreshToken', `${refreshToken}`);
         localStorage.setItem('accessToken', `Bearer ${accessToken}`);
+        localStorage.setItem('refreshToken', `${refreshToken}`);
         localStorage.setItem('isLogin', JSON.stringify(true));
-        dispatch(setUserOAuth({ dd: 'ee', ww: 'tt' }));
-        dispatch(toggleIsLogin());
+        if (localStorage.getItem('isLogin')) {
+          dispatch(setUserOAuthActions.setIsLogin(true));
+        }
         gotoMain();
       }
-
-
     },
-
     onError: (error) => {
       if (accessToken) {
         const errStatus: number = error.response.status;
@@ -136,10 +136,10 @@ const Header = () => {
   });
 
   useEffect(() => {
-    console.log('isLoggedIn', isLoggedIn);
-    console.log('oauthInfo', oauthInfo);
-    console.log('userQAuthData', userQAuthData);
-  })
+    console.log('1 oauthInfo 데이터 응답:', oauthInfo);
+    console.log('2 isLoggedIn 로그인 유무:', isLoggedIn);
+    console.log('3 userQAuthData 유저 정보:', userQAuthData);
+  }, [])
 
   useEffect(() => {
     setIsPath(location.pathname);
@@ -162,6 +162,7 @@ const Header = () => {
         <Modal
           backdropCallback={toggleModal}
           handleCloseBtn={toggleModal}
+          displayclosebtn={true}
           styles={{
             width: '500px',
             height: '500px',
@@ -169,6 +170,7 @@ const Header = () => {
             gap: '10px',
           }}>
           로그아웃 하시겠습니까?
+          <GrayButton></GrayButton>
         </Modal>
       )} */}
 
@@ -177,6 +179,9 @@ const Header = () => {
           <LogoImg src={LogoBlack} alt="logo-harumate" />
         </Link>
       </LogoBox>
+      {/* <div>
+        {`반갑습니다. ${userQAuthData.memberNickname}`}
+      </div> */}
       <BtnBox>
         {isPath === '/' && isLoggedIn && (
           // 메인 페이지인 경우
