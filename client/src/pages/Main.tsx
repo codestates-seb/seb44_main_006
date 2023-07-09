@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { overlayActions } from '../store/overlay-slice';
+import { setUserOAuthActions } from '../store/userAuth-slice';
 import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
@@ -67,8 +68,8 @@ const ScheduleSection = styled(SectionBox)`
 const Main = () => {
   const [isHovered, setIsHovered] = useState<boolean>(true);
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
-  const modalIsOpen = useSelector(
-    (state: RootState): boolean => state.overlay.isOpen
+  const LoginmodalIsOpen = useSelector(
+    (state: RootState): boolean => state.userAuth.isLoginOpen
   );
   const dispatch = useDispatch();
 
@@ -80,8 +81,8 @@ const Main = () => {
     setIsHovered((prev) => !prev);
   };
 
-  const toggleModal = () => {
-    dispatch(overlayActions.toggleOverlay());
+  const LogintoggleModal = () => {
+    dispatch(setUserOAuthActions.toggleIsLogin());
   };
 
   return (
@@ -98,7 +99,7 @@ const Main = () => {
       </CommunitySection>
       <ScheduleSection>
         <MainLink
-          onClick={isLoggedIn ? null : toggleModal}
+          onClick={isLoggedIn ? null : LogintoggleModal}
           to={isLoggedIn ? '/register' : '/'}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
