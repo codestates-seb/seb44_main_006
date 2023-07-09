@@ -6,7 +6,6 @@ import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
 import com.seb_main_006.global.auth.attribute.MemberInfoResponseDto;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
-import com.seb_main_006.global.auth.jwt.Subject;
 import com.seb_main_006.global.auth.redis.RedisUtil;
 import com.seb_main_006.global.auth.redis.RefreshToken;
 import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
@@ -81,16 +80,20 @@ public class AuthService {
     /**
      * 프론트 저장용 유저 정보 조회
      */
-    public MemberInfoResponseDto getMemberInfo(String accessToken) throws JsonProcessingException {
-        String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
-        Member findMember = memberService.findExistMember(memberEmail);
+    public MemberInfoResponseDto getMemberInfo(String accessToken) {
+        Member member = new Member();
 
-        if (findMember == null) {
-            return new MemberInfoResponseDto();
+        if (accessToken != null && !accessToken.equals("")) {
+            try {
+                String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+                member = memberService.findVerifiedMember(memberEmail);
+            } catch (Exception e) {
+
+            }
         }
 
-        int myCourseCount = findMember.getCourses().size();
-        int myBookmarkCount = bookmarkService.getBookmarkCount(findMember);
-        return MemberInfoResponseDto.of(findMember, myCourseCount, myBookmarkCount);
+        int myCourseCount = member.getCourses().size();
+        int myBookmarkCount = bookmarkService.getBookmarkCount(member);
+        return MemberInfoResponseDto.of(member, myCourseCount, myBookmarkCount);
     }
 }
