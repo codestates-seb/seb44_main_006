@@ -8,14 +8,14 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
 import { overlayActions } from '../../store/overlay-slice';
 import { setUserOAuthActions } from '../../store/userAuth-slice';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
-import WhiteButton from '../ui/button/WhiteButton'
+import WhiteButton from '../ui/button/WhiteButton';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import LoginModal from '../ui/modal/LoginModal';
@@ -68,7 +68,6 @@ const BtnBox = styled.div`
 `;
 
 const Header = () => {
-  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const [searchParams] = useSearchParams();
   const accessToken = searchParams.get('access_token');
   const refreshToken = searchParams.get('refresh_token');
@@ -111,8 +110,8 @@ const Header = () => {
     dispatch(setUserOAuthActions.setIsLogin(false));
   };
 
-  // TODO: React Query 이용해서 리팩토링하기
   // TODO: Redux toolkit 이용해 전역으로 유저 정보 관리하기
+  //! 유저 정보 새로고침해야 값을 받을 수 있는 이슈
   const { data: oauthInfo } = useQuery({
     queryKey: ['oauthInfoData'],
     queryFn: () => GetUserInfo(),
@@ -128,9 +127,9 @@ const Header = () => {
         gotoMain();
       }
     },
-    onError: (error) => {
+    onError: (error: AxiosError) => {
       if (accessToken) {
-        const errStatus: number = error.response.status;
+        const errStatus = error.response.status;
         navigate(`/error/${errStatus}`);
       }
     },
@@ -140,7 +139,7 @@ const Header = () => {
     console.log('1 oauthInfo 데이터 응답:', oauthInfo);
     console.log('2 isLoggedIn 로그인 유무:', isLoggedIn);
     console.log('3 userQAuthData 유저 정보:', userQAuthData);
-  }, [])
+  }, []);
 
   useEffect(() => {
     setIsPath(location.pathname);
@@ -169,7 +168,8 @@ const Header = () => {
             height: '28.375rem',
             borderradius: '0.9375rem',
             gap: '3.125rem',
-          }}>
+          }}
+        >
           <Text styles={{ size: cssToken.TEXT_SIZE['text-50'] }}>
             로그아웃 하시겠습니까?
           </Text>
