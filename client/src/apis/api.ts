@@ -26,6 +26,13 @@ instance.interceptors.request.use(
   }
 );
 
+//TODO:refrashtoken 응답요청 하기
+//*기존 API 호출하다 444 에러코드 응답 시 reissue 로 헤더 그대로 호출시 재발급
+//*reissue 호출에 대한 응답까지도 444 일 경우 refreshToken도 만료된 상황이므로 다시 로그인이 필요
+// instance.interceptors.response.use(
+
+// );
+
 export const GetUserInfo = async () => instance.get(`/api/auth/members`);
 
 export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
