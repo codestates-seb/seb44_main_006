@@ -11,7 +11,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 import { overlayActions } from '../../store/overlay-slice';
-import { setUserOAuth } from '../../store/userAuth-slice';
+import { toggleIsLogin, setUserOAuth } from '../../store/userAuth-slice';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
@@ -120,11 +120,11 @@ const Header = () => {
         localStorage.setItem('accessToken', `Bearer ${accessToken}`);
         localStorage.setItem('isLogin', JSON.stringify(true));
         dispatch(setUserOAuth({ dd: 'ee', ww: 'tt' }));
+        dispatch(toggleIsLogin());
         gotoMain();
       }
 
-      console.log('oauthInfo', data.data);
-      console.log('userQAuthData', userQAuthData);
+
     },
 
     onError: (error) => {
@@ -134,6 +134,12 @@ const Header = () => {
       }
     },
   });
+
+  useEffect(() => {
+    console.log('isLoggedIn', isLoggedIn);
+    console.log('oauthInfo', oauthInfo);
+    console.log('userQAuthData', userQAuthData);
+  })
 
   useEffect(() => {
     setIsPath(location.pathname);
@@ -209,7 +215,7 @@ const Header = () => {
             </SkyBlueButton>
           </>
         )}
-        {isPath !== '/' && !isLoggedIn.isLogin && (
+        {isPath !== '/' && !isLoggedIn && (
           <WhiteButton
             onClick={LogintoggleModal}
             height="25px"
