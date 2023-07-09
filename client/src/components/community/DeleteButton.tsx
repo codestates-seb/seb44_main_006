@@ -15,6 +15,7 @@ const DeleteButton = ({ postId }: { postId: string }) => {
   const toggleModal = useToggleModal();
   const mutate = useMutation(DeleteCommunityPost, {
     onSuccess() {
+      // Todo 다른 페이지 refetch 해야할 수도?
       toggleModal();
       goToCommunity();
     },

@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect } from 'react';
 
 import DeleteButton from './DeleteButton';
 
@@ -9,11 +8,7 @@ import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
-import {
-  CommunityListT,
-  CommunitySummaryT,
-  PageInfoT,
-} from '../../types/apitype';
+import { CommunityListT, CommunitySummaryT } from '../../types/apitype';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -59,6 +54,7 @@ const FilterSection = ({
               onClick={moveToDetail}
               id={post.postId}
             >
+              {/* Todo 작성자만 보이도록해야함 */}
               <DeleteButton postId={String(post.postId)} />
             </ContensCard>
           ))}
