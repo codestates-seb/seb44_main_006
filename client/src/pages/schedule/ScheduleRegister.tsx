@@ -1,6 +1,5 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { useState } from 'react';
 
 import KakaoMap from '../../components/map/KakaoMap';
 import Marker from '../../components/map/Marker';
@@ -13,6 +12,7 @@ import CircleButton from '../../components/ui/button/CircleButton';
 import SaveIcon from '../../assets/SaveIcon';
 import CloseIcon from '../../assets/CloseIcon';
 import ScheduleCreateModal from '../../components/schedule/ScheduleCreateModal';
+import { overlayActions } from '../../store/overlay-slice';
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-screen']};
@@ -37,11 +37,13 @@ const ButtonDiv = styled.div`
 `;
 
 const ScheduleRegister = () => {
-  const [isSave, setIsSave] = useState(false);
+  const isSave = useSelector((state: RootState) => state.overlay.isOpen);
   const places = useSelector((state: RootState) => state.placeList.list);
   const scheduleList = useSelector(
     (state: RootState) => state.scheduleList.list
   );
+  const dispatch = useDispatch();
+
   // FIXME 숫자 마커가 일반 마커에 가려지는 현상 수정해야함
 
   return (
@@ -83,7 +85,7 @@ const ScheduleRegister = () => {
         <CircleButton
           width="100px"
           height="100px"
-          onClick={() => setIsSave(true)}
+          onClick={() => dispatch(overlayActions.toggleOverlay())}
         >
           <ButtonDiv>
             <SaveIcon

@@ -1,18 +1,28 @@
 import { styled } from 'styled-components';
 import DatePicker from 'react-datepicker';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import ThumbnailChoiceContainer from './ThumbnailChoiceContainer';
 
 import cssToken from '../../styles/cssToken';
 import Modal from '../ui/modal/Modal';
 import Title from '../ui/text/Title';
 import SubTitle from '../ui/text/SubTitle';
-import ThumbnailChoice from '../../assets/ThumbnailChoice';
+import Thumbnail from '../../assets/Thumbnail';
 import InputContainer from '../ui/input/InputContainer';
 import TextArea from '../ui/input/TextArea';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
-
 import 'react-datepicker/dist/react-datepicker.css';
+import { overlayActions } from '../../store/overlay-slice';
+import { RootState } from '../../store';
+import { scheduleListActions } from '../../store/scheduleList-slice';
+
+interface UrlProp {
+  url: string;
+}
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-full']};
@@ -33,6 +43,7 @@ const TitleContainer = styled.section`
 
 const WriteContainer = styled.section`
   width: ${cssToken.WIDTH['w-full']};
+  height: 60%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -45,6 +56,18 @@ const WriteLeftBox = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+`;
+
+const ThumbnailBox = styled.div<UrlProp>`
+  background-color: ${cssToken.COLOR['gray-300']};
+  background-image: url(${(props) => props.url});
+  background-size: cover;
+  width: ${cssToken.WIDTH['w-full']};
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 `;
 
 const DataChoiceWrapper = styled.div`
@@ -76,7 +99,26 @@ const DateInputBox = styled(DatePicker)`
 `;
 
 const ScheduleCreateModal = () => {
+  const [isThumbChoice, setIsThumbChouce] = useState(false);
   const [choiceDate, setChoiceDate] = useState(new Date());
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const bgUrl = useSelector((state: RootState) => state.scheduleList.imageUrl);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSave = () => {
+    if (titleRef.current && descriptionRef.current) {
+      dispatch(scheduleListActions.addTitle(titleRef.current.value));
+      dispatch(
+        scheduleListActions.addDescription(descriptionRef.current.value)
+      );
+    }
+    dispatch(overlayActions.toggleOverlay());
+    navigate('/');
+    dispatch(scheduleListActions.resetList());
+  };
+
   return (
     <Modal
       styles={{
@@ -85,62 +127,89 @@ const ScheduleCreateModal = () => {
         borderradius: `${cssToken.BORDER['rounded-s']}`,
       }}
     >
-      <Wrapper>
-        <TitleContainer>
-          <Title styles={{ size: `${cssToken.TEXT_SIZE['text-32']}` }}>
-            일정 저장하기
-          </Title>
-          <SubTitle styles={{ weight: 300 }}>
-            일정 저장 시 주요 내용을 작성해 주세요!
-          </SubTitle>
-        </TitleContainer>
-        <WriteContainer>
-          <WriteLeftBox>
-            <ThumbnailChoice style={{ iconWidth: 450, iconHeight: 350 }} />
-            <DataChoiceWrapper>
-              <div>날짜 선택</div>
-              <DateInputBox
-                minDate={new Date()}
-                dateFormat="yyyy년 MM월 dd일"
-                selected={choiceDate}
-                onChange={(date: Date) => date && setChoiceDate(date)}
+      {isThumbChoice ? (
+        <ThumbnailChoiceContainer setIsThumbChouce={setIsThumbChouce} />
+      ) : (
+        <Wrapper>
+          <TitleContainer>
+            <Title styles={{ size: `${cssToken.TEXT_SIZE['text-32']}` }}>
+              일정 저장하기
+            </Title>
+            <SubTitle styles={{ weight: 300 }}>
+              일정 저장 시 주요 내용을 작성해 주세요!
+            </SubTitle>
+          </TitleContainer>
+
+          <WriteContainer>
+            <WriteLeftBox>
+              <ThumbnailBox url={bgUrl}>
+                {!bgUrl && (
+                  <Thumbnail style={{ iconWidth: 125, iconHeight: 103 }} />
+                )}
+                <GrayButton
+                  width="150px"
+                  height="2rem"
+                  borderRadius={cssToken.BORDER['rounded-s']}
+                  onClick={() => setIsThumbChouce(true)}
+                >
+                  썸네일 선택
+                </GrayButton>
+              </ThumbnailBox>
+              <DataChoiceWrapper>
+                <div>일정 날짜 선택</div>
+                <DateInputBox
+                  minDate={new Date()}
+                  dateFormat="yyyy년 MM월 dd일"
+                  selected={choiceDate}
+                  onChange={(date: Date) => date && setChoiceDate(date)}
+                />
+              </DataChoiceWrapper>
+            </WriteLeftBox>
+            <WriteRightBox>
+              <InputContainer
+                ref={titleRef}
+                description="일정의 제목을 작성해 주세요. (최대 30자, 필수)"
+                minLength={1}
+                maxLength={30}
+                type="title"
+                styles={{
+                  width: `${cssToken.WIDTH['w-full']}`,
+                  height: `${cssToken.HEIGHT['h-min']}`,
+                }}
               />
-            </DataChoiceWrapper>
-          </WriteLeftBox>
-          <WriteRightBox>
-            <InputContainer
-              description="일정의 제목을 작성해 주세요. (최대 30자, 필수)"
-              styles={{
-                width: `${cssToken.WIDTH['w-full']}`,
-                height: `${cssToken.HEIGHT['h-min']}`,
-              }}
-            />
-            <TextArea
-              description="일정의 상세 설명을 작성해 주세요. (최대 40자, 필수)"
-              styles={{
-                width: `${cssToken.WIDTH['w-full']}`,
-                height: '12rem',
-              }}
-            />
-          </WriteRightBox>
-        </WriteContainer>
-        <ButtonWrapper>
-          <GrayButton
-            width="100px"
-            height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
-          >
-            뒤로가기
-          </GrayButton>
-          <SkyBlueButton
-            width="100px"
-            height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
-          >
-            저장하기
-          </SkyBlueButton>
-        </ButtonWrapper>
-      </Wrapper>
+              <TextArea
+                ref={descriptionRef}
+                description="일정의 상세 설명을 작성해 주세요. (최대 40자, 필수)"
+                minLength={1}
+                maxLength={40}
+                styles={{
+                  width: `${cssToken.WIDTH['w-full']}`,
+                  height: `${cssToken.HEIGHT['h-full']}`,
+                }}
+              />
+            </WriteRightBox>
+          </WriteContainer>
+
+          <ButtonWrapper>
+            <GrayButton
+              width="150px"
+              height="50px"
+              borderRadius={cssToken.BORDER['rounded-md']}
+              onClick={() => dispatch(overlayActions.toggleOverlay())}
+            >
+              뒤로가기
+            </GrayButton>
+            <SkyBlueButton
+              width="150px"
+              height="50px"
+              borderRadius={cssToken.BORDER['rounded-md']}
+              onClick={handleSave}
+            >
+              저장하기
+            </SkyBlueButton>
+          </ButtonWrapper>
+        </Wrapper>
+      )}
     </Modal>
   );
 };
