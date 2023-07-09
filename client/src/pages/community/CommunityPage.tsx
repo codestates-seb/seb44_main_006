@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -11,7 +11,9 @@ import useHandleTab from '../../hooks/useHandleTab';
 import CircleButton from '../../components/ui/button/CircleButton';
 import Pen from '../../assets/Pen';
 import useMovePage from '../../hooks/useMovePage';
-import { GetCommunityList, GetSearch } from '../../apis/api';
+import { GetCommunityList } from '../../apis/api';
+import getLoginStatus from '../../utils/getLoginStatus';
+import { CommunityListT, CommunitySummaryT } from '../../types/apitype';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -33,35 +35,32 @@ const FixedDiv = styled.div`
 `;
 
 const CommunityPage = () => {
-  const [tagName, setTagName] = useState<string>('');
-  const { selectTab, setTab } = useHandleTab();
   const goToSelect = useMovePage('/community/select');
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const isLogin = getLoginStatus();
+  const { selectTab, setTab } = useHandleTab();
+  const [tagName, setTagName] = useState<string>('');
+  const [page, setPage] = useState(1);
 
-  const { data: communityData } = useQuery({
-    queryKey: ['community', selectTab],
-    queryFn: () => GetCommunityList({ page: 1, limit: 6, sort: selectTab }),
-    enabled: !tagName,
-    refetchOnWindowFocus: false,
-  });
-
-  console.log('data', communityData);
-
-  const { data: searchData } = useQuery({
-    queryKey: ['search', tagName, selectTab],
-    queryFn: () => GetSearch({ tagName, page: 1, limit: 6, sort: selectTab }),
-    enabled: !!tagName,
-    refetchOnWindowFocus: false,
-  });
+  const { data: communityData } = useQuery(
+    ['community', selectTab, tagName],
+    () =>
+      GetCommunityList({
+        page,
+        limit: 6,
+        sort: selectTab,
+        tagName,
+      })
+  );
 
   const SearchPost = () => {
     if (searchInputRef.current) {
       const keyword = searchInputRef.current?.value;
+      setTab('Newest');
+      setPage(1);
       setTagName(keyword);
     }
   };
-
-  console.log('searchData', searchData);
 
   return (
     <>
@@ -77,30 +76,33 @@ const CommunityPage = () => {
           }}
           callback={SearchPost}
         />
-        <FilterSection>
-          <FilterTab
-            content="최신순"
-            selectTab={selectTab}
-            tab="Newest"
-            onClick={setTab}
-          />
-          <FilterTab
-            content="좋아요순"
-            selectTab={selectTab}
-            tab="Like"
-            onClick={setTab}
-          />
-        </FilterSection>
+        {communityData && (
+          <FilterSection communityData={communityData}>
+            <FilterTab
+              content="최신순"
+              selectTab={selectTab}
+              tab="Newest"
+              onClick={setTab}
+            />
+            <FilterTab
+              content="좋아요순"
+              selectTab={selectTab}
+              tab="Like"
+              onClick={setTab}
+            />
+          </FilterSection>
+        )}
       </Wrapper>
-      {/* TODO 로그인 상태에 따라 표시 여부 다르게 */}
-      <FixedDiv onClick={goToSelect}>
-        <CircleButton width="117px" height="117px">
-          <Div>
-            <Pen style={{ iconWidth: 28, iconHeight: 28, color: 'black' }} />
-          </Div>
-          <div>자랑하기</div>
-        </CircleButton>
-      </FixedDiv>
+      {isLogin && (
+        <FixedDiv onClick={goToSelect}>
+          <CircleButton width="117px" height="117px">
+            <Div>
+              <Pen style={{ iconWidth: 28, iconHeight: 28, color: 'black' }} />
+            </Div>
+            <div>자랑하기</div>
+          </CircleButton>
+        </FixedDiv>
+      )}
     </>
   );
 };

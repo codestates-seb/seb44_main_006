@@ -1,4 +1,7 @@
 import { styled } from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRef, useState } from 'react';
 
 import InfoContainer from '../../components/community/detail/InfoContainer';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
@@ -10,8 +13,11 @@ import TextArea from '../../components/ui/input/TextArea';
 import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 import PageMoveButton from '../../components/community/detail/PageMoveButton';
 import CommentContainer from '../../components/community/detail/CommentContainer';
-import LikeStarButtonContainer from '../../components/community/detail/LikeStarButtonContainer';
+import ActionButtonContainer from '../../components/community/detail/ActionButtonContainer';
 import TagContainer from '../../components/community/detail/TagContainer';
+import { GetCommunityPost, PostComment } from '../../apis/api';
+import manufactureDate from '../../utils/manufactureDate';
+import getLoginStatus from '../../utils/getLoginStatus';
 
 const HEADDiv = styled(FlexDiv)`
   justify-content: space-between;
@@ -32,42 +38,37 @@ const CommentBtn = styled(FlexDiv)`
   justify-content: flex-end;
 `;
 
+// FixMe select type 설정
 const DetailPage = () => {
-  const content =
-    '<p>안녕하세요</p></br><h1>헤더입니다.</h1><p>안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요</p></br><h1>헤더입니다.</h1>';
-  const tagArr = ['성심당', '세종수목원', '수료', '빨리', '하고싶다'];
-  const array = [
-    { lat: 33.450701, lng: 126.570667 },
-    { lat: 33.450701, lng: 126.570867 },
-    { lat: 33.450601, lng: 126.570367 },
-  ];
-  const commentArr = [
-    {
-      src: 'https://product.cdn.cevaws.com/var/storage/images/_aliases/reference/media/feliway-2017/images/kor-kr/1_gnetb-7sfmbx49emluey4a/6341829-1-kor-KR/1_gNETb-7SfMBX49EMLUeY4A.jpg',
-      nickName: '1',
-      date: '23.06.29',
-      content:
-        '미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당    미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당미쳤당',
+  const isLogin = getLoginStatus();
+  const [isValidate, setValidate] = useState(true);
+  const { postId } = useParams<{ postId: string }>();
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const { data: detailData } = useQuery({
+    queryKey: ['communitydetail'],
+    queryFn: () => GetCommunityPost({ postId }),
+    refetchOnWindowFocus: false,
+    select: (data) => data.data,
+  });
+
+  console.log(detailData);
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(PostComment, {
+    onSuccess: () => {
+      if (textAreaRef.current) textAreaRef.current.value = '';
+      return queryClient.invalidateQueries(['communitydetail']);
     },
-    {
-      src: 'https://product.cdn.cevaws.com/var/storage/images/_aliases/reference/media/feliway-2017/images/kor-kr/1_gnetb-7sfmbx49emluey4a/6341829-1-kor-KR/1_gNETb-7SfMBX49EMLUeY4A.jpg',
-      nickName: '2',
-      date: '23.06.29',
-      content: '가고싶당',
-    },
-    {
-      src: 'https://product.cdn.cevaws.com/var/storage/images/_aliases/reference/media/feliway-2017/images/kor-kr/1_gnetb-7sfmbx49emluey4a/6341829-1-kor-KR/1_gNETb-7SfMBX49EMLUeY4A.jpg',
-      nickName: '2',
-      date: '23.06.29',
-      content: '가고싶당',
-    },
-    {
-      src: 'https://product.cdn.cevaws.com/var/storage/images/_aliases/reference/media/feliway-2017/images/kor-kr/1_gnetb-7sfmbx49emluey4a/6341829-1-kor-KR/1_gNETb-7SfMBX49EMLUeY4A.jpg',
-      nickName: '2',
-      date: '23.06.29',
-      content: '가고싶당',
-    },
-  ];
+  });
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (textAreaRef.current && textAreaRef.current.value.trim().length > 0) {
+      setValidate(true);
+      mutation.mutate({ postId, answerContent: textAreaRef.current.value });
+    } else {
+      setValidate(false);
+    }
+  };
   return (
     <OutsideWrap>
       <Title styles={{ size: cssToken.TEXT_SIZE['text-40'] }}>
@@ -76,39 +77,68 @@ const DetailPage = () => {
 
       <HEADDiv>
         <UersDiv>
-          <UserInfoMy src="https://product.cdn.cevaws.com/var/storage/images/_aliases/reference/media/feliway-2017/images/kor-kr/1_gnetb-7sfmbx49emluey4a/6341829-1-kor-KR/1_gNETb-7SfMBX49EMLUeY4A.jpg" />
-          <InfoContainer writer="히히" date="23.06.29" />
+          {detailData && (
+            <>
+              <UserInfoMy src={detailData.memberImageUrl} />
+              <InfoContainer
+                writer={detailData.memberNickname}
+                date={manufactureDate(detailData.courseUpdatedAt)}
+              />
+            </>
+          )}
         </UersDiv>
-        {/* Todo 로그인 유저에게만 보이도록 */}
-        <LikeStarButtonContainer LikeCount={130} isCheck />
+        {/* Todo 좋아요 즐겨찾기 POST 연결해야함 */}
+        {detailData && postId && (
+          <ActionButtonContainer
+            bookmarkStatus={detailData.bookmarkStatus}
+            likeStatus={detailData.likeStatus}
+            LikeCount={130}
+            isLogin={!!isLogin}
+            postId={postId}
+          />
+        )}
       </HEADDiv>
 
-      <MapContainer array={array} />
+      {detailData && (
+        <MapContainer
+          destinationList={detailData.courseInfo.destinationList}
+          title={detailData.courseTitle}
+        />
+      )}
 
       <ContentDiv>
-        <div dangerouslySetInnerHTML={{ __html: content }} />
-        <TagContainer tagArr={tagArr} />
+        {detailData && (
+          <>
+            <div dangerouslySetInnerHTML={{ __html: detailData.postContent }} />
+            <TagContainer tagArr={detailData.tags} />
+          </>
+        )}
       </ContentDiv>
 
-      {/* Todo 로그인 여부에 따라 Placeholder Ment 변경, button disabled */}
-      <form>
+      <form onSubmit={onSubmit}>
         <TextArea
-          description="댓글을 작성해주세요."
+          ref={textAreaRef}
+          description={
+            isLogin
+              ? '댓글을 작성해주세요.'
+              : '로그인 후 댓글을 작성할 수 있습니다.'
+          }
+          disabled={!isLogin}
           styles={{ width: '100%' }}
+          isValidate={isValidate}
         />
-        {/* TODO button type지정? */}
         <CommentBtn>
           <SkyBlueButton
             width="13.875rem"
             height="3.3125rem"
             borderRadius={cssToken.BORDER['rounded-md']}
-            disabled="false"
+            disabled={!isLogin}
           >
             작성하기
           </SkyBlueButton>
         </CommentBtn>
       </form>
-      <CommentContainer comments={commentArr} />
+      {detailData && <CommentContainer comments={detailData.answerList} />}
       <PageMoveButton />
     </OutsideWrap>
   );

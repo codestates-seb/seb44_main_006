@@ -44,7 +44,7 @@ export interface IButtonStyle {
   onSubmit?: () => void;
   tagname?: string;
   categoryname?: string;
-  disabled?: 'true' | 'false';
+  disabled?: 'true' | 'false' | boolean;
   fontsize?: string;
   selectedid?: string | undefined;
   isreset?: boolean;
@@ -78,7 +78,8 @@ export interface IScheduleListItem {
   categoryGroupCode:
     | `${CategoryCode}`
     | `${Exclude<CategoryCode, ''>}`[]
-    | undefined; // 카카오API 장소 그룹코드
+    | undefined
+    | string; // 카카오API 장소 그룹코드
   categoryGroupName: string; // 카카오API 장소 그룹이름
   x: string; // 경도
   y: string; // 위도
@@ -130,6 +131,7 @@ export interface ContCardInfo {
   onClick?: (arg0?: number) => void;
   selectId?: number | null;
   id?: number;
+  children?: ReactNode;
 }
 
 export interface LocationCardInfo {
@@ -148,12 +150,14 @@ export interface MapLocationCardInfo {
   onClick?: ({ id }: { id: string | undefined }) => void;
 }
 
-export type CommentT = {
-  src: string;
-  nickName: string;
-  date: string;
-  content: string;
-};
+export interface CommentT {
+  answerId?: number; // 고유값(댓글 식별자)
+  answererEmail?: string; // 고유값(댓글 작성자 이메일)
+  answererNickname: string; // 댓글 작성자 닉네임
+  answerContent: string; // 댓글 내용
+  answererImageUrl: string; // 댓글 작성자 이미지 URL
+  answerUpdatedAt: string; // 댓글 수정한 날짜, ex) "2023-06-30 Fri"
+}
 
 export interface RouteState {
   state?: string | number | undefined;

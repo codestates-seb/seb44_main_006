@@ -33,12 +33,17 @@ const SelectSchedulePage = () => {
   const gotoNext = useMovePage('/community/post', selectId);
 
   // FixMe: select type
+  // Todo 텅 비었을 때 봉줄 컴포넌트 만들기
   const { data: courses } = useQuery({
     queryKey: ['selectList'],
     queryFn: GetMyList,
     refetchOnWindowFocus: false,
     select: (data) => data.data.memberCourseList,
   });
+
+  const registerCourses = courses
+    ? courses.filter((course: MemberListT) => course.isPosted === false)
+    : [];
 
   const handleClickCard = (id: number | undefined) => {
     if (id === selectId) setSelectId(null);
@@ -54,8 +59,8 @@ const SelectSchedulePage = () => {
       <Head />
       <OverFlowDiv>
         <CardWrapper>
-          {courses &&
-            courses.map((course: MemberListT) => (
+          {registerCourses.length > 0 &&
+            registerCourses.map((course) => (
               <ContensCard
                 title={course.courseTitle}
                 text={course.courseContent}
@@ -67,6 +72,7 @@ const SelectSchedulePage = () => {
                 onClick={handleClickCard}
               />
             ))}
+          {registerCourses.length < 1 && <p>텅</p>}
         </CardWrapper>
       </OverFlowDiv>
       <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />

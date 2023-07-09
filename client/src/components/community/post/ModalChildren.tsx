@@ -6,20 +6,20 @@ import SkyBlueButton from '../../ui/button/SkyBlueButton';
 import Text from '../../ui/text/Text';
 
 const ModalChildren = ({
-  toggleModal,
-  gotoBack,
+  leftBtnCallback,
+  rightBtnCallback,
+  content,
 }: {
-  toggleModal: Voidfunc;
-  gotoBack: Voidfunc;
+  leftBtnCallback: Voidfunc;
+  rightBtnCallback: Voidfunc;
+  content: string;
 }) => {
   return (
     <ModalChildrenDiv>
-      <Text styles={{ size: cssToken.TEXT_SIZE['text-50'] }}>
-        작성하신 내용이 사라집니다.
-      </Text>
+      <Text styles={{ size: cssToken.TEXT_SIZE['text-50'] }}>{content}</Text>
       <BtnDiv>
         <GrayButton
-          onClick={toggleModal}
+          onClick={leftBtnCallback}
           width="15.5625rem"
           height="4.625rem"
           fontsize={cssToken.TEXT_SIZE['text-24']}
@@ -28,7 +28,7 @@ const ModalChildren = ({
           아니오
         </GrayButton>
         <SkyBlueButton
-          onClick={gotoBack}
+          onClick={rightBtnCallback}
           width="15.5625rem"
           height="4.625rem"
           fontsize={cssToken.TEXT_SIZE['text-24']}
