@@ -23,7 +23,8 @@ const DeleteButton = ({ postId }: { postId: string }) => {
     <>
       <button
         type="button"
-        onClick={() => {
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          e.stopPropagation();
           toggleModal();
         }}
       >

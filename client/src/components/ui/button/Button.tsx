@@ -36,7 +36,7 @@ const Button = ({
 }: {
   children?: Props['children'];
   styles?: IButtonStyle;
-  onClick?: (arg0?: string | undefined) => void;
+  onClick?: (arg0?: string | undefined | Event) => void;
   onSubmit?: () => void;
   disabled?: 'true' | 'false';
 }) => {

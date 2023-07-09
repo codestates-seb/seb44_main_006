@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useState } from 'react';
 
 import Button from './Button';
 
@@ -19,13 +20,8 @@ const OptionDiv = styled.div`
   gap: ${cssToken.SPACING['gap-12']};
 `;
 
-const OptionButton = ({
-  svgWidth,
-  svgHeight,
-  isActive,
-  onClick,
-  children,
-}: IButtonStyle) => {
+const OptionButton = ({ svgWidth, svgHeight, children }: IButtonStyle) => {
+  const [isActive, setActive] = useState<boolean>(false);
   return (
     <Container>
       {isActive && (
@@ -34,7 +30,12 @@ const OptionButton = ({
           {children}
         </OptionDiv>
       )}
-      <Button onClick={onClick}>
+      <Button
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          e.stopPropagation();
+          setActive(!isActive);
+        }}
+      >
         <svg
           width={svgWidth || '30'}
           height={svgHeight || '6'}

@@ -3,6 +3,8 @@ import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
 
+import DeleteButton from './DeleteButton';
+
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -56,7 +58,9 @@ const FilterSection = ({
               thumbnail={post.courseThumbnail}
               onClick={moveToDetail}
               id={post.postId}
-            />
+            >
+              <DeleteButton postId={String(post.postId)} />
+            </ContensCard>
           ))}
       </CardWrapper>
       <div ref={ref} />

@@ -94,6 +94,7 @@ const ContensCard = ({
   onClick,
   selectId,
   id,
+  children,
 }: ContCardInfo) => {
   const isLogin = getLoginStatus();
   const selected = selectId !== undefined && selectId === id;
@@ -106,7 +107,7 @@ const ContensCard = ({
     >
       <ContensTop>
         <UserName>{userName || '탈퇴한 회원'}</UserName>
-        <OptionButton isActive={false} />
+        <OptionButton isActive={false}>{children}</OptionButton>
       </ContensTop>
 
       <ContensHeader>

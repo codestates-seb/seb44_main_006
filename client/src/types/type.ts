@@ -131,6 +131,7 @@ export interface ContCardInfo {
   onClick?: (arg0?: number) => void;
   selectId?: number | null;
   id?: number;
+  children?: ReactNode;
 }
 
 export interface LocationCardInfo {
