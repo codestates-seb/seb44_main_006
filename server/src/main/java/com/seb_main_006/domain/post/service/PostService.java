@@ -34,9 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -153,7 +151,6 @@ public class PostService {
      */
     public PostListResponseDto findPosts(int page, int limit, String sort, String accessToken, String tagName) {
 
-
         Member member = new Member(0L);
 
         // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
@@ -168,19 +165,27 @@ public class PostService {
 
         Page<Course> pageResult = null;
 
+        // 입력받은 태그 String 을 공백 기준으로 분리
+        String[] inputTags = tagName.split(" ");
+
         if (tagName == null) {
-            pageResult = courseRepository.findAllByPosted(true, PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending()));
+            PageRequest pageRequest = PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending());
+            pageResult = courseRepository.findAllByPosted(true, pageRequest);
         } else {
-            // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
-            List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
+            // 각각의 tagName 으로 tag 찾은 후, 찾은 태그들을 Set으로 통합 (중복 제거)
+            Set<Tag> findTagSet = new HashSet<>();
+            
+            for (String inputTag : inputTags) {
+                findTagSet.addAll(tagRepository.findByTagNameContaining(inputTag));
+            }
 
             // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
             if (sort == null) {
                 log.info("sort == null");
-                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(findTagList, PageRequest.of(page, limit));
+                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
             } else {
                 log.info("sort != null (like)");
-                pageResult = postTagRepository.findByTagInOrderByLikeCount(findTagList, PageRequest.of(page, limit));
+                pageResult = postTagRepository.findByTagInOrderByLikeCount(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
             }
         }
 
@@ -198,7 +203,7 @@ public class PostService {
     }
 
     /**
-     * 태그로 게시글 조회
+     * 태그로 게시글  (미사용)
      */
     public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) {
         log.info("tagName = {}", tagName);
@@ -244,6 +249,7 @@ public class PostService {
         return new PostListResponseDto(postDataList, pageResult);
     }
 
+
     /**
      * 게시글 삭제
      */
@@ -269,6 +275,7 @@ public class PostService {
     }
 
 
+    // 해당 Course 로 등록된 게시글이 존재하는지 확인 (존재하지 않을 경우 예외 발생)
     public void verifyNoExistPost(Course course) {
         postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
     }

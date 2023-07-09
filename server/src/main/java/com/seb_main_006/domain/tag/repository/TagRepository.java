@@ -14,7 +14,4 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     Optional<Tag> findByTagName(String tagName);
 
     List<Tag> findByTagNameContaining(String tagName);
-
-//    @Query("select distinct t from Tag t where t.tagName like :tagNames and t.tagName in :tagNames ")
-//    List<Tag> findByTagNameContainingV2(List<String> tagNames);
 }
