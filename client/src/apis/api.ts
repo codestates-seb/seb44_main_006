@@ -9,26 +9,26 @@ const refreshToken = localStorage.getItem('refreshToken');
 export const instance = axios.create({
   baseURL: PROXY,
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json;',
     Authorization: accessToken,
-    Authorization: refreshToken,
+    RefreshToken: refreshToken,
   },
 });
 
 instance.interceptors.request.use(
   (config) => {
-    config.headers['Authorization'] = `${accessToken}` || '';
-    config.headers['RefreshToken'] = `${refreshToken}` || '';
+    config.headers.Authorization = accessToken;
+    config.headers.RefreshToken = refreshToken;
     return config;
   },
-
   (error) => {
-    console.log('error token', error);
     return Promise.reject(error);
   }
 );
 
-export const GetUserInfo = async () => instance.post('/api/auth/members');
+export const GetUserInfo = async () => instance.get(`/api/auth/members`);
+
+export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
 
 export const GetMyList = async () => instance.get(`/api/members`);
 export const GetCourse = async ({ courseId }: { courseId: string }) =>
