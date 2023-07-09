@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import InfoContainer from '../../components/community/detail/InfoContainer';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
@@ -41,6 +41,7 @@ const CommentBtn = styled(FlexDiv)`
 // FixMe select type 설정
 const DetailPage = () => {
   const isLogin = getLoginStatus();
+  const [isValidate, setValidate] = useState(true);
   const { postId } = useParams<{ postId: string }>();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const { data: detailData } = useQuery({
@@ -62,7 +63,10 @@ const DetailPage = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (textAreaRef.current && textAreaRef.current.value.trim().length > 0) {
+      setValidate(true);
       mutation.mutate({ postId, answerContent: textAreaRef.current.value });
+    } else {
+      setValidate(false);
     }
   };
   return (
@@ -121,6 +125,7 @@ const DetailPage = () => {
           }
           disabled={!isLogin}
           styles={{ width: '100%' }}
+          isValidate={isValidate}
         />
         <CommentBtn>
           <SkyBlueButton

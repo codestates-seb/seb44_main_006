@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useMutation } from '@tanstack/react-query';
+import { styled } from 'styled-components';
 
 import ModalChildren from './post/ModalChildren';
 
@@ -8,6 +9,10 @@ import { RootState } from '../../store';
 import useToggleModal from '../../hooks/useToggleModal';
 import { DeleteCommunityPost } from '../../apis/api';
 import useMovePage from '../../hooks/useMovePage';
+
+const Button = styled.button`
+  cursor: pointer;
+`;
 
 const DeleteButton = ({ postId }: { postId: string }) => {
   const goToCommunity = useMovePage('/community');
@@ -22,7 +27,7 @@ const DeleteButton = ({ postId }: { postId: string }) => {
   });
   return (
     <>
-      <button
+      <Button
         type="button"
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.stopPropagation();
@@ -30,7 +35,7 @@ const DeleteButton = ({ postId }: { postId: string }) => {
         }}
       >
         삭제
-      </button>
+      </Button>
       {modalIsOpen && (
         <Modal
           styles={{

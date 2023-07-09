@@ -38,7 +38,6 @@ const ActionButtonContainer = ({
 }) => {
   return (
     <BtnDiv>
-      {/* Todo 작성자와 관리자에게만 보이도록 */}
       <DeleteButton postId={postId} />
       {isLogin && (
         <StarButton
