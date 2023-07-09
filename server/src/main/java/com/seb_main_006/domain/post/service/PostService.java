@@ -165,16 +165,16 @@ public class PostService {
 
         Page<Course> pageResult = null;
 
-        // 입력받은 태그 String 을 공백 기준으로 분리
-        String[] inputTags = tagName.split(" ");
-
         if (tagName == null) {
             PageRequest pageRequest = PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending());
             pageResult = courseRepository.findAllByPosted(true, pageRequest);
         } else {
+            // 입력받은 태그 String 을 공백 기준으로 분리
+            String[] inputTags = tagName.split(" ");
+
             // 각각의 tagName 으로 tag 찾은 후, 찾은 태그들을 Set으로 통합 (중복 제거)
             Set<Tag> findTagSet = new HashSet<>();
-            
+
             for (String inputTag : inputTags) {
                 findTagSet.addAll(tagRepository.findByTagNameContaining(inputTag));
             }
