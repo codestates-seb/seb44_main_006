@@ -15,14 +15,14 @@ import { setUserOAuthActions } from '../../store/userAuth-slice';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
-import WhiteButton from '../ui/button/WhiteButton';
+import WhiteButton from '../ui/button/WhiteButton'
+import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import LoginModal from '../ui/modal/LoginModal';
 import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
 import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
-// import GrayButton from '../ui/button/GrayButton';
-// import SkyBlueButton from '../ui/button/SkyBlueButton';
+import Text from '../ui/text/Text';
 
 type HeaderStyle = {
   isPath?: string;
@@ -60,7 +60,7 @@ const BtnBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 13.5px 10px 10px;
+    padding: 0.8438rem 0.625rem 0.625rem;
     white-space: nowrap;
     transition: ${cssToken.TRANSITION.basic};
   }
@@ -151,44 +151,62 @@ const Header = () => {
         <LoginModal
           handleClose={LogintoggleModal}
           styles={{
-            width: '500px',
-            height: '500px',
-            borderradius: '15px',
-            gap: '10px',
+            width: '31.25rem',
+            height: '31.25rem',
+            borderradius: '0.9375rem',
+            gap: '0.625rem',
           }}
         />
       )}
-      {/* {modalIsOpen && (
+      {modalIsOpen && (
         <Modal
           backdropCallback={toggleModal}
           handleCloseBtn={toggleModal}
-          displayclosebtn={true}
+          displayclosebtn
           styles={{
-            width: '500px',
-            height: '500px',
-            borderradius: '15px',
-            gap: '10px',
+            width: '47.0625rem',
+            height: '28.375rem',
+            borderradius: '0.9375rem',
+            gap: '3.125rem',
           }}>
-          로그아웃 하시겠습니까?
-          <GrayButton></GrayButton>
+          <Text styles={{ size: cssToken.TEXT_SIZE['text-50'] }}>
+            로그아웃 하시겠습니까?
+          </Text>
+          <BtnBox>
+            <GrayButton
+              width="15.5625rem"
+              height="4.625rem"
+              fontsize={cssToken.TEXT_SIZE['text-24']}
+              borderRadius={cssToken.BORDER['rounded-md']}
+              onClick={toggleModal}
+            >
+              아니오
+            </GrayButton>
+            <SkyBlueButton
+              width="15.5625rem"
+              height="4.625rem"
+              fontsize={cssToken.TEXT_SIZE['text-24']}
+              borderRadius={cssToken.BORDER['rounded-md']}
+              onClick={handleLogout}
+            >
+              예
+            </SkyBlueButton>
+          </BtnBox>
         </Modal>
-      )} */}
+      )}
 
       <LogoBox>
         <Link to="/">
           <LogoImg src={LogoBlack} alt="logo-harumate" />
         </Link>
       </LogoBox>
-      {/* <div>
-        {`반갑습니다. ${userQAuthData.memberNickname}`}
-      </div> */}
+      {/* <div>{`반갑습니다. ${userQAuthData.memberNickname}`}</div> */}
       <BtnBox>
         {isPath === '/' && isLoggedIn && (
           // 메인 페이지인 경우
           <>
             <WhiteButton
-              // onClick={toggleModal}
-              onClick={handleLogout}
+              onClick={toggleModal}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -206,7 +224,7 @@ const Header = () => {
           // 메인 페이지가 아닌 나머지
           <>
             <WhiteButton
-              onClick={handleLogout}
+              onClick={toggleModal}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -216,7 +234,7 @@ const Header = () => {
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
-              마이페이지
+              {isPath === '/community' ? '마이페이지' : '커뮤니티'}
             </SkyBlueButton>
           </>
         )}
