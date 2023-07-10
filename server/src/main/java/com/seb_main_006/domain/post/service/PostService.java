@@ -122,7 +122,8 @@ public class PostService {
         }
 
         Post findPost = findVerifiedPost(postId);
-        Course course = updateCourseViewCount(findPost.getCourse());
+//        Course course = updateCourseViewCount(findPost.getCourse());
+        Course course = findPost.getCourse();
         List<String> tags = findPost.getPostTagsInPost().stream()
                 .map(postTag -> postTag.getTag().getTagName())
                 .collect(Collectors.toList());
@@ -309,4 +310,9 @@ public class PostService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
+    @Transactional
+    public void viewCountUp(Long postId) {
+        Post post = findVerifiedPost(postId);
+        post.getCourse().setCourseViewCount(post.getCourse().getCourseViewCount() + 1);
+    }
 }

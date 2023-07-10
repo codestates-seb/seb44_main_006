@@ -15,7 +15,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
@@ -48,7 +50,8 @@ public class PostController {
      */
     @GetMapping("/read/{post-id}")
     public ResponseEntity<?> getPost(@PathVariable("post-id") @Positive Long postId,
-                                     HttpServletRequest request) throws JsonProcessingException {
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) throws JsonProcessingException {
         String accessToken = null;
         String authorization = request.getHeader("Authorization");
 
@@ -56,9 +59,11 @@ public class PostController {
             accessToken = authorization.replaceAll("Bearer", "");
         }
 
-        PostDetailResponseDto response = postService.findPost(postId, accessToken);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        viewCountUp(postId, request, response);
+        PostDetailResponseDto responseDto = postService.findPost(postId, accessToken);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
 
     /**
      * 게시글 리스트 조회 (+ 태그 검색 시도중)
@@ -111,5 +116,43 @@ public class PostController {
         postService.deletePost(postId, memberEmail);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    private void viewCountUp(Long postId, HttpServletRequest request, HttpServletResponse response) {
+
+        Cookie oldCookie = null;
+
+        Cookie[] cookies = request.getCookies();
+
+        for (Cookie cookie : cookies) {
+            log.info("cookie Name = {}, cookie Value = {}", cookie.getName(), cookie.getValue());
+        }
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("postView")) {
+                    oldCookie = cookie;
+                }
+            }
+        }
+
+        if (oldCookie != null) {
+            if (!oldCookie.getValue().contains("[" + postId.toString() + "]")) {
+                postService.viewCountUp(postId);
+                oldCookie.setValue(oldCookie.getValue() + "_[" + postId.toString() + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60 * 60 * 24);
+                response.addCookie(oldCookie);
+            }
+        } else {
+            log.info("cookie check4");
+            postService.viewCountUp(postId);
+            Cookie newCookie = new Cookie("postView", "[" + postId + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24);
+            response.addCookie(newCookie);
+        }
+
     }
 }
