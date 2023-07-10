@@ -64,6 +64,7 @@ const SelectSchedulePage = () => {
           {registerCourses.length > 0 &&
             registerCourses.map((course) => (
               <ContensCard
+                type="course"
                 key={course.courseId}
                 title={course.courseTitle}
                 text={course.courseContent}
