@@ -162,12 +162,4 @@ public class MemberService {
         return memberRepository.findDeletedUserByMemberEmail(memberEmail);
     }
 
-//    //메일 발송 메소드
-//    private void mailSend(Member member) {
-//        MailDto newMailDto = new MailDto();
-//        newMailDto.setAddress(member.getMemberEmail());
-//        newMailDto.setTitle("하루메이트 가입을 축하합니다.");
-//        newMailDto.setMessage("하루메이트 가입을 축하합니다.");
-//        mailService.mailSend(newMailDto);
-//    }
 }
