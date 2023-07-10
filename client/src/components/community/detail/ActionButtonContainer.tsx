@@ -29,18 +29,21 @@ const ActionButtonContainer = ({
   postId,
   bookmarkStatus,
   likeStatus,
+  courseId,
 }: {
   LikeCount: number;
   isLogin: boolean;
   postId: string;
   bookmarkStatus: boolean;
   likeStatus: boolean;
+  courseId: number;
 }) => {
   return (
     <BtnDiv>
       <DeleteButton postId={postId} />
       {isLogin && (
         <StarButton
+          courseId={courseId}
           width="3.75rem"
           height="3.75rem"
           isActive={bookmarkStatus}
@@ -49,7 +52,7 @@ const ActionButtonContainer = ({
       <StarDiv>
         {isLogin && (
           <>
-            <LikeButton isActive={likeStatus} />
+            <LikeButton isActive={likeStatus} courseId={courseId} />
             {LikeCount}
           </>
         )}

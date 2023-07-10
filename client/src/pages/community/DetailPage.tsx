@@ -45,10 +45,11 @@ const DetailPage = () => {
   const { postId } = useParams() as { postId: string };
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const { data: detailData } = useQuery({
-    queryKey: ['communitydetail'],
+    queryKey: ['postdetail'],
     queryFn: () => GetCommunityPost({ postId }),
     refetchOnWindowFocus: false,
     select: (data: { data: CommunityDetailT }) => data.data,
+    staleTime: 0,
   });
 
   console.log(detailData);
@@ -87,14 +88,14 @@ const DetailPage = () => {
             </>
           )}
         </UersDiv>
-        {/* Todo 좋아요 즐겨찾기 POST 연결해야함 */}
         {detailData && postId && (
           <ActionButtonContainer
             bookmarkStatus={detailData.bookmarkStatus}
             likeStatus={detailData.likeStatus}
-            LikeCount={130}
+            LikeCount={detailData.courseLikeCount}
             isLogin={!!isLogin}
             postId={postId}
+            courseId={detailData.courseInfo.courseId}
           />
         )}
       </HEADDiv>

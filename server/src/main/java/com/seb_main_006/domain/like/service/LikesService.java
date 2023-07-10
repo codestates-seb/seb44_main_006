@@ -38,7 +38,9 @@ public class LikesService {
         Course findCourse = courseService.findVerifiedCourse(courseId);
 
         //생성된 게시글이 없을 시 예외처리
-        postService.verifyNoExistPost(findCourse);
+        if(!findCourse.isPosted()){
+            throw new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND);
+        }
         Optional<Likes> findLikes = likesRepository.findLikesByCourse(findCourse);
 
         //현재 로그인한 멤버의 멤버id

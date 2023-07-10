@@ -108,3 +108,9 @@ export const PostComment = async ({
 
 export const DeleteCommunityPost = async ({ postId }: { postId: string }) =>
   instance.delete(`/api/posts/${postId}`);
+
+export const PostBookmark = async ({ courseId }: { courseId: number }) =>
+  instance.post(`/api/courses/${courseId}/bookmark`);
+
+export const PostLike = async ({ courseId }: { courseId: number }) =>
+  instance.post(`/api/courses/${courseId}/like`);

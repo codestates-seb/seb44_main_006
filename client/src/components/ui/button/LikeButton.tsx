@@ -1,11 +1,32 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { IButtonStyle } from '../../../types/type';
+import { LikeBookMarkButtonT } from '../../../types/type';
+import { PostLike } from '../../../apis/api';
 
-const LikeButton = ({ svgWidth, svgHeight, isActive }: IButtonStyle) => {
+const LikeButton = ({
+  svgWidth,
+  svgHeight,
+  isActive,
+  courseId,
+}: LikeBookMarkButtonT) => {
+  const { postId } = useParams();
+  const queryClient = useQueryClient();
+  const mutation = useMutation(PostLike, {
+    onSuccess: () =>
+      postId
+        ? queryClient.invalidateQueries(['postdetail'])
+        : queryClient.invalidateQueries(['community']),
+  });
+  const handleLikeButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (courseId) mutation.mutate({ courseId });
+  };
   return (
-    <Button>
+    <Button onClick={handleLikeButton}>
       <svg
         width={svgWidth || '23px'}
         height={svgHeight || '21px'}

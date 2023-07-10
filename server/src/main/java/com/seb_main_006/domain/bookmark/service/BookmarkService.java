@@ -37,7 +37,9 @@ public class BookmarkService {
         Course findCourse = courseService.findVerifiedCourse(courseId);
 
         //생성된 게시글이 없을 시 예외처리
-        postService.verifyNoExistPost(findCourse);
+        if(!findCourse.isPosted()){
+            throw new BusinessLogicException(ExceptionCode.CANT_BOOKMARK_NOT_FOUND);
+        }
         Optional<Bookmark> findBookmarks = bookmarkRepository.findBookmarkByCourse(findCourse);
 
         //현재 로그인한 멤버의 멤버id
