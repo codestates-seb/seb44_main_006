@@ -134,7 +134,8 @@ export interface ContCardInfo {
   tag?: string[];
   onClick?: (arg0?: number) => void;
   selectId?: number | null;
-  id?: number;
+  postId?: number;
+  courseId?: number;
   children?: ReactNode;
   likeStatus?: boolean;
   bookmarkStatus?: boolean;
