@@ -100,6 +100,7 @@ const ContensCard = ({
   likeStatus,
   bookmarkStatus,
   type,
+  date,
 }: ContCardInfo) => {
   const isLogin = getLoginStatus();
   const selected = selectId !== undefined && selectId === courseId;
@@ -159,7 +160,7 @@ const ContensCard = ({
           )}
           <DataText>{likeCount}개</DataText>
         </LikeBtnBox>
-        <DataText>23.06.30</DataText>
+        <DataText>{date}</DataText>
       </ContensBottom>
     </ContensCardContainer>
   );

@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import DeleteButton from './DeleteButton';
 
@@ -8,7 +9,12 @@ import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
-import { CommunityListT, CommunitySummaryT } from '../../types/apitype';
+import {
+  CommunityListT,
+  CommunitySummaryT,
+  InfiniteScrollT,
+} from '../../types/apitype';
+import manufactureDate from '../../utils/manufactureDate';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -28,9 +34,13 @@ const FilterContainer = styled(FlexDiv)`
 const FilterSection = ({
   children,
   communityData,
+  fetchNextPage,
+  hasNextPage,
 }: {
   children: Props['children'];
-  communityData: { data: CommunityListT };
+  communityData: InfiniteScrollT[];
+  hasNextPage: undefined | boolean;
+  fetchNextPage: () => void;
 }) => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
@@ -38,32 +48,39 @@ const FilterSection = ({
     if (postId) navigate(`/community/${postId}`);
   };
 
-  console.log(communityData);
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, inView]);
 
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
       <CardWrapper>
         {communityData &&
-          communityData.data.data.map((post: CommunitySummaryT) => (
-            <ContensCard
-              type="post"
-              title={post.courseTitle}
-              text={post.postContent}
-              likeCount={post.courseLikeCount}
-              tag={post.tags}
-              userName={post.memberNickname}
-              thumbnail={post.courseThumbnail}
-              onClick={moveToDetail}
-              postId={post.postId}
-              courseId={post.courseId}
-              likeStatus={post.likeStatus}
-              bookmarkStatus={post.bookmarkStatus}
-            >
-              {/* Todo 작성자만 보이도록해야함 */}
-              <DeleteButton postId={String(post.postId)} />
-            </ContensCard>
-          ))}
+          communityData.map((datas: InfiniteScrollT) =>
+            datas.communityListData.map((post: CommunitySummaryT) => (
+              <ContensCard
+                type="post"
+                title={post.courseTitle}
+                text={post.postContent}
+                likeCount={post.courseLikeCount}
+                tag={post.tags}
+                userName={post.memberNickname}
+                thumbnail={post.courseThumbnail}
+                onClick={moveToDetail}
+                postId={post.postId}
+                courseId={post.courseId}
+                likeStatus={post.likeStatus}
+                bookmarkStatus={post.bookmarkStatus}
+                date={manufactureDate(post.postCreatedAt)}
+              >
+                {/* Todo 작성자만 보이도록해야함 */}
+                <DeleteButton postId={String(post.postId)} />
+              </ContensCard>
+            ))
+          )}
       </CardWrapper>
       <div ref={ref} />
     </FilterWrapper>
