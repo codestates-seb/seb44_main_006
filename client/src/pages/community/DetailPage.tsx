@@ -88,7 +88,6 @@ const DetailPage = () => {
             </>
           )}
         </UersDiv>
-        {/* Todo 좋아요 즐겨찾기 POST 연결해야함 */}
         {detailData && postId && (
           <ActionButtonContainer
             bookmarkStatus={detailData.bookmarkStatus}

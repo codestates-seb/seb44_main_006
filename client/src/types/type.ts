@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type Voidfunc = () => void;
+export type Voidfunc = (arg0: React.MouseEvent<HTMLButtonElement>) => void;
 
 export type TextStyleT = {
   size?: string;
@@ -40,7 +40,7 @@ export interface IButtonStyle {
   gap?: string;
   isActive?: boolean;
   title?: string;
-  onClick?: (arg0?: string) => void;
+  onClick?: (arg0?: string | React.MouseEvent<HTMLButtonElement>) => void;
   onSubmit?: () => void;
   tagname?: string;
   categoryname?: string;
@@ -134,7 +134,8 @@ export interface ContCardInfo {
   tag?: string[];
   onClick?: (arg0?: number) => void;
   selectId?: number | null;
-  id?: number;
+  postId?: number;
+  courseId?: number;
   children?: ReactNode;
   likeStatus?: boolean;
   bookmarkStatus?: boolean;

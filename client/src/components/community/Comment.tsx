@@ -15,6 +15,10 @@ const CommentWrapper = styled.div`
   padding-bottom: ${cssToken.SPACING['gap-16']};
 `;
 
+const Button = styled.button`
+  cursor: pointer;
+`;
+
 const FlexBetween = styled(FlexDiv)`
   justify-content: space-between;
   margin-bottom: ${cssToken.SPACING['gap-12']};
@@ -50,7 +54,8 @@ const Comment = ({
             {nickName}
           </Text>
           <FlexDiv>
-            {/* 수정 삭제 버튼 */}
+            <Button>수정</Button>
+            <Button>삭제</Button>
             <Text
               styles={{
                 color: ' #7B7B7B',
