@@ -23,10 +23,17 @@ import { RootState } from '../../store';
 import ModalChildren from '../../components/community/post/ModalChildren';
 import useToggleModal from '../../hooks/useToggleModal';
 import { GetCourse, PostCommunity } from '../../apis/api';
+import { PostReadT } from '../../types/apitype';
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: ${cssToken.SPACING['gap-50']};
 `;
+
+interface MutationResponse {
+  headers: {
+    location: string;
+  };
+}
 
 const PostCommunitypage = () => {
   const scheduleid = useLocation().state as string;
@@ -41,11 +48,11 @@ const PostCommunitypage = () => {
     queryKey: ['course'],
     queryFn: () => GetCourse({ courseId: scheduleid }),
     refetchOnWindowFocus: false,
-    select: (data) => data.data,
+    select: (data: { data: PostReadT }) => data.data,
   });
   const mutation = useMutation(PostCommunity, {
     onSuccess(data) {
-      navigate(`/community/${data.headers.location}`);
+      navigate(`/community/${data.headers.location as string}`);
     },
   });
   /**

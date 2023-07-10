@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { CommunityListT, PostReqT } from '../types/apitype';
+import { PostReqT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 const accessToken = localStorage.getItem('accessToken');
@@ -50,8 +50,7 @@ export const GetCommunityList = async ({
   const optSort = sort === 'Like' ? '&sort=like' : '';
   const optTagName = tagName ? `&tagName=${tagName}` : '';
   const request = essential + optSort + optTagName;
-  const result = await instance.get(request);
-  return result.data;
+  return instance.get(request);
 };
 
 export const GetCommunityPost = async ({ postId }: { postId: string }) =>

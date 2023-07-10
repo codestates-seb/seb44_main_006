@@ -8,7 +8,7 @@ import manufactureDate from '../../../utils/manufactureDate';
 const CommentDiv = styled(FlexDiv)`
   flex-direction: column;
 `;
-
+// Todo 댓글 수정 삭제하기
 const CommentContainer = ({ comments }: { comments: CommentT[] }) => {
   return (
     <CommentDiv>

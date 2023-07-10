@@ -30,7 +30,7 @@ const FilterSection = ({
   communityData,
 }: {
   children: Props['children'];
-  communityData: CommunityListT;
+  communityData: { data: CommunityListT };
 }) => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
@@ -43,7 +43,7 @@ const FilterSection = ({
       <FilterContainer>{children}</FilterContainer>
       <CardWrapper>
         {communityData &&
-          communityData.data.map((post: CommunitySummaryT) => (
+          communityData.data.data.map((post: CommunitySummaryT) => (
             <ContensCard
               title={post.courseTitle}
               text={post.postContent}
