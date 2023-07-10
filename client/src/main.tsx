@@ -15,6 +15,7 @@ import PostCommunitypage from './pages/community/PostCommunitypage';
 import ErrorPage from './pages/error/ErrorPage';
 import ScheduleRegister from './pages/schedule/ScheduleRegister';
 import DetailPage from './pages/community/DetailPage';
+import MyPage from './pages/mypage/MyPage';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             <Route path="/" element={<Main />} />
             <Route path="/register" element={<ScheduleRegister />} />
             <Route path="/community" element={<CommunityPage />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route path="/community/select" element={<SelectSchedulePage />} />
             <Route path="/community/post" element={<PostCommunitypage />} />
             <Route path="/community/:postId" element={<DetailPage />} />
