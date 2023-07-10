@@ -68,6 +68,8 @@ export const GetUserInfo = async () => instance.get(`/api/auth/members`);
 
 export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
 
+export const PatchMemNickname = async () => instance.patch(`/api/members`);
+
 export const GetMyList = async () => instance.get(`/api/members`);
 
 export const GetCourse = async ({ courseId }: { courseId: string }) =>
