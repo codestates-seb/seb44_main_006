@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ import { FlexDiv } from '../../styles/styles';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
 import FilterSection from '../../components/community/FilterSection';
 import FilterTab from '../../components/community/FilterTab';
-import { GetUserInfo, GetMyList } from '../../apis/api';
+import { GetUserInfo, GetMyList, PatchMemNickname } from '../../apis/api';
 import { setUserOAuthActions } from '../../store/userAuth-slice';
 import Pen from '../../assets/Pen';
 import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
@@ -63,7 +64,7 @@ const ScheduleLink = styled(Link)`
   transition: ${cssToken.TRANSITION.basic};
   font-size: 14px;
   background: ${cssToken.COLOR['point-900']};
-  height:25px;
+  height: 25px;
   border-radius: ${cssToken.BORDER['rounded-tag']};
   color: ${cssToken.COLOR.white};
 `;
@@ -76,21 +77,45 @@ const RightWrap = styled.div`
 `;
 
 const MyPage = () => {
+  const [toggleNickname, setToggleNickname] = useState<boolean>(false);
+  const memNicknameRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
+  const memNickname = useSelector(
+    (state: RootState) => state.userAuth.nickName
+  );
+
   const userAuthInfo = useSelector(
-    (state: RootState): boolean => state.userAuth.userInfo
+    (state: RootState) => state.userAuth.userInfo
   );
 
-  const { data: userMemData } = useQuery(
-    ['userInof'],
-    () => GetMyList(),
-  );
+  const mutation = useMutation(PatchMemNickname, {
+    onSuccess: () => {
+      dispatch(setUserOAuthActions.paintMemNickname(memNickname));
+    },
+    onError: (error) => {
+      navigate(`/error/${error.status as string}`);
+    },
+  });
 
-  const memberBookmarkedList = userMemData.data.memberBookmarkedList;
-  const memberCourseList = userMemData.data.memberCourseList;
+  const { data: userMemData } = useQuery(['userInof'], () => GetMyList());
 
-  console.log(userAuthInfo);
-  console.log(userMemData.data.memberBookmarkedList);
-  console.log(userMemData.data.memberCourseList);
+  const handleOpenNickname = () => {
+    setToggleNickname(!toggleNickname);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setUserOAuthActions.paintMemNickname(e.target.value));
+  };
+
+  const paintNickname = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutation.mutate(memNickname);
+    setToggleNickname(!toggleNickname);
+  };
+
+  useEffect(() => {
+    memNicknameRef.current = memNickname;
+  });
 
   return (
     <Wrapper>
@@ -99,23 +124,52 @@ const MyPage = () => {
           styles={{
             size: '10.75rem',
           }}
-          src={userAuthInfo.memberImageUrl}
+          src={userAuthInfo?.memberImageUrl}
         />
         <RightWrap>
           <UserNicknameBox>
-            <UserNickname>{userAuthInfo.memberNickname}</UserNickname>
-            <WriteBtn>
-              <Pen style={{
-                iconWidth: '20px',
-                iconHeight: '20px',
-                color: '#000',
-              }}
-              />
-            </WriteBtn>
+            {!toggleNickname ? (
+              <>
+                <UserNickname>
+                  {memNicknameRef.current
+                    ? memNicknameRef.current
+                    : userAuthInfo?.memberNickname}
+                </UserNickname>
+                <WriteBtn onClick={handleOpenNickname}>
+                  <Pen
+                    style={{
+                      iconWidth: '20px',
+                      iconHeight: '20px',
+                      color: '#000',
+                    }}
+                  />
+                </WriteBtn>
+              </>
+            ) : (
+              <form onSubmit={paintNickname}>
+                <input
+                  type="text"
+                  defaultValue={
+                    memNicknameRef.current
+                      ? memNicknameRef.current
+                      : userAuthInfo?.memberNickname
+                  }
+                  onChange={handleChange}
+                  ref={memNicknameRef}
+                />
+                <WriteBtn>
+                  <Pen
+                    style={{
+                      iconWidth: '20px',
+                      iconHeight: '20px',
+                      color: '#000',
+                    }}
+                  />
+                </WriteBtn>
+              </form>
+            )}
           </UserNicknameBox>
-          <ScheduleLink to="/register">
-            일정 등록
-          </ScheduleLink>
+          <ScheduleLink to="/register">일정 등록</ScheduleLink>
         </RightWrap>
       </UserInfoContainer>
 
@@ -124,7 +178,7 @@ const MyPage = () => {
         <FilterTab content="즐겨찾기" tab="Like" />
       </FilterSection>
     </Wrapper>
-  )
+  );
 };
 
 export default MyPage;

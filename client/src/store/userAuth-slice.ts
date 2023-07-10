@@ -10,13 +10,14 @@ type UserQAuthInfo = {
   memberNickname?: string;
   myBookmarkCount?: number;
   myCourseCount?: number;
-}
+};
 
 interface LoginState {
   isLogin?: string | boolean;
   userInfo?: UserQAuthInfo;
-  isLoginOpen?: boolean;
-  isLogoutOpen?: boolean;
+  isLoginOpen?: boolean | undefined;
+  isLogoutOpen?: boolean | undefined;
+  nickName?: string;
 }
 
 const logined = localStorage.getItem('isLogin');
@@ -27,6 +28,7 @@ const initialState: LoginState = {
   userInfo: {},
   isLoginOpen: false,
   isLogoutOpen: false,
+  nickName: '',
 };
 
 const setUserOAuthSlice = createSlice({
@@ -44,6 +46,9 @@ const setUserOAuthSlice = createSlice({
     },
     toggleIsLogout(state) {
       state.isLogoutOpen = !state.isLogoutOpen;
+    },
+    paintMemNickname(state, action: PayloadAction<string>) {
+      state.nickName = action.payload;
     },
   },
 });
