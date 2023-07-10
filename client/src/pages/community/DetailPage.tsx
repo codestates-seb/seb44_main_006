@@ -18,6 +18,7 @@ import TagContainer from '../../components/community/detail/TagContainer';
 import { GetCommunityPost, PostComment } from '../../apis/api';
 import manufactureDate from '../../utils/manufactureDate';
 import getLoginStatus from '../../utils/getLoginStatus';
+import { CommunityDetailT } from '../../types/apitype';
 
 const HEADDiv = styled(FlexDiv)`
   justify-content: space-between;
@@ -38,17 +39,16 @@ const CommentBtn = styled(FlexDiv)`
   justify-content: flex-end;
 `;
 
-// FixMe select type 설정
 const DetailPage = () => {
   const isLogin = getLoginStatus();
   const [isValidate, setValidate] = useState(true);
-  const { postId } = useParams<{ postId: string }>();
+  const { postId } = useParams() as { postId: string };
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const { data: detailData } = useQuery({
     queryKey: ['communitydetail'],
     queryFn: () => GetCommunityPost({ postId }),
     refetchOnWindowFocus: false,
-    select: (data) => data.data,
+    select: (data: { data: CommunityDetailT }) => data.data,
   });
 
   console.log(detailData);

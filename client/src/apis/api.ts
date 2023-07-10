@@ -50,8 +50,7 @@ export const GetCommunityList = async ({
   const optSort = sort === 'Like' ? '&sort=like' : '';
   const optTagName = tagName ? `&tagName=${tagName}` : '';
   const request = essential + optSort + optTagName;
-  const result = await instance.get(request);
-  return result.data;
+  return instance.get(request);
 };
 
 export const GetCommunityPost = async ({ postId }: { postId: string }) =>

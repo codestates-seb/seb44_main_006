@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useRef, useState } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -13,7 +13,6 @@ import Pen from '../../assets/Pen';
 import useMovePage from '../../hooks/useMovePage';
 import { GetCommunityList } from '../../apis/api';
 import getLoginStatus from '../../utils/getLoginStatus';
-import { CommunityListT, CommunitySummaryT } from '../../types/apitype';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;

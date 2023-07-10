@@ -1,6 +1,6 @@
 import { CommentT, IScheduleListItem } from './type';
 
-export interface MemberListT {
+export interface MemberCourseT {
   courseContent: string;
   courseDday: string;
   courseId: number;
@@ -11,6 +11,20 @@ export interface MemberListT {
   courseViewCount: number;
   memberNickname: string;
   isPosted: boolean;
+}
+
+export interface MemberBookmaredT {
+  courseId: number;
+  postId: number;
+  courseTitle: string;
+  postContent: string;
+  courseThumbnail: string;
+  tags: string[];
+  memberNickname: string;
+  courseLikeCount: number;
+  courseViewCount: number;
+  likeStatus: boolean;
+  courseUpdatedAt: string;
 }
 
 export interface PostReqT {
@@ -45,7 +59,7 @@ export type CommunityDetailT = {
 
   courseInfo: {
     courseId: number; // 고유값(일정 식별자)
-    destiationList: IScheduleListItem[];
+    destinationList: IScheduleListItem[];
   };
   answerList: CommentT[];
 };
