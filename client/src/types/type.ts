@@ -50,6 +50,10 @@ export interface IButtonStyle {
   isreset?: boolean;
 }
 
+export type LikeBookMarkButtonT = IButtonStyle & {
+  courseId?: number;
+};
+
 export type PlacesSearchResult = PlacesSearchResultItem[];
 
 export interface PlacesSearchResultItem {
@@ -132,6 +136,8 @@ export interface ContCardInfo {
   selectId?: number | null;
   id?: number;
   children?: ReactNode;
+  likeStatus?: boolean;
+  bookmarkStatus?: boolean;
 }
 
 export interface LocationCardInfo {
@@ -172,4 +178,15 @@ export type MarkerT = {
 export interface ICSearchState {
   radius?: number;
   category?: string;
+}
+export interface ICourseData {
+  courseDday: string;
+  courseTitle: string;
+  courseContent: string;
+  courseThumbnail: string;
+}
+
+export interface IScheduleRequest {
+  courseData: ICourseData;
+  destinationList: TScheduleList;
 }

@@ -19,6 +19,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { overlayActions } from '../../store/overlay-slice';
 import { RootState } from '../../store';
 import { scheduleListActions } from '../../store/scheduleList-slice';
+import useScheduleMutation from '../../querys/useScheduleMutaion';
+import dateToString from '../../utils/dateToString';
 
 interface UrlProp {
   url: string;
@@ -104,8 +106,13 @@ const ScheduleCreateModal = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const bgUrl = useSelector((state: RootState) => state.scheduleList.imageUrl);
+  const destinationList = useSelector(
+    (state: RootState) => state.scheduleList.list
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const scheduleMutation = useScheduleMutation();
 
   const handleSave = () => {
     if (titleRef.current && descriptionRef.current) {
@@ -113,10 +120,19 @@ const ScheduleCreateModal = () => {
       dispatch(
         scheduleListActions.addDescription(descriptionRef.current.value)
       );
+      scheduleMutation.mutate({
+        courseData: {
+          courseDday: `${dateToString(choiceDate)}`,
+          courseTitle: titleRef.current.value,
+          courseContent: descriptionRef.current.value,
+          courseThumbnail: bgUrl,
+        },
+        destinationList: [...destinationList],
+      });
     }
     dispatch(overlayActions.toggleOverlay());
-    navigate('/');
     dispatch(scheduleListActions.resetList());
+    navigate('/');
   };
 
   return (
