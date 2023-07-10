@@ -13,12 +13,10 @@ import { MemberBookmaredT, MemberCourseT } from '../../types/apitype';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
-  /* height: 100vh; */
   padding-top: ${cssToken.SPACING['px-50']};
   padding-left: ${cssToken.SPACING['py-100']};
   padding-right: ${cssToken.SPACING['py-100']};
   flex-direction: column;
-  /* justify-content: space-between; */
   row-gap: ${cssToken.SPACING['gap-50']};
 `;
 
