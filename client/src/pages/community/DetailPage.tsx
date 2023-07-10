@@ -58,7 +58,7 @@ const DetailPage = () => {
   const mutation = useMutation(PostComment, {
     onSuccess: () => {
       if (textAreaRef.current) textAreaRef.current.value = '';
-      return queryClient.invalidateQueries(['communitydetail']);
+      return queryClient.invalidateQueries(['postdetail']);
     },
   });
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
