@@ -21,7 +21,7 @@ const StarButton = ({
   const mutation = useMutation(PostBookmark, {
     onSuccess: () =>
       postId
-        ? queryClient.invalidateQueries(['postdetail'])
+        ? queryClient.invalidateQueries(['communityDetail'])
         : queryClient.invalidateQueries(['community']),
   });
   const handleStarButton = (e: React.MouseEvent<HTMLButtonElement>) => {

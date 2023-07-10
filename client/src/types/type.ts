@@ -12,6 +12,7 @@ export type TextareaT = {
   width?: string;
   height?: string;
   size?: string;
+  type?: string;
 };
 
 export interface Props {
@@ -44,7 +45,7 @@ export interface IButtonStyle {
   onSubmit?: () => void;
   tagname?: string;
   categoryname?: string;
-  disabled?: 'true' | 'false' | boolean;
+  disabled?: boolean;
   fontsize?: string;
   selectedid?: string | undefined;
   isreset?: boolean;
