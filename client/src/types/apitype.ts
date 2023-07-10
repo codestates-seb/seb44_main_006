@@ -1,3 +1,5 @@
+import { InfiniteQueryObserverResult } from '@tanstack/react-query';
+
 import { CommentT, IScheduleListItem } from './type';
 
 export interface MemberCourseT {
@@ -75,6 +77,7 @@ export type CommunitySummaryT = {
   likeStatus: boolean;
   memberNickname: string;
   postContent: string;
+  postCreatedAt: string;
   postId: number;
   tags: string[];
 };
@@ -90,3 +93,20 @@ export type CommunityListT = {
   data: CommunitySummaryT[];
   pageInfo: PageInfoT;
 };
+
+export type InfiniteScrollT = {
+  communityListData: CommunitySummaryT[];
+  current_page: number;
+  isLast: boolean;
+};
+
+export type FetchNextPageT = () => Promise<
+  InfiniteQueryObserverResult<
+    {
+      communityListData: CommunitySummaryT[];
+      current_page: number;
+      isLast: boolean;
+    },
+    unknown
+  >
+>;

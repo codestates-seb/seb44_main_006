@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
 
 import { FlexDiv } from '../../../styles/styles';
 import cssToken from '../../../styles/cssToken';
@@ -7,6 +6,7 @@ import StarButton from '../../ui/button/StarButton';
 import LikeButton from '../../ui/button/LikeButton';
 import Text from '../../ui/text/Text';
 import DeleteButton from '../DeleteButton';
+import useUserInfo from '../../../hooks/useUserInfo';
 
 const BtnDiv = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-12']};
@@ -30,6 +30,7 @@ const ActionButtonContainer = ({
   bookmarkStatus,
   likeStatus,
   courseId,
+  memberEmail,
 }: {
   LikeCount: number;
   isLogin: boolean;
@@ -37,11 +38,16 @@ const ActionButtonContainer = ({
   bookmarkStatus: boolean;
   likeStatus: boolean;
   courseId: number;
+  memberEmail: string;
 }) => {
+  const { userData } = useUserInfo();
+
   return (
     <BtnDiv>
-      <DeleteButton postId={postId} />
-      {isLogin && (
+      {userData && memberEmail === userData.memberEmail && (
+        <DeleteButton postId={postId} />
+      )}
+      {isLogin && userData && memberEmail !== userData.memberEmail && (
         <StarButton
           courseId={courseId}
           width="3.75rem"
@@ -52,7 +58,13 @@ const ActionButtonContainer = ({
       <StarDiv>
         {isLogin && (
           <>
-            <LikeButton isActive={likeStatus} courseId={courseId} />
+            {userData && memberEmail !== userData.memberEmail ? (
+              <LikeButton isActive={likeStatus} courseId={courseId} />
+            ) : (
+              <Text styles={{ weight: cssToken.FONT_WEIGHT.medium }}>
+                좋아요
+              </Text>
+            )}
             {LikeCount}
           </>
         )}
