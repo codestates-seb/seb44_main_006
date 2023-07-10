@@ -100,8 +100,6 @@ const ContensCard = ({
 }: ContCardInfo) => {
   const isLogin = getLoginStatus();
   const selected = selectId !== undefined && selectId === id;
-  console.log(bookmarkStatus);
-
   return (
     <ContensCardContainer
       onClick={() => {
