@@ -173,3 +173,14 @@ export interface ICSearchState {
   radius?: number;
   category?: string;
 }
+export interface ICourseData {
+  courseDday: string;
+  courseTitle: string;
+  courseContent: string;
+  courseThumbnail: string;
+}
+
+export interface IScheduleRequest {
+  courseData: ICourseData;
+  destinationList: TScheduleList;
+}
