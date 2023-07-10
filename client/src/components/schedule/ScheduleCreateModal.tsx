@@ -103,12 +103,17 @@ const DateInputBox = styled(DatePicker)`
 const ScheduleCreateModal = () => {
   const [isThumbChoice, setIsThumbChouce] = useState(false);
   const [choiceDate, setChoiceDate] = useState(new Date());
+  const [titleIsValidate, setTitleIsValidate] = useState(false);
+  const [descIsValidate, setDescIsValidate] = useState(false);
+
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
+
   const bgUrl = useSelector((state: RootState) => state.scheduleList.imageUrl);
   const destinationList = useSelector(
     (state: RootState) => state.scheduleList.list
   );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -116,10 +121,10 @@ const ScheduleCreateModal = () => {
 
   const handleSave = () => {
     if (titleRef.current && descriptionRef.current) {
-      dispatch(scheduleListActions.addTitle(titleRef.current.value));
-      dispatch(
-        scheduleListActions.addDescription(descriptionRef.current.value)
-      );
+      if (!titleIsValidate || !descIsValidate) return;
+
+      setTitleIsValidate(true);
+      setDescIsValidate(true);
       scheduleMutation.mutate({
         courseData: {
           courseDday: `${dateToString(choiceDate)}`,
@@ -129,10 +134,26 @@ const ScheduleCreateModal = () => {
         },
         destinationList: [...destinationList],
       });
+      dispatch(overlayActions.toggleOverlay());
+      dispatch(scheduleListActions.resetList());
+      navigate('/');
     }
-    dispatch(overlayActions.toggleOverlay());
-    dispatch(scheduleListActions.resetList());
-    navigate('/');
+  };
+
+  const handleChange = () => {
+    if (titleRef.current && descriptionRef.current) {
+      if (titleRef.current.value.length === 0) {
+        setTitleIsValidate(false);
+      } else {
+        setTitleIsValidate(true);
+      }
+
+      if (descriptionRef.current.value.length === 0) {
+        setDescIsValidate(false);
+      } else {
+        setDescIsValidate(true);
+      }
+    }
   };
 
   return (
@@ -181,12 +202,13 @@ const ScheduleCreateModal = () => {
                 />
               </DataChoiceWrapper>
             </WriteLeftBox>
-            <WriteRightBox>
+            <WriteRightBox onChange={handleChange}>
               <InputContainer
                 ref={titleRef}
                 description="일정의 제목을 작성해 주세요. (최대 30자, 필수)"
                 minLength={1}
                 maxLength={30}
+                isValidate={titleIsValidate}
                 type="title"
                 styles={{
                   width: `${cssToken.WIDTH['w-full']}`,
@@ -198,6 +220,7 @@ const ScheduleCreateModal = () => {
                 description="일정의 상세 설명을 작성해 주세요. (최대 40자, 필수)"
                 minLength={1}
                 maxLength={40}
+                isValidate={descIsValidate}
                 styles={{
                   width: `${cssToken.WIDTH['w-full']}`,
                   height: `${cssToken.HEIGHT['h-full']}`,

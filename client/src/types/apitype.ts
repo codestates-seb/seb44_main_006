@@ -75,6 +75,7 @@ export type CommunitySummaryT = {
   likeStatus: boolean;
   memberNickname: string;
   postContent: string;
+  postCreatedAt: string;
   postId: number;
   tags: string[];
 };
@@ -89,4 +90,10 @@ export type PageInfoT = {
 export type CommunityListT = {
   data: CommunitySummaryT[];
   pageInfo: PageInfoT;
+};
+
+export type InfiniteScrollT = {
+  communityListData: CommunitySummaryT[];
+  current_page: number;
+  isLast: boolean;
 };

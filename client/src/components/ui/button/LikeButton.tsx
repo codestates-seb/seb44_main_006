@@ -16,6 +16,7 @@ const LikeButton = ({
   const { postId } = useParams();
   const queryClient = useQueryClient();
   const mutation = useMutation(PostLike, {
+    // Fixme 키 추가하기
     onSuccess: () =>
       postId
         ? queryClient.invalidateQueries(['communityDetail'])

@@ -97,7 +97,10 @@ const ScheduleRegister = () => {
         <CircleButton
           width="100px"
           height="100px"
-          onClick={() => dispatch(overlayActions.toggleOverlay())}
+          onClick={() => {
+            if (scheduleList.length > 0)
+              dispatch(overlayActions.toggleOverlay());
+          }}
         >
           <ButtonDiv>
             <SaveIcon
