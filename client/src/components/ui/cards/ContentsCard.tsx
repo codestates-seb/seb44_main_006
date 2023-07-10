@@ -100,11 +100,11 @@ const ContensCard = ({
   bookmarkStatus,
 }: ContCardInfo) => {
   const isLogin = getLoginStatus();
-  const selected = selectId !== undefined && selectId === postId;
+  const selected = selectId !== undefined && selectId === courseId;
   return (
     <ContensCardContainer
       onClick={() => {
-        if (onClick && postId) onClick(postId);
+        if (onClick && courseId) onClick(courseId);
       }}
       selected={selected}
     >

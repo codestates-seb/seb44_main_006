@@ -10,6 +10,7 @@ const CommentDiv = styled(FlexDiv)`
 `;
 // Todo 댓글 수정 삭제하기
 const CommentContainer = ({ comments }: { comments: CommentT[] }) => {
+  // editing state
   return (
     <CommentDiv>
       {comments.map((comment: CommentT) => (

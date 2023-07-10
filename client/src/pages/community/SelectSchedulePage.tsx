@@ -47,9 +47,9 @@ const SelectSchedulePage = () => {
     ? courses.filter((course: MemberCourseT) => course.isPosted === false)
     : [];
 
-  const handleClickCard = (id: number | undefined) => {
-    if (id === selectId) setSelectId(null);
-    else setSelectId(id);
+  const handleClickCard = (courseId: number | undefined) => {
+    if (courseId === selectId) setSelectId(null);
+    else setSelectId(courseId);
   };
   const goToWrite = () => {
     if (selectId) {
@@ -70,7 +70,7 @@ const SelectSchedulePage = () => {
                 likeCount={course.courseLikeCount}
                 userName={course.memberNickname}
                 thumbnail={course.courseThumbnail}
-                id={course.courseId}
+                courseId={course.courseId}
                 selectId={selectId}
                 onClick={handleClickCard}
               />
