@@ -7,12 +7,10 @@ import { Link } from 'react-router-dom';
 import cssToken from '../../styles/cssToken';
 import { FlexDiv } from '../../styles/styles';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
-import FilterSection from '../../components/community/FilterSection';
-import FilterTab from '../../components/community/FilterTab';
-import { GetUserInfo, GetMyList, PatchMemNickname } from '../../apis/api';
+import { GetMyList, PatchMemNickname } from '../../apis/api';
 import { setUserOAuthActions } from '../../store/userAuth-slice';
 import Pen from '../../assets/Pen';
-import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
+import ContensCard from '../../components/ui/cards/ContentsCard';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -88,16 +86,29 @@ const MyPage = () => {
     (state: RootState) => state.userAuth.userInfo
   );
 
-  const mutation = useMutation(PatchMemNickname, {
-    onSuccess: () => {
-      dispatch(setUserOAuthActions.paintMemNickname(memNickname));
-    },
-    onError: (error) => {
+  const { data: userInfoData } = useQuery({
+    queryKey: ['userInf'],
+    queryFn: () => GetMyList(),
+    onError: (error: AxiosError) => {
       navigate(`/error/${error.status as string}`);
     },
   });
 
-  const { data: userMemData } = useQuery(['userInof'], () => GetMyList());
+
+  const memberCourseList = userInfoData?.data?.memberCourseList[0];
+  const memberBookmarkedList = userInfoData?.data?.memberBookmarkedList;
+  console.log(memberCourseList);
+
+
+  const mutation = useMutation(PatchMemNickname, {
+    onSuccess: () => {
+      dispatch(setUserOAuthActions.paintMemNickname(memNicknameRef.current));
+
+    },
+    onError: (error) => {
+      navigate(`/ error / ${error.status as string}`);
+    },
+  });
 
   const handleOpenNickname = () => {
     setToggleNickname(!toggleNickname);
@@ -116,6 +127,7 @@ const MyPage = () => {
   useEffect(() => {
     memNicknameRef.current = memNickname;
   });
+
 
   return (
     <Wrapper>
@@ -160,8 +172,8 @@ const MyPage = () => {
                 <WriteBtn>
                   <Pen
                     style={{
-                      iconWidth: '20px',
-                      iconHeight: '20px',
+                      iconWidth: 20,
+                      iconHeight: 20,
                       color: '#000',
                     }}
                   />
@@ -173,10 +185,37 @@ const MyPage = () => {
         </RightWrap>
       </UserInfoContainer>
 
-      <FilterSection>
-        <FilterTab content="일정" tab="Newest" />
-        <FilterTab content="즐겨찾기" tab="Like" />
-      </FilterSection>
+      <section>
+
+
+
+        {/* title=""
+          text=""
+          likeCount=""
+          tag=""
+          userName=""
+          thumbnail=""
+          onClick=""
+          selectId=""
+          postId=""
+          courseId=""
+          children=""
+          likeStatus=""
+          bookmarkStatus=""
+          type=""
+          date="" */}
+        {/* {
+          memberCourseList.map((el, idx) => (
+            <ContensCard
+              key={idx}
+              title={el.courseTitle}
+
+            />
+          ))
+        } */}
+        <ContensCard
+        />
+      </section>
     </Wrapper>
   );
 };
