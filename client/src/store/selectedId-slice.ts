@@ -20,6 +20,11 @@ const selectedIdSlice = createSlice({
     setThumbnailId(state, action: PayloadAction<string>) {
       state.thumbnailId = action.payload;
     },
+    allReset(state) {
+      state.tagId = '';
+      state.categoryId = '';
+      state.thumbnailId = '';
+    },
   },
 });
 
