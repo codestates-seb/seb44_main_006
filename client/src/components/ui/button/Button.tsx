@@ -40,7 +40,7 @@ const Button = ({
 }: {
   children?: Props['children'];
   styles?: IButtonStyle;
-  onClick?: (arg0?: string | undefined | Event) => void;
+  onClick?: (arg0?: string | undefined) => void;
   onSubmit?: () => void;
   disabled?: 'true' | 'false';
 }) => {

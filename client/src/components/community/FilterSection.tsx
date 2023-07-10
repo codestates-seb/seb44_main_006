@@ -53,6 +53,8 @@ const FilterSection = ({
               thumbnail={post.courseThumbnail}
               onClick={moveToDetail}
               id={post.postId}
+              likeStatus={post.likeStatus}
+              bookmarkStatus={post.bookmarkStatus}
             >
               {/* Todo 작성자만 보이도록해야함 */}
               <DeleteButton postId={String(post.postId)} />

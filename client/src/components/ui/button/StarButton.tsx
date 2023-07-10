@@ -1,7 +1,11 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { IButtonStyle } from '../../../types/type';
+import { LikeBookMarkButtonT } from '../../../types/type';
+import { PostBookmark } from '../../../apis/api';
 
 const StarButton = ({
   width,
@@ -9,9 +13,24 @@ const StarButton = ({
   svgWidth,
   svgHeight,
   isActive,
-}: IButtonStyle) => {
+  courseId,
+}: LikeBookMarkButtonT) => {
+  const { postId } = useParams();
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(PostBookmark, {
+    onSuccess: () =>
+      postId
+        ? queryClient.invalidateQueries(['postdetail'])
+        : queryClient.invalidateQueries(['community']),
+  });
+  const handleStarButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (courseId) mutation.mutate({ courseId });
+  };
   return (
     <Button
+      onClick={handleStarButton}
       styles={{
         width,
         height,
