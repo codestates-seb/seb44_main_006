@@ -15,6 +15,8 @@ import CloseIcon from '../../assets/CloseIcon';
 import ScheduleCreateModal from '../../components/schedule/ScheduleCreateModal';
 import { overlayActions } from '../../store/overlay-slice';
 import { scheduleListActions } from '../../store/scheduleList-slice';
+import Polyline from '../../components/map/Polyline';
+import makePolyline from '../../utils/makePolyline';
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-screen']};
@@ -80,6 +82,7 @@ const ScheduleRegister = () => {
             idx={idx}
           />
         ))}
+        <Polyline linePos={makePolyline(scheduleList)} />
       </KakaoMap>
 
       <FixedDiv>

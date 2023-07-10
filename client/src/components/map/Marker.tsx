@@ -26,8 +26,8 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
   useEffect(() => {
     const markerLat = Number(lat) || defaultOptions.lat;
     const markerLng = Number(lng) || defaultOptions.lng;
-    const markerWidth = 20;
-    const markerheight = 40;
+    const markerWidth = 30;
+    const markerheight = 60;
 
     const setIamge = () => {
       const index = idx ?? -1;
