@@ -87,3 +87,14 @@ export const PostBookmark = async ({ courseId }: { courseId: number }) =>
 
 export const PostLike = async ({ courseId }: { courseId: number }) =>
   instance.post(`/api/courses/${courseId}/like`);
+
+export const DeleteComment = async ({ answerId }: { answerId: number }) =>
+  instance.delete(`/api/answers/${answerId}`);
+
+export const PatchComment = async ({
+  answerId,
+  answerContent,
+}: {
+  answerId: number;
+  answerContent: string;
+}) => instance.patch(`/api/answers/${answerId}`, { answerContent });

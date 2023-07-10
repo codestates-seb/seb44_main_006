@@ -12,6 +12,7 @@ export type TextareaT = {
   width?: string;
   height?: string;
   size?: string;
+  type?: string;
 };
 
 export interface Props {
