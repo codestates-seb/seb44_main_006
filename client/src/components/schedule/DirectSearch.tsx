@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import SearchContainer from '../ui/input/SearchContainer';
@@ -17,8 +17,10 @@ const DirectSearch = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
 
-  dispatch(selectedIdActions.setCategoryId(''));
-  dispatch(selectedIdActions.setTagId(''));
+  useEffect(() => {
+    dispatch(selectedIdActions.setCategoryId(''));
+    dispatch(selectedIdActions.setTagId(''));
+  }, [dispatch]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
