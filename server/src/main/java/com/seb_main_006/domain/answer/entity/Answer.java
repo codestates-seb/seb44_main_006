@@ -1,5 +1,6 @@
 package com.seb_main_006.domain.answer.entity;
 
+import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.post.entity.Post;
 import lombok.Getter;
@@ -38,5 +39,13 @@ public class Answer {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member; // member entity와 연관관계 매핑(다:1)
+
+    public void addPost(Post post){
+        this.post = post;
+
+        if(!post.getAnswersInPost().contains(this)){
+            post.getAnswersInPost().add(this);
+        }
+    }
 
 }
