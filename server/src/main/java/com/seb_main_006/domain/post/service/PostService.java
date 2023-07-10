@@ -89,7 +89,7 @@ public class PostService {
             else {
                 newPostTag.setTag(tagRepository.save(new Tag(tagName)));
             }
-//            findcourse.setPost(post);
+
             newPostTag.setPost(post); // new PostTag에 Post세팅(연관관계 매핑)
             post.getPostTagsInPost().add(newPostTag);// post의 PostTagsInpost리스트에 newPostTag 추가(연관관계 매핑)
         }
@@ -122,7 +122,7 @@ public class PostService {
         }
 
         Post findPost = findVerifiedPost(postId);
-        Course course = updateCourseViewCount(findPost.getCourse());
+        Course course = findPost.getCourse();
         List<String> tags = findPost.getPostTagsInPost().stream()
                 .map(postTag -> postTag.getTag().getTagName())
                 .collect(Collectors.toList());
@@ -163,11 +163,19 @@ public class PostService {
             }
         }
 
+        PageRequest pageRequest = PageRequest.of(page, limit);
         Page<Course> pageResult = null;
 
         if (tagName == null) {
-            PageRequest pageRequest = PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending());
-            pageResult = courseRepository.findAllByPosted(true, pageRequest);
+
+            // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
+            if (sort == null) {
+                log.info("sort == null");
+                pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(true, pageRequest);
+            } else {
+                log.info("sort != null (like)");
+                pageResult = courseRepository.findAllByPostedOrderByLikeCount(true, pageRequest);
+            }
         } else {
             // 입력받은 태그 String 을 공백 기준으로 분리
             String[] inputTags = tagName.split(" ");
@@ -182,10 +190,10 @@ public class PostService {
             // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
             if (sort == null) {
                 log.info("sort == null");
-                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
+                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(new ArrayList<>(findTagSet), pageRequest);
             } else {
                 log.info("sort != null (like)");
-                pageResult = postTagRepository.findByTagInOrderByLikeCount(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
+                pageResult = postTagRepository.findByTagInOrderByLikeCount(new ArrayList<>(findTagSet), pageRequest);
             }
         }
 
@@ -289,11 +297,9 @@ public class PostService {
 
     // 조회수 + 1 업데이트
     @Transactional
-    public Course updateCourseViewCount(Course findCourse) {
-
-        long courseCount = findCourse.getCourseViewCount();
-        findCourse.setCourseViewCount(courseCount + 1);
-        return courseRepository.save(findCourse);
+    public void viewCountUp(Long postId) {
+        Post post = findVerifiedPost(postId);
+        post.getCourse().setCourseViewCount(post.getCourse().getCourseViewCount() + 1);
     }
 
 }

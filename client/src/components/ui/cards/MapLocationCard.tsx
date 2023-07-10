@@ -1,11 +1,14 @@
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { CardCommonBox } from './Card.styled';
 
 import cssToken from '../../../styles/cssToken';
 import { MapLocationCardInfo } from '../../../types/type';
 import { RootState } from '../../../store';
+import Button from '../button/Button';
+import Trash from '../../../assets/Trash';
+import { scheduleListActions } from '../../../store/scheduleList-slice';
 
 const MapLocationCardContainer = styled.section`
   display: flex;
@@ -43,6 +46,9 @@ const NumCircle = styled.span`
 `;
 
 const LocationCard = styled.div<{ selected?: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex: 1;
   width: ${cssToken.WIDTH['w-full']};
   padding: ${cssToken.SPACING['gap-24']};
@@ -58,11 +64,18 @@ const MapLocationCard = ({
   indexNum,
   location,
   id,
+  placeId,
   onClick,
 }: MapLocationCardInfo) => {
   const index = indexNum ?? -1;
   const markerId = useSelector((state: RootState) => state.marker.markerId);
   const selected = !!(id && id === markerId);
+  const dispatch = useDispatch();
+
+  const handleClick = (inputId: string) => {
+    dispatch(scheduleListActions.deletePlace(inputId));
+  };
+
   return (
     <MapLocationCardContainer>
       <NumCircle className={index >= 0 ? 'last-circle' : ''}>
@@ -75,6 +88,13 @@ const MapLocationCard = ({
         }}
       >
         <LocationText>{location}</LocationText>
+        <Button
+          onClick={() => {
+            if (placeId) handleClick(placeId);
+          }}
+        >
+          <Trash style={{ iconWidth: 16, iconHeight: 18 }} />
+        </Button>
       </LocationCard>
     </MapLocationCardContainer>
   );

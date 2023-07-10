@@ -24,6 +24,7 @@ import ModalChildren from '../../components/community/post/ModalChildren';
 import useToggleModal from '../../hooks/useToggleModal';
 import { GetCourse, PostCommunity } from '../../apis/api';
 import { PostReadT } from '../../types/apitype';
+import removeTag from '../../utils/removeTag';
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: ${cssToken.SPACING['gap-50']};
@@ -61,9 +62,7 @@ const PostCommunitypage = () => {
    */
   const isEditorEmpty = () => {
     const inputString = String(quillRef.current?.value);
-    const sanitizedValue: string = inputString
-      .replace(/<\/?[^>]+(>|$)/g, '')
-      .trim();
+    const sanitizedValue: string = removeTag(inputString).trim();
     return sanitizedValue.length === 0;
   };
   const HandleBack = () => {

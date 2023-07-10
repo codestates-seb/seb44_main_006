@@ -46,6 +46,9 @@ const scheduleListSlice = createSlice({
     addDescription(state, action: PayloadAction<string>) {
       state.description = action.payload;
     },
+    deletePlace(state, action: PayloadAction<string>) {
+      state.list = state.list.filter((obj) => obj.id !== action.payload);
+    },
     resetList(state) {
       state.list = [];
       state.imageUrl = '';

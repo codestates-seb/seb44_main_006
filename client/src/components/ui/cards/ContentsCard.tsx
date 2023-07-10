@@ -10,6 +10,7 @@ import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
 import getLoginStatus from '../../../utils/getLoginStatus';
+import removeTag from '../../../utils/removeTag';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
@@ -93,17 +94,22 @@ const ContensCard = ({
   thumbnail,
   onClick,
   selectId,
-  id,
+  postId,
+  courseId,
   children,
   likeStatus,
   bookmarkStatus,
+  type,
 }: ContCardInfo) => {
   const isLogin = getLoginStatus();
-  const selected = selectId !== undefined && selectId === id;
+  const selected = selectId !== undefined && selectId === courseId;
   return (
     <ContensCardContainer
       onClick={() => {
-        if (onClick && id) onClick(id);
+        if (onClick) {
+          if (type === 'course' && courseId) onClick(courseId);
+          else if (type === 'post' && postId) onClick(postId);
+        }
       }}
       selected={selected}
     >
@@ -114,18 +120,16 @@ const ContensCard = ({
 
       <ContensHeader>
         <ContensTitle>{title}</ContensTitle>
-        {isLogin && bookmarkStatus !== undefined && id && (
+        {isLogin && bookmarkStatus !== undefined && courseId && (
           <StarButton
             width="60px"
             height="60px"
             isActive={bookmarkStatus}
-            courseId={id}
+            courseId={courseId}
           />
         )}
       </ContensHeader>
-
-      <ContensText>{text}</ContensText>
-
+      {text && <ContensText>{removeTag(text)}</ContensText>}
       <Tags>
         {tag?.map((tagItem: string) => (
           <TagButton
@@ -150,8 +154,8 @@ const ContensCard = ({
 
       <ContensBottom>
         <LikeBtnBox>
-          {isLogin && likeStatus !== undefined && id && (
-            <LikeButton isActive={likeStatus} courseId={id} />
+          {isLogin && likeStatus !== undefined && courseId && (
+            <LikeButton isActive={likeStatus} courseId={courseId} />
           )}
           <DataText>{likeCount}개</DataText>
         </LikeBtnBox>

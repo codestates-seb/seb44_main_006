@@ -34,9 +34,11 @@ const FilterSection = ({
 }) => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
-  const moveToDetail = (id: number | undefined) => {
-    if (id) navigate(`/community/${id}`);
+  const moveToDetail = (postId: number | undefined) => {
+    if (postId) navigate(`/community/${postId}`);
   };
+
+  console.log(communityData);
 
   return (
     <FilterWrapper>
@@ -45,6 +47,7 @@ const FilterSection = ({
         {communityData &&
           communityData.data.data.map((post: CommunitySummaryT) => (
             <ContensCard
+              type="post"
               title={post.courseTitle}
               text={post.postContent}
               likeCount={post.courseLikeCount}
@@ -52,7 +55,8 @@ const FilterSection = ({
               userName={post.memberNickname}
               thumbnail={post.courseThumbnail}
               onClick={moveToDetail}
-              id={post.postId}
+              postId={post.postId}
+              courseId={post.courseId}
               likeStatus={post.likeStatus}
               bookmarkStatus={post.bookmarkStatus}
             >
