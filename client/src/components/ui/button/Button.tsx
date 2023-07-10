@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import React from 'react';
 
 import { IButtonStyle, Props } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
@@ -10,9 +11,7 @@ const ButtonTemplate = styled.button<IButtonStyle>`
   padding: ${(props) => props.padding};
   color: ${(props) => props.color};
   background-color: ${(props) =>
-    props.disabled === 'true'
-      ? cssToken.COLOR['gray-700']
-      : props.backgroundColor};
+    props.disabled ? cssToken.COLOR['gray-700'] : props.backgroundColor};
   box-shadow: ${(props) => props.boxShadow};
   border: ${(props) => props.border || 'none'};
   border-radius: ${(props) => props.borderRadius};
@@ -40,9 +39,9 @@ const Button = ({
 }: {
   children?: Props['children'];
   styles?: IButtonStyle;
-  onClick?: (arg0?: string | undefined | Event) => void;
+  onClick?: (arg0?: string | React.MouseEvent<HTMLButtonElement>) => void;
   onSubmit?: () => void;
-  disabled?: 'true' | 'false';
+  disabled?: boolean;
 }) => {
   return (
     <ButtonTemplate

@@ -8,13 +8,13 @@ import manufactureDate from '../../../utils/manufactureDate';
 const CommentDiv = styled(FlexDiv)`
   flex-direction: column;
 `;
-// Todo 댓글 수정 삭제하기
 const CommentContainer = ({ comments }: { comments: CommentT[] }) => {
   return (
     <CommentDiv>
       {comments.map((comment: CommentT) => (
         <Comment
           key={comment.answerId}
+          answerId={comment.answerId}
           answererEmail={comment.answererEmail}
           answererImageUrl={comment.answererImageUrl}
           answererNickname={comment.answererNickname}

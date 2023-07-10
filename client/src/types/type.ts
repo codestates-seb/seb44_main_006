@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type Voidfunc = () => void;
+export type Voidfunc = (arg0: React.MouseEvent<HTMLButtonElement>) => void;
 
 export type TextStyleT = {
   size?: string;
@@ -12,6 +12,7 @@ export type TextareaT = {
   width?: string;
   height?: string;
   size?: string;
+  type?: string;
 };
 
 export interface Props {
@@ -40,15 +41,19 @@ export interface IButtonStyle {
   gap?: string;
   isActive?: boolean;
   title?: string;
-  onClick?: (arg0?: string) => void;
+  onClick?: (arg0?: string | React.MouseEvent<HTMLButtonElement>) => void;
   onSubmit?: () => void;
   tagname?: string;
   categoryname?: string;
-  disabled?: 'true' | 'false' | boolean;
+  disabled?: boolean;
   fontsize?: string;
   selectedid?: string | undefined;
   isreset?: boolean;
 }
+
+export type LikeBookMarkButtonT = IButtonStyle & {
+  courseId?: number;
+};
 
 export type PlacesSearchResult = PlacesSearchResultItem[];
 
@@ -130,8 +135,11 @@ export interface ContCardInfo {
   tag?: string[];
   onClick?: (arg0?: number) => void;
   selectId?: number | null;
-  id?: number;
+  postId?: number;
+  courseId?: number;
   children?: ReactNode;
+  likeStatus?: boolean;
+  bookmarkStatus?: boolean;
 }
 
 export interface LocationCardInfo {
@@ -172,4 +180,15 @@ export type MarkerT = {
 export interface ICSearchState {
   radius?: number;
   category?: string;
+}
+export interface ICourseData {
+  courseDday: string;
+  courseTitle: string;
+  courseContent: string;
+  courseThumbnail: string;
+}
+
+export interface IScheduleRequest {
+  courseData: ICourseData;
+  destinationList: TScheduleList;
 }

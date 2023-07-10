@@ -67,7 +67,7 @@ public class PostService {
 
         post.setPostContent(postPostDto.getPostContent()); //저장할 post에 게시글내용과 코스 저장
 
-        post.setCourse(findcourse); //Post에 코스 저장(연관관계 매핑)
+        post.addCourse(findcourse); //Post에 코스 저장(연관관계 매핑)
 
         List<String> inputTags = postPostDto.getTags(); //입력받은 태그 리스트를 postPostDto에서 꺼내옴
 
@@ -89,7 +89,7 @@ public class PostService {
             else {
                 newPostTag.setTag(tagRepository.save(new Tag(tagName)));
             }
-//            findcourse.setPost(post);
+
             newPostTag.setPost(post); // new PostTag에 Post세팅(연관관계 매핑)
             post.getPostTagsInPost().add(newPostTag);// post의 PostTagsInpost리스트에 newPostTag 추가(연관관계 매핑)
         }
@@ -122,7 +122,6 @@ public class PostService {
         }
 
         Post findPost = findVerifiedPost(postId);
-//        Course course = updateCourseViewCount(findPost.getCourse());
         Course course = findPost.getCourse();
         List<String> tags = findPost.getPostTagsInPost().stream()
                 .map(postTag -> postTag.getTag().getTagName())
@@ -275,13 +274,6 @@ public class PostService {
 
     }
 
-
-    // 해당 Course 로 등록된 게시글이 존재하는지 확인 (존재하지 않을 경우 예외 발생)
-    public void verifyNoExistPost(Course course) {
-        postRepository.findByCourse(course).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CANT_LIKE_NOT_FOUND));
-    }
-
-
     //해당 코스로 작성된 게시글이 있는지 확인하는 메소드
     private void verifyExistCourse(Course course) {
         if (postRepository.findByCourse(course).isPresent()) {
@@ -297,22 +289,9 @@ public class PostService {
 
     // 조회수 + 1 업데이트
     @Transactional
-    public Course updateCourseViewCount(Course findCourse) {
-
-        long courseCount = findCourse.getCourseViewCount();
-        findCourse.setCourseViewCount(courseCount + 1);
-        return courseRepository.save(findCourse);
-    }
-
-    //코스로 작성된 게시글이 있으면 그 게시글 리턴 없으면 예외
-    public Post findVerifiedPost(Course course) {
-        return postRepository.findByCourse(course)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
-    }
-
-    @Transactional
     public void viewCountUp(Long postId) {
         Post post = findVerifiedPost(postId);
         post.getCourse().setCourseViewCount(post.getCourse().getCourseViewCount() + 1);
     }
+
 }

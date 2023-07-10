@@ -14,7 +14,7 @@ const Polyline = ({ linePos }: { linePos: { lat: string; lng: string }[] }) => {
     );
     const polyline = new kakao.maps.Polyline({
       path: linePath,
-      strokeWeight: 3,
+      strokeWeight: 8,
       strokeColor: cssToken.COLOR['point-900'],
       strokeOpacity: 1,
       strokeStyle: 'shortdot',

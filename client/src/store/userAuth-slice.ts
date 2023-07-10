@@ -15,25 +15,38 @@ type UserQAuthInfo = {
 interface LoginState {
   isLogin?: string | boolean;
   userInfo?: UserQAuthInfo;
+  isLoginOpen?: boolean;
+  isLogoutOpen?: boolean;
 }
 
+const logined = localStorage.getItem('isLogin');
+const transLogined = JSON.parse(logined);
+
 const initialState: LoginState = {
-  isLogin: false,
+  isLogin: transLogined,
   userInfo: {},
+  isLoginOpen: false,
+  isLogoutOpen: false,
 };
 
 const setUserOAuthSlice = createSlice({
   name: 'OAuthInfo',
   initialState,
   reducers: {
-    toggleIsLogin(state, action: PayloadAction<boolean>) {
-      state.isLogin = !action.payload;
+    setIsLogin(state, action: PayloadAction<boolean>) {
+      state.isLogin = action.payload;
     },
     setUserOAuth: (state, action: PayloadAction<UserQAuthInfo>) => {
       state.userInfo = { ...state.userInfo, ...action.payload };
+    },
+    toggleIsLogin(state) {
+      state.isLoginOpen = !state.isLoginOpen;
+    },
+    toggleIsLogout(state) {
+      state.isLogoutOpen = !state.isLogoutOpen;
     },
   },
 });
 
 export const setUserOAuthReducer = setUserOAuthSlice.reducer;
-export const { toggleIsLogin, setUserOAuth } = setUserOAuthSlice.actions;
+export const setUserOAuthActions = setUserOAuthSlice.actions;
