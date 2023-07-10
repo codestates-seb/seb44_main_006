@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             <Route path="/community" element={<CommunityPage />} />
             <Route path="/community/select" element={<SelectSchedulePage />} />
             <Route path="/community/post" element={<PostCommunitypage />} />
-            <Route path="/community/:communityId" element={<DetailPage />} />
+            <Route path="/community/:postId" element={<DetailPage />} />
             <Route path="/error/:status" element={<ErrorPage />} />
           </Routes>
           <App />

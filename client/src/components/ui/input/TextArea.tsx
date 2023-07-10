@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { ForwardedRef, forwardRef, useState } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 
 import cssToken from '../../../styles/cssToken';
 import Text from '../text/Text';
@@ -25,26 +25,35 @@ const TextArea = forwardRef(
   (
     {
       description,
+      minLength,
       maxLength,
       styles,
       disabled,
+      isValidate,
     }: {
       description: string;
+      minLength?: number;
       maxLength?: number;
       styles?: TextareaT;
       disabled?: boolean;
+      isValidate?: boolean;
     },
     ref?: ForwardedRef<HTMLTextAreaElement>
   ) => {
-    // Todo 작성하기 버튼 클릭 시 글자 수 확인 후 조건 만족 못하면 TexT 에러 박스 show 나중에 페이지에서 forward Ref 써야할듯
-    const [isValidate] = useState<boolean>(true);
+    const errorMessage =
+      minLength &&
+      maxLength &&
+      `${minLength}자에서 ${maxLength}자 사이로 입력해주세요.`;
     return (
       <>
         <Content
           ref={ref}
           {...styles}
           placeholder={description}
+          minLength={minLength || 1}
           maxLength={maxLength || 5124288}
+          required
+          title={errorMessage || ''}
           wrap="vertical"
           disabled={disabled}
         />

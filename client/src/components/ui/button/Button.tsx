@@ -25,6 +25,10 @@ const ButtonTemplate = styled.button<IButtonStyle>`
   gap: ${(props) => props.gap};
 
   font-size: ${(props) => props.fontsize || cssToken.TEXT_SIZE['text-16']};
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const Button = ({
@@ -36,7 +40,7 @@ const Button = ({
 }: {
   children?: Props['children'];
   styles?: IButtonStyle;
-  onClick?: (arg0?: string | undefined) => void;
+  onClick?: (arg0?: string | undefined | Event) => void;
   onSubmit?: () => void;
   disabled?: 'true' | 'false';
 }) => {

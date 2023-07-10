@@ -2,10 +2,13 @@ import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 
+import DeleteButton from './DeleteButton';
+
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
+import { CommunityListT, CommunitySummaryT } from '../../types/apitype';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -22,22 +25,39 @@ const FilterContainer = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-50']};
 `;
 
-const FilterSection = ({ children }: { children: Props['children'] }) => {
+const FilterSection = ({
+  children,
+  communityData,
+}: {
+  children: Props['children'];
+  communityData: { data: CommunityListT };
+}) => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
   const moveToDetail = (id: number | undefined) => {
     if (id) navigate(`/community/${id}`);
   };
+
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
-      {/* Todo 리액트쿼리 데이터로 변경하기 */}
       <CardWrapper>
-        <ContensCard onClick={moveToDetail} id={1} />
-        <ContensCard />
-        <ContensCard />
-        <ContensCard />
-        <ContensCard />
+        {communityData &&
+          communityData.data.data.map((post: CommunitySummaryT) => (
+            <ContensCard
+              title={post.courseTitle}
+              text={post.postContent}
+              likeCount={post.courseLikeCount}
+              tag={post.tags}
+              userName={post.memberNickname}
+              thumbnail={post.courseThumbnail}
+              onClick={moveToDetail}
+              id={post.postId}
+            >
+              {/* Todo 작성자만 보이도록해야함 */}
+              <DeleteButton postId={String(post.postId)} />
+            </ContensCard>
+          ))}
       </CardWrapper>
       <div ref={ref} />
     </FilterWrapper>

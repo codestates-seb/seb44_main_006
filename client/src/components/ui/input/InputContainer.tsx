@@ -24,12 +24,14 @@ const InputContainer = forwardRef(
   (
     {
       description,
+      minLength,
       maxLength,
       styles,
       type,
       onkeypress,
     }: {
       description: string;
+      minLength?: number;
       maxLength?: number;
       styles?: TextareaT;
       type?: 'title';
@@ -39,13 +41,20 @@ const InputContainer = forwardRef(
     ref?: ForwardedRef<HTMLInputElement>
   ) => {
     const [isValidate] = useState(true);
+    const errorMessage =
+      minLength &&
+      maxLength &&
+      `${minLength}자에서 ${maxLength}자 사이로 입력해주세요.`;
     return (
       <>
         <Input
           ref={ref}
           onKeyUp={onkeypress}
           placeholder={description}
+          minLength={minLength || 1}
           maxLength={maxLength || 524288}
+          required
+          title={errorMessage || ''}
           {...styles}
         />
         {type === 'title' && !isValidate && (

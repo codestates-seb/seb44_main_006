@@ -67,7 +67,7 @@ public class PostService {
 
         post.setPostContent(postPostDto.getPostContent()); //저장할 post에 게시글내용과 코스 저장
 
-        post.setCourse(findcourse); //Post에 코스 저장(연관관계 매핑)
+        post.addCourse(findcourse); //Post에 코스 저장(연관관계 매핑)
 
         List<String> inputTags = postPostDto.getTags(); //입력받은 태그 리스트를 postPostDto에서 꺼내옴
 

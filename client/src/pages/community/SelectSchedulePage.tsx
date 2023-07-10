@@ -9,16 +9,14 @@ import Head from '../../components/community/Head';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import useMovePage from '../../hooks/useMovePage';
 import { GetMyList } from '../../apis/api';
-import { MemberListT } from '../../types/apitype';
+import { MemberBookmaredT, MemberCourseT } from '../../types/apitype';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
-  /* height: 100vh; */
   padding-top: ${cssToken.SPACING['px-50']};
   padding-left: ${cssToken.SPACING['py-100']};
   padding-right: ${cssToken.SPACING['py-100']};
   flex-direction: column;
-  /* justify-content: space-between; */
   row-gap: ${cssToken.SPACING['gap-50']};
 `;
 
@@ -32,13 +30,22 @@ const SelectSchedulePage = () => {
   const gotoBack = useMovePage('/community');
   const gotoNext = useMovePage('/community/post', selectId);
 
-  // FixMe: select type
+  // Todo 텅 비었을 때 보여줄 컴포넌트 만들기
   const { data: courses } = useQuery({
     queryKey: ['selectList'],
     queryFn: GetMyList,
     refetchOnWindowFocus: false,
-    select: (data) => data.data.memberCourseList,
+    select: (data: {
+      data: {
+        memberCourseList: MemberCourseT[];
+        memberBookarkedList: MemberBookmaredT[];
+      };
+    }): MemberCourseT[] => data.data.memberCourseList,
   });
+
+  const registerCourses = courses
+    ? courses.filter((course: MemberCourseT) => course.isPosted === false)
+    : [];
 
   const handleClickCard = (id: number | undefined) => {
     if (id === selectId) setSelectId(null);
@@ -54,9 +61,10 @@ const SelectSchedulePage = () => {
       <Head />
       <OverFlowDiv>
         <CardWrapper>
-          {courses &&
-            courses.map((course: MemberListT) => (
+          {registerCourses.length > 0 &&
+            registerCourses.map((course) => (
               <ContensCard
+                key={course.courseId}
                 title={course.courseTitle}
                 text={course.courseContent}
                 likeCount={course.courseLikeCount}
@@ -67,6 +75,7 @@ const SelectSchedulePage = () => {
                 onClick={handleClickCard}
               />
             ))}
+          {registerCourses.length < 1 && <p>텅</p>}
         </CardWrapper>
       </OverFlowDiv>
       <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />
