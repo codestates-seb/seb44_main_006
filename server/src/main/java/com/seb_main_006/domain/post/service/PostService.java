@@ -163,11 +163,19 @@ public class PostService {
             }
         }
 
+        PageRequest pageRequest = PageRequest.of(page, limit);
         Page<Course> pageResult = null;
 
         if (tagName == null) {
-            PageRequest pageRequest = PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending());
-            pageResult = courseRepository.findAllByPosted(true, pageRequest);
+
+            // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
+            if (sort == null) {
+                log.info("sort == null");
+                pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(true, pageRequest);
+            } else {
+                log.info("sort != null (like)");
+                pageResult = courseRepository.findAllByPostedOrderByLikeCount(true, pageRequest);
+            }
         } else {
             // 입력받은 태그 String 을 공백 기준으로 분리
             String[] inputTags = tagName.split(" ");
@@ -182,10 +190,10 @@ public class PostService {
             // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
             if (sort == null) {
                 log.info("sort == null");
-                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
+                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(new ArrayList<>(findTagSet), pageRequest);
             } else {
                 log.info("sort != null (like)");
-                pageResult = postTagRepository.findByTagInOrderByLikeCount(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
+                pageResult = postTagRepository.findByTagInOrderByLikeCount(new ArrayList<>(findTagSet), pageRequest);
             }
         }
 

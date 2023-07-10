@@ -28,6 +28,7 @@ public class PostDataForList {
     private boolean likeStatus; // 로그인한 유저가 해당 게시글에 대해 좋아요를 했는지 안했는지
     private boolean bookmarkStatus; // 로그인한 유저가 해당 게시글에 대해 즐겨찾기를 했는지 안했는지
     private LocalDateTime courseUpdatedAt;
+    private LocalDateTime postCreatedAt;
     private List<String> tags;
 
     public static PostDataForList of(Course course, boolean likeStatus, boolean bookmarkStatus) {
@@ -43,6 +44,7 @@ public class PostDataForList {
                 .likeStatus(likeStatus)
                 .bookmarkStatus(bookmarkStatus)
                 .courseUpdatedAt(course.getCourseUpdatedAt())
+                .postCreatedAt(course.getPost().getPostCreatedAt())
                 .tags(course.getPost().getPostTagsInPost().stream().map(postTag -> postTag.getTag().getTagName()).collect(Collectors.toList()))
                 .build();
     }

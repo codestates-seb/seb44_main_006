@@ -14,6 +14,8 @@ import com.seb_main_006.domain.member.repository.MemberRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
+import com.seb_main_006.global.mail.dto.MailDto;
+import com.seb_main_006.global.mail.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ public class MemberService {
     private final CourseRepository courseRepository;
     private final BookmarkRepository bookmarkRepository;
     private final LikesRepository likesRepository;
+    private final MailService mailService;
 
     /**
      * 마이페이지 조회
@@ -62,7 +65,7 @@ public class MemberService {
         }
         //업데이트시간 기준 정렬(최근 업데이트가 빠른 기준 내림차순 정렬)
         Collections.sort(newMemberCourseList, Comparator.comparing(MemberCourse::getCourseUpdatedAt).reversed());
-        Collections.sort(newMemberBookmarkedList, Comparator.comparing(MemberBookmarked::getCourseUpdatedAt).reversed());
+        Collections.sort(newMemberBookmarkedList, Comparator.comparing(MemberBookmarked::getPostCreatedAt).reversed());
 
         //MypageResponseDto에 값넣고 리턴
         MyPageResponseDto myPageResponseDto = new MyPageResponseDto();
@@ -81,6 +84,10 @@ public class MemberService {
         if (findDeletedMember(member.getMemberEmail()).isPresent()) {
             Member findDeletedMember = findDeletedMember(member.getMemberEmail()).get();
             findDeletedMember.activateMember(member); // 탈퇴한 회원 상태 활성화
+
+            // 템플릿으로 메일 보내기
+            mailService.send(member);
+//            mailSend(member); // 템플릿 없이 메일 보내기
             return memberRepository.save(findDeletedMember);
         }
 
@@ -88,6 +95,10 @@ public class MemberService {
         if (!verifyExistEmail(member.getMemberEmail())) {
 
             member.setRoles(customAuthorityUtils.createRoles(member.getMemberEmail())); // member Role 저장
+
+            // 템플릿으로 메일 보내기
+            mailService.send(member);
+//            mailSend(member); // 템플릿 없이 메일 보내기
             return memberRepository.save(member);
         }
 
@@ -150,4 +161,13 @@ public class MemberService {
     private Optional<Member> findDeletedMember(String memberEmail) {
         return memberRepository.findDeletedUserByMemberEmail(memberEmail);
     }
+
+//    //메일 발송 메소드
+//    private void mailSend(Member member) {
+//        MailDto newMailDto = new MailDto();
+//        newMailDto.setAddress(member.getMemberEmail());
+//        newMailDto.setTitle("하루메이트 가입을 축하합니다.");
+//        newMailDto.setMessage("하루메이트 가입을 축하합니다.");
+//        mailService.mailSend(newMailDto);
+//    }
 }

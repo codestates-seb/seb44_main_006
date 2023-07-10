@@ -23,6 +23,7 @@ public class PostDetailResponseDto {
     private boolean likeStatus;  //유저가 이 글에 좋아요했는지 안했는지
     private boolean bookmarkStatus; //유저가 이 글에 즐겨찾기했는지 안했는지
     private LocalDateTime courseUpdatedAt;
+    private LocalDateTime postCreatedAt;
     private CourseInfoDto courseInfo;
     private List<AnswerResponseDto> answerList;
 }
