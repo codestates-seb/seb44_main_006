@@ -38,7 +38,7 @@ export const GetUserInfo = async () => instance.get(`/api/auth/members`);
 export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
 
 export const PatchMemNickname = async ({ nickname }: { nickname: string }) => {
-  instance.patch(`/api/members`, { memberNickname: nickname });
+  await instance.patch(`/api/members`, { memberNickname: nickname });
 };
 
 export const GetMyList = async () => instance.get(`/api/members`);
