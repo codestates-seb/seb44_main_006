@@ -50,6 +50,10 @@ export interface IButtonStyle {
   isreset?: boolean;
 }
 
+export type LikeBookMarkButtonT = IButtonStyle & {
+  courseId?: number;
+};
+
 export type PlacesSearchResult = PlacesSearchResultItem[];
 
 export interface PlacesSearchResultItem {
