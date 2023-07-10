@@ -1,10 +1,14 @@
 import { styled } from 'styled-components';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
 
 import Text from '../ui/text/Text';
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { FlexDiv } from '../../styles/styles';
 import { CommentT } from '../../types/type';
+import { DeleteComment, PatchComment } from '../../apis/api';
+import TextArea from '../ui/input/TextArea';
 
 const CommentWrapper = styled.div`
   display: flex;
@@ -17,6 +21,12 @@ const CommentWrapper = styled.div`
 
 const Button = styled.button`
   cursor: pointer;
+  color: #7b7b7b;
+`;
+
+const FlexButtonDiv = styled(FlexDiv)`
+  column-gap: 0.0625rem;
+  margin-right: ${cssToken.SPACING['gap-10']};
 `;
 
 const FlexBetween = styled(FlexDiv)`
@@ -30,14 +40,44 @@ const FlexAround = styled(FlexDiv)`
   justify-content: space-around;
 `;
 
-// Todo 수정 삭제버튼
+// Todo 수정
 const Comment = ({
   answererImageUrl: src,
   answererNickname: nickName,
   answerUpdatedAt: date,
   answerContent: content,
   answererEmail: email,
+  answerId,
 }: CommentT) => {
+  const commentRef = useRef<HTMLTextAreaElement>(null);
+  const [isEditing, setEditing] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const delmutation = useMutation(DeleteComment, {
+    onSuccess: () => queryClient.invalidateQueries(['communityDetail']),
+  });
+  const Patchmutation = useMutation(PatchComment, {
+    onSuccess: () => queryClient.invalidateQueries(['communityDetail']),
+  });
+  const handleDeleteComment = () => {
+    if (answerId) delmutation.mutate({ answerId });
+  };
+  const handlePatchComment = () => {
+    if (
+      commentRef.current!.value !== content &&
+      commentRef.current!.value.trim().length > 0
+    ) {
+      if (answerId)
+        Patchmutation.mutate({
+          answerId,
+          answerContent: commentRef.current!.value,
+        });
+    }
+    setEditing(false);
+  };
+  useEffect(() => {
+    if (isEditing && commentRef.current) commentRef.current.value = content;
+  }, [isEditing, content]);
+
   return (
     <CommentWrapper>
       <div>
@@ -54,11 +94,35 @@ const Comment = ({
             {nickName}
           </Text>
           <FlexDiv>
-            <Button>수정</Button>
-            <Button>삭제</Button>
+            {/* Todo 작성자에게만 보이도록 */}
+            <FlexButtonDiv>
+              {!isEditing && (
+                <Button
+                  onClick={() => {
+                    setEditing(true);
+                  }}
+                >
+                  수정
+                </Button>
+              )}
+              {isEditing && (
+                <Button onClick={handlePatchComment}>수정완료</Button>
+              )}
+              {isEditing ? (
+                <Button
+                  onClick={() => {
+                    setEditing(false);
+                  }}
+                >
+                  취소
+                </Button>
+              ) : (
+                <Button onClick={handleDeleteComment}>삭제</Button>
+              )}
+            </FlexButtonDiv>
             <Text
               styles={{
-                color: ' #7B7B7B',
+                color: '#7B7B7B',
                 weight: cssToken.FONT_WEIGHT.medium,
               }}
             >
@@ -66,14 +130,28 @@ const Comment = ({
             </Text>
           </FlexDiv>
         </FlexBetween>
-        <Text
-          styles={{
-            size: cssToken.TEXT_SIZE['text-18'],
-            weight: cssToken.FONT_WEIGHT.medium,
-          }}
-        >
-          {content}
-        </Text>
+        {!isEditing && (
+          <Text
+            styles={{
+              size: cssToken.TEXT_SIZE['text-18'],
+              weight: cssToken.FONT_WEIGHT.medium,
+            }}
+          >
+            {content}
+          </Text>
+        )}
+        {isEditing && (
+          <TextArea
+            ref={commentRef}
+            styles={{
+              width: cssToken.WIDTH['w-full'],
+              height: cssToken.HEIGHT['h-fit'],
+              type: 'comment',
+            }}
+            isValidate
+            description=""
+          />
+        )}
       </FlexAround>
     </CommentWrapper>
   );

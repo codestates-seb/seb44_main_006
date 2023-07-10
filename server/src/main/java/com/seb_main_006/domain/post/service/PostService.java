@@ -1,6 +1,5 @@
 package com.seb_main_006.domain.post.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.seb_main_006.domain.answer.dto.AnswerResponseDto;
 import com.seb_main_006.domain.course.dto.CourseInfoDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
@@ -29,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,7 +87,7 @@ public class PostService {
             else {
                 newPostTag.setTag(tagRepository.save(new Tag(tagName)));
             }
-//            findcourse.setPost(post);
+
             newPostTag.setPost(post); // new PostTag에 Post세팅(연관관계 매핑)
             post.getPostTagsInPost().add(newPostTag);// post의 PostTagsInpost리스트에 newPostTag 추가(연관관계 매핑)
         }
@@ -107,22 +105,24 @@ public class PostService {
      * 게시글 상세 조회
      */
     @Transactional
-    public PostDetailResponseDto findPost(Long postId, String accessToken) throws JsonProcessingException {
+    public PostDetailResponseDto findPost(Long postId, String accessToken) {
 
         Member member = new Member(0L);
 
-        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
+        // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             try {
                 String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
-            } catch (Exception e) {
-
-            }
+            } catch (Exception e) {}
         }
 
         Post findPost = findVerifiedPost(postId);
-        Course course = updateCourseViewCount(findPost.getCourse());
+        Course course = findPost.getCourse();
+
+        log.info("course.courseId = {}", course.getCourseId());
+        log.info("findPost.getCourse().getCourseId() = {}", findPost.getCourse().getCourseId());
+
         List<String> tags = findPost.getPostTagsInPost().stream()
                 .map(postTag -> postTag.getTag().getTagName())
                 .collect(Collectors.toList());
@@ -153,21 +153,27 @@ public class PostService {
 
         Member member = new Member(0L);
 
-        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
+        // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             try {
                 String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
-            } catch (Exception e) {
-
-            }
+            } catch (Exception e) {}
         }
 
+        PageRequest pageRequest = PageRequest.of(page, limit);
         Page<Course> pageResult = null;
 
         if (tagName == null) {
-            PageRequest pageRequest = PageRequest.of(page, limit, Sort.by(sort == null ? "courseUpdatedAt" : "courseLikeCount").descending());
-            pageResult = courseRepository.findAllByPosted(true, pageRequest);
+
+            // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
+            if (sort == null) {
+                log.info("sort == null");
+                pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(true, pageRequest);
+            } else {
+                log.info("sort != null (like)");
+                pageResult = courseRepository.findAllByPostedOrderByLikeCount(true, pageRequest);
+            }
         } else {
             // 입력받은 태그 String 을 공백 기준으로 분리
             String[] inputTags = tagName.split(" ");
@@ -182,10 +188,10 @@ public class PostService {
             // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
             if (sort == null) {
                 log.info("sort == null");
-                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
+                pageResult = postTagRepository.findByTagInOrderByUpdatedAt(new ArrayList<>(findTagSet), pageRequest);
             } else {
                 log.info("sort != null (like)");
-                pageResult = postTagRepository.findByTagInOrderByLikeCount(new ArrayList<>(findTagSet), PageRequest.of(page, limit));
+                pageResult = postTagRepository.findByTagInOrderByLikeCount(new ArrayList<>(findTagSet), pageRequest);
             }
         }
 
@@ -289,11 +295,9 @@ public class PostService {
 
     // 조회수 + 1 업데이트
     @Transactional
-    public Course updateCourseViewCount(Course findCourse) {
-
-        long courseCount = findCourse.getCourseViewCount();
-        findCourse.setCourseViewCount(courseCount + 1);
-        return courseRepository.save(findCourse);
+    public void viewCountUp(Long postId) {
+        Post post = findVerifiedPost(postId);
+        post.getCourse().setCourseViewCount(post.getCourse().getCourseViewCount() + 1);
     }
 
 }

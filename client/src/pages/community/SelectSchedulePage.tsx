@@ -10,6 +10,9 @@ import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import useMovePage from '../../hooks/useMovePage';
 import { GetMyList } from '../../apis/api';
 import { MemberBookmaredT, MemberCourseT } from '../../types/apitype';
+import Title from '../../components/ui/text/Title';
+import Text from '../../components/ui/text/Text';
+import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -25,12 +28,20 @@ const OverFlowDiv = styled.div`
   overflow-y: scroll;
 `;
 
+const EmptyDiv = styled(FlexDiv)`
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: ${cssToken.SPACING['gap-40']};
+`;
+
 const SelectSchedulePage = () => {
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
   const gotoBack = useMovePage('/community');
   const gotoNext = useMovePage('/community/post', selectId);
-
-  // Todo 텅 비었을 때 보여줄 컴포넌트 만들기
+  const gotoRegister = useMovePage('/register');
   const { data: courses } = useQuery({
     queryKey: ['selectList'],
     queryFn: GetMyList,
@@ -64,6 +75,7 @@ const SelectSchedulePage = () => {
           {registerCourses.length > 0 &&
             registerCourses.map((course) => (
               <ContensCard
+                type="course"
                 key={course.courseId}
                 title={course.courseTitle}
                 text={course.courseContent}
@@ -75,8 +87,29 @@ const SelectSchedulePage = () => {
                 onClick={handleClickCard}
               />
             ))}
-          {registerCourses.length < 1 && <p>텅</p>}
         </CardWrapper>
+        {registerCourses.length < 1 && (
+          <EmptyDiv>
+            <Title styles={{ size: cssToken.TEXT_SIZE['text-80'] }}>텅</Title>
+            <Text
+              styles={{
+                size: cssToken.TEXT_SIZE['text-40'],
+                color: cssToken.COLOR['gray-900'],
+                weight: cssToken.FONT_WEIGHT.medium,
+              }}
+            >
+              커뮤니티에 등록할 수 있는 일정이 없습니다.
+            </Text>
+            <SkyBlueButton
+              borderRadius={cssToken.BORDER['rounded-md']}
+              width="187px"
+              height="55px"
+              onClick={gotoRegister}
+            >
+              일정등록하기
+            </SkyBlueButton>
+          </EmptyDiv>
+        )}
       </OverFlowDiv>
       <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />
     </OutsideWrap>

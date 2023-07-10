@@ -12,6 +12,7 @@ export type TextareaT = {
   width?: string;
   height?: string;
   size?: string;
+  type?: string;
 };
 
 export interface Props {
@@ -44,7 +45,7 @@ export interface IButtonStyle {
   onSubmit?: () => void;
   tagname?: string;
   categoryname?: string;
-  disabled?: 'true' | 'false' | boolean;
+  disabled?: boolean;
   fontsize?: string;
   selectedid?: string | undefined;
   isreset?: boolean;
@@ -139,6 +140,8 @@ export interface ContCardInfo {
   children?: ReactNode;
   likeStatus?: boolean;
   bookmarkStatus?: boolean;
+  type: 'post' | 'course';
+  date?: string;
 }
 
 export interface LocationCardInfo {
@@ -154,6 +157,7 @@ export interface MapLocationCardInfo {
   indexNum?: number;
   location?: string;
   id?: string;
+  placeId?: string;
   onClick?: ({ id }: { id: string | undefined }) => void;
 }
 

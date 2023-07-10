@@ -10,6 +10,7 @@ import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
 import getLoginStatus from '../../../utils/getLoginStatus';
+import removeTag from '../../../utils/removeTag';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
@@ -98,13 +99,18 @@ const ContensCard = ({
   children,
   likeStatus,
   bookmarkStatus,
+  type,
+  date,
 }: ContCardInfo) => {
   const isLogin = getLoginStatus();
   const selected = selectId !== undefined && selectId === courseId;
   return (
     <ContensCardContainer
       onClick={() => {
-        if (onClick && courseId) onClick(courseId);
+        if (onClick) {
+          if (type === 'course' && courseId) onClick(courseId);
+          else if (type === 'post' && postId) onClick(postId);
+        }
       }}
       selected={selected}
     >
@@ -124,9 +130,7 @@ const ContensCard = ({
           />
         )}
       </ContensHeader>
-
-      <ContensText>{text}</ContensText>
-
+      {text && <ContensText>{removeTag(text)}</ContensText>}
       <Tags>
         {tag?.map((tagItem: string) => (
           <TagButton
@@ -156,7 +160,7 @@ const ContensCard = ({
           )}
           <DataText>{likeCount}개</DataText>
         </LikeBtnBox>
-        <DataText>23.06.30</DataText>
+        <DataText>{date}</DataText>
       </ContensBottom>
     </ContensCardContainer>
   );
