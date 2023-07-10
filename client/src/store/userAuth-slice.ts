@@ -15,8 +15,8 @@ type UserQAuthInfo = {
 interface LoginState {
   isLogin?: string | boolean;
   userInfo?: UserQAuthInfo;
-  isLoginOpen?: boolean;
-  isLogoutOpen?: boolean;
+  isLoginOpen?: boolean | undefined;
+  isLogoutOpen?: boolean | undefined;
 }
 
 const logined = localStorage.getItem('isLogin');
