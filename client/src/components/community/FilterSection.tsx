@@ -47,6 +47,7 @@ const FilterSection = ({
         {communityData &&
           communityData.data.data.map((post: CommunitySummaryT) => (
             <ContensCard
+              type="post"
               title={post.courseTitle}
               text={post.postContent}
               likeCount={post.courseLikeCount}
