@@ -9,6 +9,7 @@ import { FlexDiv } from '../../styles/styles';
 import { CommentT } from '../../types/type';
 import { DeleteComment, PatchComment } from '../../apis/api';
 import TextArea from '../ui/input/TextArea';
+import useUserInfo from '../../hooks/useUserInfo';
 
 const CommentWrapper = styled.div`
   display: flex;
@@ -48,6 +49,7 @@ const Comment = ({
   answererEmail: email,
   answerId,
 }: CommentT) => {
+  const { userData } = useUserInfo();
   const commentRef = useRef<HTMLTextAreaElement>(null);
   const [isEditing, setEditing] = useState<boolean>(false);
   const queryClient = useQueryClient();
@@ -93,32 +95,34 @@ const Comment = ({
             {nickName}
           </Text>
           <FlexDiv>
-            {/* Todo 작성자에게만 보이도록 */}
-            <FlexButtonDiv>
-              {!isEditing && (
-                <Button
-                  onClick={() => {
-                    setEditing(true);
-                  }}
-                >
-                  수정
-                </Button>
-              )}
-              {isEditing && (
-                <Button onClick={handlePatchComment}>수정완료</Button>
-              )}
-              {isEditing ? (
-                <Button
-                  onClick={() => {
-                    setEditing(false);
-                  }}
-                >
-                  취소
-                </Button>
-              ) : (
-                <Button onClick={handleDeleteComment}>삭제</Button>
-              )}
-            </FlexButtonDiv>
+            {userData && userData.memberEmail === email && (
+              <FlexButtonDiv>
+                {!isEditing && (
+                  <Button
+                    onClick={() => {
+                      setEditing(true);
+                    }}
+                  >
+                    수정
+                  </Button>
+                )}
+                {isEditing && (
+                  <Button onClick={handlePatchComment}>수정완료</Button>
+                )}
+                {isEditing ? (
+                  <Button
+                    onClick={() => {
+                      setEditing(false);
+                    }}
+                  >
+                    취소
+                  </Button>
+                ) : (
+                  <Button onClick={handleDeleteComment}>삭제</Button>
+                )}
+              </FlexButtonDiv>
+            )}
+
             <Text
               styles={{
                 color: '#7B7B7B',

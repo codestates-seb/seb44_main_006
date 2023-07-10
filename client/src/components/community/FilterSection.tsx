@@ -15,6 +15,7 @@ import {
   InfiniteScrollT,
 } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
+import useUserInfo from '../../hooks/useUserInfo';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -44,6 +45,8 @@ const FilterSection = ({
 }) => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
+  // Todo 작성자 삭제, 좋아요 버튼 안보이게 하기
+  const { userData } = useUserInfo();
   const moveToDetail = (postId: number | undefined) => {
     if (postId) navigate(`/community/${postId}`);
   };
@@ -58,6 +61,9 @@ const FilterSection = ({
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
       <CardWrapper>
+        {communityData[0].communityListData.length === 0 && (
+          <p>검색결과가 없습니다.</p>
+        )}
         {communityData &&
           communityData.map((datas: InfiniteScrollT) =>
             datas.communityListData.map((post: CommunitySummaryT) => (
