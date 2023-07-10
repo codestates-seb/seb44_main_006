@@ -45,7 +45,7 @@ export type CommunityDetailT = {
 
   courseInfo: {
     courseId: number; // 고유값(일정 식별자)
-    destiationList: IScheduleListItem[];
+    destinationList: IScheduleListItem[];
   };
   answerList: CommentT[];
 };

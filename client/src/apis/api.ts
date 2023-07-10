@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { PostReqT } from '../types/apitype';
+import { CommunityListT, PostReqT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 const accessToken = localStorage.getItem('accessToken');
