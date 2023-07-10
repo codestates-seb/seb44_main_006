@@ -10,7 +10,6 @@ import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { overlayActions } from '../../store/overlay-slice';
 import { setUserOAuthActions } from '../../store/userAuth-slice';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
@@ -83,16 +82,16 @@ const Header = () => {
   const LoginmodalIsOpen = useSelector(
     (state: RootState): boolean => state.userAuth.isLoginOpen
   );
-  const modalIsOpen = useSelector(
-    (state: RootState): boolean => state.overlay.isOpen
+  const LogoutmodalIsOpen = useSelector(
+    (state: RootState): boolean => state.userAuth.isLogoutOpen
   );
 
   const LogintoggleModal = () => {
     dispatch(setUserOAuthActions.toggleIsLogin());
   };
 
-  const toggleModal = () => {
-    dispatch(overlayActions.toggleOverlay());
+  const LogoutoggleModal = () => {
+    dispatch(setUserOAuthActions.toggleIsLogout());
   };
 
   const mutation = useMutation(RemoveUserInfo, {
@@ -135,11 +134,11 @@ const Header = () => {
     },
   });
 
-  useEffect(() => {
-    console.log('1 oauthInfo 데이터 응답:', oauthInfo);
-    console.log('2 isLoggedIn 로그인 유무:', isLoggedIn);
-    console.log('3 userQAuthData 유저 정보:', userQAuthData);
-  }, []);
+  // useEffect(() => {
+  //   console.log('1 oauthInfo 데이터 응답:', oauthInfo);
+  //   console.log('2 isLoggedIn 로그인 유무:', isLoggedIn);
+  //   console.log('3 userQAuthData 유저 정보:', userQAuthData);
+  // }, []);
 
   useEffect(() => {
     setIsPath(location.pathname);
@@ -158,10 +157,10 @@ const Header = () => {
           }}
         />
       )}
-      {modalIsOpen && (
+      {LogoutmodalIsOpen && (
         <Modal
-          backdropCallback={toggleModal}
-          handleCloseBtn={toggleModal}
+          backdropCallback={LogoutoggleModal}
+          handleCloseBtn={LogoutoggleModal}
           displayclosebtn
           styles={{
             width: '47.0625rem',
@@ -179,7 +178,7 @@ const Header = () => {
               height="4.625rem"
               fontsize={cssToken.TEXT_SIZE['text-24']}
               borderRadius={cssToken.BORDER['rounded-md']}
-              onClick={toggleModal}
+              onClick={LogoutoggleModal}
             >
               아니오
             </GrayButton>
@@ -207,7 +206,7 @@ const Header = () => {
           // 메인 페이지인 경우
           <>
             <WhiteButton
-              onClick={toggleModal}
+              onClick={LogoutoggleModal}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -225,7 +224,7 @@ const Header = () => {
           // 메인 페이지가 아닌 나머지
           <>
             <WhiteButton
-              onClick={toggleModal}
+              onClick={LogoutmodalIsOpen}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >

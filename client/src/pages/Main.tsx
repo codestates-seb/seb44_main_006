@@ -45,9 +45,8 @@ const MainLink = styled(Link)`
   }
 
   @media (min-width: 1280px) {
-    font-size: 60px;
+    font-size: 70px;
   }
-
 `;
 
 const CommunitySection = styled(SectionBox)`
