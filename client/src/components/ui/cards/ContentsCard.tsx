@@ -10,6 +10,7 @@ import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
 import getLoginStatus from '../../../utils/getLoginStatus';
+import removeTag from '../../../utils/removeTag';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
@@ -124,9 +125,7 @@ const ContensCard = ({
           />
         )}
       </ContensHeader>
-
-      <ContensText>{text}</ContensText>
-
+      {text && <ContensText>{removeTag(text)}</ContensText>}
       <Tags>
         {tag?.map((tagItem: string) => (
           <TagButton
