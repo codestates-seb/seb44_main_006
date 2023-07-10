@@ -16,6 +16,7 @@ import {
 } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
 import useUserInfo from '../../hooks/useUserInfo';
+import Noresult from '../ui/Noresult';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -60,10 +61,14 @@ const FilterSection = ({
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
+      {communityData[0].communityListData.length === 0 && (
+        <Noresult
+          iconHeight={100}
+          iconWidth={100}
+          size={cssToken.TEXT_SIZE['text-40']}
+        />
+      )}
       <CardWrapper>
-        {communityData[0].communityListData.length === 0 && (
-          <p>검색결과가 없습니다.</p>
-        )}
         {communityData &&
           communityData.map((datas: InfiniteScrollT) =>
             datas.communityListData.map((post: CommunitySummaryT) => (
