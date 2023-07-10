@@ -140,6 +140,7 @@ export interface ContCardInfo {
   children?: ReactNode;
   likeStatus?: boolean;
   bookmarkStatus?: boolean;
+  type: 'post' | 'course';
 }
 
 export interface LocationCardInfo {

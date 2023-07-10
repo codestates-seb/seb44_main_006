@@ -94,6 +94,7 @@ const Comment = ({
             {nickName}
           </Text>
           <FlexDiv>
+            {/* Todo 작성자에게만 보이도록 */}
             <FlexButtonDiv>
               {!isEditing && (
                 <Button
