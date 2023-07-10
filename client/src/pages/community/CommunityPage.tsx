@@ -14,6 +14,7 @@ import useMovePage from '../../hooks/useMovePage';
 import { GetCommunityList } from '../../apis/api';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
+import { LIMIT } from '../../utils/constant/constant';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -43,7 +44,7 @@ const CommunityPage = () => {
 
   const { data, fetchNextPage, isSuccess, hasNextPage } =
     useInfiniteScrollQuery({
-      limit: 3,
+      limit: LIMIT,
       tagName: tagName || '',
       sort: selectTab,
     });
