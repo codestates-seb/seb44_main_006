@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import ScheduleListBox from './ScheduleListBox';
 import DirectSearch from './DirectSearch';
@@ -9,6 +10,7 @@ import cssToken from '../../styles/cssToken';
 import SubTitle from '../ui/text/SubTitle';
 import Text from '../ui/text/Text';
 import GrayButton from '../ui/button/GrayButton';
+import { placeListActions } from '../../store/placeList-slice';
 
 const ScheduleContainer = styled.section`
   left: 0;
@@ -53,15 +55,18 @@ const ScheduleTitle = styled.div`
 const ScheduleBox = () => {
   const [choiceCategory, setChoiceCategory] = useState(false);
   const [choiceDirect, setChoiceDirect] = useState(false);
+  const dispatch = useDispatch();
 
   const handleCategory = () => {
     setChoiceCategory(true);
     setChoiceDirect(false);
+    dispatch(placeListActions.resetList());
   };
 
   const handleDirect = () => {
     setChoiceCategory(false);
     setChoiceDirect(true);
+    dispatch(placeListActions.resetList());
   };
 
   return (

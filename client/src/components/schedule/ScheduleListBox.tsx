@@ -17,7 +17,11 @@ const ScheduleListBox = () => {
   return (
     <Wrapper>
       {scheduleList.map((schedule: IScheduleListItem, idx: number) => (
-        <MapLocationCard indexNum={idx + 1} location={schedule.placeName} />
+        <MapLocationCard
+          indexNum={idx + 1}
+          location={schedule.placeName}
+          placeId={schedule.id}
+        />
       ))}
     </Wrapper>
   );

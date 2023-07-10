@@ -49,10 +49,6 @@ const useKeywordSearch = (
         y: Number(y),
         radius,
       });
-
-    return () => {
-      dispatch(placeListActions.resetList());
-    };
   }, [searchPlace, dispatch, x, y, radius, placesSearchCB]);
 };
 
