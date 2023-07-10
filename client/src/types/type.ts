@@ -132,6 +132,8 @@ export interface ContCardInfo {
   selectId?: number | null;
   id?: number;
   children?: ReactNode;
+  likeStatus?: boolean;
+  bookmarkStatus?: boolean;
 }
 
 export interface LocationCardInfo {
