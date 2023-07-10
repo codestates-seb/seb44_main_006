@@ -39,8 +39,8 @@ public class AnswerService {
         // Answer 생성해서 값 넣고 저장
         Answer newAnswer = new Answer();
         newAnswer.setAnswerContent(answerPostDto.getAnswerContent());
-        newAnswer.setPost(findPost);
         newAnswer.setMember(findmember);
+        newAnswer.addPost(findPost);
 
         return answerRepository.save(newAnswer);
     }
