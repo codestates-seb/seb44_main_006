@@ -65,7 +65,7 @@ public class MemberService {
         }
         //업데이트시간 기준 정렬(최근 업데이트가 빠른 기준 내림차순 정렬)
         Collections.sort(newMemberCourseList, Comparator.comparing(MemberCourse::getCourseUpdatedAt).reversed());
-        Collections.sort(newMemberBookmarkedList, Comparator.comparing(MemberBookmarked::getCourseUpdatedAt).reversed());
+        Collections.sort(newMemberBookmarkedList, Comparator.comparing(MemberBookmarked::getPostCreatedAt).reversed());
 
         //MypageResponseDto에 값넣고 리턴
         MyPageResponseDto myPageResponseDto = new MyPageResponseDto();
