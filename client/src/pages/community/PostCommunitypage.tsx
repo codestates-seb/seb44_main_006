@@ -30,12 +30,6 @@ const QuillDiv = styled(GapDiv)`
   margin-bottom: ${cssToken.SPACING['gap-50']};
 `;
 
-interface MutationResponse {
-  headers: {
-    location: string;
-  };
-}
-
 const PostCommunitypage = () => {
   const scheduleid = useLocation().state as string;
   const quillRef = useRef<ReactQuill>(null);
@@ -56,10 +50,7 @@ const PostCommunitypage = () => {
       navigate(`/community/${data.headers.location as string}`);
     },
   });
-  /**
-   * 웹에디터 입력이 공백인지 확인하는 함수
-   * @returns 웹에디터 입력이 공백일 경우 true, 아닐 경우 false
-   */
+
   const isEditorEmpty = () => {
     const inputString = String(quillRef.current?.value);
     const sanitizedValue: string = removeTag(inputString).trim();

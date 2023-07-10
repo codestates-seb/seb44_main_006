@@ -10,7 +10,7 @@ const PageMoveBtnDiv = ({
 }: {
   grayCallback: () => void;
   skyblueCallback: () => void;
-  disabled?: 'true' | 'false';
+  disabled?: boolean;
 }) => {
   return (
     <BtnDiv>

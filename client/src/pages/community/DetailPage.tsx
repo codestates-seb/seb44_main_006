@@ -89,6 +89,7 @@ const DetailPage = () => {
         </UersDiv>
         {detailData && postId && (
           <ActionButtonContainer
+            memberEmail={detailData.memberEmail}
             bookmarkStatus={detailData.bookmarkStatus}
             likeStatus={detailData.likeStatus}
             LikeCount={detailData.courseLikeCount}
@@ -117,14 +118,15 @@ const DetailPage = () => {
 
       <form onSubmit={onSubmit}>
         <TextArea
+          maxLength={1000}
           ref={textAreaRef}
           description={
             isLogin
-              ? '댓글을 작성해주세요.'
+              ? '댓글을 작성해주세요. 최대(1000자)'
               : '로그인 후 댓글을 작성할 수 있습니다.'
           }
           disabled={!isLogin}
-          styles={{ width: '100%' }}
+          styles={{ width: '100%', height: '12rem' }}
           isValidate={isValidate}
         />
         <CommentBtn>

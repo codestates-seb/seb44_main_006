@@ -10,11 +10,13 @@ import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
 import {
-  CommunityListT,
   CommunitySummaryT,
+  FetchNextPageT,
   InfiniteScrollT,
 } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
+import useUserInfo from '../../hooks/useUserInfo';
+import Noresult from '../ui/Noresult';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -40,28 +42,38 @@ const FilterSection = ({
   children: Props['children'];
   communityData: InfiniteScrollT[];
   hasNextPage: undefined | boolean;
-  fetchNextPage: () => void;
+  fetchNextPage: FetchNextPageT;
 }) => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
+  // Todo 작성자 삭제, 좋아요 버튼 안보이게 하기
+  const { userData } = useUserInfo();
   const moveToDetail = (postId: number | undefined) => {
     if (postId) navigate(`/community/${postId}`);
   };
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      fetchNextPage();
+      fetchNextPage().catch((error) => console.log(error));
     }
   }, [fetchNextPage, hasNextPage, inView]);
 
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
+      {communityData[0].communityListData.length === 0 && (
+        <Noresult
+          iconHeight={100}
+          iconWidth={100}
+          size={cssToken.TEXT_SIZE['text-40']}
+        />
+      )}
       <CardWrapper>
         {communityData &&
           communityData.map((datas: InfiniteScrollT) =>
             datas.communityListData.map((post: CommunitySummaryT) => (
               <ContensCard
+                key={post.courseId}
                 type="post"
                 title={post.courseTitle}
                 text={post.postContent}
