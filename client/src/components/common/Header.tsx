@@ -24,22 +24,22 @@ import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
 import Text from '../ui/text/Text';
 
 type HeaderStyle = {
-  isPath?: string;
+  ispath?: string;
 };
 
 const HeaderContainer = styled.header<HeaderStyle>`
-  display: ${(props) => (props?.isPath === '/register' ? 'none' : 'flex')};
+  display: ${(props) => (props?.ispath === '/register' ? 'none' : 'flex')};
   align-items: center;
   justify-content: space-between;
   padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
   background: ${(props) =>
-    props?.isPath === '/' ? 'transparent' : cssToken.COLOR.white};
+    props?.ispath === '/' ? 'transparent' : cssToken.COLOR.white};
   position: fixed;
   top: 0;
   left: 0;
   width: ${cssToken.WIDTH['w-full']};
   box-shadow: ${(props) =>
-    props?.isPath === '/' ? 'none' : cssToken.SHADOW['shadow-lg']};
+    props?.ispath === '/' ? 'none' : cssToken.SHADOW['shadow-lg']};
   z-index: 999;
 `;
 
@@ -68,22 +68,19 @@ const BtnBox = styled.div`
 
 const Header = () => {
   const [searchParams] = useSearchParams();
-  const accessToken = searchParams.get('access_token');
-  const refreshToken = searchParams.get('refresh_token');
+  const accessToken: string | null = searchParams.get('access_token');
+  const refreshToken: string | null = searchParams.get('refresh_token');
   const navigate = useNavigate();
   const gotoMain = useMovePage('/');
   const dispatch = useDispatch();
-  const [isPath, setIsPath] = useState<string>('');
+  const [ispath, setIsPath] = useState<string>('');
   const location = useLocation();
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
-  const userQAuthData = useSelector(
-    (state: RootState) => state.userAuth.userInfo
-  );
   const LoginmodalIsOpen = useSelector(
-    (state: RootState): boolean => state.userAuth.isLoginOpen
+    (state: RootState) => state.userAuth.isLoginOpen
   );
   const LogoutmodalIsOpen = useSelector(
-    (state: RootState): boolean => state.userAuth.isLogoutOpen
+    (state: RootState) => state.userAuth.isLogoutOpen
   );
 
   const LogintoggleModal = () => {
@@ -94,18 +91,18 @@ const Header = () => {
     dispatch(setUserOAuthActions.toggleIsLogout());
   };
 
+  //! 연속으로 로그아웃 할 경우 에러 발생
   const mutation = useMutation(RemoveUserInfo, {
-    onSuccess(data) {
+    onSuccess() {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('isLogin');
       gotoMain();
-      return window.location.reload();
+      window.location.reload();
     },
     onError(error) {
-      console.log('Logout error:', error);
+      navigate(`/error/${error.status as string}`);
     },
-
   });
 
   const handleLogout = () => {
@@ -113,7 +110,6 @@ const Header = () => {
     dispatch(setUserOAuthActions.setIsLogin(false));
   };
 
-  // TODO: Redux toolkit 이용해 전역으로 유저 정보 관리하기
   //! 유저 정보 새로고침해야 값을 받을 수 있는 이슈
   const { data: oauthInfo } = useQuery({
     queryKey: ['oauthInfoData'],
@@ -123,7 +119,7 @@ const Header = () => {
       if (accessToken) {
         localStorage.setItem('accessToken', `Bearer ${accessToken}`);
         localStorage.setItem('refreshToken', `${refreshToken}`);
-        localStorage.setItem('isLogin', JSON.stringify(true));
+        localStorage.setItem('isLogin', 'true');
         if (localStorage.getItem('isLogin')) {
           dispatch(setUserOAuthActions.setIsLogin(true));
         }
@@ -132,24 +128,17 @@ const Header = () => {
     },
     onError: (error: AxiosError) => {
       if (accessToken) {
-        const errStatus = error.response.status;
-        navigate(`/error/${errStatus}`);
+        navigate(`/error/${error.status as string}`);
       }
     },
   });
-
-  // useEffect(() => {
-  //   console.log('1 oauthInfo 데이터 응답:', oauthInfo);
-  //   console.log('2 isLoggedIn 로그인 유무:', isLoggedIn);
-  //   console.log('3 userQAuthData 유저 정보:', userQAuthData);
-  // }, []);
 
   useEffect(() => {
     setIsPath(location.pathname);
   }, [location]);
 
   return (
-    <HeaderContainer isPath={isPath}>
+    <HeaderContainer ispath={ispath}>
       {LoginmodalIsOpen && (
         <LoginModal
           handleClose={LogintoggleModal}
@@ -180,7 +169,7 @@ const Header = () => {
             <GrayButton
               width="15.5625rem"
               height="4.625rem"
-              fontsize={cssToken.TEXT_SIZE['text-24']}
+              // fontsize={cssToken.TEXT_SIZE['text-24']}
               borderRadius={cssToken.BORDER['rounded-md']}
               onClick={LogoutoggleModal}
             >
@@ -189,7 +178,7 @@ const Header = () => {
             <SkyBlueButton
               width="15.5625rem"
               height="4.625rem"
-              fontsize={cssToken.TEXT_SIZE['text-24']}
+              // fontsize={cssToken.TEXT_SIZE['text-24']}
               borderRadius={cssToken.BORDER['rounded-md']}
               onClick={handleLogout}
             >
@@ -204,9 +193,8 @@ const Header = () => {
           <LogoImg src={LogoBlack} alt="logo-harumate" />
         </Link>
       </LogoBox>
-      {/* <div>{`반갑습니다. ${userQAuthData.memberNickname}`}</div> */}
       <BtnBox>
-        {isPath === '/' && isLoggedIn && (
+        {ispath === '/' && isLoggedIn && (
           // 메인 페이지인 경우
           <>
             <WhiteButton
@@ -224,11 +212,11 @@ const Header = () => {
             </SkyBlueButton>
           </>
         )}
-        {isPath !== '/' && isLoggedIn && (
+        {ispath !== '/' && isLoggedIn && (
           // 메인 페이지가 아닌 나머지
           <>
             <WhiteButton
-              onClick={LogoutmodalIsOpen}
+              onClick={LogoutoggleModal}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -238,11 +226,11 @@ const Header = () => {
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
-              {isPath === '/community' ? '마이페이지' : '커뮤니티'}
+              {ispath === '/community' ? '마이페이지' : '커뮤니티'}
             </SkyBlueButton>
           </>
         )}
-        {isPath !== '/' && !isLoggedIn && (
+        {ispath !== '/' && !isLoggedIn && (
           <WhiteButton
             onClick={LogintoggleModal}
             height="25px"
