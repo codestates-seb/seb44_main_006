@@ -49,7 +49,6 @@ const DetailPage = () => {
     queryFn: () => GetCommunityPost({ postId }),
     refetchOnWindowFocus: false,
     select: (data: { data: CommunityDetailT }) => data.data,
-    staleTime: 0,
   });
 
   console.log(detailData);
