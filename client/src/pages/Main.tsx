@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { overlayActions } from '../store/overlay-slice';
 import { setUserOAuthActions } from '../store/userAuth-slice';
 import { RootState } from '../store';
-import mainImg from '../assets/mainImg.png';
+import mainImg from '../assets/mainImg.jpg';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
 
