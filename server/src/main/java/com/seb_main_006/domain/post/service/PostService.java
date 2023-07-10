@@ -1,6 +1,5 @@
 package com.seb_main_006.domain.post.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.seb_main_006.domain.answer.dto.AnswerResponseDto;
 import com.seb_main_006.domain.course.dto.CourseInfoDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
@@ -29,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,22 +105,24 @@ public class PostService {
      * 게시글 상세 조회
      */
     @Transactional
-    public PostDetailResponseDto findPost(Long postId, String accessToken) throws JsonProcessingException {
+    public PostDetailResponseDto findPost(Long postId, String accessToken) {
 
         Member member = new Member(0L);
 
-        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
+        // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             try {
                 String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
-            } catch (Exception e) {
-
-            }
+            } catch (Exception e) {}
         }
 
         Post findPost = findVerifiedPost(postId);
         Course course = findPost.getCourse();
+
+        log.info("course.courseId = {}", course.getCourseId());
+        log.info("findPost.getCourse().getCourseId() = {}", findPost.getCourse().getCourseId());
+
         List<String> tags = findPost.getPostTagsInPost().stream()
                 .map(postTag -> postTag.getTag().getTagName())
                 .collect(Collectors.toList());
@@ -153,14 +153,12 @@ public class PostService {
 
         Member member = new Member(0L);
 
-        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
+        // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             try {
                 String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
-            } catch (Exception e) {
-
-            }
+            } catch (Exception e) {}
         }
 
         PageRequest pageRequest = PageRequest.of(page, limit);
