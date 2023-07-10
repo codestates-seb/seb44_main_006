@@ -5,13 +5,18 @@ import com.seb_main_006.domain.course.entity.Course;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
 
     @Id
@@ -20,6 +25,9 @@ public class Post {
 
     @Column(columnDefinition = "TEXT")
     private String postContent; // 게시글 설명
+
+    @CreatedDate
+    private LocalDateTime postCreatedAt; // 코스 생성일자
 
     @OneToOne
     @JoinColumn(name = "course_id")
