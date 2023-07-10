@@ -155,6 +155,7 @@ export interface MapLocationCardInfo {
   indexNum?: number;
   location?: string;
   id?: string;
+  placeId?: string;
   onClick?: ({ id }: { id: string | undefined }) => void;
 }
 
