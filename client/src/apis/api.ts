@@ -38,8 +38,10 @@ instance.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error.response?.status === 404) {
+      // 404에러인 경우
       window.location.href = '/api/error/404';
     } else if (error.response && error.response.status === 444) {
+      // 444에러인 경우(토큰 재발급 필요)
       return instance
         .post<{ accessToken: string }>('/auth/reissue', {
           headers: {
