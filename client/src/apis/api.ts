@@ -1,4 +1,8 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosError,
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+} from 'axios';
 
 import { PostReqT } from '../types/apitype';
 
@@ -26,18 +30,41 @@ instance.interceptors.request.use(
   }
 );
 
-//TODO:refrashtoken 응답요청 하기
-//*기존 API 호출하다 444 에러코드 응답 시 reissue 로 헤더 그대로 호출시 재발급
-//*reissue 호출에 대한 응답까지도 444 일 경우 refreshToken도 만료된 상황이므로 다시 로그인이 필요
-// instance.interceptors.response.use(
-
-// );
+// 기존 API 호출하다 444 에러코드 응답 시 reissue 로 헤더 그대로 호출시 재발급
+// eissue 호출에 대한 응답까지도 444 일 경우 refreshToken도 만료된 상황이므로 다시 로그인이 필요
+instance.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response;
+  },
+  (error: AxiosError) => {
+    if (error.response?.status === 404) {
+      window.location.href = '/api/error/404';
+    } else if (error.response && error.response.status === 444) {
+      return instance
+        .post<{ accessToken: string }>('/auth/reissue', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: accessToken,
+            RefreshToken: refreshToken,
+          },
+        })
+        .then((response: AxiosResponse<{ accessToken: string }>) => {
+          const newAccessToken = response.data.accessToken;
+          localStorage.setItem('accessToken', newAccessToken);
+          return instance(error.config);
+        })
+        .catch((error: AxiosError) => {
+          window.location.href = '/';
+          return Promise.reject(error);
+        });
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const GetUserInfo = async () => instance.get(`/api/auth/members`);
 
 export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
-
-export const GetAainUserToken = async () => instance.post('/auth/reissue');
 
 export const GetMyList = async () => instance.get(`/api/members`);
 
