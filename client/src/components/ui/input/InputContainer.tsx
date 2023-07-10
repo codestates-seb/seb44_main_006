@@ -28,11 +28,13 @@ const InputContainer = forwardRef(
       maxLength,
       styles,
       type,
+      isValidate,
       onkeypress,
     }: {
       description: string;
       minLength?: number;
       maxLength?: number;
+      isValidate?: boolean;
       styles?: TextareaT;
       type?: 'title';
       // tag 입력 칸과 구분하기 위함
@@ -40,7 +42,6 @@ const InputContainer = forwardRef(
     },
     ref?: ForwardedRef<HTMLInputElement>
   ) => {
-    const [isValidate] = useState(true);
     const errorMessage =
       minLength &&
       maxLength &&

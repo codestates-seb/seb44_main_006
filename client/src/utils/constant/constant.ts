@@ -5,3 +5,5 @@ const defaultOptions = {
 };
 
 export default defaultOptions;
+
+export const LIMIT = 12;

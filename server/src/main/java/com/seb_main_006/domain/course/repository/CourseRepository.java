@@ -24,6 +24,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
         Page<Course> findAllByPostedOrderByUpdatedAt(@Param("isPosted") Boolean isPosted, PageRequest pageRequest);
 
         @Query("select c from Course c join c.post p where c.isPosted =:isPosted " +
-                "order by c.courseLikeCount desc")
+                "order by c.courseLikeCount desc, p.postCreatedAt desc ")
         Page<Course> findAllByPostedOrderByLikeCount(@Param("isPosted") Boolean isPosted, PageRequest pageRequest);
 }

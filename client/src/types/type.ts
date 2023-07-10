@@ -141,6 +141,7 @@ export interface ContCardInfo {
   likeStatus?: boolean;
   bookmarkStatus?: boolean;
   type: 'post' | 'course';
+  date?: string;
 }
 
 export interface LocationCardInfo {

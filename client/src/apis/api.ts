@@ -47,21 +47,26 @@ export const GetCourse = async ({ courseId }: { courseId: string }) =>
   instance.get(`/api/courses/${courseId}`);
 
 export const GetCommunityList = async ({
-  page,
+  pageParam,
   limit,
   sort,
   tagName,
 }: {
-  page: number;
+  pageParam: number;
   limit: number;
   sort?: string | undefined;
   tagName?: string | undefined;
 }) => {
-  const essential = `/api/posts/read?page=${page}&limit=${limit}`;
+  const essential = `/api/posts/read?page=${pageParam}&limit=${limit}`;
   const optSort = sort === 'Like' ? '&sort=like' : '';
   const optTagName = tagName ? `&tagName=${tagName}` : '';
   const request = essential + optSort + optTagName;
-  return instance.get(request);
+  const res = await instance.get(request);
+  return {
+    communityListData: res.data.data,
+    current_page: pageParam,
+    isLast: (res.data.pageInfo.totalPages as number) === pageParam,
+  };
 };
 
 export const GetCommunityPost = async ({ postId }: { postId: string }) =>

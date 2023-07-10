@@ -1,6 +1,5 @@
 package com.seb_main_006.domain.post.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.seb_main_006.domain.answer.dto.AnswerResponseDto;
 import com.seb_main_006.domain.course.dto.CourseInfoDto;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
@@ -29,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,44 +105,37 @@ public class PostService {
      * 게시글 상세 조회
      */
     @Transactional
-    public PostDetailResponseDto findPost(Long postId, String accessToken) throws JsonProcessingException {
+    public PostDetailResponseDto findPost(Long postId, String accessToken) {
 
         Member member = new Member(0L);
 
-        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
+        // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             try {
                 String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
-            } catch (Exception e) {
-
-            }
+            } catch (Exception e) {}
         }
 
         Post findPost = findVerifiedPost(postId);
         Course course = findPost.getCourse();
+
+        PostDetailResponseDto response = postMapper.postToPostDetailResponseDto(findPost); // response 1차 매핑
+
+        // response에 나머지 값 세팅 (tags, courseInfo, answerDtoList, likeStatus, bookmarkStatus)
         List<String> tags = findPost.getPostTagsInPost().stream()
                 .map(postTag -> postTag.getTag().getTagName())
                 .collect(Collectors.toList());
-        PostDetailResponseDto response = postMapper.postToPostDetailResponseDto(findPost);
-        CourseInfoDto courseInfoDto = new CourseInfoDto();
-        courseInfoDto.setCourseId(course.getCourseId());
 
-        boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
-        boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
-
-        List<DestinationPostDto> destinationPostDtos = postMapper.destinationsToDestinationDtos(course.getDestinations());
-        courseInfoDto.setDestinationList(destinationPostDtos);
-        List<AnswerResponseDto> answerResponseDtos = postMapper.answersToAnswerDtos(findPost.getAnswersInPost());
-
-        response.setAnswerList(answerResponseDtos);
-        response.setCourseInfo(courseInfoDto);
+        response.setAnswerList(postMapper.answersToAnswerDtos(findPost.getAnswersInPost()));
+        response.setCourseInfo(new CourseInfoDto(course.getCourseId(), postMapper.destinationsToDestinationDtos(course.getDestinations())));
         response.setTags(tags);
-        response.setLikeStatus(likeStatus);
-        response.setBookmarkStatus(bookmarkStatus);
+        response.setLikeStatus(likesRepository.findByMemberAndCourse(member, course).isPresent());
+        response.setBookmarkStatus(bookmarkRepository.findByMemberAndCourse(member, course).isPresent());
 
         return response;
     }
+
 
     /**
      * 게시글 리스트 조회 (+ 태그 검색)
@@ -153,14 +144,12 @@ public class PostService {
 
         Member member = new Member(0L);
 
-        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
+        // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             try {
                 String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
-            } catch (Exception e) {
-
-            }
+            } catch (Exception e) {}
         }
 
         PageRequest pageRequest = PageRequest.of(page, limit);
@@ -170,10 +159,8 @@ public class PostService {
 
             // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
             if (sort == null) {
-                log.info("sort == null");
                 pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(true, pageRequest);
             } else {
-                log.info("sort != null (like)");
                 pageResult = courseRepository.findAllByPostedOrderByLikeCount(true, pageRequest);
             }
         } else {
@@ -182,17 +169,13 @@ public class PostService {
 
             // 각각의 tagName 으로 tag 찾은 후, 찾은 태그들을 Set으로 통합 (중복 제거)
             Set<Tag> findTagSet = new HashSet<>();
-
-            for (String inputTag : inputTags) {
-                findTagSet.addAll(tagRepository.findByTagNameContaining(inputTag));
-            }
+            Arrays.stream(inputTags)
+                    .forEach(inputTag -> findTagSet.addAll(tagRepository.findByTagNameContaining(inputTag)));
 
             // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
             if (sort == null) {
-                log.info("sort == null");
                 pageResult = postTagRepository.findByTagInOrderByUpdatedAt(new ArrayList<>(findTagSet), pageRequest);
             } else {
-                log.info("sort != null (like)");
                 pageResult = postTagRepository.findByTagInOrderByLikeCount(new ArrayList<>(findTagSet), pageRequest);
             }
         }
@@ -203,32 +186,27 @@ public class PostService {
         for (Course course : pageResult.getContent()) {
             boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
             boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
-            PostDataForList postData = PostDataForList.of(course, likeStatus, bookmarkStatus);
-            postDataList.add(postData);
+            postDataList.add(PostDataForList.of(course, likeStatus, bookmarkStatus));
         }
 
         return new PostListResponseDto(postDataList, pageResult);
     }
 
     /**
-     * 태그로 게시글  (미사용)
+     * 태그로 게시글 (미사용)
      */
     public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) {
-        log.info("tagName = {}", tagName);
-
         Member member = new Member(0L);
         PageRequest pageRequest = PageRequest.of(page, limit);
 
-        // 리스트 조회시 토큰 비어있을 떄랑 잘못 됐을 때 예외 모두 통과시키기
+        // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             String memberEmail = "";
             try {
                 memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
             }
-            catch (Exception e){
-
-            }
+            catch (Exception e){}
         }
 
         // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
@@ -237,10 +215,8 @@ public class PostService {
         // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
         Page<Course> pageResult = null;
         if (sort == null) {
-            log.info("sort == null");
             pageResult = postTagRepository.findByTagInOrderByUpdatedAt(findTagList, pageRequest);
         } else {
-            log.info("sort != null (like)");
             pageResult = postTagRepository.findByTagInOrderByLikeCount(findTagList, pageRequest);
         }
 
@@ -250,8 +226,8 @@ public class PostService {
         for (Course course : pageResult.getContent()) {
             boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
             boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
-            PostDataForList postData = PostDataForList.of(course, likeStatus, bookmarkStatus);
-            postDataList.add(postData);
+            PostDataForList dataForList = PostDataForList.of(course, likeStatus, bookmarkStatus);
+            postDataList.add(dataForList);
         }
 
         return new PostListResponseDto(postDataList, pageResult);
@@ -267,14 +243,13 @@ public class PostService {
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Course course = findPost.getCourse();
 
-        // 멤버 권한 체크
-        List<String> findRole = findMember.getRoles();
-
         // ADMIN 권한이 없을 경우에만 본인 일정 여부 검증
+        List<String> findRole = findMember.getRoles();
         if (!findRole.contains("ADMIN")) {
             courseService.verifyMyCourse(findMember, course);
         }
 
+        // course 에서의 post, likes, bookmarks 에 대한 연관관계 제거, isPosted 상태 업데이트
         course.removePost();
         likesRepository.deleteAllByCourse(course);
         bookmarkRepository.deleteAllByCourse(course);

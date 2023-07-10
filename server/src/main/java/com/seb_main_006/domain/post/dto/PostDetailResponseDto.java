@@ -26,4 +26,6 @@ public class PostDetailResponseDto {
     private LocalDateTime postCreatedAt;
     private CourseInfoDto courseInfo;
     private List<AnswerResponseDto> answerList;
+
+
 }

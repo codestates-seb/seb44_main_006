@@ -19,6 +19,7 @@ const ModalChildren = ({
       <Text styles={{ size: cssToken.TEXT_SIZE['text-50'] }}>{content}</Text>
       <BtnDiv>
         <GrayButton
+          // Fixme event type
           onClick={leftBtnCallback}
           width="15.5625rem"
           height="4.625rem"
