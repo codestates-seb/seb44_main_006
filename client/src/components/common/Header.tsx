@@ -8,20 +8,20 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 
-import { overlayActions } from '../../store/overlay-slice';
-import { setUserOAuth } from '../../store/userAuth-slice';
+import { setUserOAuthActions } from '../../store/userAuth-slice';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
 import WhiteButton from '../ui/button/WhiteButton';
+import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import LoginModal from '../ui/modal/LoginModal';
 import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
 import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
-import GrayButton from '../ui/button/GrayButton';
+import Text from '../ui/text/Text';
 
 type HeaderStyle = {
   isPath?: string;
@@ -59,14 +59,14 @@ const BtnBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 13.5px 10px 10px;
+    padding: 1.2rem 0.95rem 0.95rem;
     white-space: nowrap;
     transition: ${cssToken.TRANSITION.basic};
+    font-size: 14px;
   }
 `;
 
 const Header = () => {
-  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const [searchParams] = useSearchParams();
   const accessToken = searchParams.get('access_token');
   const refreshToken = searchParams.get('refresh_token');
@@ -80,60 +80,69 @@ const Header = () => {
     (state: RootState) => state.userAuth.userInfo
   );
   const LoginmodalIsOpen = useSelector(
-    (state: RootState): boolean => state.overlay.isOpen
+    (state: RootState): boolean => state.userAuth.isLoginOpen
   );
-  const modalIsOpen = useSelector(
-    (state: RootState): boolean => state.overlay.isOpen
+  const LogoutmodalIsOpen = useSelector(
+    (state: RootState): boolean => state.userAuth.isLogoutOpen
   );
 
   const LogintoggleModal = () => {
-    dispatch(overlayActions.toggleOverlay());
+    dispatch(setUserOAuthActions.toggleIsLogin());
   };
 
-  const toggleModal = () => {
-    dispatch(overlayActions.toggleOverlay());
+  const LogoutoggleModal = () => {
+    dispatch(setUserOAuthActions.toggleIsLogout());
   };
 
   const mutation = useMutation(RemoveUserInfo, {
     onSuccess(data) {
-      localStorage.removeItem('userInfo');
       localStorage.removeItem('accessToken');
-      localStorage.removeItem('isLogin');
       localStorage.removeItem('refreshToken');
+      localStorage.removeItem('isLogin');
       gotoMain();
       return window.location.reload();
     },
+    onError(error) {
+      console.log('Logout error:', error);
+    },
+
   });
 
   const handleLogout = () => {
     mutation.mutate();
+    dispatch(setUserOAuthActions.setIsLogin(false));
   };
 
-  // TODO: React Query 이용해서 리팩토링하기
   // TODO: Redux toolkit 이용해 전역으로 유저 정보 관리하기
+  //! 유저 정보 새로고침해야 값을 받을 수 있는 이슈
   const { data: oauthInfo } = useQuery({
     queryKey: ['oauthInfoData'],
     queryFn: () => GetUserInfo(),
     onSuccess: (data) => {
+      dispatch(setUserOAuthActions.setUserOAuth(data.data));
       if (accessToken) {
-        localStorage.setItem('refreshToken', `${refreshToken}`);
         localStorage.setItem('accessToken', `Bearer ${accessToken}`);
+        localStorage.setItem('refreshToken', `${refreshToken}`);
         localStorage.setItem('isLogin', JSON.stringify(true));
-        dispatch(setUserOAuth({ dd: 'ee', ww: 'tt' }));
+        if (localStorage.getItem('isLogin')) {
+          dispatch(setUserOAuthActions.setIsLogin(true));
+        }
         gotoMain();
       }
-
-      console.log('oauthInfo', data.data);
-      console.log('userQAuthData', userQAuthData);
     },
-
-    onError: (error) => {
+    onError: (error: AxiosError) => {
       if (accessToken) {
-        const errStatus: number = error.response.status;
+        const errStatus = error.response.status;
         navigate(`/error/${errStatus}`);
       }
     },
   });
+
+  // useEffect(() => {
+  //   console.log('1 oauthInfo 데이터 응답:', oauthInfo);
+  //   console.log('2 isLoggedIn 로그인 유무:', isLoggedIn);
+  //   console.log('3 userQAuthData 유저 정보:', userQAuthData);
+  // }, []);
 
   useEffect(() => {
     setIsPath(location.pathname);
@@ -145,39 +154,63 @@ const Header = () => {
         <LoginModal
           handleClose={LogintoggleModal}
           styles={{
-            width: '500px',
-            height: '500px',
-            borderradius: '15px',
-            gap: '10px',
+            width: '31.25rem',
+            height: '31.25rem',
+            borderradius: '0.9375rem',
+            gap: '0.625rem',
           }}
         />
       )}
-      {/* {modalIsOpen && (
+      {LogoutmodalIsOpen && (
         <Modal
-          backdropCallback={toggleModal}
-          handleCloseBtn={toggleModal}
+          backdropCallback={LogoutoggleModal}
+          handleCloseBtn={LogoutoggleModal}
+          displayclosebtn
           styles={{
-            width: '500px',
-            height: '500px',
-            borderradius: '15px',
-            gap: '10px',
-          }}>
-          로그아웃 하시겠습니까?
+            width: '47.0625rem',
+            height: '28.375rem',
+            borderradius: '0.9375rem',
+            gap: '3.125rem',
+          }}
+        >
+          <Text styles={{ size: cssToken.TEXT_SIZE['text-50'] }}>
+            로그아웃 하시겠습니까?
+          </Text>
+          <BtnBox>
+            <GrayButton
+              width="15.5625rem"
+              height="4.625rem"
+              fontsize={cssToken.TEXT_SIZE['text-24']}
+              borderRadius={cssToken.BORDER['rounded-md']}
+              onClick={LogoutoggleModal}
+            >
+              아니오
+            </GrayButton>
+            <SkyBlueButton
+              width="15.5625rem"
+              height="4.625rem"
+              fontsize={cssToken.TEXT_SIZE['text-24']}
+              borderRadius={cssToken.BORDER['rounded-md']}
+              onClick={handleLogout}
+            >
+              예
+            </SkyBlueButton>
+          </BtnBox>
         </Modal>
-      )} */}
+      )}
 
       <LogoBox>
         <Link to="/">
           <LogoImg src={LogoBlack} alt="logo-harumate" />
         </Link>
       </LogoBox>
+      {/* <div>{`반갑습니다. ${userQAuthData.memberNickname}`}</div> */}
       <BtnBox>
         {isPath === '/' && isLoggedIn && (
           // 메인 페이지인 경우
           <>
             <WhiteButton
-              // onClick={toggleModal}
-              onClick={handleLogout}
+              onClick={LogoutoggleModal}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -195,7 +228,7 @@ const Header = () => {
           // 메인 페이지가 아닌 나머지
           <>
             <WhiteButton
-              onClick={handleLogout}
+              onClick={LogoutmodalIsOpen}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -205,11 +238,11 @@ const Header = () => {
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
-              마이페이지
+              {isPath === '/community' ? '마이페이지' : '커뮤니티'}
             </SkyBlueButton>
           </>
         )}
-        {isPath !== '/' && !isLoggedIn.isLogin && (
+        {isPath !== '/' && !isLoggedIn && (
           <WhiteButton
             onClick={LogintoggleModal}
             height="25px"
