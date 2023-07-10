@@ -102,6 +102,10 @@ const Header = () => {
       gotoMain();
       return window.location.reload();
     },
+    onError(error) {
+      console.log('Logout error:', error);
+    },
+
   });
 
   const handleLogout = () => {

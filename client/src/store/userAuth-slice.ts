@@ -16,7 +16,7 @@ interface LoginState {
   isLogin?: string | boolean;
   userInfo?: UserQAuthInfo;
   isLoginOpen?: boolean;
-  isLoginOpen?: boolean;
+  isLogoutOpen?: boolean;
 }
 
 const logined = localStorage.getItem('isLogin');
