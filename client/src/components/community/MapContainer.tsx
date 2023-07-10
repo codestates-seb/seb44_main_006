@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 import { FlexDiv } from '../../styles/styles';
 import KakaoMap from '../map/KakaoMap';
@@ -53,7 +54,7 @@ const MapContainer = ({
         >
           {destinationList.map((destination, idx) => (
             <Marker
-              key={idx}
+              key={uuidv4()}
               lat={destination.y}
               lng={destination.x}
               id={destination.id ?? ''}
@@ -70,7 +71,7 @@ const MapContainer = ({
         <LocationCardWrapper>
           {destinationList.map((destination, idx) => (
             <MapLocationCard
-              key={idx}
+              key={uuidv4()}
               id={destination.id}
               indexNum={idx + 1}
               location={destination.placeName}

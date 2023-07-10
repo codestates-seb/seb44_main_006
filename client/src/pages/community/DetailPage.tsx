@@ -51,8 +51,6 @@ const DetailPage = () => {
     select: (data: { data: CommunityDetailT }) => data.data,
   });
 
-  console.log(detailData);
-
   const queryClient = useQueryClient();
   const mutation = useMutation(PostComment, {
     onSuccess: () => {

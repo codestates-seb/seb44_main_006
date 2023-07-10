@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 
 import cssToken from '../../styles/cssToken';
@@ -11,7 +10,6 @@ import useHandleTab from '../../hooks/useHandleTab';
 import CircleButton from '../../components/ui/button/CircleButton';
 import Pen from '../../assets/Pen';
 import useMovePage from '../../hooks/useMovePage';
-import { GetCommunityList } from '../../apis/api';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 import { LIMIT } from '../../utils/constant/constant';
@@ -49,7 +47,8 @@ const CommunityPage = () => {
       sort: selectTab,
     });
 
-  const SearchPost = () => {
+  const SearchPost = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (searchInputRef.current) {
       const keyword = searchInputRef.current?.value;
       setTab('Newest');
@@ -60,20 +59,22 @@ const CommunityPage = () => {
   return (
     <>
       <Wrapper>
-        <SearchContainer
-          ref={searchInputRef}
-          iconWidth={39}
-          iconHeight={39}
-          styles={{
-            width: '740px',
-            height: '86px',
-            fontsize: cssToken.TEXT_SIZE['text-24'],
-          }}
-          callback={SearchPost}
-        />
+        <form onSubmit={SearchPost}>
+          <SearchContainer
+            ref={searchInputRef}
+            iconWidth={39}
+            iconHeight={39}
+            styles={{
+              width: '740px',
+              height: '86px',
+              fontsize: cssToken.TEXT_SIZE['text-24'],
+            }}
+            callback={SearchPost}
+          />
+        </form>
         {isSuccess && (
           <FilterSection
-            communityData={data?.pages}
+            communityData={data!.pages}
             hasNextPage={hasNextPage}
             fetchNextPage={fetchNextPage}
           >

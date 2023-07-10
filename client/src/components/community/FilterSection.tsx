@@ -10,8 +10,8 @@ import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
 import {
-  CommunityListT,
   CommunitySummaryT,
+  FetchNextPageT,
   InfiniteScrollT,
 } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
@@ -40,7 +40,7 @@ const FilterSection = ({
   children: Props['children'];
   communityData: InfiniteScrollT[];
   hasNextPage: undefined | boolean;
-  fetchNextPage: () => void;
+  fetchNextPage: FetchNextPageT;
 }) => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
@@ -50,7 +50,7 @@ const FilterSection = ({
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      fetchNextPage();
+      fetchNextPage().catch((error) => console.log(error));
     }
   }, [fetchNextPage, hasNextPage, inView]);
 
@@ -62,6 +62,7 @@ const FilterSection = ({
           communityData.map((datas: InfiniteScrollT) =>
             datas.communityListData.map((post: CommunitySummaryT) => (
               <ContensCard
+                key={post.courseId}
                 type="post"
                 title={post.courseTitle}
                 text={post.postContent}

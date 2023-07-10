@@ -40,7 +40,6 @@ const FlexAround = styled(FlexDiv)`
   justify-content: space-around;
 `;
 
-// Todo 수정
 const Comment = ({
   answererImageUrl: src,
   answererNickname: nickName,

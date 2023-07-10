@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
 
 import { FlexDiv } from '../../../styles/styles';
 import cssToken from '../../../styles/cssToken';
