@@ -16,6 +16,7 @@ interface LoginState {
   isLogin?: string | boolean;
   userInfo?: UserQAuthInfo;
   isLoginOpen?: boolean;
+  isLoginOpen?: boolean;
 }
 
 const logined = localStorage.getItem('isLogin');
@@ -25,6 +26,7 @@ const initialState: LoginState = {
   isLogin: transLogined,
   userInfo: {},
   isLoginOpen: false,
+  isLogoutOpen: false,
 };
 
 const setUserOAuthSlice = createSlice({
@@ -39,6 +41,9 @@ const setUserOAuthSlice = createSlice({
     },
     toggleIsLogin(state) {
       state.isLoginOpen = !state.isLoginOpen;
+    },
+    toggleIsLogout(state) {
+      state.isLogoutOpen = !state.isLogoutOpen;
     },
   },
 });
