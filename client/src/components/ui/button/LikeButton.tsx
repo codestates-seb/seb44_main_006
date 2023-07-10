@@ -16,10 +16,11 @@ const LikeButton = ({
   const { postId } = useParams();
   const queryClient = useQueryClient();
   const mutation = useMutation(PostLike, {
-    onSuccess: () => queryClient.invalidateQueries(['community']),
-    // postId
-    //   ? queryClient.invalidateQueries(['communityDetail'])
-    //   : queryClient.invalidateQueries(['community']),
+    // Fixme 키 추가하기
+    onSuccess: () =>
+      postId
+        ? queryClient.invalidateQueries(['communityDetail'])
+        : queryClient.invalidateQueries(['community']),
   });
   const handleLikeButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

@@ -13,6 +13,7 @@ import Pen from '../../assets/Pen';
 import useMovePage from '../../hooks/useMovePage';
 import { GetCommunityList } from '../../apis/api';
 import getLoginStatus from '../../utils/getLoginStatus';
+import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -39,24 +40,18 @@ const CommunityPage = () => {
   const isLogin = getLoginStatus();
   const { selectTab, setTab } = useHandleTab();
   const [tagName, setTagName] = useState<string>('');
-  const [page, setPage] = useState(1);
 
-  const { data: communityData } = useQuery(
-    ['community', selectTab, tagName],
-    () =>
-      GetCommunityList({
-        page,
-        limit: 6,
-        sort: selectTab,
-        tagName,
-      })
-  );
+  const { data, fetchNextPage, isSuccess, hasNextPage } =
+    useInfiniteScrollQuery({
+      limit: 3,
+      tagName: tagName || '',
+      sort: selectTab,
+    });
 
   const SearchPost = () => {
     if (searchInputRef.current) {
       const keyword = searchInputRef.current?.value;
       setTab('Newest');
-      setPage(1);
       setTagName(keyword);
     }
   };
@@ -75,8 +70,12 @@ const CommunityPage = () => {
           }}
           callback={SearchPost}
         />
-        {communityData && (
-          <FilterSection communityData={communityData}>
+        {isSuccess && (
+          <FilterSection
+            communityData={data?.pages}
+            hasNextPage={hasNextPage}
+            fetchNextPage={fetchNextPage}
+          >
             <FilterTab
               content="최신순"
               selectTab={selectTab}
