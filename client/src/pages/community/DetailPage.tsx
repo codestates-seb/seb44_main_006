@@ -45,7 +45,7 @@ const DetailPage = () => {
   const { postId } = useParams() as { postId: string };
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const { data: detailData } = useQuery({
-    queryKey: ['postdetail'],
+    queryKey: ['communityDetail'],
     queryFn: () => GetCommunityPost({ postId }),
     refetchOnWindowFocus: false,
     select: (data: { data: CommunityDetailT }) => data.data,
@@ -58,7 +58,7 @@ const DetailPage = () => {
   const mutation = useMutation(PostComment, {
     onSuccess: () => {
       if (textAreaRef.current) textAreaRef.current.value = '';
-      return queryClient.invalidateQueries(['postdetail']);
+      return queryClient.invalidateQueries(['communityDetail']);
     },
   });
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
