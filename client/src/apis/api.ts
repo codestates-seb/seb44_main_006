@@ -5,7 +5,7 @@ import { PostReqT } from '../types/apitype';
 // const PROXY = window.location.hostname === 'localhost' ? '' : '';
 
 export const instance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: `${import.meta.env.VITE_BASE_URL}/proxy`,
   headers: {
     'Content-Type': 'application/json',
   },
