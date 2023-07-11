@@ -1,11 +1,11 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-import { PostReqT } from '../types/apitype';
+import { PostReqT } from '../typestype';
 
-// const PROXY = window.location.hostname === 'localhost' ? '' : '';
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 
 export const instance = axios.create({
-  baseURL: `${import.meta.env.VITE_BASE_URL}/proxy`,
+  baseURL: PROXY,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -33,18 +33,18 @@ instance.interceptors.request.use(
 
 // );
 
-export const GetUserInfo = async () => instance.get(`/api/auth/members`);
+export const GetUserInfo = async () => instance.get(`/auth/members`);
 
-export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
+export const RemoveUserInfo = async () => instance.post('/auth/logout');
 
 export const PatchMemNickname = async (nickname: string) => {
-  await instance.patch(`/api/members`, { memberNickname: nickname });
+  await instance.patch(`/members`, { memberNickname: nickname });
 };
 
-export const GetMyList = async () => instance.get(`/api/members`);
+export const GetMyList = async () => instance.get(`/members`);
 
 export const GetCourse = async ({ courseId }: { courseId: string }) =>
-  instance.get(`/api/courses/${courseId}`);
+  instance.get(`/courses/${courseId}`);
 
 export const GetCommunityList = async ({
   pageParam,
@@ -57,7 +57,7 @@ export const GetCommunityList = async ({
   sort?: string | undefined;
   tagName?: string | undefined;
 }) => {
-  const essential = `/api/posts/read?page=${pageParam}&limit=${limit}`;
+  const essential = `/posts/read?page=${pageParam}&limit=${limit}`;
   const optSort = sort === 'Like' ? '&sort=like' : '';
   const optTagName = tagName ? `&tagName=${tagName}` : '';
   const request = essential + optSort + optTagName;
@@ -70,13 +70,13 @@ export const GetCommunityList = async ({
 };
 
 export const GetCommunityPost = async ({ postId }: { postId: string }) =>
-  instance.get(`/api/posts/read/${postId}`);
+  instance.get(`/posts/read/${postId}`);
 
 export const PostCommunity = async ({
   courseId,
   postContent,
   tags,
-}: PostReqT) => instance.post(`/api/posts/`, { courseId, postContent, tags });
+}: PostReqT) => instance.post(`/posts/`, { courseId, postContent, tags });
 
 export const PostComment = async ({
   answerContent,
@@ -84,19 +84,19 @@ export const PostComment = async ({
 }: {
   answerContent: string;
   postId: string | undefined;
-}) => instance.post(`/api/answers/${postId ?? ''}`, { answerContent });
+}) => instance.post(`/answers/${postId ?? ''}`, { answerContent });
 
 export const DeleteCommunityPost = async ({ postId }: { postId: string }) =>
-  instance.delete(`/api/posts/${postId}`);
+  instance.delete(`/posts/${postId}`);
 
 export const PostBookmark = async ({ courseId }: { courseId: number }) =>
-  instance.post(`/api/courses/${courseId}/bookmark`);
+  instance.post(`/courses/${courseId}/bookmark`);
 
 export const PostLike = async ({ courseId }: { courseId: number }) =>
-  instance.post(`/api/courses/${courseId}/like`);
+  instance.post(`/courses/${courseId}/like`);
 
 export const DeleteComment = async ({ answerId }: { answerId: number }) =>
-  instance.delete(`/api/answers/${answerId}`);
+  instance.delete(`/answers/${answerId}`);
 
 export const PatchComment = async ({
   answerId,
@@ -104,4 +104,4 @@ export const PatchComment = async ({
 }: {
   answerId: number;
   answerContent: string;
-}) => instance.patch(`/api/answers/${answerId}`, { answerContent });
+}) => instance.patch(`/answers/${answerId}`, { answerContent });
