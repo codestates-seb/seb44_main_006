@@ -6,7 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CustomJwtErrorResponse {
+
     private int status;
+
     private String message;
 
     public CustomJwtErrorResponse(int status, String message) {

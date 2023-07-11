@@ -1,7 +1,5 @@
 package com.seb_main_006.global.auth.handler;
 
-
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
@@ -11,7 +9,6 @@ import com.seb_main_006.global.auth.redis.RefreshToken;
 import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import com.seb_main_006.global.auth.utils.ErrorResponder;
-import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -21,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,7 +44,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     }
 
-    //소셜(구글)로그인 성공시 이메일, 닉네임, 프로필이미지 가져와서 DB에 저장 후 리다이렉트
+    // 소셜(구글)로그인 성공시 이메일, 닉네임, 프로필이미지 가져와서 DB에 저장 후 리다이렉트
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -86,13 +82,13 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         redirect(request, response, email, authorities);
     }
 
-    //DB에 해당하는 사용자 정보 저장
+    // DB에 해당하는 사용자 정보 저장
     private Member saveMember(String email, String nickname, String imgURL, String provider) {
         Member member = new Member(email, nickname, imgURL, provider);
         return memberService.createMember(member);
     }
 
-    //URL에 accessToken과 refreshToken 담아서 전달
+    // URL에 accessToken과 refreshToken 담아서 전달
     private void redirect(HttpServletRequest request, HttpServletResponse response, String username, List<String> authorities) throws IOException {
         String accessToken = delegateAccessToken(username, authorities);
         String refreshToken = delegateRefreshToken(username);
@@ -113,7 +109,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
-    //accessToken 발급 메소드
+    // accessToken 발급 메소드
     public String delegateAccessToken(String username, List<String> authorities) throws JsonProcessingException {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username);
@@ -130,7 +126,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return accessToken;
     }
 
-    //refreshToken 발급 메소드
+    // refreshToken 발급 메소드
     private String delegateRefreshToken(String username) throws JsonProcessingException {
         Subject subject = new Subject(username, "RefreshToken");
 
@@ -142,7 +138,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return refreshToken;
     }
 
-    //리다이렉트 URL생성(URL에 accessToken과 refreshToken담아서 전달)
+    // 리다이렉트 URL생성(URL에 accessToken과 refreshToken담아서 전달)
     private URI createURI(String accessToken, String refreshToken) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
@@ -158,6 +154,4 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .build()
                 .toUri();
     }
-    
-    
 }

@@ -14,12 +14,10 @@ import com.seb_main_006.domain.member.repository.MemberRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
-import com.seb_main_006.global.mail.dto.MailDto;
 import com.seb_main_006.global.mail.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 
 @Service
@@ -35,47 +33,6 @@ public class MemberService {
     private final MailService mailService;
 
     /**
-     * 마이페이지 조회
-     */
-    public MyPageResponseDto getMyPage(String memberEmail) {
-
-        //memberEmail로 Member 찾아옴
-        Member findMember = findVerifiedMember(memberEmail);
-
-        //찾아온 Member로 mycourseList와 myBookmarkedList 찾아옴
-        List<Course> myCourseList = courseRepository.findAllByMember(findMember);
-        List<Bookmark> myBookmarkedList = bookmarkRepository.findAllByMember(findMember);
-
-        //myCourseList를 순회하면서 newMemberCourseList에 값넣음
-        List<MemberCourse> newMemberCourseList = new ArrayList<>();
-        for(int i=0; i<myCourseList.size(); i++){
-            Course findCourse = myCourseList.get(i);
-            MemberCourse newMemberCourse = new MemberCourse(findCourse, findMember.getMemberNickname());
-            newMemberCourseList.add(newMemberCourse);
-        }
-
-        //myBookmarkedList를 순회하면서 newMemberBookmarkedList에 값넣음
-        List<MemberBookmarked> newMemberBookmarkedList = new ArrayList<>();
-        for(int i=0; i<myBookmarkedList.size(); i++){
-            Bookmark findBookmark = myBookmarkedList.get(i);
-            boolean likeStatus = likesRepository.findByMemberAndCourse(findMember, findBookmark.getCourse()).isPresent();
-            MemberBookmarked newMemberBookmarked = new MemberBookmarked(findBookmark.getCourse(), findMember.getMemberNickname(), likeStatus);
-            newMemberBookmarkedList.add(newMemberBookmarked);
-
-        }
-        //업데이트시간 기준 정렬(최근 업데이트가 빠른 기준 내림차순 정렬)
-        Collections.sort(newMemberCourseList, Comparator.comparing(MemberCourse::getCourseUpdatedAt).reversed());
-        Collections.sort(newMemberBookmarkedList, Comparator.comparing(MemberBookmarked::getPostCreatedAt).reversed());
-
-        //MypageResponseDto에 값넣고 리턴
-        MyPageResponseDto myPageResponseDto = new MyPageResponseDto();
-        myPageResponseDto.setMemberCourseList(newMemberCourseList);
-        myPageResponseDto.setMemberBookmarkedList(newMemberBookmarkedList);
-
-        return myPageResponseDto;
-    }
-
-    /**
      * 소셜 로그인 회원 가입
      */
     public Member createMember(Member member) {
@@ -87,7 +44,6 @@ public class MemberService {
 
             // 템플릿으로 메일 보내기
             mailService.send(member);
-//            mailSend(member); // 템플릿 없이 메일 보내기
             return memberRepository.save(findDeletedMember);
         }
 
@@ -98,11 +54,51 @@ public class MemberService {
 
             // 템플릿으로 메일 보내기
             mailService.send(member);
-//            mailSend(member); // 템플릿 없이 메일 보내기
             return memberRepository.save(member);
         }
 
         return findExistMember(member.getMemberEmail()); // DB에 이메일(계정)이 존재하면 DB에 저장된 Member 반환
+    }
+
+    /**
+     * 마이페이지 조회
+     */
+    public MyPageResponseDto getMyPage(String memberEmail) {
+
+        // memberEmail로 Member 찾아옴
+        Member findMember = findVerifiedMember(memberEmail);
+
+        // 찾아온 Member로 mycourseList와 myBookmarkedList 찾아옴
+        List<Course> myCourseList = courseRepository.findAllByMember(findMember);
+        List<Bookmark> myBookmarkedList = bookmarkRepository.findAllByMember(findMember);
+
+        // myCourseList를 순회하면서 newMemberCourseList에 값넣음
+        List<MemberCourse> newMemberCourseList = new ArrayList<>();
+        for(int i=0; i<myCourseList.size(); i++){
+            Course findCourse = myCourseList.get(i);
+            MemberCourse newMemberCourse = new MemberCourse(findCourse, findMember.getMemberNickname());
+            newMemberCourseList.add(newMemberCourse);
+        }
+
+        // myBookmarkedList를 순회하면서 newMemberBookmarkedList에 값넣음
+        List<MemberBookmarked> newMemberBookmarkedList = new ArrayList<>();
+        for(int i=0; i<myBookmarkedList.size(); i++){
+            Bookmark findBookmark = myBookmarkedList.get(i);
+            boolean likeStatus = likesRepository.findByMemberAndCourse(findMember, findBookmark.getCourse()).isPresent();
+            MemberBookmarked newMemberBookmarked = new MemberBookmarked(findBookmark.getCourse(), findMember.getMemberNickname(), likeStatus);
+            newMemberBookmarkedList.add(newMemberBookmarked);
+
+        }
+        // 업데이트시간 기준 정렬(최근 업데이트가 빠른 기준 내림차순 정렬)
+        newMemberCourseList.sort(Comparator.comparing(MemberCourse::getCourseUpdatedAt).reversed());
+        newMemberBookmarkedList.sort(Comparator.comparing(MemberBookmarked::getPostCreatedAt).reversed());
+
+        // MypageResponseDto에 값넣고 리턴
+        MyPageResponseDto myPageResponseDto = new MyPageResponseDto();
+        myPageResponseDto.setMemberCourseList(newMemberCourseList);
+        myPageResponseDto.setMemberBookmarkedList(newMemberBookmarkedList);
+
+        return myPageResponseDto;
     }
 
     /**
@@ -123,7 +119,6 @@ public class MemberService {
         findMember.setMemberNickname("탈퇴한 사용자");
     }
 
-
     // 이메일로 DB에서 회원을 조회하고, 현재 가입된 provider 정보 String으로 반환 (GOOGLE, NAVER, KAKAO, null)
     public String findExistEmailAndDiffProvider(String userEmail, String currentProvider) {
 
@@ -134,7 +129,7 @@ public class MemberService {
         if (optionalMember.isPresent() && optionalMember.get().getMemberProvider().toString().equalsIgnoreCase(currentProvider)) {
             return null;
         }
-        return optionalMember.isEmpty() ? null : optionalMember.get().getMemberProvider().toString();
+        return optionalMember.map(member -> member.getMemberProvider().toString()).orElse(null);
     }
 
     // DB에 이메일(계정) 존재 여부 Boolean 타입으로 반환
@@ -148,7 +143,7 @@ public class MemberService {
     public Member findExistMember(String userEmail) {
 
         Optional<Member> optionalMember = memberRepository.findByMemberEmail(userEmail);
-        return optionalMember.isEmpty() ? null : optionalMember.get();
+        return optionalMember.orElse(null);
     }
 
     // DB에서 회원 조회 (해당 email을 가진 회원이 없을 경우 예외)
@@ -161,5 +156,4 @@ public class MemberService {
     private Optional<Member> findDeletedMember(String memberEmail) {
         return memberRepository.findDeletedUserByMemberEmail(memberEmail);
     }
-
 }

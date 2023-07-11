@@ -1,7 +1,5 @@
 package com.seb_main_006.config;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seb_main_006.domain.member.service.MemberService;
 import com.seb_main_006.global.auth.filter.JwtVerificationFilter;
 import com.seb_main_006.global.auth.handler.MemberAccessDeniedHandler;
@@ -26,9 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import static org.springframework.security.config.Customizer.withDefaults;
-
 import java.util.*;
 
 @Configuration
@@ -41,7 +37,7 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
-    //필터체인 설정(초기라서 permitAll로 설정)
+    // 필터체인 설정(초기라서 permitAll로 설정)
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
@@ -54,7 +50,7 @@ public class SecurityConfiguration {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(new MemberAuthenticationEntryPoint(jwtTokenizer))  // (1) 추가
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())  // (1) 추가
                 .accessDeniedHandler(new MemberAccessDeniedHandler())
                 .and()
                 .apply(new CustomFilterConfigurer())
@@ -88,7 +84,7 @@ public class SecurityConfiguration {
     }
 
 
-    //CORS 설정(초기라서 우선 다 열어놓음)
+    // CORS 설정(초기라서 우선 다 열어놓음)
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

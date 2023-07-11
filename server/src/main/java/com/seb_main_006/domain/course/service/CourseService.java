@@ -15,18 +15,17 @@ import com.seb_main_006.global.util.DateConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import static com.seb_main_006.global.util.DateConverter.stringToDateConverter;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class CourseService {
+
     private final CourseRepository courseRepository;
     private final DestinationRepository destinationRepository;
     private final MemberService memberService;
@@ -44,17 +43,17 @@ public class CourseService {
 
         course.setMember(findmember);
 
-        //String -> LocalDate 타입변경
+        // String -> LocalDate 타입변경
         String time = coursePostDto.getCourseData().getCourseDday();
         LocalDate date = stringToDateConverter(time);
 
-        //Course 테이블에 저장
+        // Course 테이블에 저장
         course.setCourseDday(date);
         course.setCourseTitle(coursePostDto.getCourseData().getCourseTitle());
         course.setCourseContent(coursePostDto.getCourseData().getCourseContent());
         course.setCourseThumbnail(coursePostDto.getCourseData().getCourseThumbnail());
 
-        //Destination 테이블에 저장 할 리스트
+        // Destination 테이블에 저장 할 리스트
         List<DestinationPostDto> des = coursePostDto.getDestinationList();
         List<Destination> desList = course.getDestinations();
 
@@ -96,7 +95,7 @@ public class CourseService {
         Course findCourse = findVerifiedCourse(courseId);
         verifyMyCourse(findmember, findCourse);
 
-        //Course 테이블 수정
+        // Course 테이블 수정
         Optional.ofNullable(coursePostDto.getCourseData().getCourseDday()).ifPresent(courseDday -> {
             LocalDate date = stringToDateConverter(courseDday);
             findCourse.setCourseDday(date);
@@ -110,7 +109,7 @@ public class CourseService {
         desList.clear();
         destinationRepository.deleteAllByCourse(findCourse);
 
-        //Destination 테이블 수정
+        // Destination 테이블 수정
         for (int i = 0; i < des.size(); i++) {
             desPost(i, des, findCourse, desList);
         }
@@ -131,7 +130,6 @@ public class CourseService {
         courseRepository.delete(findCourse);
     }
 
-
     // 본인의 일정이 아닐 경우 예외 발생
     public void verifyMyCourse(Member member, Course course) {
         if (member.getMemberId().longValue() != course.getMember().getMemberId().longValue()) {
@@ -145,7 +143,7 @@ public class CourseService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COURSE_NOT_FOUND));
     }
 
-    //Post랑 Patch에서 사용할 목적지 저장 메소드
+    // Post랑 Patch에서 사용할 목적지 저장 메소드
     private void desPost(int i, List<DestinationPostDto> des, Course course, List<Destination> desList) {
         Destination newDes = new Destination();
         newDes.setPlaceSequence(i + 1);

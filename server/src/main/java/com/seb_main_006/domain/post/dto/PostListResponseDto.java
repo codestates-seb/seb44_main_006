@@ -1,13 +1,12 @@
 package com.seb_main_006.domain.post.dto;
 
-import com.seb_main_006.domain.post.dto.PostDataForList;
 import lombok.Data;
 import org.springframework.data.domain.Page;
-
 import java.util.List;
 
 @Data
 public class PostListResponseDto {
+
     private List<PostDataForList> data;
     private PageInfo pageInfo;
 
@@ -18,5 +17,4 @@ public class PostListResponseDto {
         this.pageInfo = new PageInfo(page.getNumber() + 1,
                 page.getSize(), page.getTotalElements(), page.getTotalPages());
     }
-
 }

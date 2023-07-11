@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public enum ExceptionCode {
+
     MEMBER_NOT_FOUND(404,"사용자를 찾을 수 없습니다."),
     MEMBER_EXISTS(409,"사용자가 이미 존재 합니다."),
     MEMBER_NO_HAVE_AUTHORIZATION(401,"인증되지 않은 사용자입니다."),
@@ -32,9 +33,6 @@ public enum ExceptionCode {
     CANT_LIKE_NOT_FOUND(404,"선택한 코스로 작성된 게시글이 없어 좋아요를 할 수 없습니다."),
     POST_NOT_FOUND(404,"게시글을 찾을 수 없습니다.");
 
-
-
-
     @Getter
     private int status;
 
@@ -46,5 +44,4 @@ public enum ExceptionCode {
         this.status = code;
         this.message = message;
     }
-
 }

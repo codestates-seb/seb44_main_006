@@ -12,11 +12,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
-
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.*;
@@ -26,10 +22,8 @@ import java.util.*;
 public class JwtTokenizer {
 
     private final ObjectMapper objectMapper;
-    private final CustomAuthorityUtils authorityUtils;
 
-
-    //환경 변수 정의
+    // 환경 변수 정의
     @Getter
     @Value("${jwt.key}")
     private String secretKey;
@@ -42,12 +36,12 @@ public class JwtTokenizer {
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
 
-    //Plain Text 형태인 Secret Key 의 byte 를 Base64 형식의 문자열로 인코딩해주는 메서드
+    // Plain Text 형태인 Secret Key 의 byte 를 Base64 형식의 문자열로 인코딩해주는 메서드
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    //인증된 사용자에게 JWT 를 최초로 발급해 주기 위한 JWT 생성 메서드
+    // 인증된 사용자에게 JWT 를 최초로 발급해 주기 위한 JWT 생성 메서드
     public String generateAccessToken(Map<String, Object> claims,
                                       Subject subject,
                                       Date expiration,
@@ -76,7 +70,7 @@ public class JwtTokenizer {
         return generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
     }
 
-    //Access Token 이 만료되었을 경우, Access Token 을 새로 생성할 수 있게 해주는 Refresh Token 을 생성하는 메서드
+    // Access Token 이 만료되었을 경우, Access Token 을 새로 생성할 수 있게 해주는 Refresh Token 을 생성하는 메서드
     public String generateRefreshToken(Subject subject, Date expiration, String base64EncodedSecretKey) throws JsonProcessingException {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
         String subjectStr = objectMapper.writeValueAsString(subject);
@@ -90,6 +84,7 @@ public class JwtTokenizer {
     }
 
     public Jws<Claims> getClaims(String token) {
+
         return getClaims(token, encodeBase64SecretKey(secretKey));
     }
 
@@ -101,16 +96,6 @@ public class JwtTokenizer {
                 .build()
                 .parseClaimsJws(jws);
         return claims;
-    }
-
-    //JWT 에 포함된 Signature 를 검증함으로써 JWT 의 위/변조 여부를 확인해주는 메서드
-    public void verifySignature(String jws, String base64EncodedSecretKey) {
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
-
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jws);
     }
 
     // JWT 의 만료 일시를 지정하기 위한 메서드
@@ -138,6 +123,4 @@ public class JwtTokenizer {
         String subjectStr = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
         return objectMapper.readValue(subjectStr, Subject.class);
     }
-
-
 }

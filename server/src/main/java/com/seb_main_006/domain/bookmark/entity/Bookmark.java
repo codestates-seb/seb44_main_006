@@ -27,5 +27,4 @@ public class Bookmark {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course; // course entity와 연관관계 매핑(다:1)
-
 }

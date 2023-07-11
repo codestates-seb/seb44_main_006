@@ -7,10 +7,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AnswerResponseDto {
+
     private String answerId;
+
     private String answererEmail;
+
     private String answererNickname;
+
     private String answerContent;
+
     private String answererImageUrl;
+
     private String answerUpdatedAt;
 }

@@ -5,7 +5,6 @@ import com.seb_main_006.global.exception.ExceptionCode;
 import com.seb_main_006.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 

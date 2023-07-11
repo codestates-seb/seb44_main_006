@@ -1,13 +1,10 @@
 package com.seb_main_006.domain.member.entity;
 
 import com.seb_main_006.domain.answer.entity.Answer;
-import com.seb_main_006.domain.bookmark.entity.Bookmark;
 import com.seb_main_006.domain.course.entity.Course;
-import com.seb_main_006.domain.like.entity.Likes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +43,7 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Answer> answersInMember = new ArrayList<>(); // answer entity와 연관관계 매핑(1:다)
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Likes> likesInMember = new ArrayList<>(); // like entity와 연관관계 매핑(1:다)
-//
-//    @OneToMany(mappedBy = "member")
-//    private List<Bookmark> bookmarksInMember = new ArrayList<>(); // bookmark entity와 연관관계 매핑(1:다)
-
-    //로그인 할때 소셜에서 받아온 값들 저장용
+    // 로그인 할때 소셜에서 받아온 값들 저장용
     public Member(String email, String nickname, String imgURL, String provider) {
         this.memberEmail = email;
         this.memberNickname = nickname;
@@ -95,5 +86,4 @@ public class Member {
         this.setMemberImageUrl(newMember.getMemberImageUrl());
         this.setMemberProvider(newMember.getMemberProvider());
     }
-
 }

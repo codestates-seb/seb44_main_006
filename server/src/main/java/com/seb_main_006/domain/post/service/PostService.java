@@ -1,8 +1,6 @@
 package com.seb_main_006.domain.post.service;
 
-import com.seb_main_006.domain.answer.dto.AnswerResponseDto;
 import com.seb_main_006.domain.course.dto.CourseInfoDto;
-import com.seb_main_006.domain.course.dto.DestinationPostDto;
 import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
 import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.course.repository.CourseRepository;
@@ -30,8 +28,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +36,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
+
     private final MemberService memberService;
     private final CourseService courseService;
     private final TagRepository tagRepository;
@@ -51,32 +48,34 @@ public class PostService {
     private final BookmarkRepository bookmarkRepository;
     private final JwtTokenizer jwtTokenizer;
 
-
+    /**
+     * 게시글 생성
+     */
     public Post createPost(PostPostDto postPostDto, String memberEmail) {
 
         Member findmember = memberService.findVerifiedMember(memberEmail);
         Course findcourse = courseService.findVerifiedCourse(postPostDto.getCourseId());
 
-        courseService.verifyMyCourse(findmember, findcourse); //코스 작성자와 현재 로그인한 작성자가 동일한지 확인
+        courseService.verifyMyCourse(findmember, findcourse); // 코스 작성자와 현재 로그인한 작성자가 동일한지 확인
 
-        verifyExistCourse(findcourse); //작성한 코스가 있으면 예외처리
+        verifyExistCourse(findcourse); // 작성한 코스가 있으면 예외처리
 
-        Post post = new Post(); //새로 저장할 Post 선언
+        Post post = new Post(); // 새로 저장할 Post 선언
 
-        post.setPostContent(postPostDto.getPostContent()); //저장할 post에 게시글내용과 코스 저장
+        post.setPostContent(postPostDto.getPostContent()); // 저장할 post에 게시글내용과 코스 저장
 
-        post.addCourse(findcourse); //Post에 코스 저장(연관관계 매핑)
+        post.addCourse(findcourse); // Post에 코스 저장(연관관계 매핑)
 
-        List<String> inputTags = postPostDto.getTags(); //입력받은 태그 리스트를 postPostDto에서 꺼내옴
+        List<String> inputTags = postPostDto.getTags(); // 입력받은 태그 리스트를 postPostDto에서 꺼내옴
 
-        //입력받은 태그 리스트의 길이만큼 반복
+        // 입력받은 태그 리스트의 길이만큼 반복
         for (int i = 0; i < inputTags.size(); i++) {
 
-            String tagName = inputTags.get(i); //입력받은 태그 이름 인덱스로 꺼내옴
+            String tagName = inputTags.get(i); // 입력받은 태그 이름 인덱스로 꺼내옴
 
-            PostTag newPostTag = new PostTag(); //저장할 새로운 PostTag선언
+            PostTag newPostTag = new PostTag(); // 저장할 새로운 PostTag선언
 
-            Optional<Tag> optionalTag = tagRepository.findByTagName(tagName); //Tag테이블에서 tagName으로 값이 존재하는 지 확인
+            Optional<Tag> optionalTag = tagRepository.findByTagName(tagName); // Tag테이블에서 tagName으로 값이 존재하는 지 확인
 
             // 존재할 경우 newPostTag에 가져온 tag 저장
             if (optionalTag.isPresent()) {
@@ -92,12 +91,12 @@ public class PostService {
             post.getPostTagsInPost().add(newPostTag);// post의 PostTagsInpost리스트에 newPostTag 추가(연관관계 매핑)
         }
 
-        //포스팅 여부 처리
+        // 포스팅 여부 처리
         boolean posted = findcourse.isPosted();
         findcourse.setPosted(!posted);
         courseRepository.save(findcourse);
 
-        //Post 테이블에 저장
+        // Post 테이블에 저장
         return postRepository.save(post);
     }
 
@@ -135,7 +134,6 @@ public class PostService {
 
         return response;
     }
-
 
     /**
      * 게시글 리스트 조회 (+ 태그 검색)
@@ -192,47 +190,46 @@ public class PostService {
         return new PostListResponseDto(postDataList, pageResult);
     }
 
-    /**
-     * 태그로 게시글 (미사용)
-     */
-    public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) {
-        Member member = new Member(0L);
-        PageRequest pageRequest = PageRequest.of(page, limit);
-
-        // 토큰 관련 예외 모두 통과시키기
-        if (accessToken != null && !accessToken.equals("")) {
-            String memberEmail = "";
-            try {
-                memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
-                member = memberService.findVerifiedMember(memberEmail);
-            }
-            catch (Exception e){}
-        }
-
-        // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
-        List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
-
-        // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
-        Page<Course> pageResult = null;
-        if (sort == null) {
-            pageResult = postTagRepository.findByTagInOrderByUpdatedAt(findTagList, pageRequest);
-        } else {
-            pageResult = postTagRepository.findByTagInOrderByLikeCount(findTagList, pageRequest);
-        }
-
-        // 응답 데이터 형식으로 변환해서 리턴 (없는 데이터 : likeStatus, bookmarkStatus)
-        List<PostDataForList> postDataList = new ArrayList<>();
-
-        for (Course course : pageResult.getContent()) {
-            boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
-            boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
-            PostDataForList dataForList = PostDataForList.of(course, likeStatus, bookmarkStatus);
-            postDataList.add(dataForList);
-        }
-
-        return new PostListResponseDto(postDataList, pageResult);
-    }
-
+//    /**
+//     * 태그로 게시글 (미사용)
+//     */
+//    public PostListResponseDto getPostListByTag(String tagName, int page, int limit, String sort, String accessToken) {
+//        Member member = new Member(0L);
+//        PageRequest pageRequest = PageRequest.of(page, limit);
+//
+//        // 토큰 관련 예외 모두 통과시키기
+//        if (accessToken != null && !accessToken.equals("")) {
+//            String memberEmail = "";
+//            try {
+//                memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+//                member = memberService.findVerifiedMember(memberEmail);
+//            }
+//            catch (Exception e){}
+//        }
+//
+//        // tagName 으로 tag 찾은 후, 해당 태그들을 가진 Course Page로 조회
+//        List<Tag> findTagList = tagRepository.findByTagNameContaining(tagName);
+//
+//        // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
+//        Page<Course> pageResult = null;
+//        if (sort == null) {
+//            pageResult = postTagRepository.findByTagInOrderByUpdatedAt(findTagList, pageRequest);
+//        } else {
+//            pageResult = postTagRepository.findByTagInOrderByLikeCount(findTagList, pageRequest);
+//        }
+//
+//        // 응답 데이터 형식으로 변환해서 리턴 (없는 데이터 : likeStatus, bookmarkStatus)
+//        List<PostDataForList> postDataList = new ArrayList<>();
+//
+//        for (Course course : pageResult.getContent()) {
+//            boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
+//            boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
+//            PostDataForList dataForList = PostDataForList.of(course, likeStatus, bookmarkStatus);
+//            postDataList.add(dataForList);
+//        }
+//
+//        return new PostListResponseDto(postDataList, pageResult);
+//    }
 
     /**
      * 게시글 삭제
@@ -257,7 +254,7 @@ public class PostService {
 
     }
 
-    //해당 코스로 작성된 게시글이 있는지 확인하는 메소드
+    // 해당 코스로 작성된 게시글이 있는지 확인하는 메소드
     private void verifyExistCourse(Course course) {
         if (postRepository.findByCourse(course).isPresent()) {
             throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
@@ -276,5 +273,4 @@ public class PostService {
         Post post = findVerifiedPost(postId);
         post.getCourse().setCourseViewCount(post.getCourse().getCourseViewCount() + 1);
     }
-
 }

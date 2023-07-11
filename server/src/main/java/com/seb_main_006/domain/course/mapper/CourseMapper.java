@@ -8,13 +8,10 @@ import com.seb_main_006.domain.destination.entity.Destination;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CourseMapper {
-
-    CourseData courseToCourseData(Course course);
 
     DestinationPostDto destinationToDestinationDto(Destination destination);
 
@@ -25,5 +22,4 @@ public interface CourseMapper {
     @Mapping(source = "courseContent", target = "courseData.courseContent")
     @Mapping(source = "courseThumbnail", target = "courseData.courseThumbnail")
     CoursePostDto courseToCourseDto(Course course);
-
 }

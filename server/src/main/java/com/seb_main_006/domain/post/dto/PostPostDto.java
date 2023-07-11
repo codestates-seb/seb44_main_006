@@ -2,7 +2,6 @@ package com.seb_main_006.domain.post.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.List;
 
 @Getter
@@ -14,5 +13,4 @@ public class PostPostDto {
     private String postContent;
 
     private List<String> tags;
-
 }

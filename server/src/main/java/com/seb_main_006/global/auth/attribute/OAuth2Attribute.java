@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import java.util.Map;
 @Builder(access = AccessLevel.PRIVATE)
 @Getter
 public class OAuth2Attribute {
+
     private Map<String, Object> attributes;
     private String attributeKey;
     private String provider;

@@ -81,7 +81,6 @@ public class Course {
         this.getLikesInCourse().clear();
         this.getBookmarksInCourse().clear();
     }
-
 }
 
 

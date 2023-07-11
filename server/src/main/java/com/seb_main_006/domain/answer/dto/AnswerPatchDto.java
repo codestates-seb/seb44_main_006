@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AnswerPatchDto {
+
     private String answerContent;
 }
