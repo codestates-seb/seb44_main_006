@@ -41,7 +41,7 @@ const CommunityPage = () => {
   const { selectTab, setTab } = useHandleTab();
   const [tagName, setTagName] = useState<string>('');
 
-  const { data, fetchNextPage, isSuccess, hasNextPage } =
+  const { data, fetchNextPage, isSuccess, hasNextPage, error } =
     useInfiniteScrollQuery({
       limit: LIMIT,
       tagName: tagName || '',
@@ -57,7 +57,7 @@ const CommunityPage = () => {
     }
   };
 
-  if (!isSuccess) {
+  if (error) {
     goToError();
   }
 
