@@ -1,9 +1,9 @@
-
 import { styled } from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { PatchMemNickname } from '../../apis/api';
@@ -17,7 +17,7 @@ interface isNickNameT {
   isValidate?: boolean;
   toggleNickname?: boolean;
   size?: number;
-};
+}
 
 const UserInfoContainer = styled.section`
   width: 100%;
@@ -41,12 +41,10 @@ const WriteBtn = styled.button<isNickNameT>`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: ${(props) =>
-    props.toggleNickname ? 'absolute' : 'unset'};
+  position: ${(props) => (props.toggleNickname ? 'absolute' : 'unset')};
   top: ${(props) =>
     props.toggleNickname ? (props.isValidate ? '45%' : '35%') : 'unset'};
-  right: ${(props) =>
-    props.toggleNickname ? '0.3125rem' : 'unset'};
+  right: ${(props) => (props.toggleNickname ? '0.3125rem' : 'unset')};
   transform: ${(props) =>
     props.toggleNickname ? 'translate(0, -50%)' : 'unset'};
 `;
@@ -59,10 +57,10 @@ const RightWrap = styled.div`
   flex: 1;
 
   > button {
-   align-items: center;
-   justify-content: center;
-   padding: 1.1rem 0.98rem 0.98rem;
-   font-size: 14px;
+    align-items: center;
+    justify-content: center;
+    padding: 1.1rem 0.98rem 0.98rem;
+    font-size: 14px;
   }
 `;
 
@@ -105,14 +103,14 @@ const UserInfoBox = () => {
     setToggleNickname(!toggleNickname);
   };
 
-  const onChangeName = ((e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setUserOAuthActions.paintMemNickname(e.target.value));
     if (e.target.value.length < 2 || e.target.value.length > 10) {
       setIsName(false);
     } else {
       setIsName(true);
     }
-  });
+  };
 
   const paintNickname = (e: React.FormEvent<HTMLFormElement>) => {
     if (isName) {
@@ -174,7 +172,7 @@ const UserInfoBox = () => {
                 ref={memNicknameRef}
                 isValidate={isName}
                 styles={{
-                  width: "100%"
+                  width: '100%',
                 }}
               />
               <WriteBtn isValidate={isName} toggleNickname={toggleNickname}>
@@ -198,7 +196,7 @@ const UserInfoBox = () => {
         </SkyBlueButton>
       </RightWrap>
     </UserInfoContainer>
-  )
+  );
 };
 
 export default UserInfoBox;
