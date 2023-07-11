@@ -33,7 +33,7 @@ const QuillDiv = styled(GapDiv)`
 const PostCommunitypage = () => {
   const scheduleid = useLocation().state as string;
   const quillRef = useRef<ReactQuill>(null);
-  const gotoBack = useMovePage('/community/select');
+  const gotoBack = useMovePage('/community/select', null, true);
   const navigate = useNavigate();
   const modalIsOpen = useSelector((state: RootState) => state.overlay.isOpen);
   const toggleModal = useToggleModal();
@@ -47,7 +47,9 @@ const PostCommunitypage = () => {
   });
   const mutation = useMutation(PostCommunity, {
     onSuccess(data) {
-      navigate(`/community/${data.headers.location as string}`);
+      navigate(`/community/${data.headers.location as string}`, {
+        replace: true,
+      });
     },
   });
 
