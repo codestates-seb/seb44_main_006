@@ -5,19 +5,14 @@ import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
 import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.course.repository.CourseRepository;
 import com.seb_main_006.domain.course.service.CourseService;
-import com.seb_main_006.domain.like.entity.Likes;
-import com.seb_main_006.domain.like.repository.LikesRepository;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
-import com.seb_main_006.domain.post.service.PostService;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Book;
 import java.util.Optional;
 
 @Service
