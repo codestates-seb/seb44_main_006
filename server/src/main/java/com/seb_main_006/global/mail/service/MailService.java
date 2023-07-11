@@ -4,6 +4,7 @@ import com.seb_main_006.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -17,6 +18,7 @@ public class MailService {
     private final JavaMailSender javaMailSender;
     private final Context context;
 
+    @Async
     public void send(Member member) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
