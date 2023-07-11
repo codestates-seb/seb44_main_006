@@ -97,6 +97,8 @@ const MyPage = () => {
 
   const memberCourseList = userInfoData?.data?.memberCourseList[0];
   const memberBookmarkedList = userInfoData?.data?.memberBookmarkedList;
+
+  console.log(userAuthInfo);
   console.log(memberCourseList);
 
 
