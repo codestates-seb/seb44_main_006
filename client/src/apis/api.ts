@@ -2,10 +2,10 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 import { PostReqT } from '../types/apitype';
 
-const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+// const PROXY = window.location.hostname === 'localhost' ? '' : '';
 
 export const instance = axios.create({
-  baseURL: PROXY,
+  // baseURL: PROXY,
   headers: {
     'Content-Type': 'application/json',
   },

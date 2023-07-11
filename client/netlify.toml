@@ -1,5 +1,10 @@
 [[redirects]]
-  from = "/proxy/*"
-  to = "http://ec2-13-125-172-34.ap-northeast-2.compute.amazonaws.com:8080/:splat"
+  from = "/api/*"
+  to = "/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = '/*'
+  status = 200
+  to = '/index.html'
