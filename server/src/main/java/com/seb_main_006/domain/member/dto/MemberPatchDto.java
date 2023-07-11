@@ -8,5 +8,4 @@ public class MemberPatchDto {
 
     @NotBlank
     private String memberNickname;
-
 }

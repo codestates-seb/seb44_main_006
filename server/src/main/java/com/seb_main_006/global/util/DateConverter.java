@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class DateConverter {
 
-    //스트링으로 들어온 날짜를 LocalDate로 변환("yyyyMMdd")
+    // 스트링으로 들어온 날짜를 LocalDate로 변환("yyyyMMdd")
     public static LocalDate stringToDateConverter(String dateString){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -14,7 +14,7 @@ public class DateConverter {
         return date;
     }
 
-    //LocalDate 형태를 요일을 붙여서 String으로 return
+    // LocalDate 형태를 요일을 붙여서 String으로 return
     public static String localDateToStringWithDay(LocalDate date) {
 
         DateTimeFormatter myFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, E");

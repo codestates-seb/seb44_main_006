@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-//클라이언트 측에서 전송된 request header 에 포함된 JWT 에 대해 검증 작업을 수행하는 클래스
+/**
+ * 클라이언트 측에서 전송된 request header 에 포함된 JWT 에 대해 검증 작업을 수행하는 클래스
+ */
 @Slf4j
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
@@ -41,6 +43,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         this.authorityUtils = authorityUtils;
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     }
+
 
     // JWT 를 검증하고 Authentication 객체를 SecurityContext 에 저장하기 위한 private 메서드
     @Override
@@ -91,11 +94,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", e);
         }
 
-        log.info("check2");
         filterChain.doFilter(request, response);
     }
 
-    //조건에 부합하지 않으면 이 필터를 적용하지 않고 다음 필터로 넘어감
+    // 조건에 부합하지 않으면 이 필터를 적용하지 않고 다음 필터로 넘어감
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
@@ -103,17 +105,17 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         return requestURI.equals("/auth/members") || requestURI.startsWith("/posts/tagged");
     }
 
-    //JWT 를 검증하는 데 사용되는 private 메서드
+    // JWT 를 검증하는 데 사용되는 private 메서드
     private Map<String, Object> verifyJws(HttpServletRequest request, String token) {
-//        String jws = request.getHeader("Authorization").replace("Bearer ", "");
+
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
         return jwtTokenizer.getClaims(token, base64EncodedSecretKey).getBody();
     }
 
-    //Authentication 객체를 SecurityContext 에 저장하기 위한 private 메서드
+    // Authentication 객체를 SecurityContext 에 저장하기 위한 private 메서드
     protected void setAuthenticationToContext(String token, Boolean isReissue) throws JsonProcessingException {
-        log.info("check1");
+
         Jws<Claims> claims = jwtTokenizer.getClaims(token);
         List<String> roles = null;
         String username = null;
@@ -134,5 +136,4 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal, "", authorities);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
-
 }

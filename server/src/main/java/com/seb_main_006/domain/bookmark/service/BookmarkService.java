@@ -29,33 +29,32 @@ public class BookmarkService {
     private final CourseRepository courseRepository;
     private final MemberService memberService;
     private final CourseService courseService;
-    private final PostService postService;
 
     public void clickBookmark(Long courseId, String memberEmail) {
 
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Course findCourse = courseService.findVerifiedCourse(courseId);
 
-        //생성된 게시글이 없을 시 예외처리
+        // 생성된 게시글이 없을 시 예외처리
         if(!findCourse.isPosted()){
             throw new BusinessLogicException(ExceptionCode.CANT_BOOKMARK_NOT_FOUND);
         }
         Optional<Bookmark> findBookmarks = bookmarkRepository.findBookmarkByCourse(findCourse);
 
-        //현재 로그인한 멤버의 멤버id
+        // 현재 로그인한 멤버의 멤버id
         Long findMemberId = findMember.getMemberId();
 
-        //코스를 등록한 사람의 멤버id
+        // 코스를 등록한 사람의 멤버id
         Long courseMemberId = findCourse.getMember().getMemberId();
 
-        //본인 글에는 즐겨찾기 불가능(물어봐야함)
+        // 본인 글에는 즐겨찾기 불가능(물어봐야함)
         if(findMemberId == courseMemberId){
             throw new BusinessLogicException(ExceptionCode.CANT_BOOKMARK);
         }
 
         Bookmark newBookmark = new Bookmark();
 
-        //이미 즐겨찾기 누른상태(Likes테이블에 courseId로 검색한 결과가 있을경우)
+        // 이미 즐겨찾기 누른상태(Likes테이블에 courseId로 검색한 결과가 있을경우)
         if(findBookmarks.isPresent()){
             bookmarkRepository.delete(findBookmarks.get());// Likes 테이블에서 삭제;
         }
@@ -74,5 +73,4 @@ public class BookmarkService {
     public int getBookmarkCount(Member member) {
         return bookmarkRepository.countBookmarksByMember(member);
     }
-
 }

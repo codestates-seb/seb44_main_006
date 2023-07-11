@@ -3,9 +3,7 @@ package com.seb_main_006.domain.answer.controller;
 import com.seb_main_006.domain.answer.dto.AnswerPatchDto;
 import com.seb_main_006.domain.answer.dto.AnswerPostDto;
 import com.seb_main_006.domain.answer.entity.Answer;
-import com.seb_main_006.domain.answer.repository.AnswerRepository;
 import com.seb_main_006.domain.answer.service.AnswerService;
-import com.seb_main_006.domain.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;

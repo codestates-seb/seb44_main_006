@@ -1,9 +1,9 @@
 package com.seb_main_006.domain.post.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class PageInfo {
 
@@ -14,5 +14,4 @@ public class PageInfo {
     private long totalElement;
 
     private int totalPages;
-
 }

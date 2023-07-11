@@ -1,6 +1,5 @@
 package com.seb_main_006.domain.tag.entity;
 
-import com.seb_main_006.domain.post.entity.PostTag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
