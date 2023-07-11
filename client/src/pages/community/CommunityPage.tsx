@@ -15,7 +15,7 @@ import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 import { LIMIT } from '../../utils/constant/constant';
 
 const Wrapper = styled(FlexDiv)`
-  margin-top: 77px;
+  margin-top: 3.125rem;
   width: 100%;
   flex-direction: column;
   align-items: center;
@@ -62,12 +62,12 @@ const CommunityPage = () => {
         <form onSubmit={SearchPost}>
           <SearchContainer
             ref={searchInputRef}
-            iconWidth={39}
-            iconHeight={39}
+            iconWidth={24}
+            iconHeight={24}
             styles={{
-              width: '740px',
-              height: '86px',
-              fontsize: cssToken.TEXT_SIZE['text-24'],
+              width: '500px',
+              height: '50px',
+              fontsize: cssToken.TEXT_SIZE['text-18'],
             }}
             callback={SearchPost}
           />

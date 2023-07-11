@@ -25,7 +25,7 @@ const OutsideWrap = styled(FlexDiv)`
 
 const OverFlowDiv = styled.div`
   height: 62vh;
-  overflow-y: scroll;
+  overflow: auto;
 `;
 
 const EmptyDiv = styled(FlexDiv)`

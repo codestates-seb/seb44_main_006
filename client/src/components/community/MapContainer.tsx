@@ -26,7 +26,7 @@ const MapDiv = styled.div`
 `;
 
 const LocationCardWrapper = styled.div`
-  overflow-y: scroll;
+  overflow: auto;
 `;
 
 const MapContainer = ({
