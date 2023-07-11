@@ -72,6 +72,8 @@ const Header = () => {
   const refreshToken = searchParams.get('refresh_token');
   const navigate = useNavigate();
   const gotoMain = useMovePage('/');
+  const gotoCommunity = useMovePage('/community');
+  const gotoMypage = useMovePage('/mypage');
   const dispatch = useDispatch();
   const [isPath, setIsPath] = useState<string>('');
   const location = useLocation();
@@ -217,6 +219,7 @@ const Header = () => {
               로그아웃
             </WhiteButton>
             <SkyBlueButton
+              onClick={gotoMypage}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
@@ -235,10 +238,11 @@ const Header = () => {
               로그아웃
             </WhiteButton>
             <SkyBlueButton
+              onClick={isPath === '/mypage' ? gotoCommunity : gotoMypage}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
-              {isPath === '/community' ? '마이페이지' : '커뮤니티'}
+              {isPath === '/mypage' ? '커뮤니티' : '마이페이지'}
             </SkyBlueButton>
           </>
         )}
