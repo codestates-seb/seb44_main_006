@@ -39,18 +39,10 @@ public class BookmarkService {
         if(!findCourse.isPosted()){
             throw new BusinessLogicException(ExceptionCode.CANT_BOOKMARK_NOT_FOUND);
         }
-        Optional<Bookmark> findBookmarks = bookmarkRepository.findBookmarkByCourse(findCourse);
+        Optional<Bookmark> findBookmarks = bookmarkRepository.findByMemberAndCourse(findMember, findCourse);
 
-        // 현재 로그인한 멤버의 멤버id
-        Long findMemberId = findMember.getMemberId();
-
-        // 코스를 등록한 사람의 멤버id
-        Long courseMemberId = findCourse.getMember().getMemberId();
-
-        // 본인 글에는 즐겨찾기 불가능(물어봐야함)
-        if(findMemberId == courseMemberId){
-            throw new BusinessLogicException(ExceptionCode.CANT_BOOKMARK);
-        }
+        // 현재 로그인한 멤버의 멤버id와 일정 생성한 멤버id가 동일하면 예외 발생
+        courseService.verifyMyCourse(findMember, findCourse);
 
         Bookmark newBookmark = new Bookmark();
 
