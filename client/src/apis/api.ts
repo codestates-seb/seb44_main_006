@@ -3,23 +3,23 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { PostReqT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
-const accessToken = localStorage.getItem('accessToken');
-const refreshToken = localStorage.getItem('refreshToken');
 
 export const instance = axios.create({
   baseURL: PROXY,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: accessToken,
-    RefreshToken: refreshToken,
   },
 });
 
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    config.headers.Authorization = accessToken;
-    config.headers.RefreshToken = refreshToken;
-    return config;
+    const newConfig = { ...config };
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    newConfig.headers.Authorization = accessToken;
+    newConfig.headers.RefreshToken = refreshToken;
+    return newConfig;
   },
   (error: AxiosError) => {
     return Promise.reject(error);
