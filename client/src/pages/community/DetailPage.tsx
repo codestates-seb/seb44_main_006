@@ -51,8 +51,6 @@ const DetailPage = () => {
     select: (data: { data: CommunityDetailT }) => data.data,
   });
 
-  console.log(detailData);
-
   const queryClient = useQueryClient();
   const mutation = useMutation(PostComment, {
     onSuccess: () => {
@@ -68,6 +66,10 @@ const DetailPage = () => {
     } else {
       setValidate(false);
     }
+  };
+  const handleCommentChange = () => {
+    if (textAreaRef.current && textAreaRef.current.value.trim().length > 0)
+      setValidate(true);
   };
   return (
     <OutsideWrap>
@@ -118,6 +120,7 @@ const DetailPage = () => {
 
       <form onSubmit={onSubmit}>
         <TextArea
+          onChange={handleCommentChange}
           maxLength={1000}
           ref={textAreaRef}
           description={

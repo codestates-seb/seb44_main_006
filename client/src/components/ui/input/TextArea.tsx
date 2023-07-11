@@ -30,6 +30,7 @@ const TextArea = forwardRef(
       styles,
       disabled,
       isValidate,
+      onChange,
     }: {
       description: string;
       minLength?: number;
@@ -37,23 +38,19 @@ const TextArea = forwardRef(
       styles?: TextareaT;
       disabled?: boolean;
       isValidate?: boolean;
+      onChange?: () => void;
     },
     ref?: ForwardedRef<HTMLTextAreaElement>
   ) => {
-    const errorMessage =
-      minLength &&
-      maxLength &&
-      `${minLength}자에서 ${maxLength}자 사이로 입력해주세요.`;
     return (
       <>
         <Content
+          onChange={onChange}
           ref={ref}
           {...styles}
           placeholder={description}
           minLength={minLength || 1}
           maxLength={maxLength || 5124288}
-          required
-          title={errorMessage || ''}
           wrap="vertical"
           disabled={disabled}
         />

@@ -159,7 +159,7 @@ const ContensCard = ({
           {isLogin && !isMine && likeStatus !== undefined && courseId && (
             <LikeButton isActive={likeStatus} courseId={courseId} />
           )}
-          <DataText>{likeCount}개</DataText>
+          <DataText>{likeCount} likes</DataText>
         </LikeBtnBox>
         <DataText>{date}</DataText>
       </ContensBottom>
