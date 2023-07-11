@@ -1,7 +1,8 @@
 import { styled } from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
+import { AxiosError } from 'axios';
 
 import InfoContainer from '../../components/community/detail/InfoContainer';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
@@ -41,17 +42,16 @@ const CommentBtn = styled(FlexDiv)`
 
 const DetailPage = () => {
   const isLogin = getLoginStatus();
+  const navigate = useNavigate();
   const [isValidate, setValidate] = useState(true);
   const { postId } = useParams() as { postId: string };
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const { data: detailData } = useQuery({
+  const { data: detailData, error } = useQuery({
     queryKey: ['communityDetail'],
     queryFn: () => GetCommunityPost({ postId }),
     refetchOnWindowFocus: false,
     select: (data: { data: CommunityDetailT }) => data.data,
   });
-
-  console.log(detailData);
 
   const queryClient = useQueryClient();
   const mutation = useMutation(PostComment, {
@@ -59,7 +59,12 @@ const DetailPage = () => {
       if (textAreaRef.current) textAreaRef.current.value = '';
       return queryClient.invalidateQueries(['communityDetail']);
     },
+    onError: (err) => {
+      const { response } = err as AxiosError;
+      if (response) navigate(`/error/${response.status}`);
+    },
   });
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (textAreaRef.current && textAreaRef.current.value.trim().length > 0) {
@@ -69,6 +74,16 @@ const DetailPage = () => {
       setValidate(false);
     }
   };
+  const handleCommentChange = () => {
+    if (textAreaRef.current && textAreaRef.current.value.trim().length > 0)
+      setValidate(true);
+  };
+
+  if (error) {
+    // Todo error 객체 확인
+    navigate(`/error/500`);
+  }
+
   return (
     <OutsideWrap>
       <Title styles={{ size: cssToken.TEXT_SIZE['text-40'] }}>
@@ -118,6 +133,7 @@ const DetailPage = () => {
 
       <form onSubmit={onSubmit}>
         <TextArea
+          onChange={handleCommentChange}
           maxLength={1000}
           ref={textAreaRef}
           description={

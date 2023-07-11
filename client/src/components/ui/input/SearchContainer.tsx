@@ -52,7 +52,12 @@ const SearchContainer = forwardRef(
   ) => {
     return (
       <InputWrapper>
-        <Input ref={ref} type="text" placeholder="성심당" {...styles} />
+        <Input
+          ref={ref}
+          type="text"
+          placeholder="검색어를 입력해주세요."
+          {...styles}
+        />
         <Search
           style={{
             iconWidth: iconWidth || 25,

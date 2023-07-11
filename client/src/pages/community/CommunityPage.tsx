@@ -15,7 +15,7 @@ import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 import { LIMIT } from '../../utils/constant/constant';
 
 const Wrapper = styled(FlexDiv)`
-  margin-top: 77px;
+  margin-top: 3.125rem;
   width: 100%;
   flex-direction: column;
   align-items: center;
@@ -35,12 +35,13 @@ const FixedDiv = styled.div`
 
 const CommunityPage = () => {
   const goToSelect = useMovePage('/community/select');
+  const goToError = useMovePage('/error/500');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isLogin = getLoginStatus();
   const { selectTab, setTab } = useHandleTab();
   const [tagName, setTagName] = useState<string>('');
 
-  const { data, fetchNextPage, isSuccess, hasNextPage } =
+  const { data, fetchNextPage, isSuccess, hasNextPage, error } =
     useInfiniteScrollQuery({
       limit: LIMIT,
       tagName: tagName || '',
@@ -56,18 +57,22 @@ const CommunityPage = () => {
     }
   };
 
+  if (error) {
+    goToError();
+  }
+
   return (
     <>
       <Wrapper>
         <form onSubmit={SearchPost}>
           <SearchContainer
             ref={searchInputRef}
-            iconWidth={39}
-            iconHeight={39}
+            iconWidth={24}
+            iconHeight={24}
             styles={{
-              width: '740px',
-              height: '86px',
-              fontsize: cssToken.TEXT_SIZE['text-24'],
+              width: '500px',
+              height: '50px',
+              fontsize: cssToken.TEXT_SIZE['text-18'],
             }}
             callback={SearchPost}
           />

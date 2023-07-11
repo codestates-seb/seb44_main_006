@@ -29,7 +29,7 @@ const FilterTab = ({
     >
       <Text
         styles={{
-          size: cssToken.TEXT_SIZE['text-32'],
+          size: cssToken.TEXT_SIZE['text-24'],
           color: selectTab === tab ? 'black' : '#DCDCDC',
         }}
       >
