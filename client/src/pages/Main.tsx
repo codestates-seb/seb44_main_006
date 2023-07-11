@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { overlayActions } from '../store/overlay-slice';
 import { setUserOAuthActions } from '../store/userAuth-slice';
 import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
@@ -84,9 +83,7 @@ const ScheduleSection = styled(SectionBox)`
 const Main = () => {
   const [isHovered, setIsHovered] = useState<boolean>(true);
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
-  const LoginmodalIsOpen = useSelector(
-    (state: RootState): boolean => state.userAuth.isLoginOpen
-  );
+
   const dispatch = useDispatch();
 
   const handleMouseEnter = () => {
@@ -115,7 +112,7 @@ const Main = () => {
       </CommunitySection>
       <ScheduleSection>
         <MainLink
-          onClick={isLoggedIn ? null : LogintoggleModal}
+          onClick={isLoggedIn ? undefined : LogintoggleModal}
           to={isLoggedIn ? '/register' : '/'}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

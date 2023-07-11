@@ -72,7 +72,7 @@ public class CourseService {
 
         Member findmember = memberService.findVerifiedMember(memberEmail);
         Course findCourse = findVerifiedCourse(courseId);
-        verifyMyCourse(findmember, findCourse); // 본인의 일정인지 확인
+        verifyNotMyCourse(findmember, findCourse); // 본인의 일정인지 확인
 
         String dateString = DateConverter.localDateToStringWithDay(findCourse.getCourseDday()); // Dday를 요일 정보 추가한 String 으로 변환
 
@@ -93,7 +93,7 @@ public class CourseService {
 
         Member findmember = memberService.findVerifiedMember(memberEmail);
         Course findCourse = findVerifiedCourse(courseId);
-        verifyMyCourse(findmember, findCourse);
+        verifyNotMyCourse(findmember, findCourse);
 
         // Course 테이블 수정
         Optional.ofNullable(coursePostDto.getCourseData().getCourseDday()).ifPresent(courseDday -> {
@@ -125,15 +125,22 @@ public class CourseService {
     public void deleteCourse(long courseId, String memberEmail) {
         Member findmember = memberService.findVerifiedMember(memberEmail);
         Course findCourse = findVerifiedCourse(courseId);
-        verifyMyCourse(findmember, findCourse);
+        verifyNotMyCourse(findmember, findCourse);
 
         courseRepository.delete(findCourse);
     }
 
     // 본인의 일정이 아닐 경우 예외 발생
-    public void verifyMyCourse(Member member, Course course) {
+    public void verifyNotMyCourse(Member member, Course course) {
         if (member.getMemberId().longValue() != course.getMember().getMemberId().longValue()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_DOES_NOT_MATCH);
+        }
+    }
+
+    // 본인의 일정에는 좋아요나 즐겨찾기를 할 수 없습니다
+    public void verifyMyCourse(Member member, Course course) {
+        if (member.getMemberId().longValue() == course.getMember().getMemberId().longValue()) {
+            throw new BusinessLogicException(ExceptionCode.CANT_LIKE_BOOKMARK);
         }
     }
 

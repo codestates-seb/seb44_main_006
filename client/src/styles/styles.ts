@@ -59,3 +59,14 @@ export const ModalChildrenDiv = styled(FlexDiv)`
   justify-content: space-around;
   padding-top: ${cssToken.SPACING['py-100']};
 `;
+
+export const ShareBtn = styled.button`
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0;
+  > svg {
+    width: 100%;
+    height: 100%;
+  }
+  cursor: pointer;
+`;

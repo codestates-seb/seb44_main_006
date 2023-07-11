@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { ForwardedRef, KeyboardEvent, forwardRef, useState } from 'react';
+import { ForwardedRef, KeyboardEvent, forwardRef } from 'react';
 
 import { TextareaT } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';

@@ -3,8 +3,8 @@ import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 import { Props, TextareaT } from '../../types/type';
-import defaultOptions from '../../utils/constant/constant';
 import { mapActions } from '../../store/map-slice';
+import useGeolocation from '../../hooks/useGeolocation';
 
 const MapContainer = styled.section<TextareaT>`
   width: ${(props) => props.width || '100vw'};
@@ -26,10 +26,17 @@ const KakaoMap = ({
 }: KakaoMapT) => {
   const [state, setState] = useState(false);
   const dispatch = useDispatch();
+  const curLocation = useGeolocation();
+
   const loadHandler = useCallback(
     (element: HTMLElement) => {
       if (!kakao || !element) return;
-      const { level = 3, lat, lng } = center ?? defaultOptions;
+      const currentPosition = {
+        level: 3,
+        lat: curLocation.coords?.latitude,
+        lng: curLocation.coords?.longitude,
+      };
+      const { level = 3, lat, lng } = center ?? currentPosition;
       const newMap = new kakao.maps.Map(element, {
         level,
         center: new kakao.maps.LatLng(Number(lat), Number(lng)),
@@ -37,8 +44,14 @@ const KakaoMap = ({
       dispatch(mapActions.setMap(newMap));
       setState(true);
     },
-    [dispatch, center]
+    [
+      curLocation.coords?.latitude,
+      curLocation.coords?.longitude,
+      center,
+      dispatch,
+    ]
   );
+
   return (
     <MapContainer width={width} height={height} ref={loadHandler} {...options}>
       {state && children}

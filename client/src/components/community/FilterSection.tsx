@@ -17,6 +17,8 @@ import {
 import manufactureDate from '../../utils/manufactureDate';
 import useUserInfo from '../../hooks/useUserInfo';
 import Noresult from '../ui/Noresult';
+import ShareKakaoButton from '../ui/button/ShareKakaoButton';
+import CopyButton from '../ui/button/CopyButton';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -53,7 +55,9 @@ const FilterSection = ({
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      fetchNextPage().catch((error) => console.log(error));
+      fetchNextPage().catch((error) => {
+        throw error;
+      });
     }
   }, [fetchNextPage, hasNextPage, inView]);
 
@@ -91,6 +95,8 @@ const FilterSection = ({
                 {userData && userData.memberEmail === post.memberEmail && (
                   <DeleteButton postId={String(post.postId)} />
                 )}
+                <CopyButton endpoint={`community/${post.postId}`} />
+                <ShareKakaoButton endpoint={`community/${post.postId}`} />
               </ContensCard>
             ))
           )}

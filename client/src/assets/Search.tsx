@@ -15,7 +15,7 @@ const Search = ({
   onClick,
 }: {
   style: IconStyle;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEventHandler<SVGSVGElement>) => void;
 }) => {
   return (
     <Svg
