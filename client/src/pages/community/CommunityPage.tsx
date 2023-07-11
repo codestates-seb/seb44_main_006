@@ -41,12 +41,11 @@ const CommunityPage = () => {
   const { selectTab, setTab } = useHandleTab();
   const [tagName, setTagName] = useState<string>('');
 
-  const { data, fetchNextPage, isSuccess, hasNextPage, error } =
-    useInfiniteScrollQuery({
-      limit: LIMIT,
-      tagName: tagName || '',
-      sort: selectTab,
-    });
+  const { data, fetchNextPage, hasNextPage, error } = useInfiniteScrollQuery({
+    limit: LIMIT,
+    tagName: tagName || '',
+    sort: selectTab,
+  });
 
   const SearchPost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
