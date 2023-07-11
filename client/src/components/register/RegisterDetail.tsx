@@ -1,16 +1,12 @@
 import { styled } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
 import CloseButton from '../ui/button/CloseButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
-import { overlayActions } from '../../store/overlay-slice';
 import useToggleModal from '../../hooks/useToggleModal';
 
 const RegisterDetailContainer = styled.section`
   padding: 20px;
-  position: fixed;
-  z-index: 9999;
   width: 900px;
   height: 100vh;
   background: #fff;
@@ -27,7 +23,7 @@ const TopContainer = styled.div`
 `;
 
 const PlaceEmbedBox = styled.embed`
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
