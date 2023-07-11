@@ -56,7 +56,7 @@ public class PostService {
         Member findmember = memberService.findVerifiedMember(memberEmail);
         Course findcourse = courseService.findVerifiedCourse(postPostDto.getCourseId());
 
-        courseService.verifyMyCourse(findmember, findcourse); // 코스 작성자와 현재 로그인한 작성자가 동일한지 확인
+        courseService.verifyNotMyCourse(findmember, findcourse); // 코스 작성자와 현재 로그인한 작성자가 동일한지 확인
 
         verifyExistCourse(findcourse); // 작성한 코스가 있으면 예외처리
 
@@ -243,7 +243,7 @@ public class PostService {
         // ADMIN 권한이 없을 경우에만 본인 일정 여부 검증
         List<String> findRole = findMember.getRoles();
         if (!findRole.contains("ADMIN")) {
-            courseService.verifyMyCourse(findMember, course);
+            courseService.verifyNotMyCourse(findMember, course);
         }
 
         // course 에서의 post, likes, bookmarks 에 대한 연관관계 제거, isPosted 상태 업데이트
