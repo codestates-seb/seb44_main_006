@@ -35,7 +35,7 @@ const FixedDiv = styled.div`
 
 const CommunityPage = () => {
   const goToSelect = useMovePage('/community/select');
-  const goToError = useMovePage('/error/500');
+  // const goToError = useMovePage('/error/500');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isLogin = getLoginStatus();
   const { selectTab, setTab } = useHandleTab();
@@ -58,7 +58,8 @@ const CommunityPage = () => {
   };
 
   if (error) {
-    goToError();
+    console.error(error);
+    // goToError();
   }
 
   return (
