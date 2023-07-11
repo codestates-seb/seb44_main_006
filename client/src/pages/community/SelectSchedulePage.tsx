@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -39,10 +40,11 @@ const EmptyDiv = styled(FlexDiv)`
 
 const SelectSchedulePage = () => {
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
+  const navigate = useNavigate();
   const gotoBack = useMovePage('/community');
   const gotoNext = useMovePage('/community/post', selectId);
   const gotoRegister = useMovePage('/register');
-  const { data: courses } = useQuery({
+  const { data: courses, error } = useQuery({
     queryKey: ['selectList'],
     queryFn: GetMyList,
     refetchOnWindowFocus: false,
@@ -67,6 +69,12 @@ const SelectSchedulePage = () => {
       gotoNext();
     }
   };
+
+  if (error) {
+    // Todo error 객체 확인
+    navigate(`/error/500`);
+  }
+
   return (
     <OutsideWrap>
       <Head />

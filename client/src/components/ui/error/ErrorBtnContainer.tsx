@@ -30,7 +30,7 @@ const ErrorBtnContainer = () => {
         height="53px"
         borderRadius={cssToken.BORDER['rounded-md']}
         onClick={() => {
-          navigate('/');
+          navigate('/', { replace: true });
         }}
       >
         메인으로 가기

@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 import cssToken from '../../styles/cssToken';
 import { GapDiv, OutsideWrap } from '../../styles/styles';
@@ -56,6 +57,10 @@ const PostCommunitypage = () => {
       navigate(`/community/${data.headers.location as string}`, {
         replace: true,
       });
+    },
+    onError: (error) => {
+      const { response } = error as AxiosError;
+      if (response) navigate(`/error/${response.status}`);
     },
   });
   const isEditorEmpty = () => {
