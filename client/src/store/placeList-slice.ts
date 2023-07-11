@@ -4,10 +4,12 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { PlacesSearchResult } from '../types/type';
 
 interface IInitial {
+  isEmpty: boolean;
   list: PlacesSearchResult;
 }
 
 const initialState: IInitial = {
+  isEmpty: false,
   list: [],
 };
 
@@ -20,6 +22,9 @@ const placeListSlice = createSlice({
     },
     resetList(state) {
       state.list = [];
+    },
+    setIsEmpty(state, action: PayloadAction<boolean>) {
+      state.isEmpty = action.payload;
     },
   },
 });

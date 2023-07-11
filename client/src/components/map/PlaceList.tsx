@@ -8,6 +8,8 @@ import { RootState } from '../../store';
 import LocationCard from '../ui/cards/LocationCard';
 import cssToken from '../../styles/cssToken';
 import { showDetailActions } from '../../store/showDetail-slice';
+import useGeolocation from '../../hooks/useGeolocation';
+import Noresult from '../ui/Noresult';
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,11 +32,20 @@ const PlaceList = ({
   radius?: number;
 }) => {
   const places = useSelector((state: RootState) => state.placeList.list);
+  const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
   const schedule = useSelector(
     (state: RootState) => state.scheduleList.lastItem
   );
+
   const paginationRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+  const curLocation = useGeolocation();
+  const x = curLocation.coords
+    ? `${curLocation.coords?.longitude}`
+    : '126.570667';
+  const y = curLocation.coords
+    ? `${curLocation.coords?.latitude}`
+    : '33.450701';
 
   const displayPagination = useCallback((pagination: Pagination) => {
     const fragment = document.createDocumentFragment();
@@ -66,8 +77,8 @@ const PlaceList = ({
   useKeywordSearch(
     displayPagination,
     searchPlace,
-    schedule.x,
-    schedule.y,
+    schedule.x || x,
+    schedule.y || y,
     radius ? radius * 1000 : undefined
   );
 
@@ -76,7 +87,9 @@ const PlaceList = ({
     dispatch(showDetailActions.setItem(item));
   };
 
-  return (
+  return isEmpty ? (
+    <Noresult iconHeight={50} iconWidth={50} size="1rem" />
+  ) : (
     <Wrapper>
       {places.map((item: PlacesSearchResultItem) => (
         <LocationCard

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import KakaoMap from '../../components/map/KakaoMap';
 import Marker from '../../components/map/Marker';
@@ -18,6 +18,7 @@ import Polyline from '../../components/map/Polyline';
 import makePolyline from '../../utils/makePolyline';
 import ScheduleCancelModal from '../../components/schedule/ScheduleCancelModal';
 import RegisterDetail from '../../components/register/RegisterDetail';
+import { placeListActions } from '../../store/placeList-slice';
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-screen']};
@@ -50,6 +51,7 @@ const ScheduleRegister = () => {
 
   const isSave = useSelector((state: RootState) => state.overlay.isOpen);
   const places = useSelector((state: RootState) => state.placeList.list);
+  const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
   const scheduleList = useSelector(
     (state: RootState) => state.scheduleList.list
   );
@@ -63,6 +65,10 @@ const ScheduleRegister = () => {
   const handleCancel = () => {
     setIsCancel(true);
   };
+
+  useEffect(() => {
+    if (isEmpty) dispatch(placeListActions.resetList());
+  }, [dispatch, isEmpty]);
 
   return (
     <Wrapper>
