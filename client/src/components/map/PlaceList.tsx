@@ -7,7 +7,7 @@ import { Pagination, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
 import LocationCard from '../ui/cards/LocationCard';
 import cssToken from '../../styles/cssToken';
-import { scheduleListActions } from '../../store/scheduleList-slice';
+import { showDetailActions } from '../../store/showDetail-slice';
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,9 +30,6 @@ const PlaceList = ({
   radius?: number;
 }) => {
   const places = useSelector((state: RootState) => state.placeList.list);
-  const scheduleList = useSelector(
-    (state: RootState) => state.scheduleList.list
-  );
   const schedule = useSelector(
     (state: RootState) => state.scheduleList.lastItem
   );
@@ -73,34 +70,22 @@ const PlaceList = ({
     schedule.y,
     radius ? radius * 1000 : undefined
   );
-  // 이렇게 하면 마지막으로 등록한 일정 기준으로 검색할 수 있음
-  // FIXME 리스트가 초기화 됐을 때 페이지네이션은 남는 현상을 수정해야함
+
+  const handleClick = (item: PlacesSearchResultItem) => {
+    dispatch(showDetailActions.setIsShow(true));
+    dispatch(showDetailActions.setItem(item));
+  };
+
   return (
     <Wrapper>
       {places.map((item: PlacesSearchResultItem) => (
         <LocationCard
           key={item.id}
           title={item.place_name}
-          category={item.category_name.split('>')[0]}
+          category={item.category_name ? item.category_name.split('>')[0] : ''}
           address={item.road_address_name}
           phone={item.phone}
-          onClick={() => {
-            if (scheduleList.length < 10) {
-              dispatch(
-                scheduleListActions.addList({
-                  placeName: item.place_name,
-                  placeUrl: item.place_url,
-                  roadAddressName: item.road_address_name,
-                  id: item.id,
-                  phone: item.phone,
-                  categoryGroupCode: item.category_group_code,
-                  categoryGroupName: item.category_group_name,
-                  x: item.x,
-                  y: item.y,
-                })
-              );
-            }
-          }}
+          onClick={() => handleClick(item)}
         />
       ))}
       <PaginationWrapper ref={paginationRef} />

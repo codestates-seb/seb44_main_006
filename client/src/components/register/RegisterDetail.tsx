@@ -1,25 +1,26 @@
 import { styled } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
-import CloseButton from '../ui/button/CloseButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
-import useToggleModal from '../../hooks/useToggleModal';
+import { showDetailActions } from '../../store/showDetail-slice';
+import GrayButton from '../ui/button/GrayButton';
+import { PlacesSearchResultItem } from '../../types/type';
+import { scheduleListActions } from '../../store/scheduleList-slice';
+import { RootState } from '../../store';
+import scheduleDetailState from '../../utils/constant/scheduleDetailState';
 
 const RegisterDetailContainer = styled.section`
-  padding: ${cssToken.SPACING['gap-24']};
-  width: 900px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 58rem;
   height: ${cssToken.HEIGHT['h-screen']};
   background: ${cssToken.COLOR.white};
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: ${cssToken.SPACING['gap-24']};
-`;
-
-const TopContainer = styled.div`
-  width: ${cssToken.WIDTH['w-full']};
-  display: flex;
-  justify-content: flex-end;
 `;
 
 const PlaceEmbedBox = styled.embed`
@@ -27,26 +28,73 @@ const PlaceEmbedBox = styled.embed`
   align-items: center;
   justify-content: center;
   width: ${cssToken.WIDTH['w-full']};
-  height: 90vh;
+  height: 100vh;
 `;
 
-const RegisterDetail = ({ placeUrl }: { placeUrl: string }) => {
-  const toggleModal = useToggleModal();
+const ButtonWrapper = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: ${cssToken.SPACING['gap-12']};
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+`;
+
+const RegisterDetail = ({
+  detailItem,
+}: {
+  detailItem: PlacesSearchResultItem;
+}) => {
+  const scheduleList = useSelector(
+    (state: RootState) => state.scheduleList.list
+  );
+  const dispatch = useDispatch();
+
+  const handleClose = () => {
+    dispatch(showDetailActions.setIsShow(false));
+    dispatch(showDetailActions.setItem(scheduleDetailState));
+  };
+
+  const addSchedule = () => {
+    if (scheduleList.length < 10) {
+      dispatch(
+        scheduleListActions.addList({
+          placeName: detailItem.place_name,
+          placeUrl: detailItem.place_url,
+          roadAddressName: detailItem.road_address_name,
+          id: detailItem.id,
+          phone: detailItem.phone,
+          categoryGroupCode: detailItem.category_group_code,
+          categoryGroupName: detailItem.category_group_name,
+          x: detailItem.x,
+          y: detailItem.y,
+        })
+      );
+    }
+    dispatch(showDetailActions.setIsShow(false));
+  };
 
   return (
     <RegisterDetailContainer>
-      <TopContainer>
-        <CloseButton onClick={toggleModal} />
-      </TopContainer>
-      <PlaceEmbedBox src={`https://place.map.kakao.com/${placeUrl}`} />
-      <SkyBlueButton
-        width="15.5625rem"
-        height="3.4rem"
-        fontsize={cssToken.TEXT_SIZE['text-18']}
-        borderRadius={cssToken.BORDER['rounded-md']}
-      >
-        추가 하기
-      </SkyBlueButton>
+      <PlaceEmbedBox src={`${detailItem.place_url}`} />
+      <ButtonWrapper>
+        <GrayButton
+          width="7rem"
+          height="3rem"
+          borderRadius={cssToken.BORDER['rounded-md']}
+          onClick={handleClose}
+        >
+          닫기
+        </GrayButton>
+        <SkyBlueButton
+          width="7rem"
+          height="3rem"
+          borderRadius={cssToken.BORDER['rounded-md']}
+          onClick={addSchedule}
+        >
+          추가 하기
+        </SkyBlueButton>
+      </ButtonWrapper>
     </RegisterDetailContainer>
   );
 };

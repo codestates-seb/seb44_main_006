@@ -15,7 +15,7 @@ import { placeListActions } from '../../store/placeList-slice';
 const ScheduleContainer = styled.section`
   left: 0;
   top: 0;
-  width: 550px;
+  width: 25rem;
   height: 100vh;
   background: #fff;
   padding: 15px;
