@@ -1,6 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-import { PostReqT } from '../typestype';
+import { PostReqT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 
