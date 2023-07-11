@@ -16,6 +16,7 @@ import useMovePage from '../../hooks/useMovePage';
 interface isNickNameT {
   isValidate?: boolean;
   toggleNickname?: boolean;
+  size?: number;
 };
 
 const UserInfoContainer = styled.section`
@@ -40,10 +41,14 @@ const WriteBtn = styled.button<isNickNameT>`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: ${(props) => (props.toggleNickname ? 'absolute' : 'unset')};
-  top: ${(props) => (props.toggleNickname ? (props.isValidate ? '45%' : '35%') : 'unset')};
-  right: ${(props) => (props.toggleNickname ? '0.3125rem' : 'unset')};
-  transform: ${(props) => (props.toggleNickname ? 'translate(0, -50%)' : 'unset')};
+  position: ${(props) =>
+    props.toggleNickname ? 'absolute' : 'unset'};
+  top: ${(props) =>
+    props.toggleNickname ? (props.isValidate ? '45%' : '35%') : 'unset'};
+  right: ${(props) =>
+    props.toggleNickname ? '0.3125rem' : 'unset'};
+  transform: ${(props) =>
+    props.toggleNickname ? 'translate(0, -50%)' : 'unset'};
 `;
 
 const RightWrap = styled.div`
@@ -59,12 +64,6 @@ const RightWrap = styled.div`
    padding: 1.1rem 0.98rem 0.98rem;
    font-size: 14px;
   }
-`;
-
-const InputBox = styled.input<isNickNameT>`
-  border: solid 1px #dcdcdc;
-  padding: 0.3125rem 0.5rem;
-  font-size: ${(props) => props.size || '16px'};
 `;
 
 const ImgBox = styled.div`
@@ -96,7 +95,6 @@ const UserInfoBox = () => {
   const mutation = useMutation(PatchMemNickname, {
     onSuccess: () => {
       dispatch(setUserOAuthActions.paintMemNickname(memNicknameRef.current));
-
     },
     onError: (error) => {
       navigate(`/ error / ${error.status as string}`);
@@ -168,8 +166,8 @@ const UserInfoBox = () => {
                 minLength={1}
                 maxLength={10}
                 defaultValue={
-                  memNicknameRef.current
-                    ? memNicknameRef.current
+                  memNicknameRef?.current
+                    ? memNicknameRef?.current
                     : userAuthInfo?.memberNickname
                 }
                 onChange={onChangeName}
@@ -179,10 +177,7 @@ const UserInfoBox = () => {
                   width: "100%"
                 }}
               />
-              <WriteBtn
-                isValidate={isName}
-                toggleNickname={toggleNickname}
-              >
+              <WriteBtn isValidate={isName} toggleNickname={toggleNickname}>
                 <Pen
                   style={{
                     iconWidth: 20,
@@ -195,7 +190,6 @@ const UserInfoBox = () => {
           )}
         </UserNicknameBox>
         <SkyBlueButton
-          className="gotoRegisterBtn"
           onClick={gotoRegister}
           height="25px"
           borderRadius={`${cssToken.BORDER['rounded-tag']}`}
