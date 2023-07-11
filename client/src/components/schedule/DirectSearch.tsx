@@ -35,7 +35,7 @@ const DirectSearch = () => {
       <FormContainer onSubmit={handleSubmit}>
         <SearchContainer ref={inputRef} />
       </FormContainer>
-      <PlaceList searchPlace={searchPlace} />{' '}
+      <PlaceList searchPlace={searchPlace} />
     </>
   );
 };

@@ -42,7 +42,7 @@ type SearchT = {
   iconWidth?: number;
   iconHeight?: number;
   styles?: StylesT;
-  callback?: () => void;
+  callback?: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
 const SearchContainer = forwardRef(

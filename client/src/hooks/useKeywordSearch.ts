@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,9 +16,6 @@ const useKeywordSearch = (
 
   const dispatch = useDispatch();
 
-  // FIXME ps를 고쳐서 useEffect의 종속성 배열로 넣어줘야함
-  const ps = new kakao.maps.services.Places();
-
   const placesSearchCB = useCallback(
     (datas: PlacesSearchResult, status: string, pagination: Pagination) => {
       if (status === kakao.maps.services.Status.OK) {
@@ -35,14 +31,18 @@ const useKeywordSearch = (
 
       if (datas.length) {
         displayPagination(pagination);
+        dispatch(placeListActions.setIsEmpty(false));
         dispatch(placeListActions.addList(datas));
       }
       // TODO 여기에 검색한 결과가 없다는 컴포넌트 보여줄 상태 필요할 듯
+      else dispatch(placeListActions.setIsEmpty(true));
     },
     [dispatch, displayPagination, map]
   );
 
   useEffect(() => {
+    const ps = new kakao.maps.services.Places();
+
     if (searchPlace)
       ps.keywordSearch(searchPlace, placesSearchCB, {
         x: Number(x),

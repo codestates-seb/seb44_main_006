@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 
-import { IArgButtonStyle, Props } from '../../../types/type';
+import { IEventButtonStyle, Props } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
 
-const ButtonTemplate = styled.button<IArgButtonStyle>`
+const ButtonTemplate = styled.button<IEventButtonStyle>`
   width: ${(props) => props.width || 'fit-content'};
   height: ${(props) => props.height || 'fit-content'};
   margin: ${(props) => props.margin};
@@ -29,7 +29,7 @@ const ButtonTemplate = styled.button<IArgButtonStyle>`
   }
 `;
 
-const Button = ({
+const EventButton = ({
   children,
   styles,
   onClick,
@@ -37,8 +37,8 @@ const Button = ({
   disabled,
 }: {
   children?: Props['children'];
-  styles?: IArgButtonStyle;
-  onClick?: (arg0?: string | undefined) => void;
+  styles?: IEventButtonStyle;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onSubmit?: () => void;
   disabled?: boolean;
 }) => {
@@ -54,4 +54,4 @@ const Button = ({
   );
 };
 
-export default Button;
+export default EventButton;
