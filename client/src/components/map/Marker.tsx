@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Props } from '../../types/type';
 import defaultOptions from '../../utils/constant/constant';
@@ -73,4 +73,4 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
   return null;
 };
 
-export default Marker;
+export default React.memo(Marker);

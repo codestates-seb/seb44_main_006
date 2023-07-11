@@ -57,6 +57,8 @@ const FilterSection = ({
     }
   }, [fetchNextPage, hasNextPage, inView]);
 
+  console.log(communityData);
+
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>

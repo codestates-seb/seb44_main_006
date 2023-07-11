@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
 
@@ -46,4 +46,4 @@ const KakaoMap = ({
   );
 };
 
-export default KakaoMap;
+export default React.memo(KakaoMap);
