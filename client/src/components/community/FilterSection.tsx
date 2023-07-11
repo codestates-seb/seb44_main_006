@@ -46,7 +46,6 @@ const FilterSection = ({
 }) => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
-  // Todo 작성자 삭제, 좋아요 버튼 안보이게 하기
   const { userData } = useUserInfo();
   const moveToDetail = (postId: number | undefined) => {
     if (postId) navigate(`/community/${postId}`);
@@ -86,10 +85,12 @@ const FilterSection = ({
                 courseId={post.courseId}
                 likeStatus={post.likeStatus}
                 bookmarkStatus={post.bookmarkStatus}
+                isMine={userData?.memberEmail === post.memberEmail}
                 date={manufactureDate(post.postCreatedAt)}
               >
-                {/* Todo 작성자만 보이도록해야함 */}
-                <DeleteButton postId={String(post.postId)} />
+                {userData && userData.memberEmail === post.memberEmail && (
+                  <DeleteButton postId={String(post.postId)} />
+                )}
               </ContensCard>
             ))
           )}

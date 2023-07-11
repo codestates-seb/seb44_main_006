@@ -101,6 +101,7 @@ const ContensCard = ({
   bookmarkStatus,
   type,
   date,
+  isMine,
 }: ContCardInfo) => {
   const isLogin = getLoginStatus();
   const selected = selectId !== undefined && selectId === courseId;
@@ -121,7 +122,7 @@ const ContensCard = ({
 
       <ContensHeader>
         <ContensTitle>{title}</ContensTitle>
-        {isLogin && bookmarkStatus !== undefined && courseId && (
+        {isLogin && !isMine && bookmarkStatus !== undefined && courseId && (
           <StarButton
             width="60px"
             height="60px"
@@ -155,7 +156,7 @@ const ContensCard = ({
 
       <ContensBottom>
         <LikeBtnBox>
-          {isLogin && likeStatus !== undefined && courseId && (
+          {isLogin && !isMine && likeStatus !== undefined && courseId && (
             <LikeButton isActive={likeStatus} courseId={courseId} />
           )}
           <DataText>{likeCount}개</DataText>
