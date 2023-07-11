@@ -42,7 +42,7 @@ public class MemberService {
             Member findDeletedMember = findDeletedMember(member.getMemberEmail()).get();
             findDeletedMember.activateMember(member); // 탈퇴한 회원 상태 활성화
 
-            // 템플릿으로 메일 보내기
+            // 템플릿 적용된 메일 비동기로 보내기
             mailService.send(member);
             return memberRepository.save(findDeletedMember);
         }
@@ -52,7 +52,7 @@ public class MemberService {
 
             member.setRoles(customAuthorityUtils.createRoles(member.getMemberEmail())); // member Role 저장
 
-            // 템플릿으로 메일 보내기
+            // 템플릿 적용된 메일 비동기로 보내기
             mailService.send(member);
             return memberRepository.save(member);
         }
