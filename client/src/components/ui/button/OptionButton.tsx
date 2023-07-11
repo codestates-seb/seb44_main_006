@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useState } from 'react';
 
-import Button from './Button';
+import EventButton from './EventButton';
 
 import cssToken from '../../../styles/cssToken';
 import { IButtonStyle } from '../../../types/type';
@@ -26,13 +26,8 @@ const OptionButton = ({ svgWidth, svgHeight, children }: IButtonStyle) => {
   const [isActive, setActive] = useState<boolean>(false);
   return (
     <Container>
-      {isActive && (
-        <OptionDiv>
-          {/* 수정 필요 */}
-          {children}
-        </OptionDiv>
-      )}
-      <Button
+      {isActive && <OptionDiv>{children}</OptionDiv>}
+      <EventButton
         styles={{ height: cssToken.HEIGHT['h-max'] }}
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.stopPropagation();
@@ -50,7 +45,7 @@ const OptionButton = ({ svgWidth, svgHeight, children }: IButtonStyle) => {
           <circle cx="15" cy="3" r="3" fill="black" />
           <circle cx="3" cy="3" r="3" fill="black" />
         </svg>
-      </Button>
+      </EventButton>
     </Container>
   );
 };

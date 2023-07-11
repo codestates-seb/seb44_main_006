@@ -1,7 +1,7 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { IButtonStyle } from '../../../types/type';
+import { IArgButtonStyle } from '../../../types/type';
 
 const CategoryButton = ({
   children,
@@ -10,7 +10,7 @@ const CategoryButton = ({
   onClick,
   categoryname,
   selectedid,
-}: IButtonStyle) => {
+}: IArgButtonStyle) => {
   const isActive = !!(selectedid && selectedid === categoryname);
 
   return (

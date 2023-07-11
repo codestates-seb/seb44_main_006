@@ -17,7 +17,6 @@ import {
 import manufactureDate from '../../utils/manufactureDate';
 import useUserInfo from '../../hooks/useUserInfo';
 import Noresult from '../ui/Noresult';
-import shareKakao from '../../utils/shareKakao';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 
 const FilterWrapper = styled.div`
@@ -55,7 +54,9 @@ const FilterSection = ({
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      fetchNextPage().catch((error) => console.log(error));
+      fetchNextPage().catch((error) => {
+        throw error;
+      });
     }
   }, [fetchNextPage, hasNextPage, inView]);
 

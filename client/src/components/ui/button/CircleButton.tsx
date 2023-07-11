@@ -1,9 +1,14 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { IButtonStyle } from '../../../types/type';
+import { IArgButtonStyle } from '../../../types/type';
 
-const CircleButton = ({ children, width, height, onClick }: IButtonStyle) => {
+const CircleButton = ({
+  children,
+  width,
+  height,
+  onClick,
+}: IArgButtonStyle) => {
   return (
     <Button
       onClick={onClick}
