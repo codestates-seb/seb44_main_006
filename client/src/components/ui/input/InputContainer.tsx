@@ -64,7 +64,7 @@ const InputContainer = forwardRef(
           defaultValue={defaultValue}
           onChange={onChange}
         />
-        {!isValidate && (
+        {type === 'title' && !isValidate && (
           <Text styles={{ color: cssToken.COLOR['red-900'] }}>
             글자 수를 만족하지 못했습니다.
           </Text>
