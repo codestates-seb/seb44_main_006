@@ -17,6 +17,8 @@ import {
 import manufactureDate from '../../utils/manufactureDate';
 import useUserInfo from '../../hooks/useUserInfo';
 import Noresult from '../ui/Noresult';
+import shareKakao from '../../utils/shareKakao';
+import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -91,6 +93,7 @@ const FilterSection = ({
                 {userData && userData.memberEmail === post.memberEmail && (
                   <DeleteButton postId={String(post.postId)} />
                 )}
+                <ShareKakaoButton endpoint={`community/${post.postId}`} />
               </ContensCard>
             ))
           )}
