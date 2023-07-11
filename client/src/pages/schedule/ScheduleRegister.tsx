@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 import KakaoMap from '../../components/map/KakaoMap';
 import Marker from '../../components/map/Marker';
@@ -14,9 +14,9 @@ import SaveIcon from '../../assets/SaveIcon';
 import CloseIcon from '../../assets/CloseIcon';
 import ScheduleCreateModal from '../../components/schedule/ScheduleCreateModal';
 import { overlayActions } from '../../store/overlay-slice';
-import { scheduleListActions } from '../../store/scheduleList-slice';
 import Polyline from '../../components/map/Polyline';
 import makePolyline from '../../utils/makePolyline';
+import ScheduleCancelModal from '../../components/schedule/ScheduleCancelModal';
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-screen']};
@@ -47,19 +47,17 @@ const ScheduleRegister = () => {
     (state: RootState) => state.scheduleList.list
   );
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const cancelRegister = () => {
-    // TODO 정말 취소하시겠습니까 모달 띄워야 함
-    dispatch(scheduleListActions.resetList());
-    navigate('/');
+  const [isCancel, setIsCancel] = useState<boolean>(false);
+
+  const handleCancel = () => {
+    setIsCancel(true);
   };
-
-  // FIXME 숫자 마커가 일반 마커에 가려지는 현상 수정해야함
 
   return (
     <Wrapper>
       {isSave && <ScheduleCreateModal />}
+      {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 
       <ScheduleBox />
 
@@ -86,7 +84,7 @@ const ScheduleRegister = () => {
       </KakaoMap>
 
       <FixedDiv>
-        <CircleButton width="100px" height="100px" onClick={cancelRegister}>
+        <CircleButton width="100px" height="100px" onClick={handleCancel}>
           <ButtonDiv>
             <CloseIcon
               style={{ iconWidth: 19, iconHeight: 19, color: 'black' }}
