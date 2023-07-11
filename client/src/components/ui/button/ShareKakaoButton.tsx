@@ -1,8 +1,14 @@
+import { styled } from 'styled-components';
+
 import shareKakao from '../../../utils/shareKakao';
+
+const Button = styled.button`
+  cursor: pointer;
+`;
 
 const ShareKakaoButton = ({ endpoint }: { endpoint: string }) => {
   return (
-    <button
+    <Button
       type="button"
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
@@ -10,7 +16,7 @@ const ShareKakaoButton = ({ endpoint }: { endpoint: string }) => {
       }}
     >
       공유
-    </button>
+    </Button>
   );
 };
 
