@@ -17,6 +17,7 @@ import { overlayActions } from '../../store/overlay-slice';
 import Polyline from '../../components/map/Polyline';
 import makePolyline from '../../utils/makePolyline';
 import ScheduleCancelModal from '../../components/schedule/ScheduleCancelModal';
+import RegisterDetail from '../../components/register/RegisterDetail';
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-screen']};
@@ -40,15 +41,24 @@ const ButtonDiv = styled.div`
   margin-bottom: 0.25rem;
 `;
 
+const RelativeDiv = styled.div`
+  position: relative;
+`;
+
 const ScheduleRegister = () => {
+  const [isCancel, setIsCancel] = useState<boolean>(false);
+
   const isSave = useSelector((state: RootState) => state.overlay.isOpen);
   const places = useSelector((state: RootState) => state.placeList.list);
   const scheduleList = useSelector(
     (state: RootState) => state.scheduleList.list
   );
-  const dispatch = useDispatch();
+  const isDetailShow = useSelector(
+    (state: RootState) => state.showDetail.isShow
+  );
+  const detailItem = useSelector((state: RootState) => state.showDetail.item);
 
-  const [isCancel, setIsCancel] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const handleCancel = () => {
     setIsCancel(true);
@@ -59,7 +69,10 @@ const ScheduleRegister = () => {
       {isSave && <ScheduleCreateModal />}
       {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 
-      <ScheduleBox />
+      <RelativeDiv>
+        <ScheduleBox />
+        {isDetailShow && <RegisterDetail detailItem={detailItem} />}
+      </RelativeDiv>
 
       <KakaoMap width="100vw" height="100vh">
         {places.map((place: PlacesSearchResultItem) => (

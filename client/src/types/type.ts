@@ -60,16 +60,16 @@ export type PlacesSearchResult = PlacesSearchResultItem[];
 export interface PlacesSearchResultItem {
   id: string;
   place_name: string;
-  category_name: string;
+  category_name?: string;
   category_group_code?: `${CategoryCode}` | `${Exclude<CategoryCode, ''>}`[];
   category_group_name: string;
   phone: string;
-  address_name: string;
+  address_name?: string;
   road_address_name: string;
   x: string;
   y: string;
   place_url: string;
-  distance: string;
+  distance?: string;
 }
 
 export type TScheduleList = IScheduleListItem[];
