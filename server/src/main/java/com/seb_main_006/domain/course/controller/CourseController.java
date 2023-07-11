@@ -11,11 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -26,10 +24,11 @@ public class CourseController {
 
     private final CourseService courseService;
 
+    // 일정 생성
     @PostMapping
     public ResponseEntity postCourse(@Valid @RequestBody CoursePostDto coursePostDto,
                                      @AuthenticationPrincipal(expression = "username") String memberEmail){
-        //@AuthenticationPrincipal로 현재 저장되어있는 이메일 가져옴 -> customUserDetail이 없어서 @AuthenticationPrincipal를 통해 userDetail 구현한후 객체를 주입함
+        // @AuthenticationPrincipal로 현재 저장되어있는 이메일 가져옴 -> customUserDetail이 없어서 @AuthenticationPrincipal를 통해 userDetail 구현한후 객체를 주입함
 
         Course createdCourse = courseService.createCourse(coursePostDto, memberEmail);
 
@@ -40,6 +39,7 @@ public class CourseController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    // 일정 상세조회
     @GetMapping("/{courseId}")
     public ResponseEntity<?> getCourse(@PathVariable @Positive Long courseId,
                                        @AuthenticationPrincipal(expression = "username") String memberEmail) {
@@ -49,6 +49,7 @@ public class CourseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 일정 수정
     @PatchMapping("/{course-id}")
     public ResponseEntity patchCourse(@Valid @PathVariable("course-id") long courseId,
                                       @RequestBody CoursePostDto coursePostDto,
@@ -58,6 +59,7 @@ public class CourseController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 일정 삭제
     @DeleteMapping("/{course-id}")
     public ResponseEntity patchCourse(@PathVariable("course-id") @Positive long courseId,
                                       @AuthenticationPrincipal(expression = "username") String memberEmail) {
@@ -66,5 +68,4 @@ public class CourseController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,10 +30,13 @@ public class PostController {
 
     private final PostService postService;
 
+    /**
+     * 게시글 생성
+     */
     @PostMapping
     public ResponseEntity postCourse(@Valid @RequestBody PostPostDto postPostDto,
                                      @AuthenticationPrincipal(expression = "username") String memberEmail) {
-        //@AuthenticationPrincipal로 현재 저장되어있는 이메일 가져옴 -> customUserDetail이 없어서 @AuthenticationPrincipal를 통해 userDetail 구현한후 객체를 주입함
+        // @AuthenticationPrincipal로 현재 저장되어있는 이메일 가져옴 -> customUserDetail이 없어서 @AuthenticationPrincipal를 통해 userDetail 구현한후 객체를 주입함
 
         Post createdPost = postService.createPost(postPostDto, memberEmail);
 
@@ -64,9 +66,8 @@ public class PostController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-
     /**
-     * 게시글 리스트 조회 (+ 태그 검색 시도중)
+     * 게시글 리스트 조회
      */
     @GetMapping("/read")
     public ResponseEntity getPosts(@Positive @RequestParam int page,
@@ -87,26 +88,30 @@ public class PostController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/tagged/{tagName}")
-    public ResponseEntity getPostListByTag(@PathVariable String tagName,
-                                           @RequestParam @Positive Integer page,
-                                           @RequestParam @Positive Integer limit,
-                                           @RequestParam(required = false) String sort,
-                                           HttpServletRequest request) throws JsonProcessingException {
+//    태그검색(리스트 조회에 검색이 합쳐지면서 사용안함)
+//    @GetMapping("/tagged/{tagName}")
+//    public ResponseEntity getPostListByTag(@PathVariable String tagName,
+//                                           @RequestParam @Positive Integer page,
+//                                           @RequestParam @Positive Integer limit,
+//                                           @RequestParam(required = false) String sort,
+//                                           HttpServletRequest request) throws JsonProcessingException {
+//
+//        log.info("page = {}, limit = {}, sort = {}", page, limit, sort);
+//        String accessToken = null;
+//        String authorization = request.getHeader("Authorization");
+//
+//        if (authorization != null) {
+//            accessToken = authorization.replaceAll("Bearer ", "");
+//        }
+//
+//        PostListResponseDto response = postService.getPostListByTag(tagName, page - 1, limit, sort, accessToken);
+//
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
-        log.info("page = {}, limit = {}, sort = {}", page, limit, sort);
-        String accessToken = null;
-        String authorization = request.getHeader("Authorization");
-
-        if (authorization != null) {
-            accessToken = authorization.replaceAll("Bearer ", "");
-        }
-
-        PostListResponseDto response = postService.getPostListByTag(tagName, page - 1, limit, sort, accessToken);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
+    /**
+     * 게시글 삭제
+     */
     @DeleteMapping("/{postId}")
     public ResponseEntity deletePost(@PathVariable @Positive Long postId,
                                      @AuthenticationPrincipal(expression = "username") String memberEmail) {
@@ -118,7 +123,7 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
+    // 조회수 중복방지를 위해 쿠키 사용
     private void viewCountUp(Long postId, HttpServletRequest request, HttpServletResponse response) {
 
         Cookie oldCookie = null;
@@ -149,6 +154,5 @@ public class PostController {
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
         }
-
     }
 }

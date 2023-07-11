@@ -5,7 +5,6 @@ import com.seb_main_006.domain.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @Entity
@@ -28,5 +27,4 @@ public class Likes {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course; // course entity와 연관관계 매핑(다:1)
-
 }

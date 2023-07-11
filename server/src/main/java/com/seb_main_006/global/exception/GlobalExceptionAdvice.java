@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
 import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
@@ -22,6 +21,7 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
+
     private final Map<Object, String> exceptions = new HashMap<>();
 
     @PostConstruct

@@ -1,7 +1,6 @@
 package com.seb_main_006.global.auth.service;
 
 import com.seb_main_006.global.auth.attribute.OAuth2Attribute;
-import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +11,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 
 // OAuth2 인증 이후에 인증된 사용자 정보를 처리하는 사용자 서비스
@@ -20,7 +18,6 @@ import java.util.Collections;
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-    private final CustomAuthorityUtils authorityUtils;
 
     // 액세스 토큰을 사용하여 사용자 정보를 요청하고 처리
     @Override
@@ -45,7 +42,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), // 사용자가 갖는 권한 TODO : 관리자 권한은 어떻게 처리를 해야할 지
                 userAttribute, // OAuth2 공급자로부터 받은 사용자 정보를 담고 잇는 Map 객체
-                "id" //사용자의 식별자를 나타내는 속성 key값
+                "id" // 사용자의 식별자를 나타내는 속성 key값
         );
     }
 }

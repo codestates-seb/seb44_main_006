@@ -19,12 +19,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    // 마이페이지 조회
     @GetMapping
     public ResponseEntity getMember(@AuthenticationPrincipal(expression = "username") String memberEmail) {
 
         return new ResponseEntity<>(memberService.getMyPage(memberEmail), HttpStatus.OK);
     }
 
+    // 멤버 닉네임 수정
     @PatchMapping
     public ResponseEntity updateMember(@RequestBody MemberPatchDto memberPatchDto,
                                        @AuthenticationPrincipal(expression = "username") String memberEmail) {
@@ -33,11 +35,11 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 회원 탈퇴
     @DeleteMapping
     public ResponseEntity deleteMember(@AuthenticationPrincipal(expression = "username") String memberEmail) {
 
         memberService.deleteMember(memberEmail);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

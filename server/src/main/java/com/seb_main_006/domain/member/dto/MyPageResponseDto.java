@@ -9,5 +9,6 @@ import java.util.*;
 public class MyPageResponseDto {
 
     private List<MemberCourse> memberCourseList;
+
     private List<MemberBookmarked> memberBookmarkedList;
 }

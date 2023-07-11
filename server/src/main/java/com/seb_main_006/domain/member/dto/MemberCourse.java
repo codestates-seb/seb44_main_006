@@ -4,7 +4,6 @@ import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.global.util.DateConverter;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -12,14 +11,23 @@ import java.time.LocalDateTime;
 public class MemberCourse {
 
     private Long courseId;
+
     private String courseDday;
+
     private String courseTitle;
+
     private String courseContent;
+
     private String courseThumbnail;
+
     private String memberNickname;
+
     private Long courseLikeCount;
+
     private Long courseViewCount;
+
     private Boolean isPosted;
+
     private LocalDateTime courseUpdatedAt;
 
     public MemberCourse(Course course, String memberNickname){
@@ -34,6 +42,5 @@ public class MemberCourse {
         this.courseViewCount = course.getCourseViewCount();
         this.isPosted = course.isPosted();
         this.courseUpdatedAt = course.getCourseUpdatedAt();
-
     }
 }

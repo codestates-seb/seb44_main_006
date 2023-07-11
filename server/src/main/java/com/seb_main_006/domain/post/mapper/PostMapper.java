@@ -2,16 +2,13 @@ package com.seb_main_006.domain.post.mapper;
 
 import com.seb_main_006.domain.answer.dto.AnswerResponseDto;
 import com.seb_main_006.domain.answer.entity.Answer;
-import com.seb_main_006.domain.course.dto.CourseData;
 import com.seb_main_006.domain.course.dto.DestinationPostDto;
-import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.destination.entity.Destination;
 import com.seb_main_006.domain.post.dto.PostDetailResponseDto;
 import com.seb_main_006.domain.post.entity.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
@@ -37,6 +34,4 @@ public interface PostMapper {
     @Mapping(source = "course.member.memberEmail" , target = "memberEmail")
     @Mapping(source = "course.member.memberImageUrl" , target = "memberImageUrl")
     PostDetailResponseDto postToPostDetailResponseDto(Post post);
-
-
 }

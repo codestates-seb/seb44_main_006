@@ -1,6 +1,5 @@
 package com.seb_main_006.domain.answer.entity;
 
-import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.post.entity.Post;
 import lombok.Getter;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -47,5 +45,4 @@ public class Answer {
             post.getAnswersInPost().add(this);
         }
     }
-
 }

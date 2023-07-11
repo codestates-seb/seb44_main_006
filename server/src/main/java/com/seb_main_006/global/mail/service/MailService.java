@@ -1,18 +1,13 @@
 package com.seb_main_006.global.mail.service;
 
 import com.seb_main_006.domain.member.entity.Member;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
 import javax.mail.internet.MimeMessage;
-
-
 
 @Service
 @RequiredArgsConstructor

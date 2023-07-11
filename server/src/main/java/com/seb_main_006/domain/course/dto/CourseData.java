@@ -5,6 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 public class CourseData {
+
     private String courseDday;
 
     private String courseTitle;
