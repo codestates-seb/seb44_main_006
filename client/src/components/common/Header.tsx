@@ -222,7 +222,7 @@ const Header = () => {
           // 메인 페이지가 아닌 나머지
           <>
             <WhiteButton
-              onClick={LogoutmodalIsOpen}
+              onClick={LogoutoggleModal}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >

@@ -10,16 +10,9 @@ const Svg = styled.svg`
   cursor: pointer;
 `;
 
-const Search = ({
-  style,
-  onClick,
-}: {
-  style: IconStyle;
-  onClick?: (e: React.MouseEventHandler<SVGSVGElement>) => void;
-}) => {
+const Search = ({ style }: { style: IconStyle }) => {
   return (
     <Svg
-      onClick={onClick}
       width={style.iconWidth}
       height={style.iconHeight}
       viewBox="0 0 27 27"

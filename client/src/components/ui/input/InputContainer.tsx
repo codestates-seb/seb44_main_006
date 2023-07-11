@@ -46,10 +46,6 @@ const InputContainer = forwardRef(
     },
     ref?: ForwardedRef<HTMLInputElement>
   ) => {
-    const errorMessage =
-      minLength &&
-      maxLength &&
-      `${minLength}자에서 ${maxLength}자 사이로 입력해주세요.`;
     return (
       <>
         <Input
@@ -58,8 +54,6 @@ const InputContainer = forwardRef(
           placeholder={description}
           minLength={minLength || 1}
           maxLength={maxLength || 524288}
-          required
-          title={errorMessage || ''}
           {...styles}
           defaultValue={defaultValue}
           onChange={onChange}
