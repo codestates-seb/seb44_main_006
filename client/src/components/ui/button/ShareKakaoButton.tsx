@@ -6,13 +6,21 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const ShareKakaoButton = ({ endpoint }: { endpoint: string }) => {
+const ShareKakaoButton = ({
+  endpoint,
+  title,
+  description,
+}: {
+  endpoint: string;
+  title?: string;
+  description?: string;
+}) => {
   return (
     <Button
       type="button"
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        shareKakao({ url: endpoint });
+        shareKakao({ url: endpoint, title, description });
       }}
     >
       공유
