@@ -9,7 +9,8 @@ const NaverIcon = () => {
     >
       <path
         d="M27.1217 21.4083L12.2933 0H0V40H12.8767V18.5933L27.7067 40H40V0H27.1217V21.4083Z"
-        fill="white" />
+        fill="white"
+      />
     </svg>
   );
 };
