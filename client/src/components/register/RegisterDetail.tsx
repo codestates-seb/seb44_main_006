@@ -6,18 +6,18 @@ import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useToggleModal from '../../hooks/useToggleModal';
 
 const RegisterDetailContainer = styled.section`
-  padding: 20px;
+  padding: ${cssToken.SPACING['gap-24']};
   width: 900px;
-  height: 100vh;
-  background: #fff;
+  height: ${cssToken.HEIGHT['h-screen']};
+  background: ${cssToken.COLOR.white};
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: ${cssToken.SPACING['gap-24']};
 `;
 
 const TopContainer = styled.div`
-  width: 100%;
+  width: ${cssToken.WIDTH['w-full']};
   display: flex;
   justify-content: flex-end;
 `;
@@ -26,7 +26,7 @@ const PlaceEmbedBox = styled.embed`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: ${cssToken.WIDTH['w-full']};
   height: 90vh;
 `;
 
