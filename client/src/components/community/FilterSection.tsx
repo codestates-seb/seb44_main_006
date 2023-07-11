@@ -3,8 +3,6 @@ import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import DeleteButton from './DeleteButton';
-
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -92,9 +90,6 @@ const FilterSection = ({
                 isMine={userData?.memberEmail === post.memberEmail}
                 date={manufactureDate(post.postCreatedAt)}
               >
-                {userData && userData.memberEmail === post.memberEmail && (
-                  <DeleteButton postId={String(post.postId)} />
-                )}
                 <CopyButton endpoint={`community/${post.postId}`} />
                 <ShareKakaoButton endpoint={`community/${post.postId}`} />
               </ContensCard>
