@@ -42,7 +42,7 @@ const RegisterDetail = ({ placeUrl }): string => {
       <TopContainer>
         <CloseButton onClick={toggleModal} />
       </TopContainer>
-      <PlaceEmbedBox src="https://place.map.kakao.com/10731896" />
+      <PlaceEmbedBox src={`https://place.map.kakao.com/${placeUrl}`} />
       <SkyBlueButton
         width="15.5625rem"
         height="3.4rem"
