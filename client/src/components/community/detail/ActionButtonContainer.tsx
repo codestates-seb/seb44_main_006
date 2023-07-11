@@ -8,6 +8,7 @@ import Text from '../../ui/text/Text';
 import DeleteButton from '../DeleteButton';
 import useUserInfo from '../../../hooks/useUserInfo';
 import ShareKakaoButton from '../../ui/button/ShareKakaoButton';
+import CopyButton from '../../ui/button/CopyButton';
 
 const BtnDiv = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-12']};
@@ -45,6 +46,7 @@ const ActionButtonContainer = ({
 
   return (
     <BtnDiv>
+      <CopyButton endpoint={`community/${postId}`} />
       <ShareKakaoButton endpoint={`community/${postId}`} />
       {userData && memberEmail === userData.memberEmail && (
         <DeleteButton postId={postId} />

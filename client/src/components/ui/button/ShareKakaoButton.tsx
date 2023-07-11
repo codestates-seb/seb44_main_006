@@ -1,22 +1,26 @@
-import { styled } from 'styled-components';
-
 import shareKakao from '../../../utils/shareKakao';
+import KakaoIcon from '../../../assets/icons/KakaoIcon';
+import { ShareBtn } from '../../../styles/styles';
 
-const Button = styled.button`
-  cursor: pointer;
-`;
-
-const ShareKakaoButton = ({ endpoint }: { endpoint: string }) => {
+const ShareKakaoButton = ({
+  endpoint,
+  title,
+  description,
+}: {
+  endpoint: string;
+  title?: string;
+  description?: string;
+}) => {
   return (
-    <Button
+    <ShareBtn
       type="button"
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        shareKakao({ url: endpoint });
+        shareKakao({ url: endpoint, title, description });
       }}
     >
-      공유
-    </Button>
+      <KakaoIcon />
+    </ShareBtn>
   );
 };
 
