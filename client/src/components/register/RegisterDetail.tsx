@@ -30,7 +30,7 @@ const PlaceEmbedBox = styled.embed`
   height: 90vh;
 `;
 
-const RegisterDetail = ({ placeUrl }): string => {
+const RegisterDetail = ({ placeUrl }: { placeUrl: string }) => {
   const toggleModal = useToggleModal();
 
   return (
@@ -48,7 +48,7 @@ const RegisterDetail = ({ placeUrl }): string => {
         추가 하기
       </SkyBlueButton>
     </RegisterDetailContainer>
-  )
+  );
 };
 
 export default RegisterDetail;

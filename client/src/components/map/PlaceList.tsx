@@ -30,6 +30,9 @@ const PlaceList = ({
   radius?: number;
 }) => {
   const places = useSelector((state: RootState) => state.placeList.list);
+  const scheduleList = useSelector(
+    (state: RootState) => state.scheduleList.list
+  );
   const schedule = useSelector(
     (state: RootState) => state.scheduleList.lastItem
   );
@@ -81,21 +84,23 @@ const PlaceList = ({
           category={item.category_name.split('>')[0]}
           address={item.road_address_name}
           phone={item.phone}
-          onClick={() =>
-            dispatch(
-              scheduleListActions.addList({
-                placeName: item.place_name,
-                placeUrl: item.place_url,
-                roadAddressName: item.road_address_name,
-                id: item.id,
-                phone: item.phone,
-                categoryGroupCode: item.category_group_code,
-                categoryGroupName: item.category_group_name,
-                x: item.x,
-                y: item.y,
-              })
-            )
-          }
+          onClick={() => {
+            if (scheduleList.length < 10) {
+              dispatch(
+                scheduleListActions.addList({
+                  placeName: item.place_name,
+                  placeUrl: item.place_url,
+                  roadAddressName: item.road_address_name,
+                  id: item.id,
+                  phone: item.phone,
+                  categoryGroupCode: item.category_group_code,
+                  categoryGroupName: item.category_group_name,
+                  x: item.x,
+                  y: item.y,
+                })
+              );
+            }
+          }}
         />
       ))}
       <PaginationWrapper ref={paginationRef} />
