@@ -78,9 +78,9 @@ const CommunityPage = () => {
             callback={SearchPost}
           />
         </form>
-        {isSuccess && (
+        {data && (
           <FilterSection
-            communityData={data!.pages}
+            communityData={data.pages}
             hasNextPage={hasNextPage}
             fetchNextPage={fetchNextPage}
           >
