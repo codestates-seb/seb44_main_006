@@ -1,9 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
-const useMovePage = (url: string, value?: string | number | null) => {
+const useMovePage = (
+  url: string,
+  value?: string | number | null,
+  replace = false
+) => {
   const navigate = useNavigate();
   const navigatePage = () => {
-    navigate(url, { state: value });
+    navigate(url, { replace, state: value });
   };
   return navigatePage;
 };

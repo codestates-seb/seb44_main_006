@@ -80,6 +80,7 @@ export type CommunitySummaryT = {
   postCreatedAt: string;
   postId: number;
   tags: string[];
+  memberEmail: string;
 };
 
 export type PageInfoT = {

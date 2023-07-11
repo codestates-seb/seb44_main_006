@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
 import { IButtonStyle, Props } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
