@@ -33,18 +33,18 @@ instance.interceptors.request.use(
 
 // );
 
-export const GetUserInfo = async () => instance.get(`/auth/members`);
+export const GetUserInfo = async () => instance.get(`/api/auth/members`);
 
-export const RemoveUserInfo = async () => instance.post('/auth/logout');
+export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
 
 export const PatchMemNickname = async (nickname: string) => {
-  await instance.patch(`/members`, { memberNickname: nickname });
+  await instance.patch(`/api/members`, { memberNickname: nickname });
 };
 
-export const GetMyList = async () => instance.get(`/members`);
+export const GetMyList = async () => instance.get(`/api/members`);
 
 export const GetCourse = async ({ courseId }: { courseId: string }) =>
-  instance.get(`/courses/${courseId}`);
+  instance.get(`/api/courses/${courseId}`);
 
 export const GetCommunityList = async ({
   pageParam,
@@ -57,7 +57,7 @@ export const GetCommunityList = async ({
   sort?: string | undefined;
   tagName?: string | undefined;
 }) => {
-  const essential = `/posts/read?page=${pageParam}&limit=${limit}`;
+  const essential = `/api/posts/read?page=${pageParam}&limit=${limit}`;
   const optSort = sort === 'Like' ? '&sort=like' : '';
   const optTagName = tagName ? `&tagName=${tagName}` : '';
   const request = essential + optSort + optTagName;
@@ -70,13 +70,13 @@ export const GetCommunityList = async ({
 };
 
 export const GetCommunityPost = async ({ postId }: { postId: string }) =>
-  instance.get(`/posts/read/${postId}`);
+  instance.get(`/api/posts/read/${postId}`);
 
 export const PostCommunity = async ({
   courseId,
   postContent,
   tags,
-}: PostReqT) => instance.post(`/posts/`, { courseId, postContent, tags });
+}: PostReqT) => instance.post(`/api/posts/`, { courseId, postContent, tags });
 
 export const PostComment = async ({
   answerContent,
@@ -84,19 +84,19 @@ export const PostComment = async ({
 }: {
   answerContent: string;
   postId: string | undefined;
-}) => instance.post(`/answers/${postId ?? ''}`, { answerContent });
+}) => instance.post(`/api/answers/${postId ?? ''}`, { answerContent });
 
 export const DeleteCommunityPost = async ({ postId }: { postId: string }) =>
-  instance.delete(`/posts/${postId}`);
+  instance.delete(`/api/posts/${postId}`);
 
 export const PostBookmark = async ({ courseId }: { courseId: number }) =>
-  instance.post(`/courses/${courseId}/bookmark`);
+  instance.post(`/api/courses/${courseId}/bookmark`);
 
 export const PostLike = async ({ courseId }: { courseId: number }) =>
-  instance.post(`/courses/${courseId}/like`);
+  instance.post(`/api/courses/${courseId}/like`);
 
 export const DeleteComment = async ({ answerId }: { answerId: number }) =>
-  instance.delete(`/answers/${answerId}`);
+  instance.delete(`/api/answers/${answerId}`);
 
 export const PatchComment = async ({
   answerId,
@@ -104,4 +104,4 @@ export const PatchComment = async ({
 }: {
   answerId: number;
   answerContent: string;
-}) => instance.patch(`/answers/${answerId}`, { answerContent });
+}) => instance.patch(`/api/answers/${answerId}`, { answerContent });
