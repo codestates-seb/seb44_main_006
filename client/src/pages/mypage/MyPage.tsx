@@ -14,6 +14,10 @@ import ContensCard from '../../components/ui/cards/ContentsCard';
 import InputContainer from '../../components/ui/input/InputContainer';
 import Text from '../../components/ui/text/Text';
 
+interface isNickNameT {
+  isValidate?: boolean;
+  toggleNickname?: boolean;
+};
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -51,11 +55,16 @@ const UserNickname = styled.p`
   font-size: 30px;
 `;
 
-const WriteBtn = styled.button`
+const WriteBtn = styled.button<isNickNameT>`
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: ${(props) => (props.toggleNickname ? 'absolute' : 'unset')};
+  top: ${(props) => (props.toggleNickname ? (props.isValidate ? '45%' : '35%') : 'unset')};
+  right: ${(props) => (props.toggleNickname ? '0.3125rem' : 'unset')};
+  transform: ${(props) => (props.toggleNickname ? 'translate(0, -50%)' : 'unset')};
+
 `;
 
 const ScheduleLink = styled(Link)`
@@ -82,7 +91,7 @@ const RightWrap = styled.div`
   flex: 1;
 `;
 
-const InputBox = styled.input`
+const InputBox = styled.input<isNickNameT>`
   border: solid 1px #dcdcdc;
   padding: 0.3125rem 0.5rem;
   font-size: ${(props) => props.size || '16px'};
@@ -94,13 +103,15 @@ const ImgBox = styled.div`
   flex: 1;
 `;
 
-const FormBox = styled.form`
+const FormBox = styled.form<isNickNameT>`
   display: flex;
+  flex-direction: ${(props) => (props.isValidate ? 'row' : 'column')};
+  position: relative;
 `;
 
 const MyPage = () => {
   const [toggleNickname, setToggleNickname] = useState<boolean>(false);
-  const [isName, setIsName] = useState<boolean>(false);
+  const [isName, setIsName] = useState<boolean>(true);
   const memNicknameRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const memNickname = useSelector(
@@ -146,9 +157,7 @@ const MyPage = () => {
   });
 
   const paintNickname = (e: React.FormEvent<HTMLFormElement>) => {
-    if (memNicknameRef.current.length < 2 || memNicknameRef.current.length > 10) {
-
-    } else {
+    if (isName) {
       e.preventDefault();
       mutation.mutate(memNickname);
       setToggleNickname(!toggleNickname);
@@ -179,7 +188,10 @@ const MyPage = () => {
                     ? memNicknameRef.current
                     : userAuthInfo?.memberNickname}
                 </UserNickname>
-                <WriteBtn onClick={handleOpenNickname}>
+                <WriteBtn
+                  toggleNickname={toggleNickname}
+                  onClick={handleOpenNickname}
+                >
                   <Pen
                     style={{
                       iconWidth: 20,
@@ -204,8 +216,14 @@ const MyPage = () => {
                   onChange={onChangeName}
                   ref={memNicknameRef}
                   isValidate={isName}
+                  styles={{
+                    width: "100%"
+                  }}
                 />
-                <WriteBtn>
+                <WriteBtn
+                  isValidate={isName}
+                  toggleNickname={toggleNickname}
+                >
                   <Pen
                     style={{
                       iconWidth: 20,
