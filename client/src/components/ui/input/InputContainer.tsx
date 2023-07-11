@@ -30,6 +30,8 @@ const InputContainer = forwardRef(
       type,
       isValidate,
       onkeypress,
+      defaultValue,
+      onChange,
     }: {
       description: string;
       minLength?: number;
@@ -37,8 +39,10 @@ const InputContainer = forwardRef(
       isValidate?: boolean;
       styles?: TextareaT;
       type?: 'title';
+      defaultValue?: string;
       // tag 입력 칸과 구분하기 위함
       onkeypress?: (e: KeyboardEvent<HTMLInputElement>) => void;
+      onChange?: () => void;
     },
     ref?: ForwardedRef<HTMLInputElement>
   ) => {
@@ -57,6 +61,8 @@ const InputContainer = forwardRef(
           required
           title={errorMessage || ''}
           {...styles}
+          defaultValue={defaultValue}
+          onChange={onChange}
         />
         {type === 'title' && !isValidate && (
           <Text styles={{ color: cssToken.COLOR['red-900'] }}>
