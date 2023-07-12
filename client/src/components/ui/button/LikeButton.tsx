@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { throttle } from 'lodash';
+import { debounce, throttle } from 'lodash';
 
 import EventButton from './EventButton';
 
@@ -24,10 +24,9 @@ const LikeButton = ({
         : queryClient.invalidateQueries(['community']),
   });
 
-  const PushLike = throttle(() => {
-    console.log('push like');
+  const PushLike = debounce(() => {
     mutation.mutate({ courseId });
-  }, 5000);
+  }, 300);
 
   const handleLikeButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
