@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -15,7 +16,6 @@ import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import Text from '../ui/text/Text';
 import { RootState } from '../../store';
-import { useEffect } from 'react';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -54,7 +54,6 @@ const FilterSection = ({
   const { userData } = useUserInfo();
   const moveToDetail = (postId: number | undefined) => {
     if (postId !== undefined) navigate(`/community/${postId}`);
-    console.log('postId');
   };
   // const communityData = useSelector(
   //   (state: RootState) => state.communityBasic.communityList
@@ -63,9 +62,6 @@ const FilterSection = ({
   const BookmarkCount: number = userData?.myBookmarkCount;
   const myCourseCount: number = userData?.myCourseCount;
 
-  useEffect(() => {
-
-  }, [memberCourseList, memberBookmarkedList])
   console.log(memberBookmarkedList);
 
   return (
@@ -98,43 +94,43 @@ const FilterSection = ({
       <CardWrapper>
         {selectTab === 'First'
           ? memberCourseList?.map((post: MypCourseSummaryT) => (
-            <ContensCard
-              key={post.courseId}
-              type="post"
-              title={post.courseTitle}
-              text={post.postContent}
-              likeCount={post.courseLikeCount}
-              userName={post.memberNickname}
-              thumbnail={post.courseThumbnail}
-              onClick={moveToDetail}
-              courseId={post.courseId}
-              date={manufactureDate(post?.courseUpdatedAt)}
-            >
-              <CopyButton endpoint={`community/${post.postId}`} />
-              <ShareKakaoButton endpoint={`community/${post.postId}`} />
-            </ContensCard>
-          ))
+              <ContensCard
+                key={post.courseId}
+                type="post"
+                title={post.courseTitle}
+                text={post.postContent}
+                likeCount={post.courseLikeCount}
+                userName={post.memberNickname}
+                thumbnail={post.courseThumbnail}
+                onClick={moveToDetail}
+                courseId={post.courseId}
+                date={manufactureDate(post?.courseUpdatedAt)}
+              >
+                <CopyButton endpoint={`community/${post.postId}`} />
+                <ShareKakaoButton endpoint={`community/${post.postId}`} />
+              </ContensCard>
+            ))
           : memberBookmarkedList?.map((post: MyBookMarkSummaryT) => (
-            <ContensCard
-              key={post.courseId}
-              type="course"
-              title={post.courseTitle}
-              text={post.postContent}
-              likeCount={post.courseLikeCount}
-              tag={post.tags}
-              userName={post.memberNickname}
-              thumbnail={post.courseThumbnail}
-              onClick={moveToDetail}
-              courseId={post.courseId}
-              tags={post.tags}
-              bookmarkStatus
-              likeStatus={post.likeStatus}
-              date={manufactureDate(post?.courseUpdatedAt)}
-            >
-              <CopyButton endpoint={`community/${post.postId}`} />
-              <ShareKakaoButton endpoint={`community/${post.postId}`} />
-            </ContensCard>
-          ))}
+              <ContensCard
+                key={post.courseId}
+                type="course"
+                title={post.courseTitle}
+                text={post.postContent}
+                likeCount={post.courseLikeCount}
+                tag={post.tags}
+                userName={post.memberNickname}
+                thumbnail={post.courseThumbnail}
+                onClick={moveToDetail}
+                courseId={post.courseId}
+                tags={post.tags}
+                bookmarkStatus
+                likeStatus={post.likeStatus}
+                date={manufactureDate(post?.courseUpdatedAt)}
+              >
+                <CopyButton endpoint={`community/${post.postId}`} />
+                <ShareKakaoButton endpoint={`community/${post.postId}`} />
+              </ContensCard>
+            ))}
       </CardWrapper>
       <div ref={ref} />
     </FilterWrapper>

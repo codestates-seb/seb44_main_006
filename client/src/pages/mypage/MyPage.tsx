@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FlexDiv } from '../../styles/styles';
 import { GetMyList } from '../../apis/api';
@@ -7,7 +8,9 @@ import UserInfoBox from '../../components/mypage/UserInfoBox';
 import FilterSection from '../../components/mypage/FilterSection';
 import FilterTab from '../../components/mypage/FilterTab';
 import useHandleTab from '../../hooks/useHandleTab';
-import useUserInfo from '../../hooks/useUserInfo';
+import { myInfoDataListActions } from '../../store/myInfoDataList-slice';
+import { RootState } from '../../store';
+import { MypCourseSummaryT, MyBookMarkSummaryT } from '../../types/apitype';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -19,15 +22,38 @@ const Wrapper = styled(FlexDiv)`
 `;
 
 const MyPage = () => {
+  const dispatch = useDispatch();
   const { selectTab, setTab } = useHandleTab();
-  const { data: userMemData } = useQuery(['mypage'], () => GetMyList());
+  useQuery({
+    queryKey: ['mypage'],
+    queryFn: () => GetMyList(),
+    onSuccess: (data) => {
+      dispatch(
+        myInfoDataListActions.setDataCourse(
+          data?.data.memberCourseList as MypCourseSummaryT[]
+        )
+      );
+      dispatch(
+        myInfoDataListActions.setDataBookMark(
+          data?.data.memberBookmarkedList as MyBookMarkSummaryT[]
+        )
+      );
+    },
+  });
+
+  const memberCourseList = useSelector(
+    (state: RootState) => state.myInfoData.memberCourseList
+  );
+  const memberBookmarkedList = useSelector(
+    (state: RootState) => state.myInfoData.memberBookmarkedList
+  );
 
   return (
     <Wrapper>
       <UserInfoBox />
       <FilterSection
-        memberBookmarkedList={userMemData?.data?.memberBookmarkedList}
-        memberCourseList={userMemData?.data?.memberCourseList}
+        memberBookmarkedList={memberBookmarkedList}
+        memberCourseList={memberCourseList}
         selectTab={selectTab}
       >
         <FilterTab
