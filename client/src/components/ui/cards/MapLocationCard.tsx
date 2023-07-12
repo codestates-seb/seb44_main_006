@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 
 import { CardCommonBox } from './Card.styled';
 
@@ -9,6 +10,7 @@ import { RootState } from '../../../store';
 import Button from '../button/Button';
 import Trash from '../../../assets/Trash';
 import { scheduleListActions } from '../../../store/scheduleList-slice';
+import { markerActions } from '../../../store/marker-slice';
 
 const MapLocationCardContainer = styled.section`
   display: flex;
@@ -45,7 +47,7 @@ const NumCircle = styled.span`
   }
 `;
 
-const LocationCard = styled.div<{ selected?: boolean }>`
+const LocationCard = styled.div<{ selected?: boolean; highlight?: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -65,14 +67,20 @@ const MapLocationCard = ({
   location,
   id,
   placeId,
-  onClick,
 }: MapLocationCardInfo) => {
   const index = indexNum ?? -1;
   const markerId = useSelector((state: RootState) => state.marker.markerId);
   const selected = !!(id && id === markerId);
+  const [isHighlight, setIsHighlight] = useState(false);
+
   const dispatch = useDispatch();
 
-  const handleClick = (inputId: string) => {
+  const handleHighlight = (inputId: string) => {
+    dispatch(markerActions.selectMarker(inputId));
+    setIsHighlight(!isHighlight);
+  };
+
+  const handleDelete = (inputId: string) => {
     dispatch(scheduleListActions.deletePlace(inputId));
   };
 
@@ -83,14 +91,15 @@ const MapLocationCard = ({
       </NumCircle>
       <LocationCard
         selected={selected}
+        highlight={isHighlight}
         onClick={() => {
-          if (onClick) onClick({ id });
+          if (placeId) handleHighlight(placeId);
         }}
       >
         <LocationText>{location}</LocationText>
         <Button
           onClick={() => {
-            if (placeId) handleClick(placeId);
+            if (placeId) handleDelete(placeId);
           }}
         >
           <Trash style={{ iconWidth: 16, iconHeight: 18 }} />
