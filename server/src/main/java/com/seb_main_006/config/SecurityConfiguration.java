@@ -1,6 +1,7 @@
 package com.seb_main_006.config;
 
 import com.seb_main_006.domain.member.service.MemberService;
+import com.seb_main_006.global.auth.filter.CheckRequestEnvironmentFilter;
 import com.seb_main_006.global.auth.filter.JwtVerificationFilter;
 import com.seb_main_006.global.auth.handler.MemberAccessDeniedHandler;
 import com.seb_main_006.global.auth.handler.MemberAuthenticationEntryPoint;
@@ -71,7 +72,7 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(oauth2 -> oauth2
                         // 소셜 로그인 성공 시 수행되는 핸들러 설정
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, refreshTokenRedisRepository)));
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService, refreshTokenRedisRepository, redisUtil)));
 
         return http.build();
     }
