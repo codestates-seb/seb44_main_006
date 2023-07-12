@@ -23,7 +23,7 @@ const RegisterDetailContainer = styled.section`
   align-items: center;
 `;
 
-const PlaceEmbedBox = styled.embed`
+const PlaceEmbedBox = styled.iframe`
   display: flex;
   align-items: center;
   justify-content: center;
