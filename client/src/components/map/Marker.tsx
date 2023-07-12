@@ -32,14 +32,29 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
     const setIamge = () => {
       const index = idx ?? -1;
       if (img) {
-        if (markerId === id) return MarkerOn[0];
-        return MarkerOff[0];
+        if (markerId === id)
+          return {
+            image: MarkerOn[0],
+            zIndex: 4,
+          };
+        return {
+          image: MarkerOff[0],
+          zIndex: 3,
+        };
       }
-      if (markerId === id) return MarkerOn[index + 1];
-      return MarkerOff[index + 1];
+      if (markerId === id) {
+        return {
+          image: MarkerOn[index + 1],
+          zIndex: 4,
+        };
+      }
+      return {
+        image: MarkerOff[index + 1],
+        zIndex: 3,
+      };
     };
 
-    const image = setIamge();
+    const { image, zIndex } = setIamge();
 
     const markerImage = new kakao.maps.MarkerImage(
       image,
@@ -50,6 +65,7 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
       map,
       position: new kakao.maps.LatLng(markerLat, markerLng),
       image: markerImage,
+      zIndex,
     });
 
     const setMarkerId = () => {
