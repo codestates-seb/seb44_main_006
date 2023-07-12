@@ -147,9 +147,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("https")
-                .host("harumate.netlify.app")
-//                .port(5173)
+                .scheme("http")
+                .host("localhost")
+                .port(5173)
                 .queryParams(queryParams)
                 .build()
                 .toUri();
