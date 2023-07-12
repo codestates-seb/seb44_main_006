@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CardCommonBox } from './Card.styled';
 
 import cssToken from '../../../styles/cssToken';
-import { MapLocationCardInfo } from '../../../types/type';
+import { ILatLng, MapLocationCardInfo } from '../../../types/type';
 import { RootState } from '../../../store';
 import Button from '../button/Button';
 import Trash from '../../../assets/Trash';
@@ -74,6 +74,7 @@ const RightButtonArea = styled.section`
 const MapLocationCard = ({
   indexNum,
   location,
+  latlng,
   id,
   type,
 }: MapLocationCardInfo) => {
@@ -83,8 +84,9 @@ const MapLocationCard = ({
 
   const dispatch = useDispatch();
 
-  const handleHighlight = (inputId: string) => {
-    dispatch(markerActions.selectMarker(inputId));
+  const handleHighlight = () => {
+    if (id && latlng)
+      dispatch(markerActions.selectMarker({ markerId: id, center: latlng }));
   };
 
   const handleDelete = (inputId: string) => {
@@ -99,7 +101,7 @@ const MapLocationCard = ({
       <LocationCard
         selected={selected}
         onClick={() => {
-          if (id) handleHighlight(id);
+          handleHighlight();
         }}
       >
         <LocationText>{location}</LocationText>

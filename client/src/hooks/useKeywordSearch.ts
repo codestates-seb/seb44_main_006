@@ -25,16 +25,14 @@ const useKeywordSearch = (
           const [dx, dy] = [data.x, data.y];
           bounds.extend(new kakao.maps.LatLng(Number(dy), Number(dx)));
         }
-        map.panTo(bounds);
+        map.setBounds(bounds);
       }
 
       if (datas.length) {
         displayPagination(pagination);
         dispatch(placeListActions.setIsEmpty(false));
         dispatch(placeListActions.addList(datas));
-      }
-      // TODO 여기에 검색한 결과가 없다는 컴포넌트 보여줄 상태 필요할 듯
-      else dispatch(placeListActions.setIsEmpty(true));
+      } else dispatch(placeListActions.setIsEmpty(true));
     },
     [dispatch, displayPagination, map]
   );

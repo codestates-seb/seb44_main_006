@@ -24,7 +24,7 @@ const KakaoMap = ({
   children,
   ...options
 }: KakaoMapT) => {
-  const [state, setState] = useState(false);
+  const [load, setLoad] = useState(false);
   const dispatch = useDispatch();
   const curLocation = useGeolocation();
 
@@ -43,7 +43,7 @@ const KakaoMap = ({
         keyboardShortcuts: true,
       });
       dispatch(mapActions.setMap(newMap));
-      setState(true);
+      setLoad(true);
     },
     [
       curLocation.coords?.latitude,
@@ -55,7 +55,7 @@ const KakaoMap = ({
 
   return (
     <MapContainer width={width} height={height} ref={loadHandler} {...options}>
-      {state && children}
+      {load && children}
     </MapContainer>
   );
 };
