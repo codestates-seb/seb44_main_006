@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { setUserOAuthActions } from '../../store/userAuth-slice';
+import { UserQAuthInfo, setUserOAuthActions } from '../../store/userAuth-slice';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
@@ -78,14 +78,12 @@ const Header = () => {
   const [isPath, setIsPath] = useState<string>('');
   const location = useLocation();
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
-  const userQAuthData = useSelector(
-    (state: RootState) => state.userAuth.userInfo
-  );
+
   const LoginmodalIsOpen = useSelector(
-    (state: RootState): boolean => state.userAuth.isLoginOpen
+    (state: RootState) => state.userAuth.isLoginOpen
   );
   const LogoutmodalIsOpen = useSelector(
-    (state: RootState): boolean => state.userAuth.isLogoutOpen
+    (state: RootState) => state.userAuth.isLogoutOpen
   );
 
   const LogintoggleModal = () => {
@@ -97,7 +95,7 @@ const Header = () => {
   };
 
   const mutation = useMutation(RemoveUserInfo, {
-    onSuccess(data) {
+    onSuccess() {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('isLogin');
@@ -105,9 +103,8 @@ const Header = () => {
       return window.location.reload();
     },
     onError(error) {
-      console.log('Logout error:', error);
+      throw error;
     },
-
   });
 
   const handleLogout = () => {
@@ -117,12 +114,12 @@ const Header = () => {
 
   // TODO: Redux toolkit 이용해 전역으로 유저 정보 관리하기
   //! 유저 정보 새로고침해야 값을 받을 수 있는 이슈
-  const { data: oauthInfo } = useQuery({
+  useQuery({
     queryKey: ['oauthInfoData'],
     queryFn: () => GetUserInfo(),
     onSuccess: (data) => {
-      dispatch(setUserOAuthActions.setUserOAuth(data.data));
-      if (accessToken) {
+      dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
+      if (accessToken && refreshToken) {
         localStorage.setItem('accessToken', `Bearer ${accessToken}`);
         localStorage.setItem('refreshToken', `${refreshToken}`);
         localStorage.setItem('isLogin', JSON.stringify(true));
@@ -132,19 +129,13 @@ const Header = () => {
         gotoMain();
       }
     },
-    onError: (error: AxiosError) => {
+    onError: (error) => {
       if (accessToken) {
-        const errStatus = error.response.status;
-        navigate(`/error/${errStatus}`);
+        const { response } = error as AxiosError;
+        if (response) navigate(`/error/${response.status}`);
       }
     },
   });
-
-  // useEffect(() => {
-  //   console.log('1 oauthInfo 데이터 응답:', oauthInfo);
-  //   console.log('2 isLoggedIn 로그인 유무:', isLoggedIn);
-  //   console.log('3 userQAuthData 유저 정보:', userQAuthData);
-  // }, []);
 
   useEffect(() => {
     setIsPath(location.pathname);
@@ -231,7 +222,7 @@ const Header = () => {
           // 메인 페이지가 아닌 나머지
           <>
             <WhiteButton
-              onClick={LogoutmodalIsOpen}
+              onClick={LogoutoggleModal}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type Voidfunc = (arg0: React.MouseEvent<HTMLButtonElement>) => void;
+export type Voidfunc = () => void;
 
 export type TextStyleT = {
   size?: string;
@@ -41,7 +41,6 @@ export interface IButtonStyle {
   gap?: string;
   isActive?: boolean;
   title?: string;
-  onClick?: (arg0?: string | React.MouseEvent<HTMLButtonElement>) => void;
   onSubmit?: () => void;
   tagname?: string;
   categoryname?: string;
@@ -51,7 +50,15 @@ export interface IButtonStyle {
   isreset?: boolean;
 }
 
-export type LikeBookMarkButtonT = IButtonStyle & {
+export interface IArgButtonStyle extends IButtonStyle {
+  onClick?: (arg0?: string | undefined) => void;
+}
+
+export interface IEventButtonStyle extends IButtonStyle {
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export type LikeBookMarkButtonT = IEventButtonStyle & {
   courseId?: number;
 };
 

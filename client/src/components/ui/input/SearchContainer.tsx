@@ -42,12 +42,12 @@ type SearchT = {
   iconWidth?: number;
   iconHeight?: number;
   styles?: StylesT;
-  callback?: () => void;
+  callback?: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
 const SearchContainer = forwardRef(
   (
-    { iconWidth, iconHeight, styles, callback }: SearchT,
+    { iconWidth, iconHeight, styles }: SearchT,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
@@ -64,7 +64,6 @@ const SearchContainer = forwardRef(
             iconHeight: iconHeight || 25,
             color: 'none',
           }}
-          onClick={callback}
         />
       </InputWrapper>
     );

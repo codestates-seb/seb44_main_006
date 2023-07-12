@@ -29,8 +29,7 @@ const DeleteButton = ({ postId }: { postId: string }) => {
     <>
       <Button
         type="button"
-        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-          e.stopPropagation();
+        onClick={() => {
           toggleModal();
         }}
       >
@@ -44,8 +43,7 @@ const DeleteButton = ({ postId }: { postId: string }) => {
           }}
         >
           <ModalChildren
-            leftBtnCallback={(e: React.MouseEvent<HTMLButtonElement>) => {
-              e.stopPropagation();
+            leftBtnCallback={() => {
               toggleModal();
             }}
             rightBtnCallback={() => {

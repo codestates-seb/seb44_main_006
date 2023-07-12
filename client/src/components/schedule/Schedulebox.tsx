@@ -61,12 +61,14 @@ const ScheduleBox = () => {
     setChoiceCategory(true);
     setChoiceDirect(false);
     dispatch(placeListActions.resetList());
+    dispatch(placeListActions.setIsEmpty(false));
   };
 
   const handleDirect = () => {
     setChoiceCategory(false);
     setChoiceDirect(true);
     dispatch(placeListActions.resetList());
+    dispatch(placeListActions.setIsEmpty(false));
   };
 
   return (

@@ -3,8 +3,6 @@ import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import DeleteButton from './DeleteButton';
-
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -17,7 +15,6 @@ import {
 import manufactureDate from '../../utils/manufactureDate';
 import useUserInfo from '../../hooks/useUserInfo';
 import Noresult from '../ui/Noresult';
-import shareKakao from '../../utils/shareKakao';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 
@@ -56,7 +53,9 @@ const FilterSection = ({
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      fetchNextPage().catch((error) => console.log(error));
+      fetchNextPage().catch((error) => {
+        throw error;
+      });
     }
   }, [fetchNextPage, hasNextPage, inView]);
 
@@ -91,9 +90,6 @@ const FilterSection = ({
                 isMine={userData?.memberEmail === post.memberEmail}
                 date={manufactureDate(post.postCreatedAt)}
               >
-                {userData && userData.memberEmail === post.memberEmail && (
-                  <DeleteButton postId={String(post.postId)} />
-                )}
                 <CopyButton endpoint={`community/${post.postId}`} />
                 <ShareKakaoButton endpoint={`community/${post.postId}`} />
               </ContensCard>

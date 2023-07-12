@@ -1,7 +1,7 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { IButtonStyle } from '../../../types/type';
+import { IArgButtonStyle } from '../../../types/type';
 
 const LocationButton = ({
   width,
@@ -11,7 +11,7 @@ const LocationButton = ({
   isActive,
   onClick,
   title,
-}: IButtonStyle) => {
+}: IArgButtonStyle) => {
   return (
     <Button
       styles={{

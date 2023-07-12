@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { ForwardedRef, KeyboardEvent, forwardRef, useState } from 'react';
+import { ChangeEvent, ForwardedRef, KeyboardEvent, forwardRef } from 'react';
 
 import { TextareaT } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
@@ -30,22 +30,22 @@ const InputContainer = forwardRef(
       type,
       isValidate,
       onkeypress,
+      defaultValue,
+      onChange,
     }: {
-      description: string;
+      description?: string;
       minLength?: number;
       maxLength?: number;
       isValidate?: boolean;
       styles?: TextareaT;
       type?: 'title';
+      defaultValue?: string;
       // tag 입력 칸과 구분하기 위함
       onkeypress?: (e: KeyboardEvent<HTMLInputElement>) => void;
+      onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     },
     ref?: ForwardedRef<HTMLInputElement>
   ) => {
-    const errorMessage =
-      minLength &&
-      maxLength &&
-      `${minLength}자에서 ${maxLength}자 사이로 입력해주세요.`;
     return (
       <>
         <Input
@@ -54,9 +54,9 @@ const InputContainer = forwardRef(
           placeholder={description}
           minLength={minLength || 1}
           maxLength={maxLength || 524288}
-          required
-          title={errorMessage || ''}
           {...styles}
+          defaultValue={defaultValue}
+          onChange={onChange}
         />
         {type === 'title' && !isValidate && (
           <Text styles={{ color: cssToken.COLOR['red-900'] }}>
