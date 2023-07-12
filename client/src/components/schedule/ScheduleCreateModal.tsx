@@ -72,6 +72,14 @@ const ThumbnailBox = styled.div<UrlProp>`
   justify-content: space-evenly;
 `;
 
+const SelfEnd = styled.div<{ bgUrl: boolean }>`
+  height: ${(props) => (props.bgUrl ? '100%' : '')};
+  display: flex;
+  align-items: end;
+  padding-bottom: ${(props) =>
+    props.bgUrl ? cssToken.SPACING['gap-50'] : '0rem'};
+`;
+
 const DataChoiceWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -183,14 +191,16 @@ const ScheduleCreateModal = () => {
                 {!bgUrl && (
                   <Thumbnail style={{ iconWidth: 125, iconHeight: 103 }} />
                 )}
-                <GrayButton
-                  width="150px"
-                  height="2rem"
-                  borderRadius={cssToken.BORDER['rounded-s']}
-                  onClick={() => setIsThumbChouce(true)}
-                >
-                  썸네일 선택
-                </GrayButton>
+                <SelfEnd bgUrl={!!bgUrl}>
+                  <GrayButton
+                    width="150px"
+                    height="2rem"
+                    borderRadius={cssToken.BORDER['rounded-s']}
+                    onClick={() => setIsThumbChouce(true)}
+                  >
+                    썸네일 선택
+                  </GrayButton>
+                </SelfEnd>
               </ThumbnailBox>
               <DataChoiceWrapper>
                 <div>일정 날짜 선택</div>

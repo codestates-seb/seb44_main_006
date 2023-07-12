@@ -8,6 +8,7 @@ import { overlayReducer } from './overlay-slice';
 import { setUserOAuthReducer } from './userAuth-slice';
 import { selectedIdReducer } from './selectedId-slice';
 import { showDetailReducer } from './showDetail-slice';
+import { communityBasicReducer } from './communitybasic-slice';
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     userAuth: setUserOAuthReducer,
     selectedId: selectedIdReducer,
     showDetail: showDetailReducer,
+    communityBasic: communityBasicReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -71,7 +71,12 @@ const RightButtonArea = styled.section`
   align-items: center;
 `;
 
-const MapLocationCard = ({ indexNum, location, id }: MapLocationCardInfo) => {
+const MapLocationCard = ({
+  indexNum,
+  location,
+  id,
+  type,
+}: MapLocationCardInfo) => {
   const index = indexNum ?? -1;
   const markerId = useSelector((state: RootState) => state.marker.markerId);
   const selected = !!(id && id === markerId);
@@ -105,7 +110,7 @@ const MapLocationCard = ({ indexNum, location, id }: MapLocationCardInfo) => {
               if (id) handleDelete(id);
             }}
           >
-            <Trash style={{ iconWidth: 16, iconHeight: 18 }} />
+            {type && <Trash style={{ iconWidth: 16, iconHeight: 18 }} />}
           </Button>
         </RightButtonArea>
       </LocationCard>
