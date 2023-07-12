@@ -82,7 +82,6 @@ public class Member {
     public void activateMember(Member newMember) {
         this.setMemberStatus(Member.MemberStatus.ACTIVE);
         this.setMemberNickname(newMember.getMemberNickname());
-        this.setRoles(newMember.getRoles());
         this.setMemberImageUrl(newMember.getMemberImageUrl());
         this.setMemberProvider(newMember.getMemberProvider());
     }
