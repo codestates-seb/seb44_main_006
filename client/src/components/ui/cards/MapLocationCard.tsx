@@ -62,7 +62,12 @@ const LocationText = styled.p`
   font-weight: ${cssToken.FONT_WEIGHT.medium};
 `;
 
-const MapLocationCard = ({ indexNum, location, id, type }: MapLocationCardInfo) => {
+const MapLocationCard = ({
+  indexNum,
+  location,
+  id,
+  type,
+}: MapLocationCardInfo) => {
   const index = indexNum ?? -1;
   const markerId = useSelector((state: RootState) => state.marker.markerId);
   const selected = !!(id && id === markerId);
