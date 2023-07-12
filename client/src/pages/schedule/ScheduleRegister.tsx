@@ -1,9 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 
-import KakaoMap from '../../components/map/KakaoMap';
-import Marker from '../../components/map/Marker';
 import { IScheduleListItem, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
 import ScheduleBox from '../../components/schedule/Schedulebox';
@@ -19,6 +17,9 @@ import makePolyline from '../../utils/makePolyline';
 import ScheduleCancelModal from '../../components/schedule/ScheduleCancelModal';
 import RegisterDetail from '../../components/register/RegisterDetail';
 import { placeListActions } from '../../store/placeList-slice';
+
+const KakaoMap = lazy(() => import('../../components/map/KakaoMap'));
+const Marker = lazy(() => import('../../components/map/Marker'));
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-screen']};
@@ -80,27 +81,29 @@ const ScheduleRegister = () => {
         {isDetailShow && <RegisterDetail detailItem={detailItem} />}
       </RelativeDiv>
 
-      <KakaoMap width="100vw" height="100vh">
-        {places.map((place: PlacesSearchResultItem) => (
-          <Marker
-            img={MarkerOff[0]}
-            key={place.id}
-            lat={place.y}
-            lng={place.x}
-            id={place.id}
-          />
-        ))}
-        {scheduleList.map((place: IScheduleListItem, idx: number) => (
-          <Marker
-            key={place.id}
-            lat={place.y}
-            lng={place.x}
-            id={place.id}
-            idx={idx}
-          />
-        ))}
-        <Polyline linePos={makePolyline(scheduleList)} />
-      </KakaoMap>
+      <Suspense>
+        <KakaoMap width="100vw" height="100vh">
+          {places.map((place: PlacesSearchResultItem) => (
+            <Marker
+              img={MarkerOff[0]}
+              key={place.id}
+              lat={place.y}
+              lng={place.x}
+              id={place.id}
+            />
+          ))}
+          {scheduleList.map((place: IScheduleListItem, idx: number) => (
+            <Marker
+              key={place.id}
+              lat={place.y}
+              lng={place.x}
+              id={place.id}
+              idx={idx}
+            />
+          ))}
+          <Polyline linePos={makePolyline(scheduleList)} />
+        </KakaoMap>
+      </Suspense>
 
       <FixedDiv>
         <CircleButton width="100px" height="100px" onClick={handleCancel}>
