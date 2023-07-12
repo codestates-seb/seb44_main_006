@@ -2,8 +2,8 @@ import { styled } from 'styled-components';
 
 import { FlexDiv } from '../../../styles/styles';
 import Comment from '../Comment';
-import { CommentT } from '../../../types/type';
 import manufactureDate from '../../../utils/manufactureDate';
+import { CommentT } from '../../../types/apitype';
 
 const CommentDiv = styled(FlexDiv)`
   flex-direction: column;

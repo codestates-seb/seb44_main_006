@@ -1,6 +1,10 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 
-import { PostReqT } from '../types/apitype';
+import { CommunityListT, PostReqT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '';
 
@@ -61,11 +65,11 @@ export const GetCommunityList = async ({
   const optSort = sort === 'Like' ? '&sort=like' : '';
   const optTagName = tagName ? `&tagName=${tagName}` : '';
   const request = essential + optSort + optTagName;
-  const res = await instance.get(request);
+  const res: AxiosResponse<CommunityListT> = await instance.get(request);
   return {
     communityListData: res.data.data,
     current_page: pageParam,
-    isLast: (res.data.pageInfo.totalPages as number) === pageParam,
+    isLast: res.data.pageInfo.totalPages === pageParam,
   };
 };
 

@@ -40,6 +40,7 @@ const KakaoMap = ({
       const newMap = new kakao.maps.Map(element, {
         level,
         center: new kakao.maps.LatLng(Number(lat), Number(lng)),
+        keyboardShortcuts: true,
       });
       dispatch(mapActions.setMap(newMap));
       setState(true);

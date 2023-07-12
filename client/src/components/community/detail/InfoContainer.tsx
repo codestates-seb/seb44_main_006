@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { memo } from 'react';
 
 import Text from '../../ui/text/Text';
 import cssToken from '../../../styles/cssToken';
@@ -31,4 +32,4 @@ const InfoContainer = ({ writer, date }: { writer: string; date: string }) => {
   );
 };
 
-export default InfoContainer;
+export default memo(InfoContainer);

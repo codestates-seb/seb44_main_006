@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import { debounce, throttle } from 'lodash';
 
 import EventButton from './EventButton';
 
@@ -13,18 +14,21 @@ const LikeButton = ({
   isActive,
   courseId,
 }: LikeBookMarkButtonT) => {
-  const { postId } = useParams();
   const queryClient = useQueryClient();
   const mutation = useMutation(PostLike, {
-    // Fixme 키 추가하기
-    onSuccess: () =>
-      postId
-        ? queryClient.invalidateQueries(['communityDetail'])
-        : queryClient.invalidateQueries(['community']),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['community']);
+      await queryClient.invalidateQueries(['communityDetail']);
+    },
   });
+
+  const PushLike = debounce(() => {
+    mutation.mutate({ courseId });
+  }, 300);
+
   const handleLikeButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (courseId) mutation.mutate({ courseId });
+    if (courseId) PushLike();
   };
   return (
     <EventButton onClick={handleLikeButton}>

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { memo } from 'react';
 
 import cssToken from '../../styles/cssToken';
 
@@ -36,4 +37,4 @@ const UserInfoMy = ({ styles, src }: UserInfo) => {
   );
 };
 
-export default UserInfoMy;
+export default memo(UserInfoMy);

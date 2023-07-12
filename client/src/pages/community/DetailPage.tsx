@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { memo, useMemo, useRef, useState } from 'react';
 import { AxiosError } from 'axios';
 
 import InfoContainer from '../../components/community/detail/InfoContainer';
@@ -20,6 +20,7 @@ import { GetCommunityPost, PostComment } from '../../apis/api';
 import manufactureDate from '../../utils/manufactureDate';
 import getLoginStatus from '../../utils/getLoginStatus';
 import { CommunityDetailT } from '../../types/apitype';
+import Content from '../../components/community/detail/Content';
 
 const HEADDiv = styled(FlexDiv)`
   justify-content: space-between;
@@ -81,8 +82,35 @@ const DetailPage = () => {
 
   if (error) {
     // Todo error 객체 확인
+    console.error(error);
     navigate(`/error/500`);
   }
+
+  const postInfo = useMemo(() => {
+    return {
+      destinationList: detailData?.courseInfo.destinationList,
+      postTitle: detailData?.courseTitle ?? '로딩 중',
+    };
+  }, [detailData?.courseInfo.destinationList, detailData?.courseTitle]);
+
+  const userInfo = useMemo(() => {
+    return {
+      memberImageUrl: detailData?.memberImageUrl,
+      memberNickname: detailData?.memberNickname ?? '로딩 중',
+      courseUpdatedAt: manufactureDate(detailData?.courseUpdatedAt),
+    };
+  }, [
+    detailData?.courseUpdatedAt,
+    detailData?.memberImageUrl,
+    detailData?.memberNickname,
+  ]);
+
+  const contentData = useMemo(() => {
+    return {
+      postContent: detailData?.postContent ?? '',
+      tags: detailData?.tags ?? [],
+    };
+  }, [detailData?.postContent, detailData?.tags]);
 
   return (
     <OutsideWrap>
@@ -92,12 +120,12 @@ const DetailPage = () => {
 
       <HEADDiv>
         <UersDiv>
-          {detailData && (
+          {detailData && userInfo && (
             <>
-              <UserInfoMy src={detailData.memberImageUrl} />
+              <UserInfoMy src={userInfo.memberImageUrl} />
               <InfoContainer
-                writer={detailData.memberNickname}
-                date={manufactureDate(detailData.courseUpdatedAt)}
+                writer={userInfo.memberNickname}
+                date={userInfo.courseUpdatedAt}
               />
             </>
           )}
@@ -115,18 +143,18 @@ const DetailPage = () => {
         )}
       </HEADDiv>
 
-      {detailData && (
+      {detailData && postInfo.destinationList && (
         <MapContainer
-          destinationList={detailData.courseInfo.destinationList}
-          title={detailData.courseTitle}
+          destinationList={postInfo.destinationList}
+          title={postInfo.postTitle}
         />
       )}
 
       <ContentDiv>
-        {detailData && (
+        {detailData && contentData && (
           <>
-            <div dangerouslySetInnerHTML={{ __html: detailData.postContent }} />
-            <TagContainer tagArr={detailData.tags} />
+            <Content postContent={contentData.postContent} />
+            <TagContainer tagArr={contentData.tags} />
           </>
         )}
       </ContentDiv>
@@ -162,4 +190,4 @@ const DetailPage = () => {
   );
 };
 
-export default DetailPage;
+export default memo(DetailPage);

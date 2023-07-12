@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { memo } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import Text from '../ui/text/Text';
@@ -39,4 +40,4 @@ const FilterTab = ({
   );
 };
 
-export default FilterTab;
+export default memo(FilterTab);
