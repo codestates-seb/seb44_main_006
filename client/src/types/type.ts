@@ -167,6 +167,7 @@ export interface MapLocationCardInfo {
   id?: string;
   placeId?: string;
   onClick?: ({ id }: { id: string | undefined }) => void;
+  type?: 'register';
 }
 
 export interface RouteState {

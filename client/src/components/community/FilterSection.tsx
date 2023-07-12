@@ -59,7 +59,7 @@ const FilterSection = ({
     fetchNextPage().catch((error) => {
       throw error;
     });
-  }, 300);
+  }, 500);
 
   useEffect(() => {
     if (inView && hasNextPage) {
