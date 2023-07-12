@@ -1,5 +1,6 @@
 package com.seb_main_006.domain.post.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
 import com.seb_main_006.domain.course.entity.Course;
@@ -18,6 +19,8 @@ import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -34,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 
@@ -56,20 +60,43 @@ class PostServiceTest {
     private JwtTokenizer jwtTokenizer = new JwtTokenizer(new ObjectMapper());
 
 
-
-
-    @DisplayName("파라미터로 전달된 토큰(accessToken)이 없거나 유효하지 않아도 에러가 발생하지 않는다.")
-    @Test
-    void findPosts_1() {
+    @ParameterizedTest
+    @CsvSource(value = {"null", "''"}, delimiter = ':', nullValues = "null")
+    @DisplayName("파라미터로 전달된 토큰(accessToken) 값이 빈 값이거나 null 일 경우, findVerifiedMember() 가 호출되지 않는다.")
+    void findPosts_1(String accessToken) {
 
         // given
         int page = 0;
         int limit = 10;
         String sort = null;
         String tagName = null;
-        String accessToken1 = "INVALID TOKEN";
-        String accessToken2 = "";
-        String accessToken3 = null;
+
+        given(courseRepository.findAllByPostedOrderByUpdatedAt(any(PageRequest.class)))
+                .willReturn(getDummyPageResult(1L, 1L, 1L));
+        given(likesRepository.findByMemberAndCourse(any(Member.class), any(Course.class)))
+                .willReturn(Optional.empty());
+        given(bookmarkRepository.findByMemberAndCourse(any(Member.class), any(Course.class)))
+                .willReturn(Optional.empty());
+
+        // when
+        postService.findPosts(page, limit, sort, accessToken, tagName);
+
+        // then
+        verify(memberService, never()).findVerifiedMember(accessToken);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"INVALID TOKEN",
+                        "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYWxzdWRkbDI1QGdtYWlsLmNvbSIsInN1YiI6IntcInVzZXJuYW1lXCI6XCJhbHN1ZGRsMjVAZ21haWwuY29tXCIsXCJ0b2tlblR5cGVcIjpcIkFjY2Vzc1Rva2VuXCJ9IiwiaWF0IjoxNjg5MDU2Mzk5LCJleHAiOjE2OTIwNTYzOTl9.mDi7YsAR-4PciXKocwAQLjw7Czi22cxNUqSfsDri7OUpWza85a_pMUWNXsaBqiSXhRCXvs4K1Kzt-3rxlLbIog"},
+            delimiter = ':', nullValues = "null")
+    @DisplayName("파라미터로 전달된 토큰(accessToken) 값이 유효하든 유효하지 않든 예외가 발생하지 않는다.")
+    void findPosts_2(String accessToken) {
+
+        // given
+        int page = 0;
+        int limit = 10;
+        String sort = null;
+        String tagName = null;
 
         given(courseRepository.findAllByPostedOrderByUpdatedAt(any(PageRequest.class)))
                 .willReturn(getDummyPageResult(1L, 1L, 1L));
@@ -79,15 +106,13 @@ class PostServiceTest {
                 .willReturn(Optional.empty());
 
         // when, then
-        assertDoesNotThrow(() -> postService.findPosts(page, limit, sort, accessToken1, tagName));
-        assertDoesNotThrow(() -> postService.findPosts(page, limit, sort, accessToken2, tagName));
-        assertDoesNotThrow(() -> postService.findPosts(page, limit, sort, accessToken3, tagName));
+        assertDoesNotThrow(() -> postService.findPosts(page, limit, sort, accessToken, tagName));
     }
 
     @DisplayName("tagName == null 이고, sort == null 일 경우, " +
             "courseRepository의 findAllByPostedOrderByUpdatedAt 메소드가 호출되고, 파라미터로 pageRequest 가 전달된다.")
     @Test
-    void findPosts_2() {
+    void findPosts_4() {
 
         // given
         int page = 0;
@@ -110,10 +135,33 @@ class PostServiceTest {
         verify(courseRepository).findAllByPostedOrderByUpdatedAt(any(PageRequest.class));
     }
 
+    @ParameterizedTest
+    @CsvSource(value = {"eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYWxzdWRkbDI1QGdtYWlsLmNvbSIsInN1YiI6IntcInVzZXJuYW1lXCI6XCJhbHN1ZGRsMjVAZ21haWwuY29tXCIsXCJ0b2tlblR5cGVcIjpcIkFjY2Vzc1Rva2VuXCJ9IiwiaWF0IjoxNjg5MDU2Mzk5LCJleHAiOjE2OTIwNTYzOTl9.mDi7YsAR-4PciXKocwAQLjw7Czi22cxNUqSfsDri7OUpWza85a_pMUWNXsaBqiSXhRCXvs4K1Kzt-3rxlLbIog"},
+            delimiter = ':', nullValues = "null")
+    @DisplayName("파라미터로 전달된 토큰(accessToken)이 유효한 토큰일 경우, findVerifiedMember() 가 호출된다.")
+    void findPosts_3(String accessToken) {
+
+        // given
+        int page = 0;
+        int limit = 10;
+        String sort = null;
+        String tagName = null;
+
+        given(courseRepository.findAllByPostedOrderByUpdatedAt(any(PageRequest.class)))
+                .willReturn(getDummyPageResult(1L, 1L, 1L));
+        given(likesRepository.findByMemberAndCourse(any(Member.class), any(Course.class)))
+                .willReturn(Optional.empty());
+        given(bookmarkRepository.findByMemberAndCourse(any(Member.class), any(Course.class)))
+                .willReturn(Optional.empty());
+
+        // when, then
+        assertDoesNotThrow(() -> postService.findPosts(page, limit, sort, accessToken, tagName));
+    }
+
     @DisplayName("tagName == null 이고, sort == 'like' 일 경우, " +
             "courseRepository의 findAllByPostedOrderByLikeCount 메소드가 호출되고, 파라미터로 pageRequest 가 전달된다.")
     @Test
-    void findPosts_3() {
+    void findPosts_5() {
 
         // given
         int page = 0;
@@ -139,7 +187,7 @@ class PostServiceTest {
     @DisplayName("tagName != null 일 경우, 전달된 String(tagName) 은 공백 기준으로 분리되고, " +
             "분리된 단어의 개수만큼 tagRepository.findByTagNameContaining 메서드가 호출된다.")
     @Test
-    void findPosts_4() {
+    void findPosts_6() {
 
         // given
         int page = 0;
@@ -165,7 +213,7 @@ class PostServiceTest {
     @DisplayName("tagName != null 이고, sort == null 일 경우," +
             "postTagRepository.findByTagInOrderByUpdatedAt 메서드가 호출되고, 파라미터로 태그 리스트와 pageRequest 가 전달된다")
     @Test
-    void findPosts_5() {
+    void findPosts_7() {
 
         // given
         int page = 0;
@@ -191,7 +239,7 @@ class PostServiceTest {
     @DisplayName("tagName != null 이고, sort == 'like' 일 경우," +
             "postTagRepository.findByTagInOrderByLikeCount 메서드가 호출되고, 파라미터로 태그 리스트와 pageRequest 가 전달된다")
     @Test
-    void findPosts_6() {
+    void findPosts_8() {
 
         // given
         int page = 0;
