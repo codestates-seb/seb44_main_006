@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { debounce } from 'lodash';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -56,7 +57,9 @@ const CommunityPage = () => {
     }
   }, [data, dispatch]);
 
-  const SearchPost = (e: React.FormEvent<HTMLFormElement>) => {
+  const SearchPost = (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     if (searchInputRef.current) {
       const keyword = searchInputRef.current?.value;
@@ -74,6 +77,7 @@ const CommunityPage = () => {
       <Wrapper>
         <form onSubmit={SearchPost}>
           <SearchContainer
+            searchClick={SearchPost}
             ref={searchInputRef}
             iconWidth={24}
             iconHeight={24}
@@ -82,7 +86,6 @@ const CommunityPage = () => {
               height: '50px',
               fontsize: cssToken.TEXT_SIZE['text-18'],
             }}
-            callback={SearchPost}
           />
         </form>
         <FilterSection hasNextPage={hasNextPage} fetchNextPage={fetchNextPage}>
