@@ -40,7 +40,6 @@ public class MemberService {
         // 탈퇴한 회원일 경우 기존 탈퇴 상태를 ACTIVE 로 전환
         if (findDeletedMember(member.getMemberEmail()).isPresent()) {
             Member findDeletedMember = findDeletedMember(member.getMemberEmail()).get();
-            member.setRoles(customAuthorityUtils.createRoles(member.getMemberEmail())); // member Role 저장
             findDeletedMember.activateMember(member); // 탈퇴한 회원 상태 활성화
 
             // 템플릿 적용된 메일 비동기로 보내기
