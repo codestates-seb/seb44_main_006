@@ -1,7 +1,7 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { IButtonStyle } from '../../../types/type';
+import { IArgButtonStyle } from '../../../types/type';
 
 const GrayButton = ({
   children,
@@ -11,7 +11,7 @@ const GrayButton = ({
   fontsize,
   onClick,
   isActive,
-}: IButtonStyle) => {
+}: IArgButtonStyle) => {
   return (
     <Button
       onClick={onClick}

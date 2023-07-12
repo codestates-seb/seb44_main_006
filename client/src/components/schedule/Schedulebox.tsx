@@ -15,7 +15,7 @@ import { placeListActions } from '../../store/placeList-slice';
 const ScheduleContainer = styled.section`
   left: 0;
   top: 0;
-  width: 550px;
+  width: 25rem;
   height: 100vh;
   background: #fff;
   padding: 15px;
@@ -61,12 +61,14 @@ const ScheduleBox = () => {
     setChoiceCategory(true);
     setChoiceDirect(false);
     dispatch(placeListActions.resetList());
+    dispatch(placeListActions.setIsEmpty(false));
   };
 
   const handleDirect = () => {
     setChoiceCategory(false);
     setChoiceDirect(true);
     dispatch(placeListActions.resetList());
+    dispatch(placeListActions.setIsEmpty(false));
   };
 
   return (

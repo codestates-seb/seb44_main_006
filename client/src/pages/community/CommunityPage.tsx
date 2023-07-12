@@ -35,18 +35,17 @@ const FixedDiv = styled.div`
 
 const CommunityPage = () => {
   const goToSelect = useMovePage('/community/select');
-  const goToError = useMovePage('/error/500');
+  // const goToError = useMovePage('/error/500');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isLogin = getLoginStatus();
   const { selectTab, setTab } = useHandleTab();
   const [tagName, setTagName] = useState<string>('');
 
-  const { data, fetchNextPage, isSuccess, hasNextPage, error } =
-    useInfiniteScrollQuery({
-      limit: LIMIT,
-      tagName: tagName || '',
-      sort: selectTab,
-    });
+  const { data, fetchNextPage, hasNextPage, error } = useInfiniteScrollQuery({
+    limit: LIMIT,
+    tagName: tagName || '',
+    sort: selectTab,
+  });
 
   const SearchPost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,7 +57,8 @@ const CommunityPage = () => {
   };
 
   if (error) {
-    goToError();
+    console.error(error);
+    // goToError();
   }
 
   return (
@@ -77,9 +77,9 @@ const CommunityPage = () => {
             callback={SearchPost}
           />
         </form>
-        {isSuccess && (
+        {data && (
           <FilterSection
-            communityData={data!.pages}
+            communityData={data.pages}
             hasNextPage={hasNextPage}
             fetchNextPage={fetchNextPage}
           >

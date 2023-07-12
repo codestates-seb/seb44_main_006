@@ -1,8 +1,8 @@
 import Button from './Button';
 
-import { IButtonStyle } from '../../../types/type';
+import { IArgButtonStyle } from '../../../types/type';
 
-const CloseButton = ({ svgWidth, svgHeight, onClick }: IButtonStyle) => {
+const CloseButton = ({ svgWidth, svgHeight, onClick }: IArgButtonStyle) => {
   return (
     <Button onClick={onClick}>
       <svg

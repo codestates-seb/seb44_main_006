@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import Button from './Button';
+import EventButton from './EventButton';
 
 import cssToken from '../../../styles/cssToken';
 import { LikeBookMarkButtonT } from '../../../types/type';
@@ -27,7 +27,7 @@ const LikeButton = ({
     if (courseId) mutation.mutate({ courseId });
   };
   return (
-    <Button onClick={handleLikeButton}>
+    <EventButton onClick={handleLikeButton}>
       <svg
         width={svgWidth || '23px'}
         height={svgHeight || '21px'}
@@ -42,7 +42,7 @@ const LikeButton = ({
           }
         />
       </svg>
-    </Button>
+    </EventButton>
   );
 };
 

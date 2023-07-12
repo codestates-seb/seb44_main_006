@@ -7,7 +7,9 @@ import { Pagination, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
 import LocationCard from '../ui/cards/LocationCard';
 import cssToken from '../../styles/cssToken';
-import { scheduleListActions } from '../../store/scheduleList-slice';
+import { showDetailActions } from '../../store/showDetail-slice';
+import useGeolocation from '../../hooks/useGeolocation';
+import Noresult from '../ui/Noresult';
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,14 +32,20 @@ const PlaceList = ({
   radius?: number;
 }) => {
   const places = useSelector((state: RootState) => state.placeList.list);
-  const scheduleList = useSelector(
-    (state: RootState) => state.scheduleList.list
-  );
+  const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
   const schedule = useSelector(
     (state: RootState) => state.scheduleList.lastItem
   );
+
   const paginationRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+  const curLocation = useGeolocation();
+  const x = curLocation.coords
+    ? `${curLocation.coords?.longitude}`
+    : '126.570667';
+  const y = curLocation.coords
+    ? `${curLocation.coords?.latitude}`
+    : '33.450701';
 
   const displayPagination = useCallback((pagination: Pagination) => {
     const fragment = document.createDocumentFragment();
@@ -69,38 +77,28 @@ const PlaceList = ({
   useKeywordSearch(
     displayPagination,
     searchPlace,
-    schedule.x,
-    schedule.y,
+    schedule.x || x,
+    schedule.y || y,
     radius ? radius * 1000 : undefined
   );
-  // 이렇게 하면 마지막으로 등록한 일정 기준으로 검색할 수 있음
-  // FIXME 리스트가 초기화 됐을 때 페이지네이션은 남는 현상을 수정해야함
-  return (
+
+  const handleClick = (item: PlacesSearchResultItem) => {
+    dispatch(showDetailActions.setIsShow(true));
+    dispatch(showDetailActions.setItem(item));
+  };
+
+  return isEmpty ? (
+    <Noresult iconHeight={50} iconWidth={50} size="1rem" />
+  ) : (
     <Wrapper>
       {places.map((item: PlacesSearchResultItem) => (
         <LocationCard
           key={item.id}
           title={item.place_name}
-          category={item.category_name.split('>')[0]}
+          category={item.category_name ? item.category_name.split('>')[0] : ''}
           address={item.road_address_name}
           phone={item.phone}
-          onClick={() => {
-            if (scheduleList.length < 10) {
-              dispatch(
-                scheduleListActions.addList({
-                  placeName: item.place_name,
-                  placeUrl: item.place_url,
-                  roadAddressName: item.road_address_name,
-                  id: item.id,
-                  phone: item.phone,
-                  categoryGroupCode: item.category_group_code,
-                  categoryGroupName: item.category_group_name,
-                  x: item.x,
-                  y: item.y,
-                })
-              );
-            }
-          }}
+          onClick={() => handleClick(item)}
         />
       ))}
       <PaginationWrapper ref={paginationRef} />

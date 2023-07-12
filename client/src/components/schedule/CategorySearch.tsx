@@ -49,6 +49,7 @@ const CategorySearch = () => {
     radius: undefined,
     category: '',
   });
+
   const reduxDispatch = useDispatch();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -91,7 +92,7 @@ const CategorySearch = () => {
       <PlaceList
         searchPlace={searchPlace.category}
         radius={searchPlace.radius}
-      />{' '}
+      />
     </>
   );
 };
