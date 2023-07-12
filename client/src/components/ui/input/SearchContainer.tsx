@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { forwardRef, ForwardedRef } from 'react';
+import { forwardRef, ForwardedRef, memo } from 'react';
 
 import Search from '../../../assets/Search';
 import cssToken from '../../../styles/cssToken';
@@ -70,4 +70,4 @@ const SearchContainer = forwardRef(
   }
 );
 
-export default SearchContainer;
+export default memo(SearchContainer);

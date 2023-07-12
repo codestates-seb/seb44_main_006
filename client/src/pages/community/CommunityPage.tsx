@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
@@ -60,7 +60,6 @@ const CommunityPage = () => {
     e.preventDefault();
     if (searchInputRef.current) {
       const keyword = searchInputRef.current?.value;
-      setTab('Newest');
       setTagName(keyword);
     }
   };
