@@ -20,7 +20,7 @@ const Wrapper = styled(FlexDiv)`
 
 const MyPage = () => {
   const { selectTab, setTab } = useHandleTab();
-  const { data: userMemData } = useQuery(['userInfo'], () => GetMyList());
+  const { data: userMemData } = useQuery(['mypage'], () => GetMyList());
 
   return (
     <Wrapper>

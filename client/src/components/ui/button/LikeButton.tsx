@@ -19,6 +19,7 @@ const LikeButton = ({
     onSuccess: async () => {
       await queryClient.invalidateQueries(['community']);
       await queryClient.invalidateQueries(['communityDetail']);
+      await queryClient.invalidateQueries(['mypage']);
     },
   });
 
