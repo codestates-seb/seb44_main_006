@@ -77,7 +77,7 @@ const SelfEnd = styled.div<{ bgUrl: boolean }>`
   display: flex;
   align-items: end;
   padding-bottom: ${(props) =>
-    props.bgUrl ? cssToken.SPACING['gap-40'] : '0rem'};
+    props.bgUrl ? cssToken.SPACING['gap-50'] : '0rem'};
 `;
 
 const DataChoiceWrapper = styled.div`
