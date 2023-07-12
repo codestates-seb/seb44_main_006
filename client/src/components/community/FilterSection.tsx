@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { throttle } from 'lodash';
 
@@ -37,6 +37,10 @@ const FilterContainer = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-50']};
 `;
 
+const Div = styled.div`
+  height: 100vh;
+`;
+
 const FilterSection = ({
   children,
   fetchNextPage,
@@ -51,6 +55,7 @@ const FilterSection = ({
   const communityData = useSelector(
     (state: RootState) => state.communityBasic.communityList
   );
+
   const navigate = useNavigate();
   const moveToDetail = (postId: number | undefined) => {
     if (postId) navigate(`/community/${postId}`);
@@ -60,24 +65,27 @@ const FilterSection = ({
     fetchNextPage().catch((error) => {
       throw error;
     });
-  }, 500);
+  }, 1000);
 
   useEffect(() => {
     if (inView && hasNextPage) {
       fetcNexthData();
     }
-  }, [fetcNexthData, hasNextPage, inView]);
+  }, [inView, hasNextPage, fetcNexthData]);
+
   return (
-    <>
-      <FilterWrapper>
-        <FilterContainer>{children}</FilterContainer>
-        {communityData && communityData[0].communityListData.length === 0 && (
-          <NoResults />
-        )}
-        <CardWrapper>
-          {communityData &&
-            communityData.map((datas: InfiniteScrollT) =>
-              datas.communityListData.map((post: CommunitySummaryT) => (
+    <FilterWrapper>
+      <FilterContainer>{children}</FilterContainer>
+      {communityData && communityData[0].communityListData.length === 0 && (
+        <NoResults />
+      )}
+      <CardWrapper>
+        {communityData &&
+          communityData.map((datas: InfiniteScrollT) =>
+            datas.communityListData.map((post: CommunitySummaryT) => {
+              return post.courseId === -1 ? (
+                <Div>로딩 중 </Div>
+              ) : (
                 <ContensCard
                   key={post.courseId}
                   type="post"
@@ -98,13 +106,13 @@ const FilterSection = ({
                   <CopyButton endpoint={`community/${post.postId}`} />
                   <ShareKakaoButton endpoint={`community/${post.postId}`} />
                 </ContensCard>
-              ))
-            )}
-        </CardWrapper>
-      </FilterWrapper>
+              );
+            })
+          )}
+      </CardWrapper>
       {communityData && <div ref={ref} />}
-    </>
+    </FilterWrapper>
   );
 };
 
-export default FilterSection;
+export default memo(FilterSection);

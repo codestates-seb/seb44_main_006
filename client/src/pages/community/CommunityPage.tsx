@@ -45,11 +45,12 @@ const CommunityPage = () => {
   const [tagName, setTagName] = useState<string>('');
   const dispatch = useDispatch();
 
-  const { data, fetchNextPage, hasNextPage, error } = useInfiniteScrollQuery({
-    limit: LIMIT,
-    tagName: tagName || '',
-    sort: selectTab,
-  });
+  const { data, fetchNextPage, hasNextPage, error, isFetching } =
+    useInfiniteScrollQuery({
+      limit: LIMIT,
+      tagName: tagName || '',
+      sort: selectTab,
+    });
 
   useEffect(() => {
     if (data) {
@@ -66,6 +67,8 @@ const CommunityPage = () => {
       setTagName(keyword);
     }
   };
+
+  console.log('fetching', isFetching);
 
   if (error) {
     console.error(error);
