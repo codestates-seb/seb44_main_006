@@ -49,6 +49,9 @@ const scheduleListSlice = createSlice({
     deletePlace(state, action: PayloadAction<string>) {
       state.list = state.list.filter((obj) => obj.id !== action.payload);
     },
+    updateList(state, action: PayloadAction<TScheduleList>) {
+      state.list = action.payload;
+    },
     resetList(state) {
       state.list = [];
       state.imageUrl = '';
