@@ -47,7 +47,7 @@ const NumCircle = styled.span`
   }
 `;
 
-const LocationCard = styled.div<{ selected?: boolean; highlight?: boolean }>`
+const LocationCard = styled.div<{ selected?: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -62,22 +62,15 @@ const LocationText = styled.p`
   font-weight: ${cssToken.FONT_WEIGHT.medium};
 `;
 
-const MapLocationCard = ({
-  indexNum,
-  location,
-  id,
-  placeId,
-}: MapLocationCardInfo) => {
+const MapLocationCard = ({ indexNum, location, id }: MapLocationCardInfo) => {
   const index = indexNum ?? -1;
   const markerId = useSelector((state: RootState) => state.marker.markerId);
   const selected = !!(id && id === markerId);
-  const [isHighlight, setIsHighlight] = useState(false);
 
   const dispatch = useDispatch();
 
   const handleHighlight = (inputId: string) => {
     dispatch(markerActions.selectMarker(inputId));
-    setIsHighlight(!isHighlight);
   };
 
   const handleDelete = (inputId: string) => {
@@ -91,15 +84,14 @@ const MapLocationCard = ({
       </NumCircle>
       <LocationCard
         selected={selected}
-        highlight={isHighlight}
         onClick={() => {
-          if (placeId) handleHighlight(placeId);
+          if (id) handleHighlight(id);
         }}
       >
         <LocationText>{location}</LocationText>
         <Button
           onClick={() => {
-            if (placeId) handleDelete(placeId);
+            if (id) handleDelete(id);
           }}
         >
           <Trash style={{ iconWidth: 16, iconHeight: 18 }} />
