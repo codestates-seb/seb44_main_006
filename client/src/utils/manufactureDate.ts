@@ -1,4 +1,4 @@
-const manufactureDate = (date: string) => {
+const manufactureDate = (date = '0000-00-00T00:00:00') => {
   const regex = /^(\d{2})(\d{2})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})$/;
   const match = date.match(regex);
   if (match) {
