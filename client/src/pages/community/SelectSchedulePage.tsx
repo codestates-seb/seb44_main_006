@@ -79,9 +79,9 @@ const SelectSchedulePage = () => {
     <OutsideWrap>
       <Head />
       <OverFlowDiv>
-        <CardWrapper>
-          {registerCourses.length > 0 &&
-            registerCourses.map((course) => (
+        {registerCourses.length > 0 && (
+          <CardWrapper>
+            {registerCourses.map((course) => (
               <ContensCard
                 type="course"
                 key={course.courseId}
@@ -95,7 +95,8 @@ const SelectSchedulePage = () => {
                 onClick={handleClickCard}
               />
             ))}
-        </CardWrapper>
+          </CardWrapper>
+        )}
         {registerCourses.length < 1 && (
           <EmptyDiv>
             <Title styles={{ size: cssToken.TEXT_SIZE['text-80'] }}>텅</Title>
