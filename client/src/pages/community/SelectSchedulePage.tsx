@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ import { MemberBookmaredT, MemberCourseT } from '../../types/apitype';
 import Title from '../../components/ui/text/Title';
 import Text from '../../components/ui/text/Text';
 import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
+import scrollToTop from '../../utils/scrollToTop';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -55,6 +56,10 @@ const SelectSchedulePage = () => {
       };
     }): MemberCourseT[] => data.data.memberCourseList,
   });
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   const registerCourses = courses
     ? courses.filter((course: MemberCourseT) => course.isPosted === false)

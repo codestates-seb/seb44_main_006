@@ -104,7 +104,7 @@ const MapLocationCard = ({
       >
         <LocationText>{location}</LocationText>
         <RightButtonArea>
-          <ThreeLine style={{ iconWidth: 17, iconHeight: 18 }} />
+          {type && <ThreeLine style={{ iconWidth: 17, iconHeight: 18 }} />}
           <Button
             onClick={() => {
               if (id) handleDelete(id);

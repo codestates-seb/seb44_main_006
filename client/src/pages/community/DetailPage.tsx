@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { memo, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { AxiosError } from 'axios';
 
 import InfoContainer from '../../components/community/detail/InfoContainer';
@@ -21,6 +21,8 @@ import manufactureDate from '../../utils/manufactureDate';
 import getLoginStatus from '../../utils/getLoginStatus';
 import { CommunityDetailT } from '../../types/apitype';
 import Content from '../../components/community/detail/Content';
+import scrollToTop from '../../utils/scrollToTop';
+import isEmpty from '../../utils/isEmpty';
 
 const HEADDiv = styled(FlexDiv)`
   justify-content: space-between;
@@ -66,17 +68,22 @@ const DetailPage = () => {
     },
   });
 
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (textAreaRef.current && textAreaRef.current.value.trim().length > 0) {
+    if (textAreaRef.current && !isEmpty(textAreaRef.current.value)) {
       setValidate(true);
       mutation.mutate({ postId, answerContent: textAreaRef.current.value });
     } else {
       setValidate(false);
     }
   };
+
   const handleCommentChange = () => {
-    if (textAreaRef.current && textAreaRef.current.value.trim().length > 0)
+    if (textAreaRef.current && !isEmpty(textAreaRef.current.value))
       setValidate(true);
   };
 

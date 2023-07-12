@@ -17,12 +17,12 @@ import { markerActions } from '../../store/marker-slice';
 const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
   flex: 1;
-  margin-left: ${cssToken.SPACING['gap-24']};
   row-gap: ${cssToken.SPACING['gap-12']};
   height: 60vh;
 `;
 
 const MapDiv = styled.div`
+  margin-left: ${cssToken.SPACING['gap-24']};
   flex: 3;
 `;
 
@@ -43,6 +43,22 @@ const MapContainer = ({
   };
   return (
     <FlexDiv>
+      <ScheduleDiv>
+        <Title styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
+          {title || ''}
+        </Title>
+        <LocationCardWrapper>
+          {destinationList.map((destination, idx) => (
+            <MapLocationCard
+              key={uuidv4()}
+              id={destination.id}
+              indexNum={idx + 1}
+              location={destination.placeName}
+              onClick={handleHighlight}
+            />
+          ))}
+        </LocationCardWrapper>
+      </ScheduleDiv>
       <MapDiv>
         <KakaoMap
           center={{
@@ -65,22 +81,6 @@ const MapContainer = ({
           <Polyline linePos={makePolyline(destinationList)} />
         </KakaoMap>
       </MapDiv>
-      <ScheduleDiv>
-        <Title styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
-          {title || ''}
-        </Title>
-        <LocationCardWrapper>
-          {destinationList.map((destination, idx) => (
-            <MapLocationCard
-              key={uuidv4()}
-              id={destination.id}
-              indexNum={idx + 1}
-              location={destination.placeName}
-              onClick={handleHighlight}
-            />
-          ))}
-        </LocationCardWrapper>
-      </ScheduleDiv>
     </FlexDiv>
   );
 };
