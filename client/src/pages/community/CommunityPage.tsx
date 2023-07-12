@@ -67,7 +67,7 @@ const CommunityPage = () => {
       setTagName(keyword);
     }
   };
-
+  // Todo 로딩 어떻게 할지
   console.log('fetching', isFetching);
 
   if (error) {
