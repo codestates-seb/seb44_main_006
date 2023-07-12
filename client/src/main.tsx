@@ -20,23 +20,25 @@ import MyPage from './pages/mypage/MyPage';
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <BrowserRouter>
-    <GlobalStyle />
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/register" element={<ScheduleRegister />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/community/select" element={<SelectSchedulePage />} />
-          <Route path="/community/post" element={<PostCommunitypage />} />
-          <Route path="/community/:postId" element={<DetailPage />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/error/:status" element={<ErrorPage />} />
-        </Routes>
-        <App />
-      </Provider>
-    </QueryClientProvider>
-  </BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <GlobalStyle />
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/register" element={<ScheduleRegister />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/community/select" element={<SelectSchedulePage />} />
+            <Route path="/community/post" element={<PostCommunitypage />} />
+            <Route path="/community/:postId" element={<DetailPage />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/error/:status" element={<ErrorPage />} />
+          </Routes>
+          <App />
+        </Provider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );
