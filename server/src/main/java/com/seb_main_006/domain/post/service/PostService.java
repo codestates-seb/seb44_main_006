@@ -157,9 +157,9 @@ public class PostService {
 
             // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
             if (sort == null) {
-                pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(true, pageRequest);
+                pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(pageRequest);
             } else {
-                pageResult = courseRepository.findAllByPostedOrderByLikeCount(true, pageRequest);
+                pageResult = courseRepository.findAllByPostedOrderByLikeCount(pageRequest);
             }
         } else {
             // 입력받은 태그 String 을 공백 기준으로 분리

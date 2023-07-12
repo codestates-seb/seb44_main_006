@@ -23,5 +23,9 @@ public class PostTag {
     @ManyToOne
     @JoinColumn(name = "tag_id")
     private Tag tag; // tag entity와 연관관계 매핑(다:1)
+
+    public PostTag(String tagName) {
+        this.tag = new Tag(tagName);
+    }
 }
 

@@ -12,16 +12,16 @@ import java.util.List;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-        @Query("select c from Course c where c.isPosted =:isPosted")
-        Page<Course> findAllByPosted(@Param("isPosted") Boolean isPosted, Pageable pageable);
+        @Query("select c from Course c where c.isPosted = true")
+        Page<Course> findAllByPosted(Pageable pageable);
 
         List<Course> findAllByMember(Member member);
 
-        @Query("select c from Course c join c.post p where c.isPosted =:isPosted " +
+        @Query("select c from Course c join c.post p where c.isPosted = true " +
                 "order by p.postCreatedAt desc")
-        Page<Course> findAllByPostedOrderByUpdatedAt(@Param("isPosted") Boolean isPosted, PageRequest pageRequest);
+        Page<Course> findAllByPostedOrderByUpdatedAt(PageRequest pageRequest);
 
-        @Query("select c from Course c join c.post p where c.isPosted =:isPosted " +
+        @Query("select c from Course c join c.post p where c.isPosted = true " +
                 "order by c.courseLikeCount desc, p.postCreatedAt desc ")
-        Page<Course> findAllByPostedOrderByLikeCount(@Param("isPosted") Boolean isPosted, PageRequest pageRequest);
+        Page<Course> findAllByPostedOrderByLikeCount(PageRequest pageRequest);
 }
