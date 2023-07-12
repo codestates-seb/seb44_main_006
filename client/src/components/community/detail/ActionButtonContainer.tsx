@@ -6,7 +6,7 @@ import StarButton from '../../ui/button/StarButton';
 import LikeButton from '../../ui/button/LikeButton';
 import Text from '../../ui/text/Text';
 import DeleteButton from '../DeleteButton';
-import useUserInfo from '../../../hooks/useUserInfo';
+import useUserInfo from '../../../querys/useUserInfo';
 import ShareKakaoButton from '../../ui/button/ShareKakaoButton';
 import CopyButton from '../../ui/button/CopyButton';
 

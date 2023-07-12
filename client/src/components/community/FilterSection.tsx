@@ -15,7 +15,7 @@ import {
   InfiniteScrollT,
 } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
-import useUserInfo from '../../hooks/useUserInfo';
+import useUserInfo from '../../querys/useUserInfo';
 import Noresult from '../ui/Noresult';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';

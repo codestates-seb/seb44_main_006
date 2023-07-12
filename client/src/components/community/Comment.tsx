@@ -9,7 +9,7 @@ import { FlexDiv } from '../../styles/styles';
 import { CommentT } from '../../types/type';
 import { DeleteComment, PatchComment } from '../../apis/api';
 import TextArea from '../ui/input/TextArea';
-import useUserInfo from '../../hooks/useUserInfo';
+import useUserInfo from '../../querys/useUserInfo';
 
 const CommentWrapper = styled.div`
   display: flex;
