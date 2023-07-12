@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { memo } from 'react';
 
 import { FlexDiv } from '../../styles/styles';
 import KakaoMap from '../map/KakaoMap';
@@ -84,4 +85,4 @@ const MapContainer = ({
   );
 };
 
-export default MapContainer;
+export default memo(MapContainer);

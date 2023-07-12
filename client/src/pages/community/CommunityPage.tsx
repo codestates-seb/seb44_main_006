@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -13,6 +14,7 @@ import useMovePage from '../../hooks/useMovePage';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 import { LIMIT } from '../../utils/constant/constant';
+import { communityBasicActions } from '../../store/communitybasic-slice';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 3.125rem;
@@ -40,12 +42,19 @@ const CommunityPage = () => {
   const isLogin = getLoginStatus();
   const { selectTab, setTab } = useHandleTab();
   const [tagName, setTagName] = useState<string>('');
+  const dispatch = useDispatch();
 
   const { data, fetchNextPage, hasNextPage, error } = useInfiniteScrollQuery({
     limit: LIMIT,
     tagName: tagName || '',
     sort: selectTab,
   });
+
+  useEffect(() => {
+    if (data) {
+      dispatch(communityBasicActions.setData(data?.pages));
+    }
+  }, [data, dispatch]);
 
   const SearchPost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -77,26 +86,20 @@ const CommunityPage = () => {
             callback={SearchPost}
           />
         </form>
-        {data && (
-          <FilterSection
-            communityData={data.pages}
-            hasNextPage={hasNextPage}
-            fetchNextPage={fetchNextPage}
-          >
-            <FilterTab
-              content="최신순"
-              selectTab={selectTab}
-              tab="Newest"
-              onClick={setTab}
-            />
-            <FilterTab
-              content="좋아요순"
-              selectTab={selectTab}
-              tab="Like"
-              onClick={setTab}
-            />
-          </FilterSection>
-        )}
+        <FilterSection hasNextPage={hasNextPage} fetchNextPage={fetchNextPage}>
+          <FilterTab
+            content="최신순"
+            selectTab={selectTab}
+            tab="Newest"
+            onClick={setTab}
+          />
+          <FilterTab
+            content="좋아요순"
+            selectTab={selectTab}
+            tab="Like"
+            onClick={setTab}
+          />
+        </FilterSection>
       </Wrapper>
       {isLogin && (
         <FixedDiv onClick={goToSelect}>

@@ -12,8 +12,10 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-query": "^4.29.19",
+    "@types/lodash": "^4.14.195",
     "@types/uuid": "^9.0.2",
     "axios": "^1.4.0",
+    "loadsh": "^0.0.4",
     "react": "^18.2.0",
     "react-datepicker": "^4.15.0",
     "react-dom": "^18.2.0",
