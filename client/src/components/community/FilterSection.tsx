@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -17,6 +18,7 @@ import useUserInfo from '../../hooks/useUserInfo';
 import Noresult from '../ui/Noresult';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
+import { RootState } from '../../store';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -35,18 +37,21 @@ const FilterContainer = styled(FlexDiv)`
 
 const FilterSection = ({
   children,
-  communityData,
   fetchNextPage,
   hasNextPage,
 }: {
   children: Props['children'];
-  communityData: InfiniteScrollT[];
   hasNextPage: undefined | boolean;
   fetchNextPage: FetchNextPageT;
 }) => {
-  const navigate = useNavigate();
   const [ref, inView] = useInView();
   const { userData } = useUserInfo();
+
+  const communityData = useSelector(
+    (state: RootState) => state.communityBasic.communityList
+  );
+
+  const navigate = useNavigate();
   const moveToDetail = (postId: number | undefined) => {
     if (postId) navigate(`/community/${postId}`);
   };

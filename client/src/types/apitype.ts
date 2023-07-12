@@ -96,7 +96,7 @@ export type CommunityListT = {
 };
 
 export type InfiniteScrollT = {
-  communityListData: CommunitySummaryT[];
+  communityListData: CommunitySummaryT[] | [];
   current_page: number;
   isLast: boolean;
 };

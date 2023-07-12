@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+import { CommunitySummaryT } from './apitype';
+
 export type Voidfunc = () => void;
 
 export type TextStyleT = {
