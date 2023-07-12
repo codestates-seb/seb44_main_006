@@ -47,6 +47,7 @@ const NumCircle = styled.span`
 `;
 
 const LocationCard = styled.div<{ selected?: boolean }>`
+  background-color: ${cssToken.COLOR.white};
   display: flex;
   justify-content: space-between;
   align-items: center;
