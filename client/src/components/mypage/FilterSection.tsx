@@ -63,17 +63,14 @@ const FilterSection = ({
     setMyCourseCount(countMyCourse);
   }, [userData, myCourseCount, bookmarkCount]);
 
+  const isMemberCourseListEmpty =
+    selectTab === 'First' && memberCourseList?.length === 0;
+  const isMemberBookmarkedListEmpty =
+    selectTab === 'Second' && memberBookmarkedList?.length === 0;
+
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
-      {(memberCourseList || memberBookmarkedList) &&
-        memberCourseList?.length === 0 && (
-          <Noresult
-            iconHeight={100}
-            iconWidth={100}
-            size={cssToken.TEXT_SIZE['text-16']}
-          />
-        )}
       <CounterContainer>
         <Text
           styles={{
@@ -89,6 +86,14 @@ const FilterSection = ({
           개 있습니다.
         </Text>
       </CounterContainer>
+      {isMemberCourseListEmpty ||
+        (isMemberBookmarkedListEmpty && (
+          <Noresult
+            iconHeight={100}
+            iconWidth={100}
+            size={cssToken.TEXT_SIZE['text-16']}
+          />
+        ))}
 
       <CardWrapper>
         {selectTab === 'First'
