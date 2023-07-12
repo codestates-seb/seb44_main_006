@@ -25,10 +25,12 @@ public class CheckRequestEnvironmentFilter implements Filter {
         String host = httpServletRequest.getHeader("host");
         log.info("host = {}", host);
 
-        if (host.equals("localhost:5173")) {
-            log.info("check: local request");
-            redisUtil.set("local", "true");
-        }
+        request.getParameterNames().asIterator().forEachRemaining(paramName -> {
+            if (paramName.equals("local")) {
+                log.info("check: local request");
+                redisUtil.set("local", "true");
+            }
+        });
 
         chain.doFilter(request, response);
     }
