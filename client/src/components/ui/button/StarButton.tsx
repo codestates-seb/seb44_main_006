@@ -16,14 +16,12 @@ const StarButton = ({
   isActive,
   courseId,
 }: LikeBookMarkButtonT) => {
-  const { postId } = useParams();
-
   const queryClient = useQueryClient();
   const mutation = useMutation(PostBookmark, {
-    onSuccess: () =>
-      postId
-        ? queryClient.invalidateQueries(['communityDetail'])
-        : queryClient.invalidateQueries(['community']),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['community']);
+      await queryClient.invalidateQueries(['communityDetail']);
+    },
   });
 
   const PushStar = debounce(() => {

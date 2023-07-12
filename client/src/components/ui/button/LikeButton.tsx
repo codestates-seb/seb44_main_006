@@ -14,14 +14,12 @@ const LikeButton = ({
   isActive,
   courseId,
 }: LikeBookMarkButtonT) => {
-  const { postId } = useParams();
   const queryClient = useQueryClient();
   const mutation = useMutation(PostLike, {
-    // Fixme 키 추가하기
-    onSuccess: () =>
-      postId
-        ? queryClient.invalidateQueries(['communityDetail'])
-        : queryClient.invalidateQueries(['community']),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['community']);
+      await queryClient.invalidateQueries(['communityDetail']);
+    },
   });
 
   const PushLike = debounce(() => {
