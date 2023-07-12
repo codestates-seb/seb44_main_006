@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 import cssToken from '../../styles/cssToken';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
@@ -56,13 +57,15 @@ const RegisterDetail = ({
   };
 
   const addSchedule = () => {
+    const placeId = uuidv4();
+
     if (scheduleList.length < 10) {
       dispatch(
         scheduleListActions.addList({
           placeName: detailItem.place_name,
           placeUrl: detailItem.place_url,
           roadAddressName: detailItem.road_address_name,
-          id: detailItem.id,
+          id: placeId,
           phone: detailItem.phone,
           categoryGroupCode: detailItem.category_group_code,
           categoryGroupName: detailItem.category_group_name,
