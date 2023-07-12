@@ -1,8 +1,7 @@
 import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -15,7 +14,6 @@ import Noresult from '../ui/Noresult';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import Text from '../ui/text/Text';
-import { RootState } from '../../store';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -49,20 +47,21 @@ const FilterSection = ({
   memberBookmarkedList?: MyBookMarkSummaryT[];
   selectTab?: string | undefined;
 }) => {
+  const [myCourseCount, setMyCourseCount] = useState<number>(0);
+  const [bookmarkCount, setBookmarkCount] = useState<number>(0);
   const navigate = useNavigate();
   const [ref] = useInView();
   const { userData } = useUserInfo();
   const moveToDetail = (postId: number | undefined) => {
     if (postId !== undefined) navigate(`/community/${postId}`);
   };
-  // const communityData = useSelector(
-  //   (state: RootState) => state.communityBasic.communityList
-  // );
 
-  const BookmarkCount: number = userData?.myBookmarkCount;
-  const myCourseCount: number = userData?.myCourseCount;
-
-  console.log(memberBookmarkedList);
+  useEffect(() => {
+    const countBookmark: number = userData?.myBookmarkCount ?? 0;
+    const countMyCourse: number = userData?.myCourseCount ?? 0;
+    setBookmarkCount(countBookmark);
+    setMyCourseCount(countMyCourse);
+  }, [userData, myCourseCount, bookmarkCount]);
 
   return (
     <FilterWrapper>
@@ -86,7 +85,7 @@ const FilterSection = ({
           등록된{' '}
           {selectTab === 'First'
             ? `일정이 ${myCourseCount}`
-            : ` 즐겨찾기가 ${BookmarkCount}`}
+            : ` 즐겨찾기가 ${bookmarkCount}`}
           개 있습니다.
         </Text>
       </CounterContainer>
