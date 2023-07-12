@@ -76,7 +76,7 @@ public class MemberService {
         List<MemberCourse> newMemberCourseList = new ArrayList<>();
         for(int i=0; i<myCourseList.size(); i++){
             Course findCourse = myCourseList.get(i);
-            MemberCourse newMemberCourse = new MemberCourse(findCourse, findMember.getMemberNickname());
+            MemberCourse newMemberCourse = new MemberCourse(findCourse);
             newMemberCourseList.add(newMemberCourse);
         }
 
@@ -85,7 +85,7 @@ public class MemberService {
         for(int i=0; i<myBookmarkedList.size(); i++){
             Bookmark findBookmark = myBookmarkedList.get(i);
             boolean likeStatus = likesRepository.findByMemberAndCourse(findMember, findBookmark.getCourse()).isPresent();
-            MemberBookmarked newMemberBookmarked = new MemberBookmarked(findBookmark.getCourse(), findMember.getMemberNickname(), likeStatus);
+            MemberBookmarked newMemberBookmarked = new MemberBookmarked(findBookmark.getCourse(), likeStatus);
             newMemberBookmarkedList.add(newMemberBookmarked);
 
         }
