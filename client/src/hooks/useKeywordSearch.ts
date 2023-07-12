@@ -25,8 +25,7 @@ const useKeywordSearch = (
           const [dx, dy] = [data.x, data.y];
           bounds.extend(new kakao.maps.LatLng(Number(dy), Number(dx)));
         }
-
-        map.setBounds(bounds);
+        map.panTo(bounds);
       }
 
       if (datas.length) {

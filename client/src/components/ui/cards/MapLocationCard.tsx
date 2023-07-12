@@ -10,6 +10,7 @@ import Button from '../button/Button';
 import Trash from '../../../assets/Trash';
 import { scheduleListActions } from '../../../store/scheduleList-slice';
 import { markerActions } from '../../../store/marker-slice';
+import ThreeLine from '../../../assets/ThreeLine';
 
 const MapLocationCardContainer = styled.section`
   display: flex;
@@ -47,18 +48,27 @@ const NumCircle = styled.span`
 `;
 
 const LocationCard = styled.div<{ selected?: boolean }>`
+  background-color: ${cssToken.COLOR.white};
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex: 1;
   width: ${cssToken.WIDTH['w-full']};
-  padding: ${cssToken.SPACING['gap-24']};
+  padding: ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-12']}
+    ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-16']};
   ${CardCommonBox}
 `;
 
 const LocationText = styled.p`
   font-size: ${cssToken.TEXT_SIZE['text-18']};
   font-weight: ${cssToken.FONT_WEIGHT.medium};
+`;
+
+const RightButtonArea = styled.section`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 `;
 
 const MapLocationCard = ({
@@ -93,13 +103,16 @@ const MapLocationCard = ({
         }}
       >
         <LocationText>{location}</LocationText>
-        <Button
-          onClick={() => {
-            if (id) handleDelete(id);
-          }}
-        >
-          {type && <Trash style={{ iconWidth: 16, iconHeight: 18 }} />}
-        </Button>
+        <RightButtonArea>
+          <ThreeLine style={{ iconWidth: 17, iconHeight: 18 }} />
+          <Button
+            onClick={() => {
+              if (id) handleDelete(id);
+            }}
+          >
+            {type && <Trash style={{ iconWidth: 16, iconHeight: 18 }} />}
+          </Button>
+        </RightButtonArea>
       </LocationCard>
     </MapLocationCardContainer>
   );
