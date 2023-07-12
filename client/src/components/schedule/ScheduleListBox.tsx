@@ -11,16 +11,14 @@ const Wrapper = styled.div`
 `;
 
 const ScheduleListBox = () => {
-  const scheduleList = useSelector(
-    (state: RootState) => state.scheduleList.list
-  );
+  const schedules = useSelector((state: RootState) => state.scheduleList.list);
   return (
     <Wrapper>
-      {scheduleList.map((schedule: IScheduleListItem, idx: number) => (
+      {schedules.map((schedule: IScheduleListItem, idx: number) => (
         <MapLocationCard
           indexNum={idx + 1}
           location={schedule.placeName}
-          placeId={schedule.id}
+          id={schedule.id}
         />
       ))}
     </Wrapper>
