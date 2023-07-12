@@ -1,6 +1,6 @@
 import { InfiniteQueryObserverResult } from '@tanstack/react-query';
 
-import { CommentT, IScheduleListItem } from './type';
+import { IScheduleListItem } from './type';
 
 export interface MemberCourseT {
   courseContent: string;
@@ -96,7 +96,7 @@ export type CommunityListT = {
 };
 
 export type InfiniteScrollT = {
-  communityListData: CommunitySummaryT[] | [];
+  communityListData: CommunitySummaryT[];
   current_page: number;
   isLast: boolean;
 };
@@ -111,3 +111,12 @@ export type FetchNextPageT = () => Promise<
     unknown
   >
 >;
+
+export interface CommentT {
+  answerId?: number; // 고유값(댓글 식별자)
+  answererEmail?: string; // 고유값(댓글 작성자 이메일)
+  answererNickname: string; // 댓글 작성자 닉네임
+  answerContent: string; // 댓글 내용
+  answererImageUrl: string; // 댓글 작성자 이미지 URL
+  answerUpdatedAt: string; // 댓글 수정한 날짜, ex) "2023-06-30 Fri"
+}

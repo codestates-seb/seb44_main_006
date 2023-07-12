@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
@@ -44,16 +44,17 @@ const CommunityPage = () => {
   const [tagName, setTagName] = useState<string>('');
   const dispatch = useDispatch();
 
-  const { data, fetchNextPage, isSuccess, hasNextPage, error } =
-    useInfiniteScrollQuery({
-      limit: LIMIT,
-      tagName: tagName || '',
-      sort: selectTab,
-    });
+  const { data, fetchNextPage, hasNextPage, error } = useInfiniteScrollQuery({
+    limit: LIMIT,
+    tagName: tagName || '',
+    sort: selectTab,
+  });
 
-  if (isSuccess) {
-    dispatch(communityBasicActions.setData(data?.pages));
-  }
+  useEffect(() => {
+    if (data) {
+      dispatch(communityBasicActions.setData(data?.pages));
+    }
+  }, [data, dispatch]);
 
   const SearchPost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

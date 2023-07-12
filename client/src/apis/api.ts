@@ -4,12 +4,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import {
-  CommunityListT,
-  CommunitySummaryT,
-  InfiniteScrollT,
-  PostReqT,
-} from '../types/apitype';
+import { CommunityListT, PostReqT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '';
 

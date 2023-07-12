@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
 
-import { CommunitySummaryT } from './apitype';
-
 export type Voidfunc = () => void;
 
 export type TextStyleT = {
@@ -169,15 +167,6 @@ export interface MapLocationCardInfo {
   id?: string;
   placeId?: string;
   onClick?: ({ id }: { id: string | undefined }) => void;
-}
-
-export interface CommentT {
-  answerId?: number; // 고유값(댓글 식별자)
-  answererEmail?: string; // 고유값(댓글 작성자 이메일)
-  answererNickname: string; // 댓글 작성자 닉네임
-  answerContent: string; // 댓글 내용
-  answererImageUrl: string; // 댓글 작성자 이미지 URL
-  answerUpdatedAt: string; // 댓글 수정한 날짜, ex) "2023-06-30 Fri"
 }
 
 export interface RouteState {
