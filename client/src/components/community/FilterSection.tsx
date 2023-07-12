@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { throttle } from 'lodash';
 
+import NoResults from './NoResults';
+
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -16,7 +18,6 @@ import {
 } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
 import useUserInfo from '../../querys/useUserInfo';
-import Noresult from '../ui/Noresult';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import { RootState } from '../../store';
@@ -70,13 +71,8 @@ const FilterSection = ({
     <>
       <FilterWrapper>
         <FilterContainer>{children}</FilterContainer>
-        {!communityData && <p>로딩중</p>}
         {communityData && communityData[0].communityListData.length === 0 && (
-          <Noresult
-            iconHeight={100}
-            iconWidth={100}
-            size={cssToken.TEXT_SIZE['text-40']}
-          />
+          <NoResults />
         )}
         <CardWrapper>
           {communityData &&
