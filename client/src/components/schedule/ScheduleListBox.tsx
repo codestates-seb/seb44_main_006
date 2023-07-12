@@ -1,18 +1,13 @@
 import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from 'react-beautiful-dnd';
-import { useEffect, useState } from 'react';
+import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd';
 
 import cssToken from '../../styles/cssToken';
 import { RootState } from '../../store';
 import MapLocationCard from '../ui/cards/MapLocationCard';
 import { IScheduleListItem, TScheduleList } from '../../types/type';
 import { scheduleListActions } from '../../store/scheduleList-slice';
+import { StrictModeDroppable } from '../dnd/StrictModeDroppable';
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-full']};
@@ -34,27 +29,10 @@ const ScheduleListBox = () => {
     dispatch(scheduleListActions.updateList(copySchedules));
   };
 
-  // requestAnimationFrame 초기화
-  const [enabled, setEnabled] = useState(false);
-
-  useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
-
-    return () => {
-      cancelAnimationFrame(animation);
-      setEnabled(false);
-    };
-  }, []);
-
-  if (!enabled) {
-    return null;
-  }
-  // requestAnimationFrame 초기화 END
-
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
-        <Droppable key="schedules" droppableId="schedules">
+        <StrictModeDroppable droppableId="schedules">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {schedules.map((schedule: IScheduleListItem, idx: number) => (
@@ -81,7 +59,7 @@ const ScheduleListBox = () => {
               {provided.placeholder}
             </div>
           )}
-        </Droppable>
+        </StrictModeDroppable>
       </Wrapper>
     </DragDropContext>
   );
