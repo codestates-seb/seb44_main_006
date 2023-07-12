@@ -59,7 +59,7 @@ export interface IEventButtonStyle extends IButtonStyle {
 }
 
 export type LikeBookMarkButtonT = IEventButtonStyle & {
-  courseId?: number;
+  courseId: number;
 };
 
 export type PlacesSearchResult = PlacesSearchResultItem[];
