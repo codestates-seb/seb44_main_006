@@ -16,10 +16,10 @@ const FilterTab = ({
   content,
   onClick,
 }: {
-  selectTab: 'Newest' | 'Like';
-  tab: 'Newest' | 'Like';
+  selectTab: 'First' | 'Second';
+  tab: 'First' | 'Second';
   content: string;
-  onClick: (tab: 'Newest' | 'Like') => void;
+  onClick: (tab: 'First' | 'Second') => void;
 }) => {
   return (
     <FilterDiv
