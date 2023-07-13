@@ -10,7 +10,6 @@ import { scheduleDetailActions } from '../../store/scheduleData-slice';
 import { RootState } from '../../store';
 import ScheduleMapDetail from '../../components/schedule/ScheduleMapDetail';
 
-
 const ScheduleDetail = () => {
   const dispatch = useDispatch();
   const { courseId } = useParams() as { courseId: string };
