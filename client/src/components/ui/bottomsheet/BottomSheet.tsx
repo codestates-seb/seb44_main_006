@@ -5,29 +5,36 @@ import cssToken from '../../../styles/cssToken';
 
 const Wrapper = styled.div<{ ishide: boolean; contentHeight: number }>`
   width: 100%;
-  height: ${(props) => (props.ishide ? '2rem' : `${props.contentHeight}px`)};
+  height: 100vh;
   background-color: transparent;
-  position: fixed;
-  bottom: 0;
   overflow: hidden;
   transition: height 0.5s ease-in-out;
   border-top-left-radius: ${cssToken.BORDER['rounded-md']};
   border-top-right-radius: ${cssToken.BORDER['rounded-md']};
   border: ${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['gray-500']};
-  z-index: 1000;
+  flex: 0 0 25rem;
   &::-webkit-scrollbar {
     display: none;
+  }
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    height: ${(props) => (props.ishide ? '2rem' : `${props.contentHeight}px`)};
   }
 `;
 
 const Header = styled.section`
-  width: 100%;
-  height: 2rem;
-  background-color: ${cssToken.COLOR.white};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  display: none;
+  @media (max-width: 768px) {
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: ${cssToken.COLOR.white};
+    cursor: pointer;
+  }
 `;
 
 const Content = styled.div`

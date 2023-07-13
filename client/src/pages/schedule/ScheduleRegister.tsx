@@ -56,10 +56,9 @@ const ButtonDiv = styled.div`
 `;
 
 const RelativeDiv = styled.div`
-  width: 35rem;
   position: relative;
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     width: 100%;
     height: auto;
   }
