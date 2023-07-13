@@ -39,7 +39,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/register" element={<ScheduleRegister />} />
-              <Route path="/register/detail" element={<RegisterDetail />} />
+              <Route
+                path="/register/detail/:courseId"
+                element={<RegisterDetail />}
+              />
               <Route path="/community" element={<CommunityPage />} />
               <Route
                 path="/community/select"
