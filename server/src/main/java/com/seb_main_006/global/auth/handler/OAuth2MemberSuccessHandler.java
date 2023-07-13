@@ -61,6 +61,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String provider = String.valueOf(oAuth2User.getAttributes().get("provider"));
         List<String> authorities = authorityUtils.createRoles(email);
 
+        if (email == null || email.equals("null")) {
+            ErrorResponder.sendErrorResponse(response, ExceptionCode.TEMPORARY_ERROR);
+            return;
+        }
+
         // DB에 같은 이메일로 저장된 회원 정보가 존재하고, 현재 로그인하려는 Provider와 다를 경우 -> 이미 가입된 정보가 있음 예외 던지기
         String existProvider = memberService.findExistEmailAndDiffProvider(email, provider);
         log.info("existProvider = {}", existProvider);
