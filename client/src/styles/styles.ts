@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
 import cssToken from './cssToken';
 
@@ -72,7 +72,25 @@ export const ShareBtn = styled.button`
   cursor: pointer;
 `;
 
+const SkeletonAnimation = css`
+  @keyframes skeleton-gradient {
+    0% {
+      background-color: rgba(165, 165, 165, 0.1);
+    }
+    50% {
+      background-color: rgba(165, 165, 165, 0.3);
+    }
+    100% {
+      background-color: rgba(165, 165, 165, 0.1);
+    }
+  }
+
+  -webkit-animation: skeleton-gradient 1s infinite ease-in-out;
+  animation: skeleton-gradient 1s infinite ease-in-out;
+`;
+
 export const SkeletonDiv = styled.div`
   background-color: ${cssToken.COLOR['gray-500']};
   border-radius: ${cssToken.BORDER['rounded-input']};
+  ${SkeletonAnimation}
 `;
