@@ -22,7 +22,9 @@ const DirectSearch = () => {
     dispatch(selectedIdActions.setTagId(''));
   }, [dispatch]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     if (inputRef.current) {
       setSearchPlace(inputRef.current.value);
@@ -33,7 +35,7 @@ const DirectSearch = () => {
   return (
     <>
       <FormContainer onSubmit={handleSubmit}>
-        <SearchContainer ref={inputRef} />
+        <SearchContainer searchClick={handleSubmit} ref={inputRef} />
       </FormContainer>
       <PlaceList searchPlace={searchPlace} />
     </>

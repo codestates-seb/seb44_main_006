@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type Voidfunc = () => void;
+export type MouseEventfunc = (e: React.MouseEvent<HTMLButtonElement>) => void;
 
 export type TextStyleT = {
   size?: string;

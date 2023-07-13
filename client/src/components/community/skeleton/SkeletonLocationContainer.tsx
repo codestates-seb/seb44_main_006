@@ -7,7 +7,7 @@ const SkeletonLocationContainer = ({ length }: { length: number }) => {
   for (let index = 0; index < length; index += 1) {
     arr.push(<SkeletonLocationCard key={uuidv4()} />);
   }
-  return arr;
+  return <>{arr}</>;
 };
 
 export default SkeletonLocationContainer;

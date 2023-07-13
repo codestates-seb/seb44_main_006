@@ -7,7 +7,7 @@ const SkeletonCardContainer = ({ length }: { length: number }) => {
   for (let index = 0; index < length; index += 1) {
     arr.push(<SkeletonContentCard key={uuidv4()} />);
   }
-  return arr;
+  return <>{arr}</>;
 };
 
 export default SkeletonCardContainer;

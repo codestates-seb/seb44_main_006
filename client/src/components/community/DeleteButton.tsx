@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { styled } from 'styled-components';
 
 import ModalChildren from './post/ModalChildren';
 
@@ -9,10 +8,7 @@ import { RootState } from '../../store';
 import useToggleModal from '../../hooks/useToggleModal';
 import { DeleteCommunityPost } from '../../apis/api';
 import useMovePage from '../../hooks/useMovePage';
-
-const Button = styled.button`
-  cursor: pointer;
-`;
+import EventButton from '../ui/button/EventButton';
 
 const DeleteButton = ({
   type,
@@ -27,26 +23,26 @@ const DeleteButton = ({
   const toggleModal = useToggleModal();
   const queryClient = useQueryClient();
   const query = type ? DeleteCommunityPost : DeleteCommunityPost;
-  // 23번째 라인 왼쪽에 마이페이지 딜리트 함수 넣으시면 됩니다.
+  // Todo 23번째 라인 왼쪽에 마이페이지 딜리트 함수 넣으시면 됩니다.
   const mutate = useMutation(query, {
     onSuccess: async () => {
       toggleModal();
       await queryClient.invalidateQueries(['community']);
       await queryClient.invalidateQueries(['mypage']);
+      await queryClient.invalidateQueries(['user']);
       goToPage();
     },
   });
   return (
     <>
-      <Button
-        type="button"
+      <EventButton
         onClick={(e) => {
           e.stopPropagation();
           toggleModal();
         }}
       >
         삭제
-      </Button>
+      </EventButton>
       {modalIsOpen && (
         <Modal
           styles={{
