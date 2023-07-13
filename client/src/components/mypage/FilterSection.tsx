@@ -57,8 +57,6 @@ const FilterSection = ({
 
   const moveToRegisterDetail = (courseId: number | undefined) => {
     if (courseId !== undefined) navigate(`/register/detail/${courseId}`);
-    console.log('ㅇㅇ', courseId);
-    console.log('ㅇㅇ');
   };
 
   console.log(memberBookmarkedList);

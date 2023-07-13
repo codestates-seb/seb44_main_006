@@ -70,8 +70,8 @@ const ScheduleMapDetail = ({
 }: {
   destinationList: IScheduleListItem[];
   title: string;
-  text: string,
-  courseDday: string,
+  text: string;
+  courseDday: string;
 }) => {
   const latlng = useSelector((state: RootState) => state.marker.center);
   const navigate = useNavigate();
