@@ -142,6 +142,10 @@ public class PostService {
 
         Member member = new Member(0L);
 
+        if (tagName != null && tagName.isBlank()) {
+            tagName = null;
+        }
+
         // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             try {
