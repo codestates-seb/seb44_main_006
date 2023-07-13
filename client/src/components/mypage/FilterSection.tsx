@@ -55,6 +55,12 @@ const FilterSection = ({
     if (postId !== undefined) navigate(`/community/${postId}`);
   };
 
+  const moveToRegisterDetail = (courseId: number | undefined) => {
+    if (courseId !== undefined) navigate(`/register/detail/${courseId}`);
+    console.log('ㅇㅇ', courseId);
+    console.log('ㅇㅇ');
+  };
+
   const isMemberCourseListEmpty =
     selectTab === 'First' && memberCourseList?.length === 0;
   const isMemberBookmarkedListEmpty =
@@ -89,16 +95,16 @@ const FilterSection = ({
         ))}
 
       <CardWrapper>
-        {memberCourseList && selectTab === 'First'
+        {memberBookmarkedList && memberCourseList && selectTab === 'First'
           ? memberCourseList?.map((post: MypCourseSummaryT) => (
               <ContensCard
                 key={post.courseId}
-                type="post"
+                type="course"
                 title={post.courseTitle}
                 likeCount={post.courseLikeCount}
                 userName={post.memberNickname}
                 thumbnail={post.courseThumbnail}
-                onClick={moveToDetail}
+                onClick={moveToRegisterDetail}
                 courseId={post.courseId}
                 date={manufactureDate(post?.courseUpdatedAt)}
               >
