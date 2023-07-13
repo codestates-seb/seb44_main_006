@@ -24,6 +24,7 @@ public class CheckRequestEnvironmentFilter implements Filter {
 
         String host = httpServletRequest.getHeader("host");
         log.info("host = {}", host);
+        log.info("request = {}",httpServletRequest.getRequestURI());
 
         request.getParameterNames().asIterator().forEachRemaining(paramName -> {
             if (paramName.equals("local")) {
