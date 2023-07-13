@@ -94,9 +94,8 @@ const DetailPage = () => {
   };
 
   if (error) {
-    // Todo error 객체 확인
-    console.error(error);
-    navigate(`/error/500`);
+    const { response } = error as AxiosError;
+    if (response) navigate(`/error/${response.status}`);
   }
 
   const postInfo = useMemo(() => {

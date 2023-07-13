@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -81,8 +82,8 @@ const SelectSchedulePage = () => {
   };
 
   if (error) {
-    // Todo error 객체 확인
-    navigate(`/error/500`);
+    const { response } = error as AxiosError;
+    if (response) navigate(`/error/${response.status}`);
   }
 
   return (
