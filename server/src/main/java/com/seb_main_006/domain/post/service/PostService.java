@@ -59,20 +59,17 @@ public class PostService {
         log.info("게시글 생성 시작 findcourse.getCourseId={}, findmember.getMemberEmail={}", findcourse.getCourseId(), findmember.getMemberEmail());
 
         courseService.verifyNotMyCourse(findmember, findcourse); // 코스 작성자와 현재 로그인한 작성자가 동일한지 확인
-
         verifyExistCourse(findcourse); // 작성한 코스가 있으면 예외처리
 
         Post post = new Post(); // 새로 저장할 Post 선언
-
         post.setPostContent(postPostDto.getPostContent()); // 저장할 post에 게시글내용과 코스 저장
-
         post.addCourse(findcourse); // Post에 코스 저장(연관관계 매핑)
 
         List<String> inputTags = postPostDto.getTags(); // 입력받은 태그 리스트를 postPostDto에서 꺼내옴
 
         // 입력받은 태그 리스트의 길이만큼 반복
         for (int i = 0; i < inputTags.size(); i++) {
-
+            log.info("게시글 생성시 태그 for문 시작!!!");
             String tagName = inputTags.get(i); // 입력받은 태그 이름 인덱스로 꺼내옴
 
             PostTag newPostTag = new PostTag(); // 저장할 새로운 PostTag선언
@@ -269,7 +266,7 @@ public class PostService {
     }
 
     // 해당 코스로 작성된 게시글이 있는지 확인하는 메소드
-    private void verifyExistCourse(Course course) {
+    public void verifyExistCourse(Course course) {
         if (postRepository.findByCourse(course).isPresent()) {
             throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
         }
