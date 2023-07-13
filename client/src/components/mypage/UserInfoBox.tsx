@@ -14,6 +14,7 @@ import Pen from '../../assets/Pen';
 import InputContainer from '../ui/input/InputContainer';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
+import SettingButton from '../ui/button/SettingButton';
 
 interface IsNickNameT {
   toggleNickname?: boolean;
@@ -70,9 +71,19 @@ const RightWrap = styled.div`
 `;
 
 const ImgBox = styled.div`
+  position: relative;
   display: flex;
   justify-content: flex-end;
   flex: 1;
+
+  > button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    &:hover {
+    opacity: 1;
+   }
+  }
 `;
 
 const FormBox = styled.form<IsNickNameT>`
@@ -145,6 +156,7 @@ const UserInfoBox = () => {
           }}
           src={userAuthInfo?.memberImageUrl}
         />
+        <SettingButton />
       </ImgBox>
       <RightWrap>
         <UserNicknameBox>

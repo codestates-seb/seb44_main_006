@@ -1,12 +1,16 @@
 import { styled } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../../store';
-// import cssToken from '../../styles/cssToken';
 import { FlexDiv } from '../../styles/styles';
 import { GetMyList } from '../../apis/api';
 import UserInfoBox from '../../components/mypage/UserInfoBox';
+import FilterSection from '../../components/mypage/FilterSection';
+import FilterTab from '../../components/mypage/FilterTab';
+import useHandleTab from '../../hooks/useHandleTab';
+import { myInfoDataListActions } from '../../store/myInfoDataList-slice';
+import { RootState } from '../../store';
+import { MypCourseSummaryT, MyBookMarkSummaryT } from '../../types/apitype';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -18,17 +22,53 @@ const Wrapper = styled(FlexDiv)`
 `;
 
 const MyPage = () => {
-  const userAuthInfo = useSelector(
-    (state: RootState) => state.userAuth.userInfo
+  const dispatch = useDispatch();
+  const { selectTab, setTab } = useHandleTab();
+  useQuery({
+    queryKey: ['mypage'],
+    queryFn: () => GetMyList(),
+    onSuccess: (data) => {
+      dispatch(
+        myInfoDataListActions.setDataCourse(
+          data?.data.memberCourseList as MypCourseSummaryT[]
+        )
+      );
+      dispatch(
+        myInfoDataListActions.setDataBookMark(
+          data?.data.memberBookmarkedList as MyBookMarkSummaryT[]
+        )
+      );
+    },
+  });
+
+  const memberCourseList = useSelector(
+    (state: RootState) => state.myInfoData.memberCourseList
+  );
+  const memberBookmarkedList = useSelector(
+    (state: RootState) => state.myInfoData.memberBookmarkedList
   );
 
-  const { data: userMemData } = useQuery(['userInof'], () => GetMyList());
-
-  console.log(userAuthInfo);
-  console.log(userMemData);
   return (
     <Wrapper>
       <UserInfoBox />
+      <FilterSection
+        memberBookmarkedList={memberBookmarkedList}
+        memberCourseList={memberCourseList}
+        selectTab={selectTab}
+      >
+        <FilterTab
+          content="일정"
+          selectTab={selectTab}
+          tab="First"
+          onClick={setTab}
+        />
+        <FilterTab
+          content="즐겨찾기"
+          selectTab={selectTab}
+          tab="Second"
+          onClick={setTab}
+        />
+      </FilterSection>
     </Wrapper>
   );
 };

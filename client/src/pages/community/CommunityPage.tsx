@@ -89,13 +89,13 @@ const CommunityPage = () => {
           <FilterTab
             content="최신순"
             selectTab={selectTab}
-            tab="Newest"
+            tab="First"
             onClick={setTab}
           />
           <FilterTab
             content="좋아요순"
             selectTab={selectTab}
-            tab="Like"
+            tab="Second"
             onClick={setTab}
           />
         </FilterSection>

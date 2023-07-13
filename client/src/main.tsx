@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -8,35 +8,49 @@ import App from './App';
 import GlobalStyle from './GlobalStyle';
 import store from './store';
 import Header from './components/common/Header';
-import Main from './pages/Main';
-import CommunityPage from './pages/community/CommunityPage';
-import SelectSchedulePage from './pages/community/SelectSchedulePage';
-import PostCommunitypage from './pages/community/PostCommunitypage';
-import ErrorPage from './pages/error/ErrorPage';
-import ScheduleRegister from './pages/schedule/ScheduleRegister';
-import DetailPage from './pages/community/DetailPage';
-import MyPage from './pages/mypage/MyPage';
+
+const Main = lazy(() => import('./pages/Main'));
+const CommunityPage = lazy(() => import('./pages/community/CommunityPage'));
+const SelectSchedulePage = lazy(
+  () => import('./pages/community/SelectSchedulePage')
+);
+const PostCommunitypage = lazy(
+  () => import('./pages/community/PostCommunitypage')
+);
+const ErrorPage = lazy(() => import('./pages/error/ErrorPage'));
+const ScheduleRegister = lazy(
+  () => import('./pages/schedule/ScheduleRegister')
+);
+const DetailPage = lazy(() => import('./pages/community/DetailPage'));
+const MyPage = lazy(() => import('./pages/mypage/MyPage'));
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <BrowserRouter>
-    <GlobalStyle />
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/register" element={<ScheduleRegister />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/community/select" element={<SelectSchedulePage />} />
-          <Route path="/community/post" element={<PostCommunitypage />} />
-          <Route path="/community/:postId" element={<DetailPage />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/error/:status" element={<ErrorPage />} />
-        </Routes>
-        <App />
-      </Provider>
-    </QueryClientProvider>
-  </BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <GlobalStyle />
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Header />
+          <Suspense fallback={<div>로딩중...</div>}>
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/register" element={<ScheduleRegister />} />
+              <Route path="/community" element={<CommunityPage />} />
+              <Route
+                path="/community/select"
+                element={<SelectSchedulePage />}
+              />
+              <Route path="/community/post" element={<PostCommunitypage />} />
+              <Route path="/community/:postId" element={<DetailPage />} />
+              <Route path="/mypage" element={<MyPage />} />
+              <Route path="/error/:status" element={<ErrorPage />} />
+            </Routes>
+          </Suspense>
+          <App />
+        </Provider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );

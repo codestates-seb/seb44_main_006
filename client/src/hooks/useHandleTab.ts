@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 
 const useHandleTab = () => {
-  const [selectTab, setSelectTab] = useState<'Newest' | 'Like'>('Newest');
-  const setTab = useCallback((tab: 'Newest' | 'Like') => {
+  const [selectTab, setSelectTab] = useState<'First' | 'Second'>('First');
+  const setTab = useCallback((tab: 'First' | 'Second') => {
     setSelectTab(tab);
   }, []);
   return { selectTab, setTab };
