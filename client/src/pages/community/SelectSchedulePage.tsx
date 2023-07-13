@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +14,8 @@ import { MemberBookmaredT, MemberCourseT } from '../../types/apitype';
 import Title from '../../components/ui/text/Title';
 import Text from '../../components/ui/text/Text';
 import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
+import scrollToTop from '../../utils/scrollToTop';
+import SkeletonCardContainer from '../../components/community/skeleton/SkeletonCardContainer';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -44,7 +46,11 @@ const SelectSchedulePage = () => {
   const gotoBack = useMovePage('/community');
   const gotoNext = useMovePage('/community/post', selectId);
   const gotoRegister = useMovePage('/register');
-  const { data: courses, error } = useQuery({
+  const {
+    data: courses,
+    error,
+    isLoading,
+  } = useQuery({
     queryKey: ['selectList'],
     queryFn: GetMyList,
     refetchOnWindowFocus: false,
@@ -55,6 +61,10 @@ const SelectSchedulePage = () => {
       };
     }): MemberCourseT[] => data.data.memberCourseList,
   });
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   const registerCourses = courses
     ? courses.filter((course: MemberCourseT) => course.isPosted === false)
@@ -79,6 +89,11 @@ const SelectSchedulePage = () => {
     <OutsideWrap>
       <Head />
       <OverFlowDiv>
+        {isLoading && (
+          <CardWrapper>
+            <SkeletonCardContainer length={4} />
+          </CardWrapper>
+        )}
         {registerCourses.length > 0 && (
           <CardWrapper>
             {registerCourses.map((course) => (

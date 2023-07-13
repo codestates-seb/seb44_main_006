@@ -1,4 +1,5 @@
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { ChooseTag } from './DescriptionZip';
 
@@ -65,6 +66,7 @@ const TagContainer = ({
           {tags.length > 0 &&
             tags.map((tag: string) => (
               <TagButton
+                key={uuidv4()}
                 tagname={tag}
                 onClick={removeTag}
                 width={cssToken.WIDTH['min-w-fit']}

@@ -24,7 +24,7 @@ const initialState = {
           memberEmail: '',
         },
       ],
-      current_page: 1,
+      current_page: -1,
       isLast: false,
     },
   ],

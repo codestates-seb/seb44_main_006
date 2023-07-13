@@ -1,20 +1,24 @@
 /* eslint-disable no-param-reassign */
-import { Draft, PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { IdT, MarkerT } from '../types/type';
+import { IdT } from '../types/type';
 
-const initialState: MarkerT = {
-  markerId: undefined,
+const initialState: IdT = {
+  markerId: '',
+  center: { lat: '', lng: '' },
 };
 
 const markerSlice = createSlice({
   name: 'marker',
   initialState,
   reducers: {
-    selectMarker(state: Draft<MarkerT>, action: PayloadAction<IdT>) {
-      if (state.markerId === action.payload) {
-        state.markerId = undefined;
-      } else state.markerId = action.payload;
+    selectMarker(state, action: PayloadAction<IdT>) {
+      if (state.markerId === action.payload.markerId) {
+        state.markerId = '';
+      } else {
+        state.markerId = action.payload.markerId;
+        state.center = action.payload.center;
+      }
     },
   },
 });

@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
@@ -44,11 +44,12 @@ const CommunityPage = () => {
   const [tagName, setTagName] = useState<string>('');
   const dispatch = useDispatch();
 
-  const { data, fetchNextPage, hasNextPage, error } = useInfiniteScrollQuery({
-    limit: LIMIT,
-    tagName: tagName || '',
-    sort: selectTab,
-  });
+  const { data, fetchNextPage, hasNextPage, error, isFetching } =
+    useInfiniteScrollQuery({
+      limit: LIMIT,
+      tagName: tagName || '',
+      sort: selectTab,
+    });
 
   useEffect(() => {
     if (data) {
@@ -56,7 +57,9 @@ const CommunityPage = () => {
     }
   }, [data, dispatch]);
 
-  const SearchPost = (e: React.FormEvent<HTMLFormElement>) => {
+  const SearchPost = (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     if (searchInputRef.current) {
       const keyword = searchInputRef.current?.value;
@@ -65,7 +68,7 @@ const CommunityPage = () => {
   };
 
   if (error) {
-    console.error(error);
+    console.log(error);
     // goToError();
   }
 
@@ -74,6 +77,7 @@ const CommunityPage = () => {
       <Wrapper>
         <form onSubmit={SearchPost}>
           <SearchContainer
+            searchClick={SearchPost}
             ref={searchInputRef}
             iconWidth={24}
             iconHeight={24}
@@ -82,10 +86,13 @@ const CommunityPage = () => {
               height: '50px',
               fontsize: cssToken.TEXT_SIZE['text-18'],
             }}
-            callback={SearchPost}
           />
         </form>
-        <FilterSection hasNextPage={hasNextPage} fetchNextPage={fetchNextPage}>
+        <FilterSection
+          hasNextPage={hasNextPage}
+          fetchNextPage={fetchNextPage}
+          isFetching={isFetching}
+        >
           <FilterTab
             content="최신순"
             selectTab={selectTab}
