@@ -105,8 +105,6 @@ const ScheduleMapDetail = ({
             {formatData(courseDday)}
           </DataInfoText>
         </TopWrap>
-
-
         <Text
           styles={{
             size: '0.85rem',

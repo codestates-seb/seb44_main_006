@@ -4,7 +4,7 @@ import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { GetCourse } from '../../apis/api';
-import { CommunityDetailT } from '../../types/apitype';
+import { PostReadT } from '../../types/apitype';
 import { scheduleDetailActions } from '../../store/scheduleData-slice';
 import { RootState } from '../../store';
 import ScheduleMapDetail from '../../components/schedule/ScheduleMapDetail';
@@ -16,7 +16,7 @@ const ScheduleDetail = () => {
   useQuery({
     queryKey: ['resisterDetail'],
     queryFn: () => GetCourse({ courseId }),
-    onSuccess: (data) => {
+    onSuccess: (data: PostReadT) => {
       dispatch(scheduleDetailActions.getCourseData(data?.courseData));
       dispatch(scheduleDetailActions.getDestinationList(data?.destinationList));
     },
@@ -30,16 +30,16 @@ const ScheduleDetail = () => {
   );
 
   return (
-    <>
-      {destinationList && (
+    <article>
+      {courseData && destinationList && (
         <ScheduleMapDetail
           destinationList={destinationList}
-          title={courseData.courseTitle}
-          text={courseData.courseContent}
-          courseDday={courseData.courseDday}
+          title={courseData.courseTitle || ''}
+          text={courseData.courseContent || ''}
+          courseDday={courseData.courseDday || ''}
         />
       )}
-    </>
+    </article>
   );
 };
 
