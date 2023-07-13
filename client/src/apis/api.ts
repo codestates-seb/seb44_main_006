@@ -41,6 +41,8 @@ export const GetUserInfo = async () => instance.get(`/api/auth/members`);
 
 export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
 
+export const DeleteAccount = async () => instance.delete('/api/members');
+
 export const PatchMemNickname = async (nickname: string) => {
   await instance.patch(`/api/members`, { memberNickname: nickname });
 };
@@ -62,7 +64,7 @@ export const GetCommunityList = async ({
   tagName?: string | undefined;
 }) => {
   const essential = `/api/posts/read?page=${pageParam}&limit=${limit}`;
-  const optSort = sort === 'Like' ? '&sort=like' : '';
+  const optSort = sort === 'Second' ? '&sort=like' : '';
   const optTagName = tagName ? `&tagName=${tagName}` : '';
   const request = essential + optSort + optTagName;
   const res: AxiosResponse<CommunityListT> = await instance.get(request);

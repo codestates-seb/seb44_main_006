@@ -120,3 +120,36 @@ export interface CommentT {
   answererImageUrl: string; // 댓글 작성자 이미지 URL
   answerUpdatedAt: string; // 댓글 수정한 날짜, ex) "2023-06-30 Fri"
 }
+
+export type MypCourseSummaryT = {
+  courseContent?: string;
+  courseDday?: string;
+  courseId?: number;
+  courseLikeCount?: number;
+  courseThumbnail?: string;
+  courseTitle?: string;
+  courseUpdatedAt?: string;
+  courseViewCount?: number;
+  isPosted?: boolean;
+  memberNickname?: string;
+};
+
+export type MyBookMarkSummaryT = {
+  courseId?: number;
+  courseLikeCount?: number;
+  courseThumbnail?: string;
+  courseTitle?: string;
+  courseUpdatedAt?: string;
+  courseViewCount?: number;
+  likeStatus?: boolean;
+  memberNickname?: string;
+  postContent?: string;
+  postCreatedAt?: string;
+  postId?: number;
+  tags?: string[];
+};
+
+export type MypSummaryT = {
+  memberCourseList?: MypCourseSummaryT[];
+  memberBookmarkedList?: MyBookMarkSummaryT[];
+};
