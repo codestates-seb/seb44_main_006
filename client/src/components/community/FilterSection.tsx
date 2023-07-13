@@ -7,6 +7,7 @@ import { throttle } from 'lodash';
 
 import NoResults from './NoResults';
 import DeleteButton from './DeleteButton';
+import SkeletonCardContainer from './SkeletonCardContainer';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -22,6 +23,7 @@ import useUserInfo from '../../querys/useUserInfo';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import { RootState } from '../../store';
+import SkeletonContentCard from '../skeleton/SkeletonContentCard';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -46,10 +48,12 @@ const FilterSection = ({
   children,
   fetchNextPage,
   hasNextPage,
+  isFetching,
 }: {
   children: Props['children'];
   hasNextPage: undefined | boolean;
   fetchNextPage: FetchNextPageT;
+  isFetching: boolean;
 }) => {
   const [ref, inView] = useInView();
   const { userData } = useUserInfo();
@@ -84,33 +88,34 @@ const FilterSection = ({
         {communityData &&
           communityData.map((datas: InfiniteScrollT) =>
             datas.communityListData.map((post: CommunitySummaryT) => {
-              return post.courseId === -1 ? (
-                <Div>로딩 중 </Div>
-              ) : (
-                <ContensCard
-                  key={post.courseId}
-                  type="post"
-                  title={post.courseTitle}
-                  text={post.postContent}
-                  likeCount={post.courseLikeCount}
-                  tag={post.tags}
-                  userName={post.memberNickname}
-                  thumbnail={post.courseThumbnail}
-                  onClick={moveToDetail}
-                  postId={post.postId}
-                  courseId={post.courseId}
-                  likeStatus={post.likeStatus}
-                  bookmarkStatus={post.bookmarkStatus}
-                  isMine={userData?.memberEmail === post.memberEmail}
-                  date={manufactureDate(post.postCreatedAt)}
-                >
-                  <DeleteButton postId={String(post.postId)} />
-                  <CopyButton endpoint={`community/${post.postId}`} />
-                  <ShareKakaoButton endpoint={`community/${post.postId}`} />
-                </ContensCard>
-              );
+              if (post.courseId !== -1)
+                return (
+                  <ContensCard
+                    key={post.courseId}
+                    type="post"
+                    title={post.courseTitle}
+                    text={post.postContent}
+                    likeCount={post.courseLikeCount}
+                    tag={post.tags}
+                    userName={post.memberNickname}
+                    thumbnail={post.courseThumbnail}
+                    onClick={moveToDetail}
+                    postId={post.postId}
+                    courseId={post.courseId}
+                    likeStatus={post.likeStatus}
+                    bookmarkStatus={post.bookmarkStatus}
+                    isMine={userData?.memberEmail === post.memberEmail}
+                    date={manufactureDate(post.postCreatedAt)}
+                  >
+                    <DeleteButton postId={String(post.postId)} />
+                    <CopyButton endpoint={`community/${post.postId}`} />
+                    <ShareKakaoButton endpoint={`community/${post.postId}`} />
+                  </ContensCard>
+                );
+              return <SkeletonContentCard />;
             })
           )}
+        {isFetching && <SkeletonCardContainer />}
       </CardWrapper>
       {communityData && <div ref={ref} />}
     </FilterWrapper>

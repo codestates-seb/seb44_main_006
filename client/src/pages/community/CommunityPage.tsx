@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { debounce } from 'lodash';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -67,8 +66,6 @@ const CommunityPage = () => {
       setTagName(keyword);
     }
   };
-  // Todo 로딩 어떻게 할지
-  console.log('fetching', isFetching);
 
   if (error) {
     console.error(error);
@@ -91,7 +88,11 @@ const CommunityPage = () => {
             }}
           />
         </form>
-        <FilterSection hasNextPage={hasNextPage} fetchNextPage={fetchNextPage}>
+        <FilterSection
+          hasNextPage={hasNextPage}
+          fetchNextPage={fetchNextPage}
+          isFetching={isFetching}
+        >
           <FilterTab
             content="최신순"
             selectTab={selectTab}
