@@ -32,9 +32,7 @@ const useKeywordSearch = (
         displayPagination(pagination);
         dispatch(placeListActions.setIsEmpty(false));
         dispatch(placeListActions.addList(datas));
-      }
-      // TODO 여기에 검색한 결과가 없다는 컴포넌트 보여줄 상태 필요할 듯
-      else dispatch(placeListActions.setIsEmpty(true));
+      } else dispatch(placeListActions.setIsEmpty(true));
     },
     [dispatch, displayPagination, map]
   );

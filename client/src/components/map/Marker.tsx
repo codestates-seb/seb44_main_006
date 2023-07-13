@@ -26,8 +26,8 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
   useEffect(() => {
     const markerLat = Number(lat) || defaultOptions.lat;
     const markerLng = Number(lng) || defaultOptions.lng;
-    const markerWidth = 30;
-    const markerheight = 60;
+    const markerWidth = 40;
+    const markerheight = 70;
 
     const setIamge = () => {
       const index = idx ?? -1;
@@ -35,11 +35,11 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
         if (markerId === id)
           return {
             image: MarkerOn[0],
-            zIndex: 4,
+            zIndex: 2,
           };
         return {
           image: MarkerOff[0],
-          zIndex: 3,
+          zIndex: 1,
         };
       }
       if (markerId === id) {

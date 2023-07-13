@@ -56,6 +56,8 @@ public class PostService {
         Member findmember = memberService.findVerifiedMember(memberEmail);
         Course findcourse = courseService.findVerifiedCourse(postPostDto.getCourseId());
 
+        log.info("게시글 생성 시작 findcourse.getCourseId={}, findmember.getMemberEmail={}", findcourse.getCourseId(), findmember.getMemberEmail());
+
         courseService.verifyNotMyCourse(findmember, findcourse); // 코스 작성자와 현재 로그인한 작성자가 동일한지 확인
 
         verifyExistCourse(findcourse); // 작성한 코스가 있으면 예외처리
@@ -92,9 +94,10 @@ public class PostService {
         }
 
         // 포스팅 여부 처리
-        boolean posted = findcourse.isPosted();
-        findcourse.setPosted(!posted);
+        findcourse.setPosted(true);
         courseRepository.save(findcourse);
+
+        log.info("게시글 생성 종료전 post.getCourse.getCourseId={}", post.getCourse().getCourseId());
 
         // Post 테이블에 저장
         return postRepository.save(post);
@@ -236,9 +239,12 @@ public class PostService {
      */
     @Transactional
     public void deletePost(Long postId, String memberEmail) {
+        log.info("게시글 삭제 시작 postId={}, memberEmail={}", postId, memberEmail);
         Post findPost = findVerifiedPost(postId);
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Course course = findPost.getCourse();
+
+        log.info("게시글 삭제 시작2 course.getPost().getPostId()={}", course.getPost().getPostId());
 
         // ADMIN 권한이 없을 경우에만 본인 일정 여부 검증
         List<String> findRole = findMember.getRoles();
@@ -248,6 +254,14 @@ public class PostService {
 
         // course 에서의 post, likes, bookmarks 에 대한 연관관계 제거, isPosted 상태 업데이트
         course.removePost();
+
+        if(course.getPost()!=null){
+            log.info("게시글 삭제 시작2 course.getPost().getPostId={}", course.getPost().getPostId());
+        }
+        else{
+            log.info("getPost Null");
+        }
+
         likesRepository.deleteAllByCourse(course);
         bookmarkRepository.deleteAllByCourse(course);
         postRepository.delete(findPost);
