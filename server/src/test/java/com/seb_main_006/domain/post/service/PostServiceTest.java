@@ -16,6 +16,8 @@ import com.seb_main_006.domain.post.repository.PostRepository;
 import com.seb_main_006.domain.post.repository.PostTagRepository;
 import com.seb_main_006.domain.tag.repository.TagRepository;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
+import com.seb_main_006.global.exception.BusinessLogicException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +34,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -184,16 +187,15 @@ class PostServiceTest {
         verify(courseRepository).findAllByPostedOrderByLikeCount(any(PageRequest.class));
     }
 
-    @DisplayName("tagName != null 일 경우, 전달된 String(tagName) 은 공백 기준으로 분리되고, " +
-            "분리된 단어의 개수만큼 tagRepository.findByTagNameContaining 메서드가 호출된다.")
-    @Test
-    void findPosts_6() {
+    @ParameterizedTest
+    @CsvSource(value = {"tag1", "tag1 tag2 tag3", "tag1 tag2 tag3 tag4 tag5"}, delimiter = ':', nullValues = "null")
+    @DisplayName("tagName != null 일 경우, 전달된 String(tagName) 은 공백 기준으로 분리된 단어의 개수만큼 tagRepository.findByTagNameContaining 메서드가 호출된다.")
+    void findPosts_6(String tagName) {
 
         // given
         int page = 0;
         int limit = 10;
         String sort = "like";
-        String tagName = "tag1 tag2";
         String accessToken1 = "INVALID TOKEN";
 
         given(postTagRepository.findByTagInOrderByLikeCount(anyList(), any(PageRequest.class)))
@@ -207,7 +209,8 @@ class PostServiceTest {
         postService.findPosts(page, limit, sort, accessToken1, tagName);
 
         // then
-        verify(tagRepository, times(2)).findByTagNameContaining(anyString());
+        int length = tagName.split(" ").length;
+        verify(tagRepository, times(length)).findByTagNameContaining(anyString());
     }
 
     @DisplayName("tagName != null 이고, sort == null 일 경우," +
@@ -262,6 +265,199 @@ class PostServiceTest {
         verify(postTagRepository).findByTagInOrderByLikeCount(anyList(), any(PageRequest.class));
     }
 
+    @DisplayName("ADMIN Role을 가진 멤버가 아니라면 courseService.verifyNotMyCourse() 메서드가 호출된다.")
+    @Test
+    void deletePost_1() {
+        // given
+        Long postId = 100L;
+        Long memberId = 1L;
+        String memberEmail = "member@email.com";
+
+        Member notAdminMember = getDummyMember(memberId);
+        Course testCourse = getDummyCourse(10L, postId, memberId);
+        Post testPost = getDummyPost(postId);
+        testPost.setCourse(testCourse);
+
+        given(postRepository.findById(anyLong())).willReturn(Optional.of(testPost));
+        given(memberService.findVerifiedMember(anyString())).willReturn(notAdminMember);
+
+        // when
+        postService.deletePost(postId, memberEmail);
+
+        // then
+        verify(courseService).verifyNotMyCourse(notAdminMember, testCourse);
+    }
+
+    @DisplayName("ADMIN Role을 가진 멤버일 경우 courseService.verifyNotMyCourse() 메서드가 호출되지 않는다. " +
+            "(본인의 일정이 아닐 경우 예외 발생하는 메서드)")
+    @Test
+    void deletePost_2() {
+        // given
+        Long postId = 100L;
+        Long memberId = 1L;
+        String memberEmail = "member@email.com";
+
+        Member adminMember = getDummyMemberAdmin(memberId);
+        Course testCourse = getDummyCourse(10L, postId, memberId);
+        Post testPost = getDummyPost(postId);
+        testPost.setCourse(testCourse);
+
+        given(postRepository.findById(anyLong())).willReturn(Optional.of(testPost));
+        given(memberService.findVerifiedMember(anyString())).willReturn(adminMember);
+
+        // when
+        postService.deletePost(postId, memberEmail);
+
+        // then
+        verify(courseService, never()).verifyNotMyCourse(adminMember, testCourse);
+    }
+
+    @DisplayName("유저 정보와 일정 작성자 정보가 일치할 경우, course 의 isPosted 는 false 로 바뀌어야 한다.")
+    @Test
+    void deletePost_3() {
+        // given
+        Long postId = 100L;
+        Long memberId = 1L;
+        String memberEmail = "member@email.com";
+
+        Member notAdminMember = getDummyMember(memberId);
+        Course testCourse = getDummyCourse(10L, postId, memberId);
+        Post testPost = getDummyPost(postId);
+        testPost.setCourse(testCourse);
+
+        given(postRepository.findById(anyLong())).willReturn(Optional.of(testPost));
+        given(memberService.findVerifiedMember(anyString())).willReturn(notAdminMember);
+
+        // when
+        postService.deletePost(postId, memberEmail);
+
+        // then
+        assertThat(testCourse.isPosted()).isFalse();
+    }
+
+    @DisplayName("post가 삭제되면, course와 post 및 like, bookmarks 와의 연관관계가 모두 제거되어야 한다.")
+    @Test
+    void deletePost_4() {
+        // given
+        Long postId = 100L;
+        Long memberId = 1L;
+        String memberEmail = "member@email.com";
+
+        Member notAdminMember = getDummyMember(memberId);
+        Course testCourse = getDummyCourse(10L, postId, memberId);
+        Post testPost = getDummyPost(postId);
+        testPost.addCourse(testCourse);
+
+        given(postRepository.findById(anyLong())).willReturn(Optional.of(testPost));
+        given(memberService.findVerifiedMember(anyString())).willReturn(notAdminMember);
+
+        // when
+        postService.deletePost(postId, memberEmail);
+
+        // then
+        assertThat(testCourse.getLikesInCourse().size()).isEqualTo(0);
+        assertThat(testCourse.getBookmarksInCourse().size()).isEqualTo(0);
+    }
+
+    @DisplayName("post가 삭제되면, course 의 courseLikeCount, couresViewCount 모두 0이 되어야 한다.")
+    @Test
+    void deletePost_5() {
+        // given
+        Long postId = 100L;
+        Long memberId = 1L;
+        String memberEmail = "member@email.com";
+
+        Member notAdminMember = getDummyMember(memberId);
+        Course testCourse = getDummyCourse(10L, postId, memberId);
+        Post testPost = getDummyPost(postId);
+        testPost.addCourse(testCourse);
+        testCourse.setCourseLikeCount(10L);
+        testCourse.setCourseViewCount(10L);
+
+        given(postRepository.findById(anyLong())).willReturn(Optional.of(testPost));
+        given(memberService.findVerifiedMember(anyString())).willReturn(notAdminMember);
+
+        // when
+        postService.deletePost(postId, memberEmail);
+
+        // then
+        assertThat(testCourse.getCourseLikeCount()).isEqualTo(0);
+        assertThat(testCourse.getCourseViewCount()).isEqualTo(0);
+    }
+
+
+    @ParameterizedTest
+    @CsvSource(value = {"USER", "ADMIN"}, delimiter = ':', nullValues = "null")
+    @DisplayName("본인의 일정을 삭제하는 경우이거나 ADMIN 유저일 경우, " +
+            "likeRepository.deleteAllByCourse(), bookmarkRepository.deleteAllByCourse(), postRepository.delete() 가 1회씩 호출되어야 한다.")
+    void deletePost_6(String role) {
+        // given
+        Long postId = 100L;
+        Long memberId = 1L;
+        String memberEmail = "member@email.com";
+
+        Member testMember = role.equals("USER") ? getDummyMember(memberId) : getDummyMemberAdmin(memberId);
+        Course testCourse = getDummyCourse(10L, postId, memberId);
+        Post testPost = getDummyPost(postId);
+        testPost.setCourse(testCourse);
+
+        given(postRepository.findById(anyLong())).willReturn(Optional.of(testPost));
+        given(memberService.findVerifiedMember(anyString())).willReturn(testMember);
+
+        // when
+        postService.deletePost(postId, memberEmail);
+
+        // then
+        verify(likesRepository, times(1)).deleteAllByCourse(testCourse);
+        verify(bookmarkRepository, times(1)).deleteAllByCourse(testCourse);
+        verify(postRepository, times(1)).delete(testPost);
+    }
+
+
+    @DisplayName("파라미터로 전달받은 Course가 DB에 있을 경우 BusinessLogicException이 발생한다.")
+    @Test
+    void verifyExistCourseTest_1() {
+        // given
+        given(postRepository.findByCourse(any(Course.class))).willReturn(Optional.of(new Post()));
+        // when, then
+        assertThrows(BusinessLogicException.class, () -> postService.verifyExistCourse(new Course()));
+    }
+
+    @DisplayName("파라미터로 전달받은 Course가 DB에 없을 경우 예외가 발생하지 않는다.")
+    @Test
+    void verifyExistCourseTest_2() {
+        // given
+        given(postRepository.findByCourse(any(Course.class))).willReturn(Optional.empty());
+        // when, then
+        assertDoesNotThrow(() -> postService.verifyExistCourse(new Course()));
+    }
+
+    @DisplayName("파라미터로 전달받은 postId 에 해당하는 Post가 DB에 없을 경우 BusinessLogicException이 발생한다.")
+    @Test
+    void findVerifiedPostTest_1() {
+        // given
+        given(postRepository.findById(anyLong())).willReturn(Optional.empty());
+        // when, then
+        assertThrows(BusinessLogicException.class, () -> postService.findVerifiedPost(anyLong()));
+    }
+
+    @DisplayName("파라미터로 전달받은 PostId에 해당하는 Post가 DB에 존재할 경우, 예외가 발생하지 않는다.")
+    @Test
+    void findVerifiedPostTest_2() {
+        // given
+        Long memberId = 1L;
+        Post testPost = getDummyPost(memberId);
+        given(postRepository.findById(1L)).willReturn(Optional.of(testPost));
+        // when, then
+        assertDoesNotThrow(() -> postService.findVerifiedPost(memberId));
+    }
+
+    @DisplayName("파라미터로 전달된 postId에 해당하는 Post의 ")
+    @Test
+    void viewCountUpTest_1() {
+
+    }
+
 
     private Page<Course> getDummyPageResult(Long courseId, Long postId, Long memberId) {
 
@@ -287,6 +483,16 @@ class PostServiceTest {
         Member testMember = new Member();
         testMember.setMemberNickname("testNick" + memberId);
         testMember.setMemberEmail("test" + memberId + "@email.com");
+        testMember.setRoles(List.of("USER"));
+
+        return testMember;
+    }
+
+    private Member getDummyMemberAdmin(Long memberId) {
+        Member testMember = new Member();
+        testMember.setMemberNickname("testNick" + memberId);
+        testMember.setMemberEmail("test" + memberId + "@email.com");
+        testMember.setRoles(List.of("USER", "ADMIN"));
 
         return testMember;
     }

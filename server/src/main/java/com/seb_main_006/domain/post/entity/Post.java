@@ -40,9 +40,5 @@ public class Post {
 
     public void addCourse(Course course){
         this.course = course;
-
-        if(course.getPost() != this){
-            course.setPost(this);
-        }
     }
 }

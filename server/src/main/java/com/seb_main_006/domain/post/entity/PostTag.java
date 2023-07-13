@@ -16,7 +16,7 @@ public class PostTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postTagId; // 게시글-태그 식별자, 기본키
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private Post post; // post entity와 연관관계 매핑(다:1)
 
