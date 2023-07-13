@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { styled } from 'styled-components';
 
 import ModalChildren from './post/ModalChildren';
@@ -14,22 +14,34 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const DeleteButton = ({ postId }: { postId: string }) => {
-  const goToCommunity = useMovePage('/community');
+const DeleteButton = ({
+  type,
+  postId,
+}: {
+  type?: 'mypage';
+  postId: string;
+}) => {
+  const url = type ? '/mypage' : '/community';
+  const goToPage = useMovePage(url);
   const modalIsOpen = useSelector((state: RootState) => state.overlay.isOpen);
   const toggleModal = useToggleModal();
-  const mutate = useMutation(DeleteCommunityPost, {
-    onSuccess() {
-      // Todo 다른 페이지 refetch 해야할 수도?
+  const queryClient = useQueryClient();
+  const query = type ? DeleteCommunityPost : DeleteCommunityPost;
+  // 23번째 라인 왼쪽에 마이페이지 딜리트 함수 넣으시면 됩니다.
+  const mutate = useMutation(query, {
+    onSuccess: async () => {
       toggleModal();
-      goToCommunity();
+      await queryClient.invalidateQueries(['community']);
+      await queryClient.invalidateQueries(['mypage']);
+      goToPage();
     },
   });
   return (
     <>
       <Button
         type="button"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           toggleModal();
         }}
       >
@@ -43,10 +55,13 @@ const DeleteButton = ({ postId }: { postId: string }) => {
           }}
         >
           <ModalChildren
-            leftBtnCallback={() => {
+            leftBtnCallback={(e) => {
+              e.stopPropagation();
+
               toggleModal();
             }}
-            rightBtnCallback={() => {
+            rightBtnCallback={(e) => {
+              e.stopPropagation();
               mutate.mutate({ postId });
             }}
             content="정말 삭제하시겠습니까?"
