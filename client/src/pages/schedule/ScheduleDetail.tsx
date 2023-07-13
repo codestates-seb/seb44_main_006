@@ -1,7 +1,8 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { AxiosError } from 'axios';
 
 import { GetCourse } from '../../apis/api';
 import { PostReadT } from '../../types/apitype';
@@ -9,9 +10,11 @@ import { scheduleDetailActions } from '../../store/scheduleData-slice';
 import { RootState } from '../../store';
 import ScheduleMapDetail from '../../components/schedule/ScheduleMapDetail';
 
+
 const ScheduleDetail = () => {
   const dispatch = useDispatch();
   const { courseId } = useParams() as { courseId: string };
+  const navigate = useNavigate();
 
   useQuery({
     queryKey: ['resisterDetail'],
@@ -19,6 +22,10 @@ const ScheduleDetail = () => {
     onSuccess: (data: PostReadT) => {
       dispatch(scheduleDetailActions.getCourseData(data?.courseData));
       dispatch(scheduleDetailActions.getDestinationList(data?.destinationList));
+    },
+    onError: (error) => {
+      const { response } = error as AxiosError;
+      if (response) navigate(`/error/${response.status}`);
     },
   });
 
