@@ -21,6 +21,7 @@ import { RootState } from '../../store';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import useScheduleMutation from '../../querys/useScheduleMutaion';
 import dateToString from '../../utils/dateToString';
+import { placeListActions } from '../../store/placeList-slice';
 
 interface UrlProp {
   url: string;
@@ -147,6 +148,7 @@ const ScheduleCreateModal = () => {
       });
       dispatch(overlayActions.toggleOverlay());
       dispatch(scheduleListActions.resetList());
+      dispatch(placeListActions.resetList());
       navigate('/');
     }
   };
