@@ -71,7 +71,9 @@ export const GetCommunityList = async ({
   return {
     communityListData: res.data.data,
     current_page: pageParam,
-    isLast: res.data.pageInfo.totalPages === pageParam,
+    isLast:
+      res.data.pageInfo.totalPages === pageParam ||
+      res.data.pageInfo.totalPages === 0,
   };
 };
 

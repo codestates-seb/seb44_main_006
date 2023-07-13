@@ -27,7 +27,7 @@ const Noresult = ({
   return (
     <Div>
       <NoresultResult style={{ iconWidth, iconHeight }} />
-      <Text styles={{ size, color: '#c9c9c9' }}>바꿔야함 </Text>
+      <Text styles={{ size, color: '#c9c9c9' }}>검색 결과 없습니다.</Text>
     </Div>
   );
 };

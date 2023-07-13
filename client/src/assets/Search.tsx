@@ -6,7 +6,7 @@ const Svg = styled.svg`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 20px;
+  right: 1.5rem;
   cursor: pointer;
 `;
 

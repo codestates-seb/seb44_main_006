@@ -16,15 +16,17 @@ type KakaoMapT = {
   height: string;
   children: Props['children'];
   center?: { lat: string; lng: string; level: number };
+  selected?: { lat: string; lng: string };
 };
 const KakaoMap = ({
   center,
+  selected,
   width,
   height,
   children,
   ...options
 }: KakaoMapT) => {
-  const [state, setState] = useState(false);
+  const [load, setLoad] = useState(false);
   const dispatch = useDispatch();
   const curLocation = useGeolocation();
 
@@ -37,25 +39,36 @@ const KakaoMap = ({
         lng: curLocation.coords?.longitude,
       };
       const { level = 3, lat, lng } = center ?? currentPosition;
+
       const newMap = new kakao.maps.Map(element, {
         level,
         center: new kakao.maps.LatLng(Number(lat), Number(lng)),
         keyboardShortcuts: true,
       });
+
+      if (selected && selected?.lat) {
+        const moveLatlng = new kakao.maps.LatLng(
+          Number(selected.lat),
+          Number(selected.lng)
+        );
+        newMap.panTo(moveLatlng);
+      }
+
       dispatch(mapActions.setMap(newMap));
-      setState(true);
+      setLoad(true);
     },
     [
       curLocation.coords?.latitude,
       curLocation.coords?.longitude,
       center,
+      selected,
       dispatch,
     ]
   );
 
   return (
     <MapContainer width={width} height={height} ref={loadHandler} {...options}>
-      {state && children}
+      {load && children}
     </MapContainer>
   );
 };
