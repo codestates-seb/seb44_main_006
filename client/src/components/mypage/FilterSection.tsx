@@ -13,6 +13,7 @@ import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import Text from '../ui/text/Text';
 import useUserInfo from '../../querys/useUserInfo';
+import DeleteButton from '../community/DeleteButton';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -106,6 +107,9 @@ const FilterSection = ({
                 courseId={post.courseId}
                 date={manufactureDate(post?.courseUpdatedAt)}
               >
+                <DeleteButton type="mypage" postId={String(post.courseId)}>
+                  삭제
+                </DeleteButton>
                 <CopyButton endpoint={`community/${String(post.courseId)}`} />
                 <ShareKakaoButton
                   endpoint={`community/${String(post.courseId)}`}
