@@ -13,10 +13,18 @@ import { RootState } from '../../store';
 import { selectedIdActions } from '../../store/selectedId-slice';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 
-const Wrapper = styled.form`
+interface IDisplay {
+  display: string;
+}
+interface Prop {
+  setIsThumbChouce: React.Dispatch<SetStateAction<boolean>>;
+  display: string;
+}
+
+const Wrapper = styled.div<IDisplay>`
   width: ${cssToken.WIDTH['w-full']};
   height: ${cssToken.HEIGHT['h-full']};
-  display: flex;
+  display: ${(props) => props.display};
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -54,11 +62,7 @@ const ButtonContainer = styled.section`
   gap: ${cssToken.SPACING['gap-12']};
 `;
 
-interface Prop {
-  setIsThumbChouce: React.Dispatch<SetStateAction<boolean>>;
-}
-
-const ThumbnailChoiceContainer = ({ setIsThumbChouce }: Prop) => {
+const ThumbnailChoiceContainer = ({ setIsThumbChouce, display }: Prop) => {
   const dispatch = useDispatch();
   const selectedId = useSelector(
     (state: RootState) => state.selectedId.thumbnailId
@@ -72,7 +76,7 @@ const ThumbnailChoiceContainer = ({ setIsThumbChouce }: Prop) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper display={display}>
       <TitleContainer>
         <Title styles={{ size: `${cssToken.TEXT_SIZE['text-32']}` }}>
           썸네일 선택하기

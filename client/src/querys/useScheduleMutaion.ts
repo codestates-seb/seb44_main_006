@@ -20,7 +20,6 @@ const useScheduleMutation = () => {
       const status = data.status.toString()[0];
       if (status !== '2') return;
       dispatch(selectedIdActions.allReset());
-      navigate('/');
     },
     onError: (error) => {
       const { response } = error as AxiosError;
