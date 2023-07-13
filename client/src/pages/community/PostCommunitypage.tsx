@@ -28,6 +28,7 @@ import removeTag from '../../utils/removeTag';
 import Text from '../../components/ui/text/Text';
 import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
+import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: '0.1875rem';
@@ -47,7 +48,7 @@ const PostCommunitypage = () => {
   const [tags, setTags] = useState<string[] | []>([]);
   const [isValidate, setIsValidate] = useState<boolean>(true);
 
-  const { data: courses } = useQuery({
+  const { data: courses, isLoading } = useQuery({
     queryKey: ['course'],
     queryFn: () => GetCourse({ courseId: scheduleid }),
     refetchOnWindowFocus: false,
@@ -107,6 +108,7 @@ const PostCommunitypage = () => {
       <OutsideWrap>
         <MyCourseBoast />
         <GapDiv>
+          {isLoading && <SkeletonMapContainer />}
           {courses && (
             <MapContainer
               title={courses.courseData.courseTitle}

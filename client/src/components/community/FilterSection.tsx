@@ -7,7 +7,7 @@ import { throttle } from 'lodash';
 
 import NoResults from './NoResults';
 import DeleteButton from './DeleteButton';
-import SkeletonCardContainer from './SkeletonCardContainer';
+import SkeletonCardContainer from './skeleton/SkeletonCardContainer';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -38,10 +38,6 @@ const FilterContainer = styled(FlexDiv)`
   position: absolute;
   top: -2.9375rem;
   column-gap: ${cssToken.SPACING['gap-50']};
-`;
-
-const Div = styled.div`
-  height: 100vh;
 `;
 
 const FilterSection = ({
@@ -115,7 +111,7 @@ const FilterSection = ({
               return <SkeletonContentCard />;
             })
           )}
-        {isFetching && <SkeletonCardContainer />}
+        {isFetching && <SkeletonCardContainer length={11} />}
       </CardWrapper>
       {communityData && <div ref={ref} />}
     </FilterWrapper>

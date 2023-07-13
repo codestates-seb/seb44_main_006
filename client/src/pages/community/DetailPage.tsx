@@ -23,6 +23,8 @@ import { CommunityDetailT } from '../../types/apitype';
 import Content from '../../components/community/detail/Content';
 import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
+import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
+import SkeletonUserContainer from '../../components/community/skeleton/SkeletonUserContainer';
 
 const HEADDiv = styled(FlexDiv)`
   justify-content: space-between;
@@ -49,7 +51,11 @@ const DetailPage = () => {
   const [isValidate, setValidate] = useState(true);
   const { postId } = useParams() as { postId: string };
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const { data: detailData, error } = useQuery({
+  const {
+    data: detailData,
+    error,
+    isLoading,
+  } = useQuery({
     queryKey: ['communityDetail'],
     queryFn: () => GetCommunityPost({ postId }),
     refetchOnWindowFocus: false,
@@ -124,9 +130,9 @@ const DetailPage = () => {
       <Title styles={{ size: cssToken.TEXT_SIZE['text-40'] }}>
         나의 코스 자랑하기
       </Title>
-
       <HEADDiv>
         <UersDiv>
+          {isLoading && <SkeletonUserContainer />}
           {detailData && userInfo && (
             <>
               <UserInfoMy src={userInfo.memberImageUrl} />
@@ -150,13 +156,14 @@ const DetailPage = () => {
         )}
       </HEADDiv>
 
+      {/* //Todo Suspense로 아예 페이지 거는게 나을듯 ? */}
+      {isLoading && <SkeletonMapContainer />}
       {detailData && postInfo.destinationList && (
         <MapContainer
           destinationList={postInfo.destinationList}
           title={postInfo.postTitle}
         />
       )}
-
       <ContentDiv>
         {detailData && contentData && (
           <>
@@ -165,7 +172,6 @@ const DetailPage = () => {
           </>
         )}
       </ContentDiv>
-
       <form onSubmit={onSubmit}>
         <TextArea
           onChange={handleCommentChange}

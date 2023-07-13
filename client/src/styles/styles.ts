@@ -71,3 +71,8 @@ export const ShareBtn = styled.button`
   }
   cursor: pointer;
 `;
+
+export const SkeletonDiv = styled.div`
+  background-color: ${cssToken.COLOR['gray-500']};
+  border-radius: ${cssToken.BORDER['rounded-input']};
+`;
