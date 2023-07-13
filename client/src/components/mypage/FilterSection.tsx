@@ -59,8 +59,6 @@ const FilterSection = ({
     if (courseId !== undefined) navigate(`/register/detail/${courseId}`);
   };
 
-  console.log(memberBookmarkedList);
-
   const isMemberCourseListEmpty =
     selectTab === 'First' && memberCourseList?.length === 0;
   const isMemberBookmarkedListEmpty =
