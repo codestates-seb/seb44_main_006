@@ -3,7 +3,7 @@ import {
   useNavigate,
   Link,
   useLocation,
-  useSearchParams,
+  useSearchParams
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -28,18 +28,18 @@ type HeaderStyle = {
 };
 
 const HeaderContainer = styled.header<HeaderStyle>`
-  display: ${(props) => (props?.isPath === '/register' ? 'none' : 'flex')};
+  display: ${(props) => (props?.isPath === 'register' ? 'none' : 'flex')};
   align-items: center;
   justify-content: space-between;
   padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
   background: ${(props) =>
-    props?.isPath === '/' ? 'transparent' : cssToken.COLOR.white};
+    props?.isPath === '' ? 'transparent' : cssToken.COLOR.white};
   position: fixed;
   top: 0;
   left: 0;
   width: ${cssToken.WIDTH['w-full']};
   box-shadow: ${(props) =>
-    props?.isPath === '/' ? 'none' : cssToken.SHADOW['shadow-lg']};
+    props?.isPath === '' ? 'none' : cssToken.SHADOW['shadow-lg']};
   z-index: 999;
 `;
 
@@ -78,6 +78,7 @@ const Header = () => {
   const [isPath, setIsPath] = useState<string>('');
   const location = useLocation();
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
+  const endpoint = location.pathname.split('/')[1];
 
   const LoginmodalIsOpen = useSelector(
     (state: RootState) => state.userAuth.isLoginOpen
@@ -138,8 +139,8 @@ const Header = () => {
   });
 
   useEffect(() => {
-    setIsPath(location.pathname);
-  }, [location]);
+    setIsPath(endpoint);
+  }, [endpoint]);
 
   return (
     <HeaderContainer isPath={isPath}>
@@ -197,9 +198,8 @@ const Header = () => {
           <LogoImg src={LogoBlack} alt="logo-harumate" />
         </Link>
       </LogoBox>
-      {/* <div>{`반갑습니다. ${userQAuthData.memberNickname}`}</div> */}
       <BtnBox>
-        {isPath === '/' && isLoggedIn && (
+        {isPath === '' && isLoggedIn && (
           // 메인 페이지인 경우
           <>
             <WhiteButton
@@ -218,7 +218,7 @@ const Header = () => {
             </SkyBlueButton>
           </>
         )}
-        {isPath !== '/' && isLoggedIn && (
+        {isPath !== '' && isLoggedIn && (
           // 메인 페이지가 아닌 나머지
           <>
             <WhiteButton
