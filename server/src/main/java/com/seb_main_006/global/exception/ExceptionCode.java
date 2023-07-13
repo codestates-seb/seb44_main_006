@@ -30,7 +30,8 @@ public enum ExceptionCode {
     ANSWER_CANT_UPDATE_DELETE(403,"본인글이 아니면 수정,삭제 할 수 없습니다."),
     CANT_BOOKMARK_NOT_FOUND(404,"선택한 코스로 작성된 게시글이 없어 즐겨찾기를 할 수 없습니다."),
     CANT_LIKE_NOT_FOUND(404,"선택한 코스로 작성된 게시글이 없어 좋아요를 할 수 없습니다."),
-    POST_NOT_FOUND(404,"게시글을 찾을 수 없습니다.");
+    POST_NOT_FOUND(404,"게시글을 찾을 수 없습니다."),
+    TEMPORARY_ERROR(500, "일시적인 장애가 발생했습니다. 다시 시도해주세요");
 
     @Getter
     private int status;
