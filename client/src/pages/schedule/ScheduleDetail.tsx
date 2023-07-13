@@ -21,9 +21,10 @@ import { GetCommunityPost, PostComment, GetCourse } from '../../apis/api';
 import manufactureDate from '../../utils/manufactureDate';
 import getLoginStatus from '../../utils/getLoginStatus';
 import { CommunityDetailT } from '../../types/apitype';
-import Content from '../../components/community/detail/Content';
 import { scheduleDetailActions } from '../../store/scheduleData-slice';
 import { RootState } from '../../store';
+import ScheduleMapDetail from '../../components/schedule/ScheduleMapDetail';
+
 
 const HEADDiv = styled(FlexDiv)`
   justify-content: space-between;
@@ -57,6 +58,7 @@ const ScheduleDetail = () => {
     onSuccess: (data) => {
       dispatch(scheduleDetailActions.getCourseData(data?.courseData));
       dispatch(scheduleDetailActions.getDestinationList(data?.destinationList));
+      console.log(data);
     },
   });
 
@@ -81,12 +83,12 @@ const ScheduleDetail = () => {
 
   return (
     <>
-
-
       {destinationList && (
-        <MapContainer
+        <ScheduleMapDetail
           destinationList={destinationList}
           title={courseData.courseTitle}
+          text={courseData.courseContent}
+          courseDday={courseData.courseDday}
         />
       )}
     </>
