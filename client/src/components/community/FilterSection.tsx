@@ -28,12 +28,14 @@ const FilterWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: ${cssToken.SPACING['gap-50']};
-  border-top: 1px solid #dcdcdc;
 `;
 const FilterContainer = styled(FlexDiv)`
   position: absolute;
   top: -2.9375rem;
   column-gap: ${cssToken.SPACING['gap-50']};
+  width:  ${cssToken.WIDTH['w-full']};
+  border-bottom: 1px solid #dcdcdc;
+  justify-content: center;
 `;
 
 const FilterSection = ({
