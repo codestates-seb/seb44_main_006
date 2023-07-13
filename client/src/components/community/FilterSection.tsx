@@ -37,7 +37,7 @@ const FilterContainer = styled(FlexDiv)`
   position: absolute;
   top: -2.9375rem;
   column-gap: ${cssToken.SPACING['gap-50']};
-  width:  ${cssToken.WIDTH['w-full']};
+  width: ${cssToken.WIDTH['w-full']};
   border-bottom: 1px solid #dcdcdc;
   justify-content: center;
 `;
@@ -105,7 +105,9 @@ const FilterSection = ({
                     isMine={userData?.memberEmail === post.memberEmail}
                     date={manufactureDate(post.postCreatedAt)}
                   >
-                    <DeleteButton postId={String(post.postId)} />
+                    {userData && userData?.memberEmail === post.memberEmail && (
+                      <DeleteButton postId={String(post.postId)} />
+                    )}
                     <CopyButton endpoint={`community/${post.postId}`} />
                     <ShareKakaoButton endpoint={`community/${post.postId}`} />
                   </ContensCard>
