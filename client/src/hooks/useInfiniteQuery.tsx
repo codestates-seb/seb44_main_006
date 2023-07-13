@@ -11,7 +11,7 @@ const useInfiniteScrollQuery = ({
   sort?: string | undefined;
   tagName?: string | undefined;
 }) => {
-  const { data, fetchNextPage, isSuccess, hasNextPage, error } =
+  const { data, fetchNextPage, isSuccess, hasNextPage, error, isFetching } =
     useInfiniteQuery(
       ['community', tagName, sort],
       ({ pageParam = 1 }) =>
@@ -22,7 +22,7 @@ const useInfiniteScrollQuery = ({
         },
       }
     );
-  return { data, fetchNextPage, isSuccess, hasNextPage, error };
+  return { data, fetchNextPage, isSuccess, hasNextPage, error, isFetching };
 };
 
 export default useInfiniteScrollQuery;

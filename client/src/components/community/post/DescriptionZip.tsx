@@ -27,28 +27,6 @@ export const MyCourseBoast = () => {
   );
 };
 
-export const ExampleDescription = () => {
-  return (
-    <HeadDiv>
-      <SubTitle
-        styles={{
-          size: cssToken.TEXT_SIZE['text-32'],
-        }}
-      >
-        경로 예시 사진
-      </SubTitle>
-      <Text
-        styles={{
-          color: cssToken.COLOR['gray-900'],
-          weight: cssToken.FONT_WEIGHT.medium,
-        }}
-      >
-        게시물 업로드 할 경우 보여지는 예시 이미지 입니다.
-      </Text>
-    </HeadDiv>
-  );
-};
-
 export const WritePost = () => {
   return (
     <HeadDiv>

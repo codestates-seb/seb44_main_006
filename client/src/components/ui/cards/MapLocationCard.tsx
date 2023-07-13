@@ -74,6 +74,7 @@ const RightButtonArea = styled.section`
 const MapLocationCard = ({
   indexNum,
   location,
+  latlng,
   id,
   type,
 }: MapLocationCardInfo) => {
@@ -83,8 +84,9 @@ const MapLocationCard = ({
 
   const dispatch = useDispatch();
 
-  const handleHighlight = (inputId: string) => {
-    dispatch(markerActions.selectMarker(inputId));
+  const handleHighlight = () => {
+    if (id && latlng)
+      dispatch(markerActions.selectMarker({ markerId: id, center: latlng }));
   };
 
   const handleDelete = (inputId: string) => {
@@ -99,12 +101,12 @@ const MapLocationCard = ({
       <LocationCard
         selected={selected}
         onClick={() => {
-          if (id) handleHighlight(id);
+          handleHighlight();
         }}
       >
         <LocationText>{location}</LocationText>
         <RightButtonArea>
-          <ThreeLine style={{ iconWidth: 17, iconHeight: 18 }} />
+          {type && <ThreeLine style={{ iconWidth: 17, iconHeight: 18 }} />}
           <Button
             onClick={() => {
               if (id) handleDelete(id);

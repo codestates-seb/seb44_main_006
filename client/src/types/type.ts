@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type Voidfunc = () => void;
+export type MouseEventfunc = (e: React.MouseEvent<HTMLButtonElement>) => void;
 
 export type TextStyleT = {
   size?: string;
@@ -164,6 +164,7 @@ export interface LocationCardInfo {
 export interface MapLocationCardInfo {
   indexNum?: number;
   location?: string;
+  latlng?: { lat: string; lng: string };
   id?: string;
   placeId?: string;
   onClick?: ({ id }: { id: string | undefined }) => void;
@@ -174,10 +175,14 @@ export interface RouteState {
   state?: string | number | undefined;
 }
 
-export type IdT = string | undefined;
+export interface ILatLng {
+  lat: string;
+  lng: string;
+}
 
-export type MarkerT = {
-  markerId: IdT;
+export type IdT = {
+  markerId: string;
+  center: ILatLng;
 };
 
 export interface ICSearchState {
