@@ -9,6 +9,7 @@ interface IModalContainer {
   height?: string;
   borderradius?: string;
   gap?: string;
+  position?: string;
 }
 
 const ModalWrapper = styled.div`
