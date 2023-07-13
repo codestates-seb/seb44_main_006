@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CardCommonBox } from './Card.styled';
 
 import cssToken from '../../../styles/cssToken';
-import { ILatLng, MapLocationCardInfo } from '../../../types/type';
+import { MapLocationCardInfo } from '../../../types/type';
 import { RootState } from '../../../store';
 import Button from '../button/Button';
 import Trash from '../../../assets/Trash';

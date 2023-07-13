@@ -132,6 +132,7 @@ export type MypCourseSummaryT = {
   courseViewCount?: number;
   isPosted?: boolean;
   memberNickname?: string;
+  postId?: number;
 };
 
 export type MyBookMarkSummaryT = {

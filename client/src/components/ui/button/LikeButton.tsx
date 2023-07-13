@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
-import { debounce, throttle } from 'lodash';
+import { debounce } from 'lodash';
 
 import EventButton from './EventButton';
 

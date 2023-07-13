@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 import cssToken from '../../../styles/cssToken';
-import { FlexDiv, SkeletonDiv, SkeletonItem } from '../../../styles/styles';
+import { FlexDiv, SkeletonDiv } from '../../../styles/styles';
 
 const UserContainer = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-24']};
