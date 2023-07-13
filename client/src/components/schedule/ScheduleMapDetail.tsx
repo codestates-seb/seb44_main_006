@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { memo, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import { FlexDiv } from '../../styles/styles';
 import KakaoMap from '../map/KakaoMap';

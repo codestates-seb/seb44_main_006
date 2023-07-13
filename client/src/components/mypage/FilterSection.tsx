@@ -61,6 +61,8 @@ const FilterSection = ({
     console.log('ㅇㅇ');
   };
 
+  console.log(memberBookmarkedList);
+
   const isMemberCourseListEmpty =
     selectTab === 'First' && memberCourseList?.length === 0;
   const isMemberBookmarkedListEmpty =
@@ -95,7 +97,7 @@ const FilterSection = ({
         ))}
 
       <CardWrapper>
-        {memberBookmarkedList && memberCourseList && selectTab === 'First'
+        {memberCourseList && selectTab === 'First'
           ? memberCourseList?.map((post: MypCourseSummaryT) => (
               <ContensCard
                 key={post.courseId}
@@ -117,7 +119,7 @@ const FilterSection = ({
           : memberBookmarkedList?.map((post: MyBookMarkSummaryT) => (
               <ContensCard
                 key={post.courseId}
-                type="course"
+                type="post"
                 title={post.courseTitle}
                 text={post.postContent}
                 likeCount={post.courseLikeCount}
@@ -127,6 +129,7 @@ const FilterSection = ({
                 onClick={moveToDetail}
                 courseId={post.courseId}
                 bookmarkStatus
+                postId={post.postId}
                 likeStatus={post.likeStatus}
                 date={manufactureDate(post?.courseUpdatedAt)}
               >
