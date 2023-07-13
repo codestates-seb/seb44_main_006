@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { throttle } from 'lodash';
 
 import NoResults from './NoResults';
+import DeleteButton from './DeleteButton';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -103,6 +104,7 @@ const FilterSection = ({
                   isMine={userData?.memberEmail === post.memberEmail}
                   date={manufactureDate(post.postCreatedAt)}
                 >
+                  <DeleteButton postId={String(post.postId)} />
                   <CopyButton endpoint={`community/${post.postId}`} />
                   <ShareKakaoButton endpoint={`community/${post.postId}`} />
                 </ContensCard>

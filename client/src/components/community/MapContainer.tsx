@@ -68,10 +68,11 @@ const MapContainer = ({
       <MapDiv>
         <KakaoMap
           center={{
-            lat: latlng.lat || destinationList[0].y,
-            lng: latlng.lng || destinationList[0].x,
+            lat: destinationList[0].y,
+            lng: destinationList[0].x,
             level: 3,
           }}
+          selected={latlng}
           width="100%"
           height="60vh"
         >
