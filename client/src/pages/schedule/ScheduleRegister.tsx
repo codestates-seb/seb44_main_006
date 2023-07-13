@@ -17,6 +17,7 @@ import makePolyline from '../../utils/makePolyline';
 import ScheduleCancelModal from '../../components/schedule/ScheduleCancelModal';
 import RegisterDetail from '../../components/register/RegisterDetail';
 import { placeListActions } from '../../store/placeList-slice';
+import BottomSheet from '../../components/ui/bottomsheet/BottomSheet';
 
 const KakaoMap = lazy(() => import('../../components/map/KakaoMap'));
 const Marker = lazy(() => import('../../components/map/Marker'));
@@ -27,9 +28,14 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
 `;
 
 const FixedDiv = styled.div`
+  height: 15rem;
   display: flex;
   flex-direction: column;
   gap: ${cssToken.SPACING['gap-16']};
@@ -37,6 +43,12 @@ const FixedDiv = styled.div`
   right: ${cssToken.SPACING['gap-40']};
   bottom: ${cssToken.SPACING['gap-40']};
   z-index: 999;
+
+  @media (max-width: 480px) {
+    flex-direction: row;
+    right: ${cssToken.SPACING['gap-16']};
+    top: ${cssToken.SPACING['gap-16']};
+  }
 `;
 
 const ButtonDiv = styled.div`
@@ -44,7 +56,13 @@ const ButtonDiv = styled.div`
 `;
 
 const RelativeDiv = styled.div`
+  width: 35rem;
   position: relative;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 const ScheduleRegister = () => {
@@ -76,10 +94,17 @@ const ScheduleRegister = () => {
       {isSave && <ScheduleCreateModal />}
       {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 
-      <RelativeDiv>
-        <ScheduleBox />
-        {isDetailShow && <RegisterDetail detailItem={detailItem} />}
-      </RelativeDiv>
+      {/* <RelativeDiv>
+          <ScheduleBox />
+          {isDetailShow && <RegisterDetail detailItem={detailItem} />}
+        </RelativeDiv> */}
+
+      <BottomSheet>
+        <RelativeDiv>
+          <ScheduleBox />
+          {isDetailShow && <RegisterDetail detailItem={detailItem} />}
+        </RelativeDiv>
+      </BottomSheet>
 
       <Suspense>
         <KakaoMap width="100vw" height="100vh">
