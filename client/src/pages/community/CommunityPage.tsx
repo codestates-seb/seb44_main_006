@@ -46,7 +46,7 @@ const CommunityPage = () => {
   const [tagName, setTagName] = useState<string>('');
   const dispatch = useDispatch();
 
-  const { data, fetchNextPage, hasNextPage, error, isFetching } =
+  const { data, fetchNextPage, hasNextPage, error, isFetchingNextPage } =
     useInfiniteScrollQuery({
       limit: LIMIT,
       tagName: tagName || '',
@@ -93,7 +93,7 @@ const CommunityPage = () => {
         <FilterSection
           hasNextPage={hasNextPage}
           fetchNextPage={fetchNextPage}
-          isFetching={isFetching}
+          isFetching={isFetchingNextPage}
         >
           <FilterTab
             content="최신순"
