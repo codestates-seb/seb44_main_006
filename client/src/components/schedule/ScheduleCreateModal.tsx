@@ -149,7 +149,7 @@ const ScheduleCreateModal = () => {
       dispatch(overlayActions.toggleOverlay());
       dispatch(scheduleListActions.resetList());
       dispatch(placeListActions.resetList());
-      navigate('/');
+      navigate('/mypage');
     }
   };
 
