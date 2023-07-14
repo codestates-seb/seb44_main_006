@@ -14,6 +14,7 @@ import CopyButton from '../ui/button/CopyButton';
 import Text from '../ui/text/Text';
 import useUserInfo from '../../querys/useUserInfo';
 import DeleteButton from '../community/DeleteButton';
+import formatData from '../../utils/sliceData';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -65,6 +66,7 @@ const FilterSection = ({
   const isMemberBookmarkedListEmpty =
     selectTab === 'Second' && memberBookmarkedList?.length === 0;
 
+    console.log(memberCourseList)
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
@@ -105,7 +107,7 @@ const FilterSection = ({
                 thumbnail={post.courseThumbnail}
                 onClick={moveToRegisterDetail}
                 courseId={post.courseId}
-                date={manufactureDate(post?.courseUpdatedAt)}
+                date={formatData(post?.courseDday)}
               >
                 <DeleteButton type="mypage" postId={String(post.courseId)}>
                   삭제
