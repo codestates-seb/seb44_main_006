@@ -25,11 +25,33 @@ const OutsideWrap = styled(FlexDiv)`
   padding-right: ${cssToken.SPACING['py-100']};
   flex-direction: column;
   row-gap: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-width: 768px) {
+    margin-top: 2.75rem;
+    padding-top: ${cssToken.SPACING['gap-24']};
+    padding-left: ${cssToken.SPACING['gap-50']};
+    padding-right: ${cssToken.SPACING['gap-50']};
+
+    h1 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-size: 0.8125rem;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    padding-left: ${cssToken.SPACING['gap-16']};
+    padding-right: ${cssToken.SPACING['gap-16']};
+  }
 `;
 
 const OverFlowDiv = styled.div`
   height: 62vh;
   overflow: auto;
+  background-color: ${cssToken.COLOR['gray-300']};
+  padding: ${cssToken.SPACING['gap-24']};
 `;
 
 const EmptyDiv = styled(FlexDiv)`
@@ -40,6 +62,8 @@ const EmptyDiv = styled(FlexDiv)`
   align-items: center;
   row-gap: ${cssToken.SPACING['gap-40']};
 `;
+
+const SelectCardWrapper = styled(CardWrapper)``;
 
 const SelectSchedulePage = () => {
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
@@ -91,12 +115,12 @@ const SelectSchedulePage = () => {
       <Head />
       <OverFlowDiv>
         {isLoading && (
-          <CardWrapper>
+          <SelectCardWrapper>
             <SkeletonCardContainer length={4} />
-          </CardWrapper>
+          </SelectCardWrapper>
         )}
         {registerCourses.length > 0 && (
-          <CardWrapper>
+          <SelectCardWrapper>
             {registerCourses.map((course) => (
               <ContensCard
                 type="course"
@@ -111,7 +135,7 @@ const SelectSchedulePage = () => {
                 onClick={handleClickCard}
               />
             ))}
-          </CardWrapper>
+          </SelectCardWrapper>
         )}
         {registerCourses.length < 1 && (
           <EmptyDiv>

@@ -19,12 +19,37 @@ import { LIMIT } from '../../utils/constant/constant';
 import { communityBasicActions } from '../../store/communitybasic-slice';
 
 const Wrapper = styled(FlexDiv)`
-  margin-top: 3.125rem;
+  margin-top: 1.875rem;
   width: 100%;
   flex-direction: column;
   align-items: center;
   padding-top: 6.5rem;
-  row-gap: 7.75rem;
+  row-gap: 6rem;
+
+  > form {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 768px) {
+    row-gap: 5rem;
+
+    > form > div {
+      width: 80%;
+      > input {
+        padding-right: 3rem;
+        font-size: 0.8125rem;
+      }
+      > button {
+        right: 0.8rem;
+        > svg {
+          width: 1.125rem;
+          height: 1.125rem;
+        }
+      }
+    }
+  }
 `;
 
 const Div = styled.div`

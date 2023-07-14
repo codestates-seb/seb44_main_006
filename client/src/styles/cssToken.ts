@@ -26,7 +26,7 @@ const cssToken = {
     'gray-700': '#D3D3D3',
     'gray-600': '#DCDCDC',
     'gray-500': '#E6E6E6',
-    'gray-300': '#F8F8F8', // background
+    'gray-300': '#F8F8F8',
     'polyline-color': '#009EDC',
     'yellow-900': '#FFE81C',
     'yellow-100': '#FFFBD7',

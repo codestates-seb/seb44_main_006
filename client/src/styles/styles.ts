@@ -19,7 +19,10 @@ export const CardWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(405px, 405px));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(${cssToken.WIDTH['grid-min']}, auto)
+  );
   justify-content: center;
   gap: ${cssToken.SPACING['gap-50']};
 `;

@@ -23,7 +23,6 @@ import useUserInfo from '../../querys/useUserInfo';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import { RootState } from '../../store';
-import SkeletonContentCard from '../skeleton/SkeletonContentCard';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -32,10 +31,11 @@ const FilterWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: ${cssToken.SPACING['gap-50']};
+  background-color: ${cssToken.COLOR['gray-300']};
 `;
 const FilterContainer = styled(FlexDiv)`
   position: absolute;
-  top: -2.9375rem;
+  top: -2.4rem;
   column-gap: ${cssToken.SPACING['gap-50']};
   width: ${cssToken.WIDTH['w-full']};
   border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
