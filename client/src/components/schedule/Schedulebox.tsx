@@ -53,7 +53,7 @@ const ScheduleTitle = styled.div`
 `;
 
 const ScheduleBox = () => {
-  const [choiceCategory, setChoiceCategory] = useState(false);
+  const [choiceCategory, setChoiceCategory] = useState(true);
   const [choiceDirect, setChoiceDirect] = useState(false);
   const dispatch = useDispatch();
 
