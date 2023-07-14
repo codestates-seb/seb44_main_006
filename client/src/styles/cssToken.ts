@@ -7,7 +7,7 @@ const cssToken = {
     'min-w-min': 'min-content',
     'min-w-max': 'max-content',
     'min-w-fit': 'fit-content',
-    'grid-min': '21.5rem',
+    'grid-min': '20.5rem',
   },
   HEIGHT: {
     'h-full': '100%',
