@@ -40,7 +40,7 @@ export type PostReadT = {
     courseDday: string;
     courseTitle: string;
     courseContent: string;
-    coureThumbnail: string;
+    courseThumbnail: string;
   };
   destinationList: IScheduleListItem[];
 };
@@ -121,6 +121,7 @@ export interface CommentT {
   answerUpdatedAt: string; // 댓글 수정한 날짜, ex) "2023-06-30 Fri"
 }
 
+// 마이 페이지
 export type MypCourseSummaryT = {
   courseContent?: string;
   courseDday?: string;
@@ -153,4 +154,24 @@ export type MyBookMarkSummaryT = {
 export type MypSummaryT = {
   memberCourseList?: MypCourseSummaryT[];
   memberBookmarkedList?: MyBookMarkSummaryT[];
+};
+
+// 일정 상세 페이지
+export type DestinationListT = {
+  categoryGroupCode?: string;
+  categoryGroupName?: string;
+  id?: string;
+  phone?: string;
+  placeName?: string;
+  placeUrl?: string;
+  roadAddressName?: string;
+  x?: string;
+  y?: string;
+};
+
+export type CourseDatassT = {
+  courseContent?: string;
+  courseDday?: string;
+  courseThumbnail?: string;
+  courseTitle?: string;
 };
