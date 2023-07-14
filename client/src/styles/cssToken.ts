@@ -50,6 +50,7 @@ const cssToken = {
     'gap-50': '3.125rem',
     'gap-40': '2.5rem',
     'gap-24': '1.5rem',
+    'gap-20': '1.25rem',
     'gap-16': '1rem',
     'gap-12': '0.75rem',
     'gap-10': '0.625rem',
