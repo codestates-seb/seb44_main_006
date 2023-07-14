@@ -28,18 +28,23 @@ type HeaderStyle = {
 };
 
 const HeaderContainer = styled.header<HeaderStyle>`
-  display: ${(props) => (props?.isPath === '/register' ? 'none' : 'flex')};
+  display: ${(props) => {
+    if (props?.isPath === 'register' || props?.isPath === 'error') {
+      return 'none';
+    }
+    return 'flex';
+  }};
   align-items: center;
   justify-content: space-between;
   padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
   background: ${(props) =>
-    props?.isPath === '/' ? 'transparent' : cssToken.COLOR.white};
+    props?.isPath === '' ? 'transparent' : cssToken.COLOR.white};
   position: fixed;
   top: 0;
   left: 0;
   width: ${cssToken.WIDTH['w-full']};
   box-shadow: ${(props) =>
-    props?.isPath === '/' ? 'none' : cssToken.SHADOW['shadow-lg']};
+    props?.isPath === '' ? 'none' : cssToken.SHADOW['shadow-lg']};
   z-index: 999;
 `;
 
@@ -78,6 +83,7 @@ const Header = () => {
   const [isPath, setIsPath] = useState<string>('');
   const location = useLocation();
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
+  const endpoint = location.pathname.split('/')[1];
 
   const LoginmodalIsOpen = useSelector(
     (state: RootState) => state.userAuth.isLoginOpen
@@ -108,8 +114,8 @@ const Header = () => {
   });
 
   const handleLogout = () => {
-    mutation.mutate();
     dispatch(setUserOAuthActions.setIsLogin(false));
+    mutation.mutate();
   };
 
   // TODO: Redux toolkit 이용해 전역으로 유저 정보 관리하기
@@ -138,8 +144,8 @@ const Header = () => {
   });
 
   useEffect(() => {
-    setIsPath(location.pathname);
-  }, [location]);
+    setIsPath(endpoint);
+  }, [endpoint]);
 
   return (
     <HeaderContainer isPath={isPath}>
@@ -197,9 +203,8 @@ const Header = () => {
           <LogoImg src={LogoBlack} alt="logo-harumate" />
         </Link>
       </LogoBox>
-      {/* <div>{`반갑습니다. ${userQAuthData.memberNickname}`}</div> */}
       <BtnBox>
-        {isPath === '/' && isLoggedIn && (
+        {!isPath && isLoggedIn && (
           // 메인 페이지인 경우
           <>
             <WhiteButton
@@ -218,7 +223,7 @@ const Header = () => {
             </SkyBlueButton>
           </>
         )}
-        {isPath !== '/' && isLoggedIn && (
+        {isPath && isLoggedIn && (
           // 메인 페이지가 아닌 나머지
           <>
             <WhiteButton
@@ -229,15 +234,15 @@ const Header = () => {
               로그아웃
             </WhiteButton>
             <SkyBlueButton
-              onClick={isPath === '/mypage' ? gotoCommunity : gotoMypage}
+              onClick={isPath === 'mypage' ? gotoCommunity : gotoMypage}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
-              {isPath === '/mypage' ? '커뮤니티' : '마이페이지'}
+              {isPath === 'mypage' ? '커뮤니티' : '마이페이지'}
             </SkyBlueButton>
           </>
         )}
-        {isPath !== '/' && !isLoggedIn && (
+        {isPath && !isLoggedIn && (
           <WhiteButton
             onClick={LogintoggleModal}
             height="25px"

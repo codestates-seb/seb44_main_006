@@ -15,7 +15,7 @@ import { placeListActions } from '../../store/placeList-slice';
 const ScheduleContainer = styled.section`
   left: 0;
   top: 0;
-  width: 25rem;
+  width: 100%;
   height: 100vh;
   background: #fff;
   padding: 15px;
@@ -30,8 +30,9 @@ const ScheduleContainer = styled.section`
 `;
 
 const ScheduleInfoBox = styled.div`
-  margin-bottom: 15px;
-  border-bottom: 1px solid #dcdcdc;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Btnbox = styled.div`
@@ -43,7 +44,6 @@ const ScheduleInfoTxt = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 15px;
 `;
 
 const ScheduleTitle = styled.div`
@@ -99,15 +99,6 @@ const ScheduleBox = () => {
       </ScheduleInfoBox>
 
       <ScheduleListBox />
-
-      <SubTitle
-        styles={{
-          size: cssToken.COLOR['gray-900'],
-          color: cssToken.COLOR.black,
-        }}
-      >
-        장소 추가
-      </SubTitle>
 
       <Btnbox>
         <GrayButton

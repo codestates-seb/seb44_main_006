@@ -21,7 +21,7 @@ const GrayEventButton = ({
         fontsize,
         color: isActive ? cssToken.COLOR.white : cssToken.COLOR.black,
         backgroundColor: isActive
-          ? cssToken.COLOR['point-900']
+          ? cssToken.COLOR['point-500']
           : cssToken.COLOR['gray-500'],
         borderRadius,
       }}

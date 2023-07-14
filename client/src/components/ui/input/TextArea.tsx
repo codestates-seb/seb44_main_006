@@ -11,7 +11,7 @@ const Content = styled.textarea<TextareaT>`
   padding: ${cssToken.SPACING['gap-12']};
   font-size: ${(props) => props.size || '16px'};
   margin-bottom: ${(props) => (props.type ? 0 : '0.3125rem')};
-  border: solid 1px #dcdcdc;
+  border: solid 1px ${cssToken.COLOR['gray-600']};
   resize: none;
   ::-webkit-input-placeholder {
     color: #c6c6c6;

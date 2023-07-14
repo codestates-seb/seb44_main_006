@@ -28,6 +28,7 @@ const MyPage = () => {
     queryKey: ['mypage'],
     queryFn: () => GetMyList(),
     onSuccess: (data) => {
+      // Fixme type ScheduleDetail Data 확인 후
       dispatch(
         myInfoDataListActions.setDataCourse(
           data?.data.memberCourseList as MypCourseSummaryT[]

@@ -97,6 +97,9 @@ export const PostComment = async ({
 export const DeleteCommunityPost = async ({ postId }: { postId: string }) =>
   instance.delete(`/api/posts/${postId}`);
 
+export const DeleteMyPageCourses = async ({ postId }: { postId: string }) =>
+  instance.delete(`/api/courses/${postId}`);
+
 export const PostBookmark = async ({ courseId }: { courseId: number }) =>
   instance.post(`/api/courses/${courseId}/bookmark`);
 

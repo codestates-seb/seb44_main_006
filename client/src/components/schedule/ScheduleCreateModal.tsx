@@ -108,7 +108,7 @@ const ButtonWrapper = styled.section`
 `;
 
 const DateInputBox = styled(DatePicker)`
-  border: solid 1px #dcdcdc;
+  border: solid 1px ${cssToken.COLOR['gray-600']};
   text-align: center;
 `;
 

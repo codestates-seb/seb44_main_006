@@ -6,7 +6,7 @@ import ModalChildren from './post/ModalChildren';
 import Modal from '../ui/modal/Modal';
 import { RootState } from '../../store';
 import useToggleModal from '../../hooks/useToggleModal';
-import { DeleteCommunityPost } from '../../apis/api';
+import { DeleteCommunityPost, DeleteMyPageCourses } from '../../apis/api';
 import useMovePage from '../../hooks/useMovePage';
 import EventButton from '../ui/button/EventButton';
 
@@ -22,8 +22,7 @@ const DeleteButton = ({
   const modalIsOpen = useSelector((state: RootState) => state.overlay.isOpen);
   const toggleModal = useToggleModal();
   const queryClient = useQueryClient();
-  const query = type ? DeleteCommunityPost : DeleteCommunityPost;
-  // Todo 23번째 라인 왼쪽에 마이페이지 딜리트 함수 넣으시면 됩니다.
+  const query = type ? DeleteMyPageCourses : DeleteCommunityPost;
   const mutate = useMutation(query, {
     onSuccess: async () => {
       toggleModal();

@@ -21,6 +21,8 @@ const ErrorPage = lazy(() => import('./pages/error/ErrorPage'));
 const ScheduleRegister = lazy(
   () => import('./pages/schedule/ScheduleRegister')
 );
+const RegisterDetail = lazy(() => import('./pages/schedule/ScheduleDetail'));
+
 const DetailPage = lazy(() => import('./pages/community/DetailPage'));
 const MyPage = lazy(() => import('./pages/mypage/MyPage'));
 
@@ -37,6 +39,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/register" element={<ScheduleRegister />} />
+              <Route
+                path="/register/detail/:courseId"
+                element={<RegisterDetail />}
+              />
               <Route path="/community" element={<CommunityPage />} />
               <Route
                 path="/community/select"

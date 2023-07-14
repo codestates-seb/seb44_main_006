@@ -20,7 +20,7 @@ const ImageDiv = styled.img<StyleProp>`
   height: 14rem;
   border: ${(props) =>
     props.isactive
-      ? `3px solid ${cssToken.COLOR['point-900']}`
+      ? `3px solid ${cssToken.COLOR['point-500']}`
       : '3px solid transparent'};
   cursor: pointer;
 `;
