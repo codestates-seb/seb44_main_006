@@ -31,7 +31,7 @@ const ScheduleContainer = styled.section`
 
 const ScheduleInfoBox = styled.div`
   margin-bottom: 15px;
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
 `;
 
 const Btnbox = styled.div`

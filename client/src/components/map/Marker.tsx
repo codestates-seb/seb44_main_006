@@ -42,8 +42,6 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
         };
       }
       if (markerId === id) {
-        console.log(22);
-
         return {
           image: MarkerOn[index + 1],
           zIndex: 4,

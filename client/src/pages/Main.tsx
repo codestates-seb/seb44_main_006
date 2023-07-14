@@ -53,7 +53,7 @@ const CommunitySection = styled(SectionBox)`
   transition: 0.3s;
   height: 100vh;
   > a {
-    color: ${cssToken.COLOR['point-900']};
+    color: ${cssToken.COLOR['point-500']};
     &:hover::after {
       content: '커뮤니티';
     }

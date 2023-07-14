@@ -19,11 +19,11 @@ const TagButton = ({
       styles={{
         width,
         height,
-        color: cssToken.COLOR['point-900'],
+        color: cssToken.COLOR['point-500'],
         backgroundColor: cssToken.COLOR['point-100'],
         borderRadius: cssToken.BORDER['rounded-tag'],
         border: isActive
-          ? `${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['point-900']}`
+          ? `${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['point-500']}`
           : `${cssToken.BORDER['weight-1']} solid transparent`,
       }}
     >

@@ -15,7 +15,7 @@ const CommentWrapper = styled.div`
   display: flex;
   width: 100%;
   gap: ${cssToken.SPACING['gap-12']};
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   padding-top: ${cssToken.SPACING['gap-16']};
   padding-bottom: ${cssToken.SPACING['gap-16']};
 `;

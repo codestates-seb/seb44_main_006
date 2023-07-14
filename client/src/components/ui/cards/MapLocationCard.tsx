@@ -32,7 +32,7 @@ const NumCircle = styled.span`
   border-radius: ${cssToken.BORDER['rounded-full']};
   width: 2.1875rem;
   height: 2.1875rem;
-  background-color: ${cssToken.COLOR['point-900']};
+  background-color: ${cssToken.COLOR['point-500']};
   position: relative;
   &::after {
     content: '';

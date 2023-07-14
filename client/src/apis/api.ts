@@ -49,12 +49,8 @@ export const PatchMemNickname = async (nickname: string) => {
 
 export const GetMyList = async () => instance.get(`/api/members`);
 
-export const GetCourse = async ({ courseId }: { courseId: string }) => {
-  const response: AxiosResponse<PostReadT> = await instance.get(
-    `/api/courses/${courseId}`
-  );
-  return response.data;
-};
+export const GetCourse = async ({ courseId }: { courseId: string }) =>
+  instance.get(`/api/courses/${courseId}`);
 
 export const GetCommunityList = async ({
   pageParam,

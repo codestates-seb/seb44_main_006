@@ -38,7 +38,7 @@ const FilterContainer = styled(FlexDiv)`
   top: -2.9375rem;
   column-gap: ${cssToken.SPACING['gap-50']};
   width: ${cssToken.WIDTH['w-full']};
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   justify-content: center;
 `;
 
