@@ -104,7 +104,7 @@ const ScheduleBox = () => {
         <GrayButton
           width="100%"
           height="50px"
-          borderRadius="10px"
+          brradius="10px"
           isActive={choiceCategory}
           onClick={handleCategory}
         >
@@ -113,7 +113,7 @@ const ScheduleBox = () => {
         <GrayButton
           width="100%"
           height="50px"
-          borderRadius="10px"
+          brradius="10px"
           isActive={choiceDirect}
           onClick={handleDirect}
         >

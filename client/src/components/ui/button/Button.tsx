@@ -12,10 +12,10 @@ export const ButtonTemplate = styled.button<IArgButtonStyle>`
   padding: ${(props) => props.padding};
   color: ${(props) => props.color};
   background-color: ${(props) =>
-    props.disabled ? cssToken.COLOR['gray-700'] : props.backgroundColor};
+    props.disabled ? cssToken.COLOR['gray-700'] : props.bgcolor};
   box-shadow: ${(props) => props.boxShadow};
   border: ${(props) => props.border || 'none'};
-  border-radius: ${(props) => props.borderRadius};
+  border-radius: ${(props) => props.brradius};
   cursor: pointer;
 
   display: flex;

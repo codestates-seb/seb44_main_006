@@ -7,7 +7,7 @@ const SkyBlueEventButton = ({
   children,
   width,
   height,
-  borderRadius,
+  brradius,
   fontsize,
   onClick,
   disabled,
@@ -22,8 +22,8 @@ const SkyBlueEventButton = ({
         height,
         fontsize,
         color: cssToken.COLOR.white,
-        backgroundColor: cssToken.COLOR['point-500'],
-        borderRadius,
+        bgcolor: cssToken.COLOR['point-500'],
+        brradius,
       }}
     >
       {children}

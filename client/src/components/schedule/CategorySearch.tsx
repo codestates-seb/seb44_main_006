@@ -82,7 +82,7 @@ const CategorySearch = () => {
           <SkyBlueButton
             width="76px"
             height="35px"
-            borderRadius={cssToken.BORDER['rounded-s']}
+            brradius={cssToken.BORDER['rounded-s']}
             onClick={handleClick}
           >
             적용

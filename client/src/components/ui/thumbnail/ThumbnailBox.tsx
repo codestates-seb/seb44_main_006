@@ -5,7 +5,7 @@ import cssToken from '../../../styles/cssToken';
 type ThumbnailStyle = {
   width?: string;
   height?: string;
-  borderRadius?: string;
+  brradius?: string;
 };
 
 interface Thumbnail {
@@ -16,7 +16,7 @@ interface Thumbnail {
 
 const ThumbnailContainer = styled.div<ThumbnailStyle>`
   position: relative;
-  border-radius: ${(props) => (props.borderRadius ? props.borderRadius : '0')};
+  border-radius: ${(props) => (props.brradius ? props.brradius : '0')};
   overflow: hidden;
   width: ${(props) => (props.width ? props.width : '100%')};
   height: ${(props) => (props.height ? props.height : '0')};

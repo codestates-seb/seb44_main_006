@@ -285,7 +285,7 @@ const DetailPage = () => {
           <SkyBlueButton
             width="13.875rem"
             height="3.3125rem"
-            borderRadius={cssToken.BORDER['rounded-md']}
+            brradius={cssToken.BORDER['rounded-md']}
             disabled={!isLogin}
           >
             작성하기

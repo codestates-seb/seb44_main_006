@@ -23,7 +23,7 @@ const ModalChildren = ({
           width="15.5625rem"
           height="4.625rem"
           fontsize={cssToken.TEXT_SIZE['text-24']}
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
         >
           아니오
         </GrayEventButton>
@@ -32,7 +32,7 @@ const ModalChildren = ({
           width="15.5625rem"
           height="4.625rem"
           fontsize={cssToken.TEXT_SIZE['text-24']}
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
         >
           예
         </SkyBlueEventButton>

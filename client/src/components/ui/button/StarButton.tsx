@@ -41,10 +41,10 @@ const StarButton = ({
       styles={{
         width,
         height,
-        backgroundColor: isActive
+        bgcolor: isActive
           ? cssToken.COLOR['yellow-100']
           : cssToken.COLOR['gray-300'],
-        borderRadius: cssToken.BORDER['rounded-full'],
+        brradius: cssToken.BORDER['rounded-full'],
       }}
     >
       <svg
