@@ -24,39 +24,6 @@ import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
 import Text from '../ui/text/Text';
 import Nav from './Nav';
 
-type HeaderStyle = {
-  isPath?: string;
-};
-
-const HeaderContainer = styled.header<HeaderStyle>`
-  display: ${(props) => {
-    if (props?.isPath === 'register' || props?.isPath === 'error') {
-      return 'none';
-    }
-    return 'flex';
-  }};
-  align-items: center;
-  justify-content: space-between;
-  padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
-  background: ${(props) =>
-    props?.isPath === '' ? 'transparent' : cssToken.COLOR.white};
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: ${cssToken.WIDTH['w-full']};
-  box-shadow: ${(props) =>
-    props?.isPath === '' ? 'none' : cssToken.SHADOW['shadow-lg']};
-  z-index: 999;
-`;
-
-const LogoBox = styled.h1`
-  width: 150px;
-`;
-
-const LogoImg = styled.img`
-  width: ${cssToken.WIDTH['w-full']};
-`;
-
 const BtnBox = styled.div`
   display: flex;
   gap: ${cssToken.SPACING['gap-10']};
@@ -71,20 +38,15 @@ const BtnBox = styled.div`
     font-size: 14px;
   }
 `;
-
-const Header = () => {
+const MemAccountModal = () => {
   const [searchParams] = useSearchParams();
   const accessToken = searchParams.get('access_token');
   const refreshToken = searchParams.get('refresh_token');
   const navigate = useNavigate();
   const gotoMain = useMovePage('/');
-  const gotoCommunity = useMovePage('/community');
-  const gotoMypage = useMovePage('/mypage');
   const dispatch = useDispatch();
-  const [isPath, setIsPath] = useState<string>('');
   const location = useLocation();
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
-  const endpoint = location.pathname.split('/')[1];
 
   const LoginmodalIsOpen = useSelector(
     (state: RootState) => state.userAuth.isLoginOpen
@@ -144,12 +106,8 @@ const Header = () => {
     },
   });
 
-  useEffect(() => {
-    setIsPath(endpoint);
-  }, [endpoint]);
-
   return (
-    <HeaderContainer isPath={isPath}>
+    <>
       {LoginmodalIsOpen && (
         <LoginModal
           handleClose={LogintoggleModal}
@@ -198,64 +156,8 @@ const Header = () => {
           </BtnBox>
         </Modal>
       )}
-
-      <LogoBox>
-        <Link to="/">
-          <LogoImg src={LogoBlack} alt="logo-harumate" />
-        </Link>
-      </LogoBox>
-      <Nav isPath={isPath} isLoggedIn={isLoggedIn} />
-      {/* <BtnBox>
-        {!isPath && isLoggedIn && (
-          // 메인 페이지인 경우
-          <>
-            <WhiteButton
-              onClick={LogoutoggleModal}
-              height="25px"
-              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-            >
-              로그아웃
-            </WhiteButton>
-            <SkyBlueButton
-              onClick={gotoMypage}
-              height="25px"
-              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-            >
-              마이페이지
-            </SkyBlueButton>
-          </>
-        )}
-        {isPath && isLoggedIn && (
-          // 메인 페이지가 아닌 나머지
-          <>
-            <WhiteButton
-              onClick={LogoutoggleModal}
-              height="25px"
-              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-            >
-              로그아웃
-            </WhiteButton>
-            <SkyBlueButton
-              onClick={isPath === 'mypage' ? gotoCommunity : gotoMypage}
-              height="25px"
-              borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-            >
-              {isPath === 'mypage' ? '커뮤니티' : '마이페이지'}
-            </SkyBlueButton>
-          </>
-        )}
-        {isPath && !isLoggedIn && (
-          <WhiteButton
-            onClick={LogintoggleModal}
-            height="25px"
-            borderRadius={`${cssToken.BORDER['rounded-tag']}`}
-          >
-            로그인
-          </WhiteButton>
-        )}
-      </BtnBox> */}
-    </HeaderContainer>
-  );
+    </>
+  )
 };
 
-export default Header;
+export default MemAccountModal;
