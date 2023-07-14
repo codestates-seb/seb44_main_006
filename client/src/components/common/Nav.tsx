@@ -1,11 +1,12 @@
 import { styled } from 'styled-components';
-import { useDispatch } from 'react-redux';
 
-import { setUserOAuthActions, LoginState } from '../../store/userAuth-slice';
+import { LoginState } from '../../store/userAuth-slice';
 import cssToken from '../../styles/cssToken';
 import WhiteButton from '../ui/button/WhiteButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
+import useLoginToggleModal from '../../hooks/useLoginToggleModal';
+import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
 
 const BtnBox = styled.nav`
   display: flex;
@@ -27,19 +28,12 @@ const Nav = ({
   isLoggedIn,
 }: {
   isPath: string;
-  isLoggedIn: LoginState;
+  isLoggedIn: LoginState['isLogin'];
 }) => {
   const gotoCommunity = useMovePage('/community');
   const gotoMypage = useMovePage('/mypage');
-  const dispatch = useDispatch();
-
-  const LogintoggleModal = () => {
-    dispatch(setUserOAuthActions.toggleIsLogin());
-  };
-
-  const LogoutoggleModal = () => {
-    dispatch(setUserOAuthActions.toggleIsLogout());
-  };
+  const LogintoggleModal = useLoginToggleModal();
+  const LogoutoggleModal = useLogioutoggleModal();
 
   return (
     <BtnBox>
@@ -77,7 +71,7 @@ const Nav = ({
             height="25px"
             borderRadius={`${cssToken.BORDER['rounded-tag']}`}
           >
-            {isPath === 'mypage' ? '커뮤니티' : '마이페이지'}
+            {isPath === 'mypage' ? '커뮤니티1' : '마이페이지2'}
           </SkyBlueButton>
         </>
       )}

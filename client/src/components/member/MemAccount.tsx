@@ -5,6 +5,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { UserQAuthInfo, setUserOAuthActions } from '../../store/userAuth-slice';
+import useLoginToggleModal from '../../hooks/useLoginToggleModal';
+import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import GrayButton from '../ui/button/GrayButton';
@@ -36,6 +38,8 @@ const MemAccountModal = () => {
   const navigate = useNavigate();
   const gotoMain = useMovePage('/');
   const dispatch = useDispatch();
+  const LogintoggleModal = useLoginToggleModal();
+  const LogoutoggleModal = useLogioutoggleModal();
 
   const LoginmodalIsOpen = useSelector(
     (state: RootState) => state.userAuth.isLoginOpen
@@ -43,14 +47,6 @@ const MemAccountModal = () => {
   const LogoutmodalIsOpen = useSelector(
     (state: RootState) => state.userAuth.isLogoutOpen
   );
-
-  const LogintoggleModal = () => {
-    dispatch(setUserOAuthActions.toggleIsLogin());
-  };
-
-  const LogoutoggleModal = () => {
-    dispatch(setUserOAuthActions.toggleIsLogout());
-  };
 
   const mutation = useMutation(RemoveUserInfo, {
     onSuccess() {

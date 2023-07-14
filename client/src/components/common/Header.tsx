@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 
@@ -35,7 +35,7 @@ const HeaderContainer = styled.header<HeaderStyle>`
   z-index: 999;
 
   @media (max-width: 640px) {
-   display:none
+    display: none;
   }
 `;
 
@@ -49,6 +49,7 @@ const LogoImg = styled.img`
 
 const Header = () => {
   const [isPath, setIsPath] = useState<string>('');
+  const location = useLocation();
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
   const endpoint: string = location.pathname.split('/')[1];
 
