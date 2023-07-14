@@ -5,17 +5,14 @@ import cssToken from '../../../styles/cssToken';
 import StarButton from '../../ui/button/StarButton';
 import LikeButton from '../../ui/button/LikeButton';
 import Text from '../../ui/text/Text';
-import DeleteButton from '../DeleteButton';
-import useUserInfo from '../../../querys/useUserInfo';
-import ShareKakaoButton from '../../ui/button/ShareKakaoButton';
-import CopyButton from '../../ui/button/CopyButton';
+import { UserInfoT } from '../../../querys/useUserInfo';
 
 const BtnDiv = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-12']};
   align-items: center;
   justify-content: start;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (min-width: 768px) {
     display: none;
   }
 `;
@@ -28,37 +25,34 @@ const LikeDiv = styled(FlexDiv)`
   border-radius: ${cssToken.BORDER['rounded-md']};
   align-items: center;
   column-gap: 0.25rem;
+
+  @media screen and (max-width: 768px) {
+    height: 2.1875rem;
+    font-size: 0.625rem;
+    border-radius: ${cssToken.BORDER['rounded-s']};
+  }
 `;
 
-const ActionButtonContainer = ({
+const ActionButtonContainerRes = ({
   LikeCount,
   isLogin,
-  postId,
   bookmarkStatus,
   likeStatus,
   courseId,
   memberEmail,
+  userData,
 }: {
   LikeCount: number;
   isLogin: boolean;
-  postId: string;
   bookmarkStatus: boolean;
   likeStatus: boolean;
   courseId: number;
   memberEmail: string;
+  userData: UserInfoT;
 }) => {
-  const { userData } = useUserInfo();
-
   return (
     <BtnDiv>
-      <>
-        <CopyButton endpoint={`community/${postId}`} />
-        <ShareKakaoButton endpoint={`community/${postId}`} />
-        {userData && memberEmail === userData.memberEmail && (
-          <DeleteButton postId={postId} />
-        )}
-      </>
-      {isLogin && userData && memberEmail !== userData.memberEmail && (
+      {isLogin && memberEmail !== userData.memberEmail && (
         <StarButton
           className="communityStar"
           courseId={courseId}
@@ -95,4 +89,4 @@ const ActionButtonContainer = ({
   );
 };
 
-export default ActionButtonContainer;
+export default ActionButtonContainerRes;

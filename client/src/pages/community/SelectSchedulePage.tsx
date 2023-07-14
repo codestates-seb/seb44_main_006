@@ -65,7 +65,11 @@ const EmptyDiv = styled(FlexDiv)`
   }
 `;
 
-const SelectCardWrapper = styled(CardWrapper)``;
+const SelectCardWrapper = styled(CardWrapper)`
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(95%, auto));
+  }
+`;
 
 const SelectSchedulePage = () => {
   const [selectId, setSelectId] = useState<number | null | undefined>(null);

@@ -30,6 +30,9 @@ const ScheduleDiv = styled(FlexDiv)`
 
   @media screen and (max-width: 768px) {
     max-height: 60vh;
+    h1 {
+      font-size: 1.125rem;
+    }
   }
 `;
 
