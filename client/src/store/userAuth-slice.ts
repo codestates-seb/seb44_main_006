@@ -12,7 +12,7 @@ export type UserQAuthInfo = {
   myCourseCount?: number;
 };
 
-interface LoginState {
+export interface LoginState {
   isLogin?: string | boolean;
   userInfo?: UserQAuthInfo;
   isLoginOpen?: boolean;
