@@ -100,6 +100,7 @@ const UserInfoBox = () => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const gotoRegister = useMovePage('/register');
+  const gotoSetting = useMovePage('/setting');
   const memNickname = useSelector(
     (state: RootState) => state.userAuth.nickName
   );
@@ -156,7 +157,7 @@ const UserInfoBox = () => {
           }}
           src={userAuthInfo?.memberImageUrl}
         />
-        <SettingButton />
+        <SettingButton onClick={gotoSetting}/>
       </ImgBox>
       <RightWrap>
         <UserNicknameBox>
