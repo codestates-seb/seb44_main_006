@@ -19,10 +19,15 @@ const Wrapper = styled.div<{ ishide: boolean; contentHeight: number }>`
     position: fixed;
     bottom: 0;
     z-index: 1000;
-    height: ${(props) => (props.ishide ? '2rem' : `${props.contentHeight}px`)};
+    height: ${(props) =>
+      props.ishide ? '2rem' : `calc(${props.contentHeight}px - 3rem)`};
     border-top-left-radius: ${cssToken.BORDER['rounded-md']};
     border-top-right-radius: ${cssToken.BORDER['rounded-md']};
     border: ${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['gray-500']};
+  }
+
+  @media (max-width: 1280px) {
+    flex: 0 0 21rem;
   }
 `;
 
