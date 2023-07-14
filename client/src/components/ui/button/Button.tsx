@@ -42,12 +42,12 @@ export const ButtonTemplate = styled.button<IArgButtonStyle>`
     &.circle {
       width: 4.375rem;
       height: 4.375rem;
-      > div {
+      div {
         font-size: 0.625rem;
-        > svg {
-          width: 18px;
-          height: 18px;
-        }
+      }
+      svg {
+        width: 18px;
+        height: 18px;
       }
     }
   }
