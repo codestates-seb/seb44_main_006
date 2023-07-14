@@ -69,6 +69,10 @@ export const BtnDiv = styled(FlexDiv)`
   justify-content: center;
   column-gap: ${cssToken.SPACING['gap-12']};
   margin-bottom: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-width: 500px) {
+    margin-bottom: ${cssToken.SPACING['gap-20']};
+  }
 `;
 
 export const ModalChildrenDiv = styled(FlexDiv)`

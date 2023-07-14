@@ -27,6 +27,13 @@ const ButtonTemplate = styled.button<IArgButtonStyle>`
   &:hover {
     opacity: 0.8;
   }
+
+  @media screen and (max-width: 640px) {
+    font-size: 0.875rem;
+    width: fit-content;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 `;
 
 const Button = ({

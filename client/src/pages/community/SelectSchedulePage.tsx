@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
+import { mgpd } from './commonstyle';
+
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import ContensCard from '../../components/ui/cards/ContentsCard';
@@ -27,15 +29,8 @@ const OutsideWrap = styled(FlexDiv)`
   row-gap: ${cssToken.SPACING['gap-50']};
 
   @media screen and (max-width: 768px) {
-    margin-top: 0px;
-    padding-top: ${cssToken.SPACING['gap-20']};
-    padding-left: ${cssToken.SPACING['gap-50']};
-    padding-right: ${cssToken.SPACING['gap-50']};
-  }
-
-  @media screen and (max-width: 500px) {
-    padding-left: ${cssToken.SPACING['gap-16']};
-    padding-right: ${cssToken.SPACING['gap-16']};
+    ${mgpd}
+    row-gap: ${cssToken.SPACING['gap-20']};
   }
 `;
 
@@ -48,6 +43,7 @@ const OverFlowDiv = styled.div`
   @media screen and (max-width: 500px) {
     padding-left: 0px;
     padding-right: 0px;
+    margin-bottom: ${cssToken.SPACING['gap-40']};
   }
 `;
 
