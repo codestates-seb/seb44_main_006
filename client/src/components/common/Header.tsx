@@ -3,7 +3,7 @@ import {
   useNavigate,
   Link,
   useLocation,
-  useSearchParams
+  useSearchParams,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -109,8 +109,8 @@ const Header = () => {
   });
 
   const handleLogout = () => {
-    mutation.mutate();
     dispatch(setUserOAuthActions.setIsLogin(false));
+    mutation.mutate();
   };
 
   // TODO: Redux toolkit 이용해 전역으로 유저 정보 관리하기
@@ -141,6 +141,8 @@ const Header = () => {
   useEffect(() => {
     setIsPath(endpoint);
   }, [endpoint]);
+
+  console.log(isPath);
 
   return (
     <HeaderContainer isPath={isPath}>
@@ -199,7 +201,7 @@ const Header = () => {
         </Link>
       </LogoBox>
       <BtnBox>
-        {isPath === '' && isLoggedIn && (
+        {!isPath && isLoggedIn && (
           // 메인 페이지인 경우
           <>
             <WhiteButton
@@ -218,7 +220,7 @@ const Header = () => {
             </SkyBlueButton>
           </>
         )}
-        {isPath !== '' && isLoggedIn && (
+        {isPath && isLoggedIn && (
           // 메인 페이지가 아닌 나머지
           <>
             <WhiteButton
@@ -229,15 +231,15 @@ const Header = () => {
               로그아웃
             </WhiteButton>
             <SkyBlueButton
-              onClick={isPath === '/mypage' ? gotoCommunity : gotoMypage}
+              onClick={isPath === 'mypage' ? gotoCommunity : gotoMypage}
               height="25px"
               borderRadius={`${cssToken.BORDER['rounded-tag']}`}
             >
-              {isPath === '/mypage' ? '커뮤니티' : '마이페이지'}
+              {isPath === 'mypage' ? '커뮤니티' : '마이페이지'}
             </SkyBlueButton>
           </>
         )}
-        {isPath !== '/' && !isLoggedIn && (
+        {isPath && !isLoggedIn && (
           <WhiteButton
             onClick={LogintoggleModal}
             height="25px"
