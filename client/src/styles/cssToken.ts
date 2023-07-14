@@ -50,6 +50,7 @@ const cssToken = {
     'gap-50': '3.125rem',
     'gap-40': '2.5rem',
     'gap-24': '1.5rem',
+    'gap-20': '1.25rem',
     'gap-16': '1rem',
     'gap-12': '0.75rem',
     'gap-10': '0.625rem',
@@ -71,6 +72,7 @@ const cssToken = {
     'shadow-lg':
       '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
     'shadow-2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    'shadow-4xl': 'rgba(0, 0, 0, 0.25) 0px 5px 15px',
   },
   OPCITY: {
     'opacity-0': 0,

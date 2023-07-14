@@ -53,6 +53,13 @@ const WriteContainer = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: ${cssToken.SPACING['gap-24']};
+  }
 `;
 
 const WriteLeftBox = styled.section`
@@ -62,6 +69,12 @@ const WriteLeftBox = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 480px) {
+    width: 95%;
+    height: 25rem;
+    gap: ${cssToken.SPACING['gap-12']};
+  }
 `;
 
 const ThumbnailBox = styled.div<UrlProp>`
@@ -74,6 +87,12 @@ const ThumbnailBox = styled.div<UrlProp>`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    height: 100%;
+    gap: ${cssToken.SPACING['gap-12']};
+  }
 `;
 
 const SelfEnd = styled.div<{ bgUrl: boolean }>`
@@ -89,6 +108,15 @@ const DataChoiceWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: ${cssToken.SPACING['gap-24']};
+
+  @media (max-width: 768px) {
+    gap: ${cssToken.SPACING['gap-12']};
+    flex-direction: column;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: row;
+  }
 `;
 
 const WriteRightBox = styled.section`
@@ -98,6 +126,10 @@ const WriteRightBox = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 480px) {
+    width: 95%;
+  }
 `;
 
 const ButtonWrapper = styled.section`
@@ -109,6 +141,7 @@ const ButtonWrapper = styled.section`
 
 const DateInputBox = styled(DatePicker)`
   border: solid 1px ${cssToken.COLOR['gray-600']};
+  padding: 0.5rem;
   text-align: center;
 `;
 
