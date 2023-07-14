@@ -18,6 +18,7 @@ import ScheduleCancelModal from '../../components/schedule/ScheduleCancelModal';
 import RegisterDetail from '../../components/register/RegisterDetail';
 import { placeListActions } from '../../store/placeList-slice';
 import BottomSheet from '../../components/ui/bottomsheet/BottomSheet';
+import { selectedIdActions } from '../../store/selectedId-slice';
 
 const KakaoMap = lazy(() => import('../../components/map/KakaoMap'));
 const Marker = lazy(() => import('../../components/map/Marker'));
@@ -29,7 +30,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     flex-direction: column;
   }
 `;
@@ -40,11 +41,12 @@ const FixedDiv = styled.div`
   flex-direction: column;
   gap: ${cssToken.SPACING['gap-16']};
   position: fixed;
-  right: ${cssToken.SPACING['gap-40']};
-  bottom: ${cssToken.SPACING['gap-40']};
+  right: ${cssToken.SPACING['gap-16']};
+  bottom: ${cssToken.SPACING['gap-16']};
   z-index: 999;
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
+    height: 5rem;
     flex-direction: row;
     right: ${cssToken.SPACING['gap-16']};
     top: ${cssToken.SPACING['gap-16']};
@@ -86,6 +88,7 @@ const ScheduleRegister = () => {
 
   useEffect(() => {
     if (isEmpty) dispatch(placeListActions.resetList());
+    dispatch(selectedIdActions.allReset());
   }, [dispatch, isEmpty]);
 
   return (
@@ -93,20 +96,18 @@ const ScheduleRegister = () => {
       {isSave && <ScheduleCreateModal />}
       {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 
-      {/* <RelativeDiv>
-          <ScheduleBox />
-          {isDetailShow && <RegisterDetail detailItem={detailItem} />}
-        </RelativeDiv> */}
-
       <BottomSheet>
         <RelativeDiv>
           <ScheduleBox />
-          {isDetailShow && <RegisterDetail detailItem={detailItem} />}
         </RelativeDiv>
+        {isDetailShow && <RegisterDetail detailItem={detailItem} />}
       </BottomSheet>
 
       <Suspense>
-        <KakaoMap width="100vw" height="100vh">
+        <KakaoMap
+          width={cssToken.WIDTH['w-screen']}
+          height={cssToken.HEIGHT['h-screen']}
+        >
           {places.map((place: PlacesSearchResultItem) => (
             <Marker
               img={MarkerOff[0]}
@@ -130,7 +131,7 @@ const ScheduleRegister = () => {
       </Suspense>
 
       <FixedDiv>
-        <CircleButton width="100px" height="100px" onClick={handleCancel}>
+        <CircleButton width="80px" height="80px" onClick={handleCancel}>
           <ButtonDiv>
             <CloseIcon
               style={{ iconWidth: 19, iconHeight: 19, color: 'black' }}
@@ -139,8 +140,8 @@ const ScheduleRegister = () => {
           <div>취소하기</div>
         </CircleButton>
         <CircleButton
-          width="100px"
-          height="100px"
+          width="80px"
+          height="80px"
           onClick={() => {
             if (scheduleList.length > 0)
               dispatch(overlayActions.toggleOverlay());
