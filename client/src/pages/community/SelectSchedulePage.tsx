@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
+import { mgpd } from './commonstyle';
+
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import ContensCard from '../../components/ui/cards/ContentsCard';
@@ -25,11 +27,24 @@ const OutsideWrap = styled(FlexDiv)`
   padding-right: ${cssToken.SPACING['py-100']};
   flex-direction: column;
   row-gap: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-width: 768px) {
+    ${mgpd}
+    row-gap: ${cssToken.SPACING['gap-20']};
+  }
 `;
 
 const OverFlowDiv = styled.div`
   height: 62vh;
   overflow: auto;
+  background-color: ${cssToken.COLOR['gray-300']};
+  padding: ${cssToken.SPACING['gap-24']};
+
+  @media screen and (max-width: 500px) {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: ${cssToken.SPACING['gap-40']};
+  }
 `;
 
 const EmptyDiv = styled(FlexDiv)`
@@ -38,8 +53,19 @@ const EmptyDiv = styled(FlexDiv)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: ${cssToken.SPACING['gap-40']};
+  row-gap: ${cssToken.SPACING['gap-20']};
+
+  @media screen and (max-width: 768px) {
+    > h1 {
+      font-size: 1.875rem;
+    }
+    > p {
+      font-size: 0.8125rem;
+    }
+  }
 `;
+
+const SelectCardWrapper = styled(CardWrapper)``;
 
 const SelectSchedulePage = () => {
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
@@ -91,12 +117,12 @@ const SelectSchedulePage = () => {
       <Head />
       <OverFlowDiv>
         {isLoading && (
-          <CardWrapper>
+          <SelectCardWrapper>
             <SkeletonCardContainer length={4} />
-          </CardWrapper>
+          </SelectCardWrapper>
         )}
         {registerCourses.length > 0 && (
-          <CardWrapper>
+          <SelectCardWrapper>
             {registerCourses.map((course) => (
               <ContensCard
                 type="course"
@@ -111,7 +137,7 @@ const SelectSchedulePage = () => {
                 onClick={handleClickCard}
               />
             ))}
-          </CardWrapper>
+          </SelectCardWrapper>
         )}
         {registerCourses.length < 1 && (
           <EmptyDiv>

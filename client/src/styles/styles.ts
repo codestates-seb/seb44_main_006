@@ -19,14 +19,31 @@ export const CardWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(405px, 405px));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(${cssToken.WIDTH['grid-min']}, auto)
+  );
   justify-content: center;
   gap: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-width: 768px) {
+    gap: ${cssToken.SPACING['gap-20']};
+  }
 `;
 
 export const HeadDiv = styled(FlexDiv)`
   flex-direction: column;
   row-gap: 3px;
+
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-size: 0.8125rem;
+    }
+  }
 `;
 
 export const GapDiv = styled(FlexDiv)`
@@ -52,6 +69,10 @@ export const BtnDiv = styled(FlexDiv)`
   justify-content: center;
   column-gap: ${cssToken.SPACING['gap-12']};
   margin-bottom: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-width: 500px) {
+    margin-bottom: ${cssToken.SPACING['gap-20']};
+  }
 `;
 
 export const ModalChildrenDiv = styled(FlexDiv)`
