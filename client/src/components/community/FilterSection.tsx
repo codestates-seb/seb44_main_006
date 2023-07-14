@@ -31,10 +31,15 @@ const FilterWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: ${cssToken.SPACING['gap-50']};
+  background-color: ${cssToken.COLOR['gray-300']};
+
+  @media screen and (max-width: 768px) {
+    padding: ${cssToken.SPACING['gap-20']};
+  }
 `;
 const FilterContainer = styled(FlexDiv)`
   position: absolute;
-  top: -2.9375rem;
+  top: -3.5rem;
   column-gap: ${cssToken.SPACING['gap-50']};
   width: ${cssToken.WIDTH['w-full']};
   border-bottom: 1px solid ${cssToken.COLOR['gray-600']};

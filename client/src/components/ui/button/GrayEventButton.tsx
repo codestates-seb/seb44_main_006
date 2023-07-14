@@ -14,6 +14,7 @@ const GrayEventButton = ({
 }: IEventButtonStyle) => {
   return (
     <EventButton
+      className="gray"
       onClick={onClick}
       styles={{
         width,

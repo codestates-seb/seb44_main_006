@@ -14,6 +14,7 @@ const GrayButton = ({
 }: IArgButtonStyle) => {
   return (
     <Button
+      className="gray"
       onClick={onClick}
       styles={{
         width,

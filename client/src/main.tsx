@@ -34,7 +34,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <GlobalStyle />
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
-          <Header />
+          {/* <Header /> */}
           <Suspense fallback={<div>로딩중...</div>}>
             <Routes>
               <Route path="/" element={<Main />} />

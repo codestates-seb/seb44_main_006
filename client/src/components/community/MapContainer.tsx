@@ -15,16 +15,32 @@ import makePolyline from '../../utils/makePolyline';
 import { RootState } from '../../store';
 import { markerActions } from '../../store/marker-slice';
 
+const OutsideWrapper = styled(FlexDiv)`
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    row-gap: ${cssToken.SPACING['gap-20']};
+  }
+`;
+
 const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
   flex: 1;
   row-gap: ${cssToken.SPACING['gap-12']};
   height: 60vh;
+
+  @media screen and (max-width: 768px) {
+    max-height: 60vh;
+  }
 `;
 
 const MapDiv = styled.div`
   margin-left: ${cssToken.SPACING['gap-24']};
   flex: 3;
+
+  @media screen and (max-width: 768px) {
+    margin-left: 0px;
+    order: -1;
+  }
 `;
 
 const LocationCardWrapper = styled.div`
@@ -48,7 +64,7 @@ const MapContainer = ({
   }, [dispatch]);
 
   return (
-    <FlexDiv>
+    <OutsideWrapper>
       <ScheduleDiv>
         <Title styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
           {title || ''}
@@ -88,7 +104,7 @@ const MapContainer = ({
           <Polyline linePos={makePolyline(destinationList)} />
         </KakaoMap>
       </MapDiv>
-    </FlexDiv>
+    </OutsideWrapper>
   );
 };
 

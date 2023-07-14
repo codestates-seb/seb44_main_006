@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import { Button640 } from './buttonStyles';
+
 import { IEventButtonStyle, Props } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
 
@@ -27,15 +29,27 @@ const ButtonTemplate = styled.button<IEventButtonStyle>`
   &:hover {
     opacity: 0.8;
   }
+
+  @media screen and (max-width: 768px) {
+    &.gray {
+      ${Button640}
+    }
+
+    &.skyblue {
+      ${Button640}
+    }
+  }
 `;
 
 const EventButton = ({
+  className,
   children,
   styles,
   onClick,
   onSubmit,
   disabled,
 }: {
+  className?: string;
   children?: Props['children'];
   styles?: IEventButtonStyle;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -44,6 +58,7 @@ const EventButton = ({
 }) => {
   return (
     <ButtonTemplate
+      className={className}
       {...styles}
       onClick={onClick}
       onSubmit={onSubmit}

@@ -7,6 +7,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import { mgpd } from './commonstyle';
+
 import cssToken from '../../styles/cssToken';
 import { GapDiv, OutsideWrap } from '../../styles/styles';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
@@ -29,6 +31,13 @@ import Text from '../../components/ui/text/Text';
 import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
 import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
+
+const PostOutsideWrap = styled(OutsideWrap)`
+  @media screen and (max-width: 768px) {
+    ${mgpd}
+    row-gap: ${cssToken.SPACING['gap-20']}
+  }
+`;
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: '0.1875rem';
@@ -66,9 +75,6 @@ const PostCommunitypage = () => {
       if (response) navigate(`/error/${response.status}`);
     },
   });
-
-  console.log(scheduleid);
-  console.log(courses);
 
   useEffect(() => {
     scrollToTop();
@@ -108,7 +114,7 @@ const PostCommunitypage = () => {
 
   return (
     <>
-      <OutsideWrap>
+      <PostOutsideWrap>
         <MyCourseBoast />
         <GapDiv>
           {isLoading && <SkeletonMapContainer />}
@@ -142,7 +148,7 @@ const PostCommunitypage = () => {
           grayCallback={HandleBack}
           skyblueCallback={HandleNext}
         />
-      </OutsideWrap>
+      </PostOutsideWrap>
       {modalIsOpen && (
         <Modal
           backdropCallback={toggleModal}
