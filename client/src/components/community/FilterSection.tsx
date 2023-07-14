@@ -23,7 +23,6 @@ import useUserInfo from '../../querys/useUserInfo';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import { RootState } from '../../store';
-import SkeletonContentCard from '../skeleton/SkeletonContentCard';
 
 const FilterWrapper = styled.div`
   width: 100%;
