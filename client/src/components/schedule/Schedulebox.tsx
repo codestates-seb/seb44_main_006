@@ -90,7 +90,7 @@ const ScheduleBox = () => {
             styles={{
               size: '0.85rem',
               color: cssToken.COLOR['gray-900'],
-              weight: 300,
+              weight: 500,
             }}
           >
             최대 10개 추가할 수 있습니다.
