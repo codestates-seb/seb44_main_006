@@ -107,7 +107,7 @@ const FilterSection = ({
                 thumbnail={post.courseThumbnail}
                 onClick={moveToRegisterDetail}
                 courseId={post.courseId}
-                date={formatData(post?.courseDday)}
+                date={formatData(String(post?.courseDday))}
               >
                 <DeleteButton type="mypage" postId={String(post.courseId)}>
                   삭제
