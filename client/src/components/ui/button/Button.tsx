@@ -1,9 +1,11 @@
 import { styled } from 'styled-components';
 
+import { Button640 } from './buttonStyles';
+
 import { IArgButtonStyle, Props } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
 
-const ButtonTemplate = styled.button<IArgButtonStyle>`
+export const ButtonTemplate = styled.button<IArgButtonStyle>`
   width: ${(props) => props.width || 'fit-content'};
   height: ${(props) => props.height || 'fit-content'};
   margin: ${(props) => props.margin};
@@ -28,11 +30,26 @@ const ButtonTemplate = styled.button<IArgButtonStyle>`
     opacity: 0.8;
   }
 
-  @media screen and (max-width: 640px) {
-    font-size: 0.875rem;
-    width: fit-content;
-    padding-left: 3rem;
-    padding-right: 3rem;
+  @media screen and (max-width: 768px) {
+    &.gray {
+      ${Button640}
+    }
+
+    &.skyblue {
+      ${Button640}
+    }
+
+    &.circle {
+      width: 4.375rem;
+      height: 4.375rem;
+      > div {
+        font-size: 0.625rem;
+        > svg {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
   }
 `;
 
@@ -42,7 +59,9 @@ const Button = ({
   onClick,
   onSubmit,
   disabled,
+  className,
 }: {
+  className?: string;
   children?: Props['children'];
   styles?: IArgButtonStyle;
   onClick?: (arg0?: string | undefined) => void;
@@ -51,6 +70,7 @@ const Button = ({
 }) => {
   return (
     <ButtonTemplate
+      className={className}
       {...styles}
       onClick={onClick}
       onSubmit={onSubmit}

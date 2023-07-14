@@ -11,7 +11,7 @@ export const CardCommonBox = css<{ selected?: boolean }>`
       : `2px solid ${cssToken.COLOR['gray-500']};`};
   border-radius: ${cssToken.BORDER['rounded-md']};
   transition: ${cssToken.TRANSITION.basic};
-
+  background-color: white;
   &:hover {
     border: 2px solid ${cssToken.COLOR['point-500']};
     box-shadow: 0 0 0, rgba(0 0 0, 0.5);

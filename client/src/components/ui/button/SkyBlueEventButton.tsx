@@ -14,6 +14,7 @@ const SkyBlueEventButton = ({
 }: IEventButtonStyle) => {
   return (
     <EventButton
+      className="skyblue"
       disabled={disabled}
       onClick={onClick}
       styles={{

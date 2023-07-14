@@ -11,6 +11,7 @@ const CircleButton = ({
 }: IArgButtonStyle) => {
   return (
     <Button
+      className="circle"
       onClick={onClick}
       styles={{
         width,
