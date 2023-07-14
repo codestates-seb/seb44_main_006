@@ -9,23 +9,26 @@ const Wrapper = styled.div<{ ishide: boolean; contentHeight: number }>`
   background-color: transparent;
   overflow: hidden;
   transition: height 0.5s ease-in-out;
-  border-top-left-radius: ${cssToken.BORDER['rounded-md']};
-  border-top-right-radius: ${cssToken.BORDER['rounded-md']};
-  border: ${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['gray-500']};
   flex: 0 0 25rem;
+
   &::-webkit-scrollbar {
     display: none;
   }
+
   @media (max-width: 768px) {
     position: fixed;
     bottom: 0;
     z-index: 1000;
     height: ${(props) => (props.ishide ? '2rem' : `${props.contentHeight}px`)};
+    border-top-left-radius: ${cssToken.BORDER['rounded-md']};
+    border-top-right-radius: ${cssToken.BORDER['rounded-md']};
+    border: ${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['gray-500']};
   }
 `;
 
 const Header = styled.section`
   display: none;
+
   @media (max-width: 768px) {
     height: 2rem;
     display: flex;
@@ -40,6 +43,17 @@ const Header = styled.section`
 const Content = styled.div`
   height: calc(100% - 2rem);
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const Handle = styled.div`
+  width: 2rem;
+  height: 4px;
+  border-radius: ${cssToken.BORDER['rounded-s']};
+  background-color: ${cssToken.COLOR['gray-700']};
 `;
 
 interface Prop {
@@ -63,7 +77,9 @@ const BottomSheet = ({ children }: Prop) => {
 
   return (
     <Wrapper ishide={isHide} contentHeight={contentHeight}>
-      <Header onClick={handleClick}>{isHide ? 'o' : 'x'}</Header>
+      <Header onClick={handleClick}>
+        <Handle />
+      </Header>
       <Content ref={contentRef}>{children}</Content>
     </Wrapper>
   );
