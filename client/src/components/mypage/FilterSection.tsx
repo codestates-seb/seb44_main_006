@@ -66,7 +66,7 @@ const FilterSection = ({
   const isMemberBookmarkedListEmpty =
     selectTab === 'Second' && memberBookmarkedList?.length === 0;
 
-    console.log(memberCourseList)
+  console.log(memberCourseList);
   return (
     <FilterWrapper>
       <FilterContainer>{children}</FilterContainer>
@@ -109,9 +109,7 @@ const FilterSection = ({
                 courseId={post.courseId}
                 date={formatData(String(post?.courseDday))}
               >
-                <DeleteButton type="mypage" postId={String(post.courseId)}>
-                  삭제
-                </DeleteButton>
+                <DeleteButton type="mypage" postId={String(post.courseId)} />
                 <CopyButton endpoint={`community/${String(post.courseId)}`} />
                 <ShareKakaoButton
                   endpoint={`community/${String(post.courseId)}`}

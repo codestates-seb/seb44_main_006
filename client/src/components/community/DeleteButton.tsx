@@ -23,7 +23,6 @@ const DeleteButton = ({
   const toggleModal = useToggleModal();
   const queryClient = useQueryClient();
   const query = type ? DeleteMyPageCourses : DeleteCommunityPost;
-  // Todo 23번째 라인 왼쪽에 마이페이지 딜리트 함수 넣으시면 됩니다.
   const mutate = useMutation(query, {
     onSuccess: async () => {
       toggleModal();
