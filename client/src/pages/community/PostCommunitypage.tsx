@@ -49,30 +49,26 @@ const PostOutsideWrap = styled(OutsideWrap)`
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: 0.1875rem;
+  .ql-toolbar {
+    height: 2.625rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
 
-  @media screen and (max-height: 768px) {
-    margin-bottom: 2.5rem;
-    div.ql-toolbar {
-      width: 100%;
+    .ql-formats {
       display: flex;
       flex-direction: row;
-      overflow: scroll;
-    }
-
-    span.ql-formats {
-      display: flex;
-      flex-direction: row;
-    }
-
-    svg {
-      width: 1rem;
-      height: 1rem;
     }
   }
 `;
 
 const ErrorContainer = styled(GapDiv)`
   margin-bottom: ${cssToken.SPACING['gap-12']};
+
+  @media screen and (max-width: 768px) {
+    margin-top: 2rem;
+  }
 `;
 
 const PostCommunitypage = () => {
