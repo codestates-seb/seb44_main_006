@@ -33,6 +33,10 @@ const HeaderContainer = styled.header<HeaderStyle>`
   box-shadow: ${(props) =>
     props?.isPath === '' ? 'none' : cssToken.SHADOW['shadow-lg']};
   z-index: 999;
+
+  @media (max-width: 640px) {
+   display:none
+  }
 `;
 
 const LogoBox = styled.h1`

@@ -1,13 +1,13 @@
 import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
 
-import { setUserOAuthActions , LoginState } from '../../store/userAuth-slice';
+import { setUserOAuthActions, LoginState } from '../../store/userAuth-slice';
 import cssToken from '../../styles/cssToken';
 import WhiteButton from '../ui/button/WhiteButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
 
-const BtnBox = styled.div`
+const BtnBox = styled.nav`
   display: flex;
   gap: ${cssToken.SPACING['gap-10']};
 
