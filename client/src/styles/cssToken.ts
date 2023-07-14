@@ -7,6 +7,7 @@ const cssToken = {
     'min-w-min': 'min-content',
     'min-w-max': 'max-content',
     'min-w-fit': 'fit-content',
+    'grid-min': '21.5rem',
   },
   HEIGHT: {
     'h-full': '100%',
@@ -16,15 +17,19 @@ const cssToken = {
     'h-fit': 'fit-content',
   },
   COLOR: {
-    'point-900': '#77D7FD',
+    'point-900': '#00D1FF',
+    'point-500': '#77D7FD',
     'point-100': '#F0FBFF',
     'red-900': '#FF6666',
     'red-100': '#FFEDED',
-    'gray-900': '#C9C9C9',
+    'gray-900': '#AAAAAA', // card text color
     'gray-700': '#D3D3D3',
+    'gray-600': '#DCDCDC',
     'gray-500': '#E6E6E6',
-    'gray-300': '#F8F8F8',
+    'gray-300': '#F8F8F8', // background
     'polyline-color': '#009EDC',
+    'yellow-900': '#FFE81C',
+    'yellow-100': '#FFFBD7',
     black: '#000',
     white: '#fff',
   },

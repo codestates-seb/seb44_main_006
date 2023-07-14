@@ -6,7 +6,7 @@ import Text from '../ui/text/Text';
 const FilterDiv = styled.div<{ selected: boolean }>`
   padding-bottom: 0.5rem;
   border-bottom: 0.375rem solid
-    ${(props) => (props.selected ? cssToken.COLOR['point-900'] : 'transparent')};
+    ${(props) => (props.selected ? cssToken.COLOR['point-500'] : 'transparent')};
   cursor: pointer;
 `;
 const FilterTab = ({

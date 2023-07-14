@@ -67,6 +67,9 @@ const PostCommunitypage = () => {
     },
   });
 
+  console.log(scheduleid);
+  console.log(courses);
+
   useEffect(() => {
     scrollToTop();
   }, []);

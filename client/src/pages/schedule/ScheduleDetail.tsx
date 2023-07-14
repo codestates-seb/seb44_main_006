@@ -18,9 +18,11 @@ const ScheduleDetail = () => {
   useQuery({
     queryKey: ['resisterDetail'],
     queryFn: () => GetCourse({ courseId }),
-    onSuccess: (data: PostReadT) => {
-      dispatch(scheduleDetailActions.getCourseData(data?.courseData));
-      dispatch(scheduleDetailActions.getDestinationList(data?.destinationList));
+    onSuccess: (data: { data: PostReadT }) => {
+      dispatch(scheduleDetailActions.getCourseData(data.data.courseData));
+      dispatch(
+        scheduleDetailActions.getDestinationList(data.data.destinationList)
+      );
     },
     onError: (error) => {
       const { response } = error as AxiosError;
