@@ -10,4 +10,11 @@ export const BUTTON_STYLES = {
     border-radius: ${cssToken.BORDER['rounded-full']};
     box-shadow: ${cssToken.SHADOW['shadow-lg']};
   `,
+  nobgbtn: css`
+    padding: 7px;
+    border-radius: 10px;
+    &:hover {
+      background-color: ${cssToken.COLOR['gray-300']};
+    }
+  `,
 };

@@ -83,12 +83,15 @@ export const ModalChildrenDiv = styled(FlexDiv)`
 `;
 
 export const ShareBtn = styled.button`
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1.3rem;
+  height: 1.3rem;
   padding: 0;
   > svg {
     width: 100%;
     height: 100%;
+    > path {
+      fill: #000;
+    }
   }
   cursor: pointer;
 `;
