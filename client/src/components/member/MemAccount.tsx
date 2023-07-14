@@ -104,17 +104,6 @@ const MemAccountModal = () => {
           }}
         />
       )}
-      {LoginmodalIsOpen && (
-        <LoginModal
-          handleClose={LogintoggleModal}
-          styles={{
-            width: '31.25rem',
-            height: '31.25rem',
-            borderradius: '0.9375rem',
-            gap: '0.625rem',
-          }}
-        />
-      )}
       {LogoutmodalIsOpen && (
         <Modal
           backdropCallback={LogoutoggleModal}

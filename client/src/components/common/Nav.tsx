@@ -71,7 +71,7 @@ const Nav = ({
             height="25px"
             borderRadius={`${cssToken.BORDER['rounded-tag']}`}
           >
-            {isPath === 'mypage' ? '커뮤니티1' : '마이페이지2'}
+            {isPath === 'mypage' ? '커뮤니티' : '마이페이지'}
           </SkyBlueButton>
         </>
       )}

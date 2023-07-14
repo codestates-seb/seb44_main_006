@@ -1,8 +1,7 @@
 import { styled } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { setUserOAuthActions } from '../../store/userAuth-slice';
 import cssToken from '../../styles/cssToken';
 import CalendarPageIcon from '../../assets/CalendarPageIcon';
 import CommunityPageIcon from '../../assets/CommunityPageIcon';
@@ -10,10 +9,11 @@ import MainPageIcon from '../../assets/MainPageIcon';
 import MyPageIcon from '../../assets/MyPageIcon';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { RootState } from '../../store';
+import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 
 const MoNavContainer = styled.nav`
   display: none;
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     position: fixed;
     bottom: 0;
     display: grid;
@@ -39,10 +39,7 @@ const MoNavContainer = styled.nav`
 
 const MoNav = () => {
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
-  const dispatch = useDispatch();
-  const LogintoggleModal = () => {
-    dispatch(setUserOAuthActions.toggleIsLogin());
-  };
+  const LogintoggleModal = useLoginToggleModal();
   const userAuthInfo = useSelector(
     (state: RootState) => state.userAuth.userInfo
   );

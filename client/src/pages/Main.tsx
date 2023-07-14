@@ -8,6 +8,7 @@ import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
+import useLoginToggleModal from '../hooks/useLoginToggleModal';
 
 const MainContainer = styled.main`
   cursor: none;
@@ -84,6 +85,7 @@ const Main = () => {
   const [isHovered, setIsHovered] = useState<boolean>(true);
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
 
+  const LogintoggleModal = useLoginToggleModal();
   const dispatch = useDispatch();
 
   const handleMouseEnter = () => {
@@ -92,10 +94,6 @@ const Main = () => {
 
   const handleMouseLeave = () => {
     setIsHovered((prev) => !prev);
-  };
-
-  const LogintoggleModal = () => {
-    dispatch(setUserOAuthActions.toggleIsLogin());
   };
 
   return (

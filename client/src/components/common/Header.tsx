@@ -5,10 +5,10 @@ import { useState, useEffect } from 'react';
 
 import Nav from './Nav';
 
-import MemAccountModal from '../member/MemAccount';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
+import MemAccountModal from '../../components/member/MemAccount';
 
 type HeaderStyle = {
   isPath?: string;
@@ -58,15 +58,17 @@ const Header = () => {
   }, [endpoint]);
 
   return (
-    <HeaderContainer isPath={isPath}>
+    <>
       <MemAccountModal />
-      <LogoBox>
-        <Link to="/">
-          <LogoImg src={LogoBlack} alt="logo-harumate" />
-        </Link>
-      </LogoBox>
-      <Nav isPath={isPath} isLoggedIn={isLoggedIn} />
-    </HeaderContainer>
+      <HeaderContainer isPath={isPath}>
+        <LogoBox>
+          <Link to="/">
+            <LogoImg src={LogoBlack} alt="logo-harumate" />
+          </Link>
+        </LogoBox>
+        <Nav isPath={isPath} isLoggedIn={isLoggedIn} />
+      </HeaderContainer>
+    </>
   );
 };
 
