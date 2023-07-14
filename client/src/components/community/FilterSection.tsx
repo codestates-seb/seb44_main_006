@@ -112,10 +112,10 @@ const FilterSection = ({
                     <ShareKakaoButton endpoint={`community/${post.postId}`} />
                   </ContensCard>
                 );
-              return <SkeletonContentCard />;
+              return <SkeletonCardContainer length={6} />;
             })
           )}
-        {isFetching && <SkeletonCardContainer length={11} />}
+        {isFetching && <SkeletonCardContainer length={6} />}
       </CardWrapper>
       {communityData && <div ref={ref} />}
     </FilterWrapper>
