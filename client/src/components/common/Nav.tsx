@@ -91,7 +91,7 @@ const Nav = ({
         </WhiteButton>
       )}
     </BtnBox>
-  )
+  );
 };
 
 export default Nav;

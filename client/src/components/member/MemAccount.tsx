@@ -1,20 +1,12 @@
 import { styled } from 'styled-components';
-import {
-  useNavigate,
-  Link,
-  useLocation,
-  useSearchParams,
-} from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { UserQAuthInfo, setUserOAuthActions } from '../../store/userAuth-slice';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
-import LogoBlack from '../../assets/common_img/logo_black.svg';
-import WhiteButton from '../ui/button/WhiteButton';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import LoginModal from '../ui/modal/LoginModal';
@@ -22,7 +14,6 @@ import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
 import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
 import Text from '../ui/text/Text';
-import Nav from './Nav';
 
 const BtnBox = styled.div`
   display: flex;
@@ -45,8 +36,6 @@ const MemAccountModal = () => {
   const navigate = useNavigate();
   const gotoMain = useMovePage('/');
   const dispatch = useDispatch();
-  const location = useLocation();
-  const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
 
   const LoginmodalIsOpen = useSelector(
     (state: RootState) => state.userAuth.isLoginOpen
@@ -119,6 +108,17 @@ const MemAccountModal = () => {
           }}
         />
       )}
+      {LoginmodalIsOpen && (
+        <LoginModal
+          handleClose={LogintoggleModal}
+          styles={{
+            width: '31.25rem',
+            height: '31.25rem',
+            borderradius: '0.9375rem',
+            gap: '0.625rem',
+          }}
+        />
+      )}
       {LogoutmodalIsOpen && (
         <Modal
           backdropCallback={LogoutoggleModal}
@@ -157,7 +157,7 @@ const MemAccountModal = () => {
         </Modal>
       )}
     </>
-  )
+  );
 };
 
 export default MemAccountModal;
