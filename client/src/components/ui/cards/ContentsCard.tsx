@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { CardCommonBox } from './Card.styled';
 
+import { BUTTON_STYLES } from '../button/buttonStyles'
 import cssToken from '../../../styles/cssToken';
 import TagButton from '../button/TagButton';
 import ThumbnailBox from '../thumbnail/ThumbnailBox';
@@ -14,23 +15,25 @@ import removeTag from '../../../utils/removeTag';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
-  gap: ${cssToken.SPACING['gap-24']};
+  gap: ${cssToken.SPACING['gap-12']};
   flex-direction: column;
   justify-content: space-between;
   padding: 1.25rem;
   flex-grow: 0;
-  width: 25.2813rem;
+  width: 100%;
   ${CardCommonBox}
 `;
 
 const UserName = styled.span`
-  font-size: ${cssToken.TEXT_SIZE['text-16']};
+  font-size: ${cssToken.TEXT_SIZE['text-14']};
   font-weight: ${cssToken.FONT_WEIGHT.medium};
 `;
 
 const ContensTop = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.9375rem;
 `;
 
 const ContensHeader = styled.div`
@@ -49,24 +52,29 @@ const TextLimit = css`
 
 const ContensTitle = styled.h3`
   line-height: 120%;
-  font-size: ${cssToken.TEXT_SIZE['text-24']};
-  height: 3.4375rem;
+  font-size: 20px;
+  height: 1.4375rem;
   flex: 1;
   ${TextLimit};
+  -webkit-line-clamp: 1;
 `;
 
 const ContensText = styled.p`
   line-height: 120%;
   color: ${cssToken.COLOR['gray-900']};
-  font-size: ${cssToken.TEXT_SIZE['text-16']};
+  font-size: 0.9375rem;
   font-weight: ${cssToken.FONT_WEIGHT.medium};
-  height: 2.1875rem;
+  height: 2.2675rem;
   ${TextLimit};
 `;
 
 const Tags = styled.div`
   display: flex;
-  gap: ${cssToken.SPACING['gap-10']};
+  gap: 0.3rem;
+  > button {
+    font-size: 12px;
+    padding: 6px 8px 4px;
+  }
 `;
 
 const ContensBottom = styled.div`
@@ -79,6 +87,9 @@ const LikeBtnBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  > button {
+    ${BUTTON_STYLES.nobgbtn}
+    margin-right: 3px;  }
 `;
 
 const DataText = styled.span`
@@ -125,8 +136,8 @@ const ContensCard = ({
         <ContensTitle>{title}</ContensTitle>
         {isLogin && !isMine && bookmarkStatus !== undefined && courseId && (
           <StarButton
-            width="60px"
-            height="60px"
+            width="40px"
+            height="40px"
             isActive={bookmarkStatus}
             courseId={courseId}
           />
