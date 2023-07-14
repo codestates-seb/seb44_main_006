@@ -18,3 +18,12 @@ export const BUTTON_STYLES = {
     }
   `,
 };
+
+export const Button640 = css`
+  @media screen and (max-width: 640px) {
+    font-size: 0.875rem;
+    width: fit-content;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+`;

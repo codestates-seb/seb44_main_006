@@ -14,6 +14,7 @@ const SkyBlueButton = ({
 }: IArgButtonStyle) => {
   return (
     <Button
+      className="skyblue"
       disabled={disabled}
       onClick={onClick}
       styles={{

@@ -61,6 +61,11 @@ const FixedDiv = styled.div`
   position: fixed;
   right: ${cssToken.SPACING['gap-40']};
   bottom: ${cssToken.SPACING['gap-40']};
+
+  @media screen and (max-width: 768px) {
+    right: 1rem;
+    bottom: 4rem;
+  }
 `;
 
 const CommunityPage = () => {

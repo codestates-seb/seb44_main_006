@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { CardCommonBox } from './Card.styled';
 
-import { BUTTON_STYLES } from '../button/buttonStyles'
+import { BUTTON_STYLES } from '../button/buttonStyles';
 import cssToken from '../../../styles/cssToken';
 import TagButton from '../button/TagButton';
 import ThumbnailBox from '../thumbnail/ThumbnailBox';
@@ -111,7 +111,8 @@ const LikeBtnBox = styled.div`
   justify-content: center;
   > button {
     ${BUTTON_STYLES.nobgbtn}
-    margin-right: 3px;  }
+    margin-right: 3px;
+  }
 `;
 
 const DataText = styled.span`
