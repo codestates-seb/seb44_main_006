@@ -1,20 +1,18 @@
 import { styled } from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { setUserOAuthActions, LoginState } from '../../store/userAuth-slice';
+import { setUserOAuthActions } from '../../store/userAuth-slice';
 import cssToken from '../../styles/cssToken';
-import WhiteButton from '../ui/button/WhiteButton';
-import SkyBlueButton from '../ui/button/SkyBlueButton';
-import useMovePage from '../../hooks/useMovePage';
 import CalendarPageIcon from '../../assets/CalendarPageIcon';
 import CommunityPageIcon from '../../assets/CommunityPageIcon';
 import MainPageIcon from '../../assets/MainPageIcon';
 import MyPageIcon from '../../assets/MyPageIcon';
-import UserInfoPfp from '../ui/UserInfoPfp';
+import UserInfoMy from '../ui/UserInfoPfp';
+import { RootState } from '../../store';
 
 const MoNavContainer = styled.nav`
-  display:none;
+  display: none;
   @media (max-width: 768px) {
     position: fixed;
     bottom: 0;
@@ -23,6 +21,7 @@ const MoNavContainer = styled.nav`
     border-top: 1px solid #dcdcdc;
     width: 100%;
     grid-template-columns: repeat(4, 1fr);
+    z-index: 999;
 
     > a {
       display: flex;
@@ -39,22 +38,46 @@ const MoNavContainer = styled.nav`
 `;
 
 const MoNav = () => {
+  const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
+  const dispatch = useDispatch();
+  const LogintoggleModal = () => {
+    dispatch(setUserOAuthActions.toggleIsLogin());
+  };
+  const userAuthInfo = useSelector(
+    (state: RootState) => state.userAuth.userInfo
+  );
+
   return (
     <MoNavContainer>
-      <Link to='/'>
+      <Link to="/">
         <MainPageIcon />
         <span>메인</span>
       </Link>
-      <Link to='register'>
+      <Link
+        onClick={isLoggedIn ? undefined : LogintoggleModal}
+        to={isLoggedIn ? '/register' : '/'}
+      >
         <CalendarPageIcon />
         <span>일정 등록</span>
       </Link>
-      <Link to='/coummunity'>
+      <Link to="/community">
         <CommunityPageIcon />
         <span>커뮤니티</span>
       </Link>
-      <Link to='/maypage'>
-        <MyPageIcon />
+      <Link
+        onClick={isLoggedIn ? undefined : LogintoggleModal}
+        to={isLoggedIn ? '/mypage' : '/'}
+      >
+        {isLoggedIn ? (
+          <UserInfoMy
+            styles={{
+              size: '1.75rem',
+            }}
+            src={userAuthInfo?.memberImageUrl}
+          />
+        ) : (
+          <MyPageIcon />
+        )}
         <span>MY</span>
       </Link>
     </MoNavContainer>
