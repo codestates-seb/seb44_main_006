@@ -21,7 +21,7 @@ const SkyBlueButton = ({
         height,
         fontsize,
         color: cssToken.COLOR.white,
-        backgroundColor: cssToken.COLOR['point-900'],
+        backgroundColor: cssToken.COLOR['point-500'],
         borderRadius,
       }}
     >

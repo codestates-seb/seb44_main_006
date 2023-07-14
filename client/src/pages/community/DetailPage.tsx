@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { memo, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { AxiosError } from 'axios';
 
 import InfoContainer from '../../components/community/detail/InfoContainer';
@@ -21,6 +21,10 @@ import manufactureDate from '../../utils/manufactureDate';
 import getLoginStatus from '../../utils/getLoginStatus';
 import { CommunityDetailT } from '../../types/apitype';
 import Content from '../../components/community/detail/Content';
+import scrollToTop from '../../utils/scrollToTop';
+import isEmpty from '../../utils/isEmpty';
+import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
+import SkeletonUserContainer from '../../components/community/skeleton/SkeletonUserContainer';
 
 const HEADDiv = styled(FlexDiv)`
   justify-content: space-between;
@@ -47,7 +51,11 @@ const DetailPage = () => {
   const [isValidate, setValidate] = useState(true);
   const { postId } = useParams() as { postId: string };
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const { data: detailData, error } = useQuery({
+  const {
+    data: detailData,
+    error,
+    isLoading,
+  } = useQuery({
     queryKey: ['communityDetail'],
     queryFn: () => GetCommunityPost({ postId }),
     refetchOnWindowFocus: false,
@@ -66,24 +74,28 @@ const DetailPage = () => {
     },
   });
 
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (textAreaRef.current && textAreaRef.current.value.trim().length > 0) {
+    if (textAreaRef.current && !isEmpty(textAreaRef.current.value)) {
       setValidate(true);
       mutation.mutate({ postId, answerContent: textAreaRef.current.value });
     } else {
       setValidate(false);
     }
   };
+
   const handleCommentChange = () => {
-    if (textAreaRef.current && textAreaRef.current.value.trim().length > 0)
+    if (textAreaRef.current && !isEmpty(textAreaRef.current.value))
       setValidate(true);
   };
 
   if (error) {
-    // Todo error 객체 확인
-    console.error(error);
-    navigate(`/error/500`);
+    const { response } = error as AxiosError;
+    if (response) navigate(`/error/${response.status}`);
   }
 
   const postInfo = useMemo(() => {
@@ -117,9 +129,9 @@ const DetailPage = () => {
       <Title styles={{ size: cssToken.TEXT_SIZE['text-40'] }}>
         나의 코스 자랑하기
       </Title>
-
       <HEADDiv>
         <UersDiv>
+          {isLoading && <SkeletonUserContainer />}
           {detailData && userInfo && (
             <>
               <UserInfoMy src={userInfo.memberImageUrl} />
@@ -143,13 +155,14 @@ const DetailPage = () => {
         )}
       </HEADDiv>
 
+      {/* //Todo Suspense로 아예 페이지 거는게 나을듯 ? */}
+      {isLoading && <SkeletonMapContainer />}
       {detailData && postInfo.destinationList && (
         <MapContainer
           destinationList={postInfo.destinationList}
           title={postInfo.postTitle}
         />
       )}
-
       <ContentDiv>
         {detailData && contentData && (
           <>
@@ -158,7 +171,6 @@ const DetailPage = () => {
           </>
         )}
       </ContentDiv>
-
       <form onSubmit={onSubmit}>
         <TextArea
           onChange={handleCommentChange}

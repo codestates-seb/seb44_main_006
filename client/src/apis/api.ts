@@ -4,7 +4,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import { CommunityListT, PostReqT } from '../types/apitype';
+import { CommunityListT, PostReqT, PostReadT } from '../types/apitype';
 
 const PROXY = window.location.hostname === 'localhost' ? '' : '';
 
@@ -71,7 +71,9 @@ export const GetCommunityList = async ({
   return {
     communityListData: res.data.data,
     current_page: pageParam,
-    isLast: res.data.pageInfo.totalPages === pageParam,
+    isLast:
+      res.data.pageInfo.totalPages === pageParam ||
+      res.data.pageInfo.totalPages === 0,
   };
 };
 
@@ -94,6 +96,9 @@ export const PostComment = async ({
 
 export const DeleteCommunityPost = async ({ postId }: { postId: string }) =>
   instance.delete(`/api/posts/${postId}`);
+
+export const DeleteMyPageCourses = async ({ postId }: { postId: string }) =>
+  instance.delete(`/api/courses/${postId}`);
 
 export const PostBookmark = async ({ courseId }: { courseId: number }) =>
   instance.post(`/api/courses/${courseId}/bookmark`);

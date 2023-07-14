@@ -48,6 +48,7 @@ const ScheduleListBox = () => {
                       {...provided_two.dragHandleProps}
                     >
                       <MapLocationCard
+                        latlng={{ lat: schedule.y, lng: schedule.x }}
                         indexNum={idx + 1}
                         location={schedule.placeName}
                         id={schedule.id}

@@ -11,18 +11,31 @@ const useInfiniteScrollQuery = ({
   sort?: string | undefined;
   tagName?: string | undefined;
 }) => {
-  const { data, fetchNextPage, isSuccess, hasNextPage, error } =
-    useInfiniteQuery(
-      ['community', tagName, sort],
-      ({ pageParam = 1 }) =>
-        GetCommunityList({ pageParam, limit, sort, tagName }),
-      {
-        getNextPageParam: (lastPage) => {
-          return !lastPage.isLast ? lastPage.current_page + 1 : undefined;
-        },
-      }
-    );
-  return { data, fetchNextPage, isSuccess, hasNextPage, error };
+  const {
+    data,
+    fetchNextPage,
+    isSuccess,
+    hasNextPage,
+    error,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
+    ['community', tagName, sort],
+    ({ pageParam = 1 }) =>
+      GetCommunityList({ pageParam, limit, sort, tagName }),
+    {
+      getNextPageParam: (lastPage) => {
+        return !lastPage.isLast ? lastPage.current_page + 1 : undefined;
+      },
+    }
+  );
+  return {
+    data,
+    fetchNextPage,
+    isSuccess,
+    hasNextPage,
+    error,
+    isFetchingNextPage,
+  };
 };
 
 export default useInfiniteScrollQuery;

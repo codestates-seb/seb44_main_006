@@ -18,7 +18,7 @@ const Input = styled.input<StylesT>`
   padding-top: ${(props) => props.pt || cssToken.SPACING['gap-16']};
   padding-bottom: ${(props) => props.pb || cssToken.SPACING['gap-16']};
   padding-left: 1.125rem;
-  padding-right: 3.2rem;
+  padding-right: 3.5rem;
   border: none;
   border-radius: ${cssToken.BORDER['rounded-input']};
 
@@ -42,12 +42,14 @@ type SearchT = {
   iconWidth?: number;
   iconHeight?: number;
   styles?: StylesT;
-  callback?: (e: React.FormEvent<HTMLFormElement>) => void;
+  searchClick: (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => void;
 };
 
 const SearchContainer = forwardRef(
   (
-    { iconWidth, iconHeight, styles }: SearchT,
+    { iconWidth, iconHeight, styles, searchClick }: SearchT,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
@@ -58,13 +60,15 @@ const SearchContainer = forwardRef(
           placeholder="검색어를 입력해주세요."
           {...styles}
         />
-        <Search
-          style={{
-            iconWidth: iconWidth || 25,
-            iconHeight: iconHeight || 25,
-            color: 'none',
-          }}
-        />
+        <button type="button" onClick={searchClick}>
+          <Search
+            style={{
+              iconWidth: iconWidth || 25,
+              iconHeight: iconHeight || 25,
+              color: 'none',
+            }}
+          />
+        </button>
       </InputWrapper>
     );
   }

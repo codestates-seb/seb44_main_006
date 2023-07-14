@@ -10,6 +10,7 @@ import { selectedIdReducer } from './selectedId-slice';
 import { showDetailReducer } from './showDetail-slice';
 import { communityBasicReducer } from './communitybasic-slice';
 import { myInfoDataListReducer } from './myInfoDataList-slice';
+import { scheduleDetailReducer } from './scheduleData-slice';
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     showDetail: showDetailReducer,
     communityBasic: communityBasicReducer,
     myInfoData: myInfoDataListReducer,
+    scheduleDetail: scheduleDetailReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

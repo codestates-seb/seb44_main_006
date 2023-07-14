@@ -9,15 +9,14 @@ import { RootState } from '../../store';
 import { MarkerOff, MarkerOn } from '.';
 
 type MarkerT = {
-  lat?: string;
-  lng?: string;
+  lat: string;
+  lng: string;
   id: string;
   img?: string;
   idx?: number;
   children?: Props['children'];
 };
 
-// Todo 장소 추가했을 때 marker 리덕스 markerID 초기화하기
 const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
   const map = useSelector((state: RootState) => state.map.map);
   const markerId = useSelector((state: RootState) => state.marker.markerId);
@@ -69,7 +68,9 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
     });
 
     const setMarkerId = () => {
-      dispatch(markerActions.selectMarker(id));
+      dispatch(
+        markerActions.selectMarker({ markerId: id, center: { lat, lng } })
+      );
     };
 
     kakao.maps.event.addListener(marker, 'click', setMarkerId);

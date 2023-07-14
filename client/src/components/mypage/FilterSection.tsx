@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
@@ -9,11 +8,13 @@ import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
 import { MypCourseSummaryT, MyBookMarkSummaryT } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
-import useUserInfo from '../../hooks/useUserInfo';
 import Noresult from '../ui/Noresult';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import Text from '../ui/text/Text';
+import useUserInfo from '../../querys/useUserInfo';
+import DeleteButton from '../community/DeleteButton';
+import formatData from '../../utils/sliceData';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -28,8 +29,8 @@ const FilterContainer = styled(FlexDiv)`
   position: absolute;
   top: -2.9375rem;
   column-gap: ${cssToken.SPACING['gap-50']};
-  width:  ${cssToken.WIDTH['w-full']};
-  border-bottom: 1px solid #dcdcdc;
+  width: ${cssToken.WIDTH['w-full']};
+  border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   justify-content: center;
 `;
 
@@ -49,8 +50,6 @@ const FilterSection = ({
   memberBookmarkedList?: MyBookMarkSummaryT[];
   selectTab?: string | undefined;
 }) => {
-  const [myCourseCount, setMyCourseCount] = useState<number>(0);
-  const [bookmarkCount, setBookmarkCount] = useState<number>(0);
   const navigate = useNavigate();
   const [ref] = useInView();
   const { userData } = useUserInfo();
@@ -58,12 +57,9 @@ const FilterSection = ({
     if (postId !== undefined) navigate(`/community/${postId}`);
   };
 
-  useEffect(() => {
-    const countBookmark: number = userData?.myBookmarkCount ?? 0;
-    const countMyCourse: number = userData?.myCourseCount ?? 0;
-    setBookmarkCount(countBookmark);
-    setMyCourseCount(countMyCourse);
-  }, [userData, myCourseCount, bookmarkCount]);
+  const moveToRegisterDetail = (courseId: number | undefined) => {
+    if (courseId !== undefined) navigate(`/register/detail/${courseId}`);
+  };
 
   const isMemberCourseListEmpty =
     selectTab === 'First' && memberCourseList?.length === 0;
@@ -82,9 +78,10 @@ const FilterSection = ({
           }}
         >
           등록된{' '}
-          {selectTab === 'First'
-            ? `일정이 ${myCourseCount}`
-            : ` 즐겨찾기가 ${bookmarkCount}`}
+          {userData &&
+            (selectTab === 'First'
+              ? `일정이 ${userData.myCourseCount}`
+              : ` 즐겨찾기가 ${userData.myBookmarkCount}`)}
           개 있습니다.
         </Text>
       </CounterContainer>
@@ -98,28 +95,30 @@ const FilterSection = ({
         ))}
 
       <CardWrapper>
-        {selectTab === 'First'
+        {memberCourseList && selectTab === 'First'
           ? memberCourseList?.map((post: MypCourseSummaryT) => (
               <ContensCard
                 key={post.courseId}
-                type="post"
+                type="course"
                 title={post.courseTitle}
-                text={post.postContent}
                 likeCount={post.courseLikeCount}
                 userName={post.memberNickname}
                 thumbnail={post.courseThumbnail}
-                onClick={moveToDetail}
+                onClick={moveToRegisterDetail}
                 courseId={post.courseId}
-                date={manufactureDate(post?.courseUpdatedAt)}
+                date={formatData(String(post?.courseDday))}
               >
-                <CopyButton endpoint={`community/${post.postId}`} />
-                <ShareKakaoButton endpoint={`community/${post.postId}`} />
+                <DeleteButton type="mypage" postId={String(post.courseId)} />
+                <CopyButton endpoint={`community/${String(post.courseId)}`} />
+                <ShareKakaoButton
+                  endpoint={`community/${String(post.courseId)}`}
+                />
               </ContensCard>
             ))
           : memberBookmarkedList?.map((post: MyBookMarkSummaryT) => (
               <ContensCard
                 key={post.courseId}
-                type="course"
+                type="post"
                 title={post.courseTitle}
                 text={post.postContent}
                 likeCount={post.courseLikeCount}
@@ -128,13 +127,15 @@ const FilterSection = ({
                 thumbnail={post.courseThumbnail}
                 onClick={moveToDetail}
                 courseId={post.courseId}
-                tags={post.tags}
                 bookmarkStatus
+                postId={post.postId}
                 likeStatus={post.likeStatus}
                 date={manufactureDate(post?.courseUpdatedAt)}
               >
-                <CopyButton endpoint={`community/${post.postId}`} />
-                <ShareKakaoButton endpoint={`community/${post.postId}`} />
+                <CopyButton endpoint={`community/${String(post.postId)}`} />
+                <ShareKakaoButton
+                  endpoint={`community/${String(post.postId)}`}
+                />
               </ContensCard>
             ))}
       </CardWrapper>

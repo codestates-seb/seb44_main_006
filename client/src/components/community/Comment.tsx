@@ -6,16 +6,16 @@ import Text from '../ui/text/Text';
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { FlexDiv } from '../../styles/styles';
-import { CommentT } from '../../types/type';
 import { DeleteComment, PatchComment } from '../../apis/api';
 import TextArea from '../ui/input/TextArea';
-import useUserInfo from '../../hooks/useUserInfo';
+import useUserInfo from '../../querys/useUserInfo';
+import { CommentT } from '../../types/apitype';
 
 const CommentWrapper = styled.div`
   display: flex;
   width: 100%;
   gap: ${cssToken.SPACING['gap-12']};
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   padding-top: ${cssToken.SPACING['gap-16']};
   padding-bottom: ${cssToken.SPACING['gap-16']};
 `;

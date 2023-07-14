@@ -59,7 +59,7 @@ const ContensText = styled.p`
   line-height: 120%;
   color: ${cssToken.COLOR['gray-900']};
   font-size: ${cssToken.TEXT_SIZE['text-16']};
-  font-weight: ${cssToken.FONT_WEIGHT.light};
+  font-weight: ${cssToken.FONT_WEIGHT.medium};
   height: 2.1875rem;
   ${TextLimit};
 `;
@@ -83,6 +83,7 @@ const LikeBtnBox = styled.div`
 
 const DataText = styled.span`
   font-size: ${cssToken.TEXT_SIZE['text-14']};
+  color: ${cssToken.COLOR['gray-900']};
 `;
 
 const ContensCard = ({

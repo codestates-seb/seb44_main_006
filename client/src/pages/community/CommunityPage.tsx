@@ -1,6 +1,8 @@
 import { styled } from 'styled-components';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -36,19 +38,20 @@ const FixedDiv = styled.div`
 `;
 
 const CommunityPage = () => {
+  const navigate = useNavigate();
   const goToSelect = useMovePage('/community/select');
-  // const goToError = useMovePage('/error/500');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isLogin = getLoginStatus();
   const { selectTab, setTab } = useHandleTab();
   const [tagName, setTagName] = useState<string>('');
   const dispatch = useDispatch();
 
-  const { data, fetchNextPage, hasNextPage, error } = useInfiniteScrollQuery({
-    limit: LIMIT,
-    tagName: tagName || '',
-    sort: selectTab,
-  });
+  const { data, fetchNextPage, hasNextPage, error, isFetchingNextPage } =
+    useInfiniteScrollQuery({
+      limit: LIMIT,
+      tagName: tagName || '',
+      sort: selectTab,
+    });
 
   useEffect(() => {
     if (data) {
@@ -56,7 +59,9 @@ const CommunityPage = () => {
     }
   }, [data, dispatch]);
 
-  const SearchPost = (e: React.FormEvent<HTMLFormElement>) => {
+  const SearchPost = (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     if (searchInputRef.current) {
       const keyword = searchInputRef.current?.value;
@@ -65,8 +70,8 @@ const CommunityPage = () => {
   };
 
   if (error) {
-    console.error(error);
-    // goToError();
+    const { response } = error as AxiosError;
+    if (response) navigate(`/error/${response.status}`);
   }
 
   return (
@@ -74,6 +79,7 @@ const CommunityPage = () => {
       <Wrapper>
         <form onSubmit={SearchPost}>
           <SearchContainer
+            searchClick={SearchPost}
             ref={searchInputRef}
             iconWidth={24}
             iconHeight={24}
@@ -82,10 +88,13 @@ const CommunityPage = () => {
               height: '50px',
               fontsize: cssToken.TEXT_SIZE['text-18'],
             }}
-            callback={SearchPost}
           />
         </form>
-        <FilterSection hasNextPage={hasNextPage} fetchNextPage={fetchNextPage}>
+        <FilterSection
+          hasNextPage={hasNextPage}
+          fetchNextPage={fetchNextPage}
+          isFetching={isFetchingNextPage}
+        >
           <FilterTab
             content="최신순"
             selectTab={selectTab}

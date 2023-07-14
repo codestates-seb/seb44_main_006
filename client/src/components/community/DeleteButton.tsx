@@ -1,40 +1,47 @@
 import { useSelector } from 'react-redux';
-import { useMutation } from '@tanstack/react-query';
-import { styled } from 'styled-components';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import ModalChildren from './post/ModalChildren';
 
 import Modal from '../ui/modal/Modal';
 import { RootState } from '../../store';
 import useToggleModal from '../../hooks/useToggleModal';
-import { DeleteCommunityPost } from '../../apis/api';
+import { DeleteCommunityPost, DeleteMyPageCourses } from '../../apis/api';
 import useMovePage from '../../hooks/useMovePage';
+import EventButton from '../ui/button/EventButton';
 
-const Button = styled.button`
-  cursor: pointer;
-`;
-
-const DeleteButton = ({ postId }: { postId: string }) => {
-  const goToCommunity = useMovePage('/community');
+const DeleteButton = ({
+  type,
+  postId,
+}: {
+  type?: 'mypage';
+  postId: string;
+}) => {
+  const url = type ? '/mypage' : '/community';
+  const goToPage = useMovePage(url);
   const modalIsOpen = useSelector((state: RootState) => state.overlay.isOpen);
   const toggleModal = useToggleModal();
-  const mutate = useMutation(DeleteCommunityPost, {
-    onSuccess() {
-      // Todo 다른 페이지 refetch 해야할 수도?
+  const queryClient = useQueryClient();
+  const query = type ? DeleteMyPageCourses : DeleteCommunityPost;
+  const mutate = useMutation(query, {
+    onSuccess: async () => {
       toggleModal();
-      goToCommunity();
+      await queryClient.invalidateQueries(['community']);
+      await queryClient.invalidateQueries(['mypage']);
+      await queryClient.invalidateQueries(['user']);
+      goToPage();
     },
   });
   return (
     <>
-      <Button
-        type="button"
-        onClick={() => {
+      <EventButton
+        onClick={(e) => {
+          e.stopPropagation();
           toggleModal();
         }}
       >
         삭제
-      </Button>
+      </EventButton>
       {modalIsOpen && (
         <Modal
           styles={{
@@ -43,10 +50,13 @@ const DeleteButton = ({ postId }: { postId: string }) => {
           }}
         >
           <ModalChildren
-            leftBtnCallback={() => {
+            leftBtnCallback={(e) => {
+              e.stopPropagation();
+
               toggleModal();
             }}
-            rightBtnCallback={() => {
+            rightBtnCallback={(e) => {
+              e.stopPropagation();
               mutate.mutate({ postId });
             }}
             content="정말 삭제하시겠습니까?"
