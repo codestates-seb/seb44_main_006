@@ -27,18 +27,10 @@ const OutsideWrap = styled(FlexDiv)`
   row-gap: ${cssToken.SPACING['gap-50']};
 
   @media screen and (max-width: 768px) {
-    margin-top: 2.75rem;
-    padding-top: ${cssToken.SPACING['gap-24']};
+    margin-top: 0px;
+    padding-top: ${cssToken.SPACING['gap-20']};
     padding-left: ${cssToken.SPACING['gap-50']};
     padding-right: ${cssToken.SPACING['gap-50']};
-
-    h1 {
-      font-size: 1.25rem;
-    }
-
-    p {
-      font-size: 0.8125rem;
-    }
   }
 
   @media screen and (max-width: 500px) {
@@ -52,6 +44,11 @@ const OverFlowDiv = styled.div`
   overflow: auto;
   background-color: ${cssToken.COLOR['gray-300']};
   padding: ${cssToken.SPACING['gap-24']};
+
+  @media screen and (max-width: 500px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 `;
 
 const EmptyDiv = styled(FlexDiv)`
@@ -60,7 +57,16 @@ const EmptyDiv = styled(FlexDiv)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: ${cssToken.SPACING['gap-40']};
+  row-gap: ${cssToken.SPACING['gap-20']};
+
+  @media screen and (max-width: 768px) {
+    > h1 {
+      font-size: 1.875rem;
+    }
+    > p {
+      font-size: 0.8125rem;
+    }
+  }
 `;
 
 const SelectCardWrapper = styled(CardWrapper)``;

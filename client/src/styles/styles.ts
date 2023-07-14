@@ -25,11 +25,25 @@ export const CardWrapper = styled.div`
   );
   justify-content: center;
   gap: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-width: 768px) {
+    gap: ${cssToken.SPACING['gap-20']};
+  }
 `;
 
 export const HeadDiv = styled(FlexDiv)`
   flex-direction: column;
   row-gap: 3px;
+
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-size: 0.8125rem;
+    }
+  }
 `;
 
 export const GapDiv = styled(FlexDiv)`

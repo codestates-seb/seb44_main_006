@@ -33,8 +33,9 @@ const Wrapper = styled(FlexDiv)`
   }
 
   @media screen and (max-width: 768px) {
+    margin-top: 0px;
+    padding-top: ${cssToken.SPACING['gap-20']};
     row-gap: 5rem;
-
     > form > div {
       width: 80%;
       > input {
