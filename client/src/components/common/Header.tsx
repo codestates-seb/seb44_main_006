@@ -28,7 +28,12 @@ type HeaderStyle = {
 };
 
 const HeaderContainer = styled.header<HeaderStyle>`
-  display: ${(props) => (props?.isPath === 'register' ? 'none' : 'flex')};
+  display: ${(props) => {
+    if (props?.isPath === 'register' || props?.isPath === 'error') {
+      return 'none';
+    }
+    return 'flex';
+  }};
   align-items: center;
   justify-content: space-between;
   padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
@@ -141,8 +146,6 @@ const Header = () => {
   useEffect(() => {
     setIsPath(endpoint);
   }, [endpoint]);
-
-  console.log(isPath);
 
   return (
     <HeaderContainer isPath={isPath}>
