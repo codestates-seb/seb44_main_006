@@ -6,6 +6,7 @@ import { IdT } from '../types/type';
 const initialState: IdT = {
   markerId: '',
   center: { lat: '', lng: '' },
+  scroll: null,
 };
 
 const markerSlice = createSlice({
@@ -15,10 +16,14 @@ const markerSlice = createSlice({
     selectMarker(state, action: PayloadAction<IdT>) {
       if (state.markerId === action.payload.markerId) {
         state.markerId = '';
+        state.scroll = null;
       } else {
         state.markerId = action.payload.markerId;
         state.center = action.payload.center;
       }
+    },
+    setscroll(state, action: PayloadAction<null | number>) {
+      state.scroll = action.payload;
     },
   },
 });

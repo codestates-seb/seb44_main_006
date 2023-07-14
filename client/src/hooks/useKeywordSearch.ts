@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Pagination, PlacesSearchResult } from '../types/type';
 import { placeListActions } from '../store/placeList-slice';
@@ -22,6 +23,7 @@ const useKeywordSearch = (
         const bounds = new kakao.maps.LatLngBounds();
         for (let i = 0; i < datas.length; i += 1) {
           const data = datas[i];
+          data.id = uuidv4();
           const [dx, dy] = [data.x, data.y];
           bounds.extend(new kakao.maps.LatLng(Number(dy), Number(dx)));
         }
