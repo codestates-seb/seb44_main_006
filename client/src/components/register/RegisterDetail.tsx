@@ -29,7 +29,7 @@ const PlaceEmbedBox = styled.iframe`
   align-items: center;
   justify-content: center;
   width: ${cssToken.WIDTH['w-full']};
-  height: 100vh;
+  height: 90vh;
 `;
 
 const ButtonWrapper = styled.section`
@@ -39,6 +39,9 @@ const ButtonWrapper = styled.section`
   gap: ${cssToken.SPACING['gap-12']};
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  position: fixed;
+  left: 0;
+  bottom: 0;
 `;
 
 const RegisterDetail = ({
