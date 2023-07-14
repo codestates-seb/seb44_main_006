@@ -39,7 +39,7 @@ const FilterWrapper = styled.div`
 `;
 const FilterContainer = styled(FlexDiv)`
   position: absolute;
-  top: -3.5rem;
+  top: -2.8rem;
   column-gap: ${cssToken.SPACING['gap-50']};
   width: ${cssToken.WIDTH['w-full']};
   border-bottom: 1px solid ${cssToken.COLOR['gray-600']};

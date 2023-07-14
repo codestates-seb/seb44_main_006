@@ -15,7 +15,7 @@ const WarningDiv = styled(FlexDiv)`
 
   @media screen and (max-width: 768px) {
     p {
-      font-size: 0.75rem;
+      font-size: ${cssToken.TEXT_SIZE['text-12']};
     }
   }
 `;

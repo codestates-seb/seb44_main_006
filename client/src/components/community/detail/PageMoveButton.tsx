@@ -8,6 +8,12 @@ import { FlexDiv } from '../../../styles/styles';
 const MoveBtnDiv = styled(FlexDiv)`
   justify-content: center;
   margin-bottom: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-height: 768px) {
+    button {
+      display: none;
+    }
+  }
 `;
 const PageMoveButton = () => {
   const goToCommunity = useMovePage('/community');

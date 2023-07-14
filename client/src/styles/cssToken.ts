@@ -42,6 +42,7 @@ const cssToken = {
     'text-18': '1.125rem',
     'text-16': '1rem',
     'text-14': '0.875rem',
+    'text-12': '0.75rem',
   },
   SPACING: {
     'px-50': '3.125rem',

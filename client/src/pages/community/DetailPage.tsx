@@ -4,6 +4,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { AxiosError } from 'axios';
 
+import { mgpd } from './commonstyle';
+
 import InfoContainer from '../../components/community/detail/InfoContainer';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
 import Title from '../../components/ui/text/Title';
@@ -25,14 +27,68 @@ import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
 import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
 import SkeletonUserContainer from '../../components/community/skeleton/SkeletonUserContainer';
+import ActionButtonContainerRes from '../../components/community/detail/ActionButtonContainerRes';
+import CopyButton from '../../components/ui/button/CopyButton';
+import ShareKakaoButton from '../../components/ui/button/ShareKakaoButton';
+import DeleteButton from '../../components/community/DeleteButton';
+import useUserInfo from '../../querys/useUserInfo';
+
+const DetailOutsideWrap = styled(OutsideWrap)`
+  ${mgpd};
+
+  @media screen and (max-width: 768px) {
+    row-gap: ${cssToken.SPACING['gap-20']};
+
+    h1:first-child {
+      font-size: 1.25rem;
+    }
+
+    textarea {
+      height: 6.25rem;
+      font-size: ${cssToken.TEXT_SIZE['text-12']};
+      margin-bottom: -0.25rem;
+    }
+
+    form > p {
+      font-size: 0.625rem;
+    }
+  }
+`;
 
 const HEADDiv = styled(FlexDiv)`
+  justify-content: space-between;
+
+  @media screen and (max-width: 768px) {
+    img {
+      width: 3.25rem;
+      height: 3.25rem;
+    }
+    p {
+      font-size: ${cssToken.TEXT_SIZE['text-12']};
+    }
+  }
+`;
+
+const ResponseDiv = styled(FlexDiv)`
   justify-content: space-between;
 `;
 
 const UersDiv = styled(FlexDiv)`
   align-items: center;
   column-gap: ${cssToken.SPACING['gap-24']};
+
+  @media screen and (max-width: 768px) {
+    column-gap: ${cssToken.SPACING['gap-10']};
+
+    div {
+      width: fit-content;
+      height: fit-content;
+      img {
+        width: 3.3125rem;
+        height: 3.3125rem;
+      }
+    }
+  }
 `;
 
 const ContentDiv = styled(FlexDiv)`
@@ -43,6 +99,21 @@ const ContentDiv = styled(FlexDiv)`
 
 const CommentBtn = styled(FlexDiv)`
   justify-content: flex-end;
+
+  @media screen and (max-width: 768px) {
+    .skyblue {
+      width: 100%;
+      border-radius: 0px;
+      height: 2.0625rem;
+    }
+  }
+`;
+
+const SharBtnDiv = styled(FlexDiv)`
+  column-gap: ${cssToken.SPACING['gap-10']};
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
 `;
 
 const DetailPage = () => {
@@ -73,6 +144,7 @@ const DetailPage = () => {
       if (response) navigate(`/error/${response.status}`);
     },
   });
+  const { userData } = useUserInfo();
 
   useEffect(() => {
     scrollToTop();
@@ -125,10 +197,21 @@ const DetailPage = () => {
   }, [detailData?.postContent, detailData?.tags]);
 
   return (
-    <OutsideWrap>
-      <Title styles={{ size: cssToken.TEXT_SIZE['text-40'] }}>
-        나의 코스 자랑하기
-      </Title>
+    <DetailOutsideWrap>
+      <ResponseDiv>
+        <Title styles={{ size: cssToken.TEXT_SIZE['text-40'] }}>
+          나의 코스 자랑하기
+        </Title>
+        {detailData && userData && (
+          <SharBtnDiv>
+            <CopyButton endpoint={`community/${detailData.postId}`} />
+            <ShareKakaoButton endpoint={`community/${detailData.postId}`} />
+            {userData && detailData.memberEmail === userData.memberEmail && (
+              <DeleteButton postId={detailData.postId} />
+            )}
+          </SharBtnDiv>
+        )}
+      </ResponseDiv>
       <HEADDiv>
         <UersDiv>
           {isLoading && <SkeletonUserContainer />}
@@ -143,15 +226,28 @@ const DetailPage = () => {
           )}
         </UersDiv>
         {detailData && postId && (
-          <ActionButtonContainer
-            memberEmail={detailData.memberEmail}
-            bookmarkStatus={detailData.bookmarkStatus}
-            likeStatus={detailData.likeStatus}
-            LikeCount={detailData.courseLikeCount}
-            isLogin={!!isLogin}
-            postId={postId}
-            courseId={detailData.courseInfo.courseId}
-          />
+          <>
+            <ActionButtonContainer
+              memberEmail={detailData.memberEmail}
+              bookmarkStatus={detailData.bookmarkStatus}
+              likeStatus={detailData.likeStatus}
+              LikeCount={detailData.courseLikeCount}
+              isLogin={!!isLogin}
+              postId={postId}
+              courseId={detailData.courseInfo.courseId}
+            />
+            {userData && (
+              <ActionButtonContainerRes
+                userData={userData}
+                memberEmail={detailData.memberEmail}
+                bookmarkStatus={detailData.bookmarkStatus}
+                likeStatus={detailData.likeStatus}
+                LikeCount={detailData.courseLikeCount}
+                isLogin={!!isLogin}
+                courseId={detailData.courseInfo.courseId}
+              />
+            )}
+          </>
         )}
       </HEADDiv>
 
@@ -198,7 +294,7 @@ const DetailPage = () => {
       </form>
       {detailData && <CommentContainer comments={detailData.answerList} />}
       <PageMoveButton />
-    </OutsideWrap>
+    </DetailOutsideWrap>
   );
 };
 

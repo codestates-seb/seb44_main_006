@@ -38,6 +38,11 @@ const ButtonTemplate = styled.button<IEventButtonStyle>`
     &.skyblue {
       ${Button640}
     }
+
+    &.communityStar {
+      width: 2.1875rem;
+      height: 2.1875rem;
+    }
   }
 `;
 

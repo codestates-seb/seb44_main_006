@@ -14,6 +14,7 @@ const StarButton = ({
   svgHeight,
   isActive,
   courseId,
+  className,
 }: LikeBookMarkButtonT) => {
   const queryClient = useQueryClient();
   const mutation = useMutation(PostBookmark, {
@@ -35,6 +36,7 @@ const StarButton = ({
   };
   return (
     <EventButton
+      className={className}
       onClick={handleStarButton}
       styles={{
         width,
