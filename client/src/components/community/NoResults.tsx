@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 
 import { FlexDiv } from '../../styles/styles';
 import cssToken from '../../styles/cssToken';
+import Text from '../ui/text/Text';
 
 const Div = styled(FlexDiv)`
   width: 100%;
@@ -15,7 +16,14 @@ const Div = styled(FlexDiv)`
 const NoResults = () => {
   return (
     <Div>
-      <img width="40%" src="noresults.jpg" alt="noresults" />
+      <img width="40%" src="noresults.png" alt="noresults" />
+      <Text
+        styles={{
+          size: cssToken.TEXT_SIZE['text-32'],
+        }}
+      >
+        No Results
+      </Text>
     </Div>
   );
 };

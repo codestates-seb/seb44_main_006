@@ -19,13 +19,14 @@ type HeaderStyle = {
 
 const MoNavContainer = styled.nav<HeaderStyle>`
   display: none;
-  @media (max-width: 780px) {
+  @media (max-width: 768px) {
     display: ${(props) => {
       if (props?.ispath === 'register' || props?.ispath === 'setting') {
         return 'none';
       }
       return 'grid';
     }};
+    height: 4.5rem;
     position: fixed;
     bottom: 0;
     background-color: #fff;

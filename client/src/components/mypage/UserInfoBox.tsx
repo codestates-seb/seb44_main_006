@@ -77,6 +77,7 @@ const ImgBox = styled.div`
   flex: 1;
 `;
 
+
 const SettingButton = styled.button`
   position: absolute;
   bottom: 0;
