@@ -1,9 +1,8 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { setUserOAuthActions } from '../store/userAuth-slice';
 import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
@@ -86,7 +85,6 @@ const Main = () => {
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
 
   const LogintoggleModal = useLoginToggleModal();
-  const dispatch = useDispatch();
 
   const handleMouseEnter = () => {
     setIsHovered((prev) => !prev);

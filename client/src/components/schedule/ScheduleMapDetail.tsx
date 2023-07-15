@@ -184,7 +184,7 @@ const ScheduleMapDetail = ({
             <GrayButton
               width="100%"
               height="50px"
-              borderRadius="10px"
+              brradius="10px"
               onClick={gotoBack}
             >
               뒤로가기
@@ -192,7 +192,7 @@ const ScheduleMapDetail = ({
             <SkyBlueButton
               width="100%"
               height="50px"
-              borderRadius="10px"
+              brradius="10px"
               onClick={gotoMain}
             >
               메인 페이지
