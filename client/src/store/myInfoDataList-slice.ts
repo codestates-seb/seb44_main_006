@@ -24,6 +24,7 @@ const initialState: MypSummaryT = {
   ],
   memberBookmarkedList: [
     {
+      bookmarkId: 0,
       courseId: -1,
       courseLikeCount: 0,
       courseThumbnail: '',
@@ -45,10 +46,10 @@ const myInfoDataListSlice = createSlice({
   initialState,
   reducers: {
     setDataCourse(state, action: PayloadAction<MypCourseSummaryT[]>) {
-      state.memberCourseList = action.payload;
+      if (action.payload) state.memberCourseList = action.payload;
     },
     setDataBookMark(state, action: PayloadAction<MyBookMarkSummaryT[]>) {
-      state.memberBookmarkedList = action.payload;
+      if (action.payload) state.memberBookmarkedList = action.payload;
     },
   },
 });

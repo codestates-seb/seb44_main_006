@@ -10,7 +10,7 @@ import FilterTab from '../../components/mypage/FilterTab';
 import useHandleTab from '../../hooks/useHandleTab';
 import { myInfoDataListActions } from '../../store/myInfoDataList-slice';
 import { RootState } from '../../store';
-import { MypCourseSummaryT, MyBookMarkSummaryT } from '../../types/apitype';
+import { MypSummaryT } from '../../types/apitype';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -27,18 +27,15 @@ const MyPage = () => {
   useQuery({
     queryKey: ['mypage'],
     queryFn: () => GetMyList(),
-    onSuccess: (data) => {
-      // Fixme type ScheduleDetail Data 확인 후
-      dispatch(
-        myInfoDataListActions.setDataCourse(
-          data?.data.memberCourseList as MypCourseSummaryT[]
-        )
-      );
-      dispatch(
-        myInfoDataListActions.setDataBookMark(
-          data?.data.memberBookmarkedList as MyBookMarkSummaryT[]
-        )
-      );
+    onSuccess: (data: { data: MypSummaryT }) => {
+      if (data) {
+        dispatch(
+          myInfoDataListActions.setDataCourse(data.data.memberCourseList)
+        );
+        dispatch(
+          myInfoDataListActions.setDataBookMark(data.data.memberBookmarkedList)
+        );
+      }
     },
   });
 

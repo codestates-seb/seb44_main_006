@@ -1,37 +1,18 @@
-import { styled } from 'styled-components';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { UserQAuthInfo, setUserOAuthActions } from '../../store/userAuth-slice';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
 import { RootState } from '../../store';
-import cssToken from '../../styles/cssToken';
-import GrayButton from '../ui/button/GrayButton';
-import SkyBlueButton from '../ui/button/SkyBlueButton';
 import LoginModal from '../ui/modal/LoginModal';
 import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
 import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
-import Text from '../ui/text/Text';
 import ModalChildren from '../community/post/ModalChildren';
 
-const BtnBox = styled.div`
-  display: flex;
-  gap: ${cssToken.SPACING['gap-10']};
-
-  > button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.2rem 0.95rem 0.95rem;
-    white-space: nowrap;
-    transition: ${cssToken.TRANSITION.basic};
-    font-size: 14px;
-  }
-`;
 const MemAccountModal = () => {
   const [searchParams] = useSearchParams();
   const accessToken = searchParams.get('access_token');
@@ -39,6 +20,7 @@ const MemAccountModal = () => {
   const navigate = useNavigate();
   const gotoMain = useMovePage('/');
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const LogintoggleModal = useLoginToggleModal();
   const LogoutoggleModal = useLogioutoggleModal();
 
@@ -73,16 +55,26 @@ const MemAccountModal = () => {
     queryKey: ['oauthInfoData'],
     queryFn: () => GetUserInfo(),
     onSuccess: (data) => {
-      dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
-      if (accessToken && refreshToken) {
-        localStorage.setItem('accessToken', `Bearer ${accessToken}`);
-        localStorage.setItem('refreshToken', `${refreshToken}`);
-        localStorage.setItem('isLogin', JSON.stringify(true));
-        if (localStorage.getItem('isLogin')) {
-          dispatch(setUserOAuthActions.setIsLogin(true));
+      const handleSuccess = async () => {
+        dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
+        if (accessToken && refreshToken) {
+          localStorage.setItem('accessToken', `Bearer ${accessToken}`);
+          localStorage.setItem('refreshToken', `${refreshToken}`);
+          localStorage.setItem('isLogin', JSON.stringify(true));
+          if (localStorage.getItem('isLogin')) {
+            dispatch(setUserOAuthActions.setIsLogin(true));
+          }
+          gotoMain();
         }
-        gotoMain();
-      }
+        await queryClient.invalidateQueries(['oauthInfoData']);
+      };
+
+      handleSuccess().catch((error) => {
+        if (accessToken) {
+          const { response } = error as AxiosError;
+          if (response) navigate(`/error/${response.status}`);
+        }
+      });
     },
     onError: (error) => {
       if (accessToken) {
