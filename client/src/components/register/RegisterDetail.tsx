@@ -10,6 +10,7 @@ import { PlacesSearchResultItem } from '../../types/type';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import { RootState } from '../../store';
 import scheduleDetailState from '../../utils/constant/scheduleDetailState';
+import showToast from '../../utils/showToast';
 
 const RegisterDetailContainer = styled.section`
   position: absolute;
@@ -61,7 +62,6 @@ const RegisterDetail = ({
 
   const addSchedule = () => {
     const placeId = uuidv4();
-
     if (scheduleList.length < 10) {
       dispatch(
         scheduleListActions.addList({
@@ -76,6 +76,8 @@ const RegisterDetail = ({
           y: detailItem.y,
         })
       );
+    } else {
+      showToast('error', '일정은 10개까지 등록 가능합니다!')();
     }
     dispatch(showDetailActions.setIsShow(false));
   };

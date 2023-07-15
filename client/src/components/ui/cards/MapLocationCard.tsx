@@ -23,6 +23,13 @@ const MapLocationCardContainer = styled.section`
   &:last-child .last-circle::after {
     display: none;
   }
+
+  @media screen and (max-width: 768px) {
+    svg {
+      width: 13px;
+      height: 14px;
+    }
+  }
 `;
 
 const NumCircle = styled.span`
@@ -46,6 +53,17 @@ const NumCircle = styled.span`
     bottom: -120%;
     transform: translate(-50%, 0);
   }
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.8125rem;
+    width: 1.8rem;
+    height: 1.8rem;
+
+    &::after {
+      height: 80%;
+      bottom: -100%;
+    }
+  }
 `;
 
 const LocationCard = styled.div<{ selected?: boolean }>`
@@ -58,11 +76,20 @@ const LocationCard = styled.div<{ selected?: boolean }>`
   padding: ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-12']}
     ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-16']};
   ${CardCommonBox}
+
+  @media screen and (max-width: 768px) {
+    padding: ${cssToken.SPACING['gap-16']} ${cssToken.SPACING['gap-12']}
+      ${cssToken.SPACING['gap-16']} ${cssToken.SPACING['gap-12']};
+  }
 `;
 
 const LocationText = styled.p`
   font-size: ${cssToken.TEXT_SIZE['text-18']};
   font-weight: ${cssToken.FONT_WEIGHT.medium};
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.8125rem;
+  }
 `;
 
 const RightButtonArea = styled.section`
@@ -70,6 +97,10 @@ const RightButtonArea = styled.section`
   gap: 1rem;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
 const MapLocationCard = ({

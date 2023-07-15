@@ -109,6 +109,7 @@ const PlaceList = ({
             }
             address={item.road_address_name}
             phone={item.phone}
+            place_url={item.place_url}
             onClick={() => handleClick(item, item.id)}
           />
         );

@@ -161,6 +161,7 @@ const ContensCard = ({
             <ContensTitle>{title}</ContensTitle>
             {isLogin && !isMine && bookmarkStatus !== undefined && courseId && (
               <StarButton
+                status={bookmarkStatus ? 'del' : 'add'}
                 width="40px"
                 height="40px"
                 isActive={bookmarkStatus}
