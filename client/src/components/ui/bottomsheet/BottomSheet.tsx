@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+
+import Content from './Content';
 
 import cssToken from '../../../styles/cssToken';
 
@@ -12,7 +14,7 @@ const Wrapper = styled.div<{
   height: 100vh;
   background-color: ${cssToken.COLOR.white};
   overflow: hidden;
-  transition: height 0.5s ease-in-out;
+  transition: height 0.3s ease-in-out;
   flex: 0 0 25rem;
 
   &::-webkit-scrollbar {
@@ -20,7 +22,7 @@ const Wrapper = styled.div<{
   }
 
   @media (max-width: 768px) {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
@@ -39,44 +41,26 @@ const Wrapper = styled.div<{
     border-top-right-radius: ${cssToken.BORDER['rounded-md']};
     border: ${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['gray-500']};
   }
-
-  @media (max-width: 1280px) {
-    flex: 0 0 21rem;
-  }
 `;
 
-const Header = styled.section`
+const Header = styled.section<{
+  ishide: boolean;
+}>`
   display: none;
 
   @media (max-width: 768px) {
-    height: 2rem;
+    height: ${(props) => {
+      if (props.ishide) {
+        return `calc(${cssToken.HEIGHT['bottomsheet-header']} + ${cssToken.HEIGHT['mo-nav-height']})`;
+      }
+      return cssToken.HEIGHT['bottomsheet-header'];
+    }};
     display: flex;
     justify-content: center;
-    align-items: center;
+    padding-top: 1rem;
     width: 100%;
     background-color: ${cssToken.COLOR.white};
     cursor: pointer;
-  }
-`;
-
-const Content = styled.div`
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  @media (max-width: 768px) {
-    .scheduleBox {
-      height: 91vh;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .scheduleBox {
-      height: 80vh;
-    }
   }
 `;
 
@@ -94,17 +78,31 @@ interface Prop {
 
 const BottomSheet = ({ children, param }: Prop) => {
   const [isHide, setIsHide] = useState(true);
+  const [contentHeight, setContentHeight] = useState(window.innerHeight);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
     setIsHide(!isHide);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setContentHeight(window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
-    <Wrapper ishide={isHide} contentHeight={window.innerHeight} param={param}>
-      <Header onClick={handleClick}>
+    <Wrapper ishide={isHide} contentHeight={contentHeight} param={param}>
+      <Header ishide={isHide} onClick={handleClick}>
         <Handle />
       </Header>
-      <Content>{children}</Content>
+      <Content ref={contentRef} wrapperHeight={contentHeight}>
+        {children}
+      </Content>
     </Wrapper>
   );
 };
