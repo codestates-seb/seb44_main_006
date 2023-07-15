@@ -13,13 +13,6 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const LoadingDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
 const LoadingImg = styled.img`
   @media (max-width: 1280px) {
     width: 90%;

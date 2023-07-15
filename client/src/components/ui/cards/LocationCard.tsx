@@ -72,7 +72,7 @@ const LocationCard = ({
   category,
   address,
   phone,
-  onClick,
+  // onClick,
   place_url,
 }: LocationCardInfo) => {
   const cardRef = useRef<HTMLElement>(null);
