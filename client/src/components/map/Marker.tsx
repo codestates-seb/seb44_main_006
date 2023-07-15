@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
+import { debounce } from 'lodash';
 
 import { Props } from '../../types/type';
 import defaultOptions from '../../utils/constant/constant';
@@ -67,10 +68,14 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
       zIndex,
     });
 
-    const setMarkerId = () => {
+    const clickMarker = debounce(() => {
       dispatch(
         markerActions.selectMarker({ markerId: id, center: { lat, lng } })
       );
+    }, 200);
+
+    const setMarkerId = () => {
+      clickMarker();
     };
 
     kakao.maps.event.addListener(marker, 'click', setMarkerId);

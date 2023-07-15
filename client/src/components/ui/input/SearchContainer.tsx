@@ -20,7 +20,7 @@ const Input = styled.input<StylesT>`
   padding-bottom: ${(props) => props.pb || cssToken.SPACING['gap-16']};
   padding-left: 1.125rem;
   padding-right: 3.5rem;
-  border: none;
+  border: 1px solid ${cssToken.COLOR['gray-600']};
   border-radius: ${cssToken.BORDER['rounded-input']};
 
   ::-webkit-input-placeholder {
