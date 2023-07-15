@@ -10,7 +10,7 @@ const Wrapper = styled.div<{
 }>`
   width: 100%;
   height: 100vh;
-  background-color: transparent;
+  background-color: ${cssToken.COLOR.white};
   overflow: hidden;
   transition: height 0.5s ease-in-out;
   flex: 0 0 25rem;
@@ -28,10 +28,10 @@ const Wrapper = styled.div<{
     overflow: ${(props) => props.param === 'detail' && 'auto'};
     height: ${(props) => {
       if (props.ishide) {
-        return '2rem';
+        return `calc(${cssToken.HEIGHT['bottomsheet-header']} + ${cssToken.HEIGHT['mo-nav-height']})`;
       }
       if (props.param === 'detail') {
-        return `${props.contentHeight / 2 + 48}px`;
+        return `${props.contentHeight / 2 + 360}px`;
       }
       return `${props.contentHeight - 48}px`;
     }};
@@ -61,7 +61,6 @@ const Header = styled.section`
 
 const Content = styled.div`
   overflow: auto;
-  background-color: gray;
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
@@ -71,6 +70,12 @@ const Content = styled.div`
   @media (max-width: 768px) {
     .scheduleBox {
       height: 91vh;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .scheduleBox {
+      height: 80vh;
     }
   }
 `;
