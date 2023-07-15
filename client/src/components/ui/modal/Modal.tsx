@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import ReactDOM from 'react-dom';
+import React from 'react';
 
 import { Props } from '../../../types/type';
 import CloseButton from '../button/CloseButton';
@@ -129,7 +130,7 @@ const Modal = ({
   children?: Props['children'];
   displayclosebtn?: boolean;
   styles?: IModalContainer;
-  backdropCallback?: () => void;
+  backdropCallback?: (e: React.MouseEvent<HTMLDivElement>) => void;
   handleCloseBtn?: () => void;
 }) => {
   return ReactDOM.createPortal(
