@@ -35,10 +35,15 @@ const SettingBox = styled.section`
   border-radius: 0.9375rem;
   width: 37.5rem;
   height: 37.5rem;
-  background-color: #fff;
+  background-color: ${cssToken.COLOR.white};
   flex-direction: column;
   gap: ${cssToken.SPACING['gap-50']};
   position: relative;
+  @media (max-width: 780px) {
+    width: ${cssToken.WIDTH['min-w-full']};
+    height: ${cssToken.HEIGHT['h-screen']};
+    border-radius: 0;
+  }
 `;
 
 const ImgBox = styled.div`
@@ -64,6 +69,10 @@ const SettingList = styled.li`
   padding: ${cssToken.SPACING['gap-20']};
   justify-content: center;
   height: 5rem;
+
+  @media (max-width: 780px) {
+    padding: 0.25rem;
+  }
 
   span {
     flex: 1;
