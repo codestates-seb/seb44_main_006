@@ -78,6 +78,7 @@ export const BtnDiv = styled(FlexDiv)`
 
   @media screen and (max-width: 500px) {
     margin-bottom: ${cssToken.SPACING['gap-20']};
+    align-self: flex-end;
   }
 `;
 

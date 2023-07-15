@@ -14,11 +14,11 @@ const BtnDiv = styled(FlexDiv)`
 const ErrorBtnContainer = () => {
   const navigate = useNavigate();
   return (
-    <BtnDiv>
+    <BtnDiv className="errorBtn">
       <GrayButton
         width="222px"
         height="53px"
-        borderRadius={cssToken.BORDER['rounded-md']}
+        brradius={cssToken.BORDER['rounded-md']}
         onClick={() => {
           navigate(-1);
         }}
@@ -28,7 +28,7 @@ const ErrorBtnContainer = () => {
       <SkyBlueButton
         width="222px"
         height="53px"
-        borderRadius={cssToken.BORDER['rounded-md']}
+        brradius={cssToken.BORDER['rounded-md']}
         onClick={() => {
           navigate('/', { replace: true });
         }}

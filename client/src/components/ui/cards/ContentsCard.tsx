@@ -187,7 +187,7 @@ const ContensCard = ({
           styles={{
             width: '100%',
             height: '0',
-            borderRadius: cssToken.BORDER['rounded-s'],
+            brradius: cssToken.BORDER['rounded-s'],
           }}
           src={thumbnail}
         />

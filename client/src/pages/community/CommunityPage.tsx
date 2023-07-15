@@ -33,6 +33,7 @@ const Wrapper = styled(FlexDiv)`
   }
 
   @media screen and (max-width: 768px) {
+    margin-bottom: 4.5rem;
     margin-top: 0px;
     padding-top: ${cssToken.SPACING['gap-20']};
     row-gap: 5rem;
@@ -64,7 +65,7 @@ const FixedDiv = styled.div`
 
   @media screen and (max-width: 768px) {
     right: 1rem;
-    bottom: 4rem;
+    bottom: 5.5rem;
   }
 `;
 

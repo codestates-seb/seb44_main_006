@@ -34,10 +34,10 @@ export interface IButtonStyle {
   padding?: string;
   margin?: string;
   color?: string;
-  backgroundColor?: string;
+  bgcolor?: string;
   boxShadow?: string;
   border?: string;
-  borderRadius?: string;
+  brradius?: string;
   gap?: string;
   isActive?: boolean;
   title?: string;
@@ -154,6 +154,7 @@ export interface ContCardInfo {
 }
 
 export interface LocationCardInfo {
+  id?: string;
   title?: string;
   category?: string;
   address?: string;
@@ -184,6 +185,7 @@ export interface ILatLng {
 export type IdT = {
   markerId: string;
   center: ILatLng;
+  scroll?: null | number;
 };
 
 export interface ICSearchState {

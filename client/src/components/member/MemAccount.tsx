@@ -124,7 +124,7 @@ const MemAccountModal = () => {
               width="15.5625rem"
               height="4.625rem"
               fontsize={cssToken.TEXT_SIZE['text-24']}
-              borderRadius={cssToken.BORDER['rounded-md']}
+              brradius={cssToken.BORDER['rounded-md']}
               onClick={LogoutoggleModal}
             >
               아니오
@@ -133,7 +133,7 @@ const MemAccountModal = () => {
               width="15.5625rem"
               height="4.625rem"
               fontsize={cssToken.TEXT_SIZE['text-24']}
-              borderRadius={cssToken.BORDER['rounded-md']}
+              brradius={cssToken.BORDER['rounded-md']}
               onClick={handleLogout}
             >
               예

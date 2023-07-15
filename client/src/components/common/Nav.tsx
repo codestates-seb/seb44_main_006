@@ -24,10 +24,10 @@ const BtnBox = styled.nav`
 `;
 
 const Nav = ({
-  isPath,
+  ispath,
   isLoggedIn,
 }: {
-  isPath: string;
+  ispath: string;
   isLoggedIn: LoginState['isLogin'];
 }) => {
   const gotoCommunity = useMovePage('/community');
@@ -37,49 +37,49 @@ const Nav = ({
 
   return (
     <BtnBox>
-      {!isPath && isLoggedIn && (
+      {!ispath && isLoggedIn && (
         // 메인 페이지인 경우
         <>
           <WhiteButton
             onClick={LogoutoggleModal}
             height="25px"
-            borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            brradius={`${cssToken.BORDER['rounded-tag']}`}
           >
             로그아웃
           </WhiteButton>
           <SkyBlueButton
             onClick={gotoMypage}
             height="25px"
-            borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            brradius={`${cssToken.BORDER['rounded-tag']}`}
           >
             마이페이지
           </SkyBlueButton>
         </>
       )}
-      {isPath && isLoggedIn && (
+      {ispath && isLoggedIn && (
         // 메인 페이지가 아닌 나머지
         <>
           <WhiteButton
             onClick={LogoutoggleModal}
             height="25px"
-            borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            brradius={`${cssToken.BORDER['rounded-tag']}`}
           >
             로그아웃
           </WhiteButton>
           <SkyBlueButton
-            onClick={isPath === 'mypage' ? gotoCommunity : gotoMypage}
+            onClick={ispath === 'mypage' ? gotoCommunity : gotoMypage}
             height="25px"
-            borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+            brradius={`${cssToken.BORDER['rounded-tag']}`}
           >
-            {isPath === 'mypage' ? '커뮤니티' : '마이페이지'}
+            {ispath === 'mypage' ? '커뮤니티' : '마이페이지'}
           </SkyBlueButton>
         </>
       )}
-      {isPath && !isLoggedIn && (
+      {ispath && !isLoggedIn && (
         <WhiteButton
           onClick={LogintoggleModal}
           height="25px"
-          borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+          brradius={`${cssToken.BORDER['rounded-tag']}`}
         >
           로그인
         </WhiteButton>

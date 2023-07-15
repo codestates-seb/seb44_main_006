@@ -4,8 +4,7 @@ import cssToken from '../../styles/cssToken';
 import { FlexDiv, SkeletonDiv } from '../../styles/styles';
 
 const CardContainer = styled.div`
-  width: 25.2813rem;
-  height: 31.625rem;
+  width: 20.625rem;
   cursor: pointer;
   border: 2px solid ${cssToken.COLOR['gray-500']};
   border-radius: ${cssToken.BORDER['rounded-md']};
@@ -13,6 +12,19 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  row-gap: ${cssToken.SPACING['gap-20']};
+
+  @media screen and (max-width: 768px) {
+    &.skeletonCardContainer {
+      width: 100%;
+      height: 23.5313rem;
+    }
+
+    .skeletonImg {
+      width: 100%;
+      height: 9.0938rem;
+    }
+  }
 `;
 
 const NickDiv = styled(SkeletonDiv)`
@@ -22,11 +34,11 @@ const NickDiv = styled(SkeletonDiv)`
 
 export const TitleDiv = styled(SkeletonDiv)`
   width: 15rem;
-  height: 3rem;
+  height: 1.4375rem;
 `;
 
 const ContentDiv = styled(SkeletonDiv)`
-  height: 2.1875rem;
+  height: 2rem;
 `;
 
 const TagWrapper = styled(FlexDiv)`
@@ -52,7 +64,7 @@ const DateDiv = styled(SkeletonDiv)`
 
 const SkeletonContentCard = () => {
   return (
-    <CardContainer>
+    <CardContainer className="skeletonCardContainer">
       <NickDiv />
       <TitleDiv />
       <ContentDiv />
@@ -60,7 +72,7 @@ const SkeletonContentCard = () => {
         <TagDiv />
         <TagDiv />
       </TagWrapper>
-      <ImgDiv />
+      <ImgDiv className="skeletonImg" />
       <DateDiv />
     </CardContainer>
   );

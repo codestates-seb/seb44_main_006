@@ -87,7 +87,7 @@ const RegisterDetail = ({
         <GrayButton
           width="7rem"
           height="3rem"
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
           onClick={handleClose}
         >
           닫기
@@ -95,7 +95,7 @@ const RegisterDetail = ({
         <SkyBlueButton
           width="7rem"
           height="3rem"
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
           onClick={addSchedule}
         >
           추가 하기

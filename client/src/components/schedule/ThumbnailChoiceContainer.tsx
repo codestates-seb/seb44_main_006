@@ -102,7 +102,7 @@ const ThumbnailChoiceContainer = ({ setIsThumbChouce, display }: Prop) => {
         <GrayButton
           width="150px"
           height="50px"
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
           onClick={() => setIsThumbChouce(false)}
         >
           뒤로가기
@@ -110,7 +110,7 @@ const ThumbnailChoiceContainer = ({ setIsThumbChouce, display }: Prop) => {
         <SkyBlueButton
           width="150px"
           height="50px"
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
           onClick={() => setIsThumbChouce(false)}
         >
           선택하기

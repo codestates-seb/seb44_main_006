@@ -42,15 +42,6 @@ const FixedDiv = styled.div`
   z-index: 999;
 `;
 
-const RelativeDiv = styled.div`
-  position: relative;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    height: auto;
-  }
-`;
-
 const FloatButton = styled.button<{ bgcolor: string; fontcolor?: string }>`
   font-weight: ${cssToken.FONT_WEIGHT.bold};
   width: 8rem;
@@ -75,6 +66,7 @@ const ScheduleRegister = () => {
   const isSave = useSelector((state: RootState) => state.overlay.isOpen);
   const places = useSelector((state: RootState) => state.placeList.list);
   const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
+
   const scheduleList = useSelector(
     (state: RootState) => state.scheduleList.list
   );
@@ -100,9 +92,7 @@ const ScheduleRegister = () => {
       {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 
       <BottomSheet>
-        <RelativeDiv>
-          <ScheduleBox />
-        </RelativeDiv>
+        <ScheduleBox />
         {isDetailShow && <RegisterDetail detailItem={detailItem} />}
       </BottomSheet>
 
