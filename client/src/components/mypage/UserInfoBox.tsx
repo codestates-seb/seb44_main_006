@@ -81,8 +81,8 @@ const ImgBox = styled.div`
     bottom: 0;
     right: 0;
     &:hover {
-    opacity: 1;
-   }
+      opacity: 1;
+    }
   }
 `;
 
