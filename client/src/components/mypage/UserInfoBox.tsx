@@ -77,7 +77,6 @@ const ImgBox = styled.div`
   flex: 1;
 `;
 
-
 const SettingButton = styled.button`
   position: absolute;
   bottom: 0;
@@ -140,8 +139,14 @@ const UserInfoBox = () => {
   };
 
   const paintNickname = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (nickName === memNickname) {
+      setToggleNickname(!toggleNickname);
+      return;
+    }
+
     if (isName) {
-      e.preventDefault();
       mutation.mutate(nickName);
       setToggleNickname(!toggleNickname);
     }
@@ -192,7 +197,7 @@ const UserInfoBox = () => {
             <FormBox onSubmit={paintNickname}>
               <InputContainer
                 type="title"
-                minLength={1}
+                minLength={2}
                 maxLength={10}
                 defaultValue={
                   nickName === '' ? userAuthInfo?.memberNickname : nickName
