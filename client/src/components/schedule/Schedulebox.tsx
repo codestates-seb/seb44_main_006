@@ -28,6 +28,10 @@ const ScheduleContainer = styled.section`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media (max-width: 768px) {
+    height: 100%;
+  }
 `;
 
 const ScheduleInfoBox = styled.div`
