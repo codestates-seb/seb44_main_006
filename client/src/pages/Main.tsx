@@ -15,6 +15,7 @@ const MainContainer = styled.main`
   flex-direction: column-reverse;
   @media (min-width: 768px) {
     flex-direction: row;
+    cursor: default;
   }
 `;
 
@@ -41,10 +42,12 @@ const MainLink = styled(Link)`
   }
   @media (min-width: 768px) {
     font-size: 50px;
+    cursor: default;
   }
 
   @media (min-width: 1280px) {
     font-size: 70px;
+    cursor: default;
   }
 `;
 
