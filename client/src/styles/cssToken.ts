@@ -15,6 +15,8 @@ const cssToken = {
     'h-min': 'min-content',
     'h-max': 'max-content',
     'h-fit': 'fit-content',
+    'mo-nav-height': '4.5rem',
+    'bottomsheet-header': '2rem',
   },
   COLOR: {
     'point-900': '#00D1FF',
