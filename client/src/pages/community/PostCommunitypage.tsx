@@ -35,16 +35,40 @@ import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMa
 const PostOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
     ${mgpd}
-    row-gap: ${cssToken.SPACING['gap-20']}
+    row-gap: ${cssToken.SPACING['gap-20']};
+    h3 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.8125rem;
+      line-height: 1rem;
+    }
   }
 `;
 
 const QuillDiv = styled(GapDiv)`
-  margin-bottom: '0.1875rem';
+  margin-bottom: 0.1875rem;
+  .ql-toolbar {
+    height: 2.625rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+
+    .ql-formats {
+      display: flex;
+      flex-direction: row;
+    }
+  }
 `;
 
 const ErrorContainer = styled(GapDiv)`
   margin-bottom: ${cssToken.SPACING['gap-12']};
+
+  @media screen and (max-width: 768px) {
+    margin-top: 2rem;
+  }
 `;
 
 const PostCommunitypage = () => {
@@ -126,21 +150,23 @@ const PostCommunitypage = () => {
           )}
         </GapDiv>
 
-        <QuillDiv>
-          <WritePost />
-          <ReactQuill
-            onChange={HandleQuillChange}
-            ref={quillRef}
-            style={{ height: '200px' }}
-          />
-        </QuillDiv>
-        <ErrorContainer>
-          {!isValidate && (
-            <Text styles={{ color: cssToken.COLOR['red-900'] }}>
-              글자 수를 만족하지 못했습니다.
-            </Text>
-          )}
-        </ErrorContainer>
+        <>
+          <QuillDiv>
+            <WritePost />
+            <ReactQuill
+              onChange={HandleQuillChange}
+              ref={quillRef}
+              style={{ height: '200px' }}
+            />
+          </QuillDiv>
+          <ErrorContainer>
+            {!isValidate && (
+              <Text styles={{ color: cssToken.COLOR['red-900'] }}>
+                글자 수를 만족하지 못했습니다.
+              </Text>
+            )}
+          </ErrorContainer>
+        </>
 
         <TagContainer tags={tags} setTags={setTags} />
         <Warning />

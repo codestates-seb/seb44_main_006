@@ -66,6 +66,7 @@ const ScheduleRegister = () => {
   const isSave = useSelector((state: RootState) => state.overlay.isOpen);
   const places = useSelector((state: RootState) => state.placeList.list);
   const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
+
   const scheduleList = useSelector(
     (state: RootState) => state.scheduleList.list
   );

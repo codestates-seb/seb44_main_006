@@ -209,7 +209,7 @@ const UserInfoBox = () => {
         <SkyBlueButton
           onClick={gotoRegister}
           height="25px"
-          borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+          brradius={`${cssToken.BORDER['rounded-tag']}`}
         >
           일정 등록
         </SkyBlueButton>

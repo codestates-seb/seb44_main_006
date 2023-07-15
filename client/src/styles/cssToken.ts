@@ -7,7 +7,7 @@ const cssToken = {
     'min-w-min': 'min-content',
     'min-w-max': 'max-content',
     'min-w-fit': 'fit-content',
-    'grid-min': '21.5rem',
+    'grid-min': '20.5rem',
   },
   HEIGHT: {
     'h-full': '100%',
@@ -42,6 +42,7 @@ const cssToken = {
     'text-18': '1.125rem',
     'text-16': '1rem',
     'text-14': '0.875rem',
+    'text-12': '0.75rem',
   },
   SPACING: {
     'px-50': '3.125rem',

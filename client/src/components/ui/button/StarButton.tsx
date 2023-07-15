@@ -14,6 +14,7 @@ const StarButton = ({
   svgHeight,
   isActive,
   courseId,
+  className,
 }: LikeBookMarkButtonT) => {
   const queryClient = useQueryClient();
   const mutation = useMutation(PostBookmark, {
@@ -35,14 +36,15 @@ const StarButton = ({
   };
   return (
     <EventButton
+      className={className}
       onClick={handleStarButton}
       styles={{
         width,
         height,
-        backgroundColor: isActive
+        bgcolor: isActive
           ? cssToken.COLOR['yellow-100']
           : cssToken.COLOR['gray-300'],
-        borderRadius: cssToken.BORDER['rounded-full'],
+        brradius: cssToken.BORDER['rounded-full'],
       }}
     >
       <svg

@@ -68,7 +68,7 @@ const ScheduleCancelModal = ({
           <GrayButton
             width="150px"
             height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
+            brradius={cssToken.BORDER['rounded-md']}
             onClick={handleYes}
           >
             네
@@ -76,7 +76,7 @@ const ScheduleCancelModal = ({
           <SkyBlueButton
             width="150px"
             height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
+            brradius={cssToken.BORDER['rounded-md']}
             onClick={handleNo}
           >
             아니오

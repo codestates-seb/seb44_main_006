@@ -213,7 +213,6 @@ const ScheduleMapDetail = ({
           <div>메인 페이지</div>
         </FloatButton>
       </FixedDiv>
-
       <MapDiv>
         <KakaoMap
           center={{

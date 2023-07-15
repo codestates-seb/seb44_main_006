@@ -80,7 +80,7 @@ const ScheduleStart = () => {
           <GrayButton
             width="150px"
             height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
+            brradius={cssToken.BORDER['rounded-md']}
             onClick={handleCurrent}
           >
             <Link to="/main">뒤로가기</Link>
@@ -88,7 +88,7 @@ const ScheduleStart = () => {
           <SkyBlueButton
             width="150px"
             height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
+            brradius={cssToken.BORDER['rounded-md']}
             onClick={handleCurrent}
           >
             <Link to="/main">선택완료</Link>

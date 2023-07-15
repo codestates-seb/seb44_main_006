@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { debounce } from 'lodash';
 
 import { Props, TextareaT } from '../../types/type';
 import { mapActions } from '../../store/map-slice';
@@ -46,13 +47,17 @@ const KakaoMap = ({
         keyboardShortcuts: true,
       });
 
-      if (selected && selected?.lat) {
-        const moveLatlng = new kakao.maps.LatLng(
-          Number(selected.lat),
-          Number(selected.lng)
-        );
-        newMap.panTo(moveLatlng);
-      }
+      const debounceMap = debounce(() => {
+        if (selected && selected?.lat) {
+          const moveLatlng = new kakao.maps.LatLng(
+            Number(selected.lat),
+            Number(selected.lng)
+          );
+          newMap.panTo(moveLatlng);
+        }
+      }, 1000);
+
+      debounceMap();
 
       dispatch(mapActions.setMap(newMap));
       setLoad(true);

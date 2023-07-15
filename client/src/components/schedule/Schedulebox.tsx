@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ScheduleListBox from './ScheduleListBox';
 import DirectSearch from './DirectSearch';
@@ -11,6 +11,7 @@ import SubTitle from '../ui/text/SubTitle';
 import Text from '../ui/text/Text';
 import GrayButton from '../ui/button/GrayButton';
 import { placeListActions } from '../../store/placeList-slice';
+import { RootState } from '../../store';
 
 const ScheduleContainer = styled.section`
   left: 0;
@@ -60,7 +61,9 @@ const ScheduleTitle = styled.div`
 `;
 
 const ScheduleBox = () => {
-  const [choiceCategory, setChoiceCategory] = useState(false);
+  const scroll = useSelector((state: RootState) => state.marker.scroll);
+  const scrollRef = useRef<HTMLElement>(null);
+  const [choiceCategory, setChoiceCategory] = useState(true);
   const [choiceDirect, setChoiceDirect] = useState(false);
   const dispatch = useDispatch();
 
@@ -78,8 +81,19 @@ const ScheduleBox = () => {
     dispatch(placeListActions.setIsEmpty(false));
   };
 
+  useEffect(() => {
+    if (scroll && scrollRef.current) {
+      const moveScroll = document.body.clientHeight / 2;
+      scrollRef.current.scrollTo({
+        top: scroll - moveScroll,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }
+  }, [scroll]);
+
   return (
-    <ScheduleContainer className="scheduleBox">
+    <ScheduleContainer ref={scrollRef} className="scheduleBox">
       <ScheduleInfoBox>
         <ScheduleInfoTxt>
           <ScheduleTitle>
@@ -97,7 +111,7 @@ const ScheduleBox = () => {
             styles={{
               size: '0.85rem',
               color: cssToken.COLOR['gray-900'],
-              weight: 300,
+              weight: 500,
             }}
           >
             최대 10개 추가할 수 있습니다.
@@ -111,7 +125,7 @@ const ScheduleBox = () => {
         <GrayButton
           width={cssToken.WIDTH['w-full']}
           height="50px"
-          borderRadius="10px"
+          brradius="10px"
           isActive={choiceCategory}
           onClick={handleCategory}
         >
@@ -120,7 +134,7 @@ const ScheduleBox = () => {
         <GrayButton
           width={cssToken.WIDTH['w-full']}
           height="50px"
-          borderRadius="10px"
+          brradius="10px"
           isActive={choiceDirect}
           onClick={handleDirect}
         >

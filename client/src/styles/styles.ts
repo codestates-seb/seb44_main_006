@@ -17,14 +17,13 @@ export const FlexDiv = styled.div`
 
 export const CardWrapper = styled.div`
   width: 100%;
-  height: 100%;
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
     minmax(${cssToken.WIDTH['grid-min']}, auto)
   );
   justify-content: center;
-  gap: ${cssToken.SPACING['gap-50']};
+  gap: ${cssToken.SPACING['gap-20']};
 
   @media screen and (max-width: 768px) {
     gap: ${cssToken.SPACING['gap-20']};
@@ -61,7 +60,14 @@ export const OutsideWrap = styled(FlexDiv)`
 `;
 
 export const TagDiv = styled(FlexDiv)`
+  flex-wrap: wrap;
   column-gap: 0.5rem;
+  row-gap: 0.5rem;
+  @media screen and (max-width: 768px) {
+    button {
+      font-size: 0.625rem;
+    }
+  }
 `;
 
 export const BtnDiv = styled(FlexDiv)`

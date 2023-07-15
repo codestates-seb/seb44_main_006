@@ -65,7 +65,11 @@ const EmptyDiv = styled(FlexDiv)`
   }
 `;
 
-const SelectCardWrapper = styled(CardWrapper)``;
+const SelectCardWrapper = styled(CardWrapper)`
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(95%, auto));
+  }
+`;
 
 const SelectSchedulePage = () => {
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
@@ -152,7 +156,7 @@ const SelectSchedulePage = () => {
               커뮤니티에 등록할 수 있는 일정이 없습니다.
             </Text>
             <SkyBlueButton
-              borderRadius={cssToken.BORDER['rounded-md']}
+              brradius={cssToken.BORDER['rounded-md']}
               width="187px"
               height="55px"
               onClick={gotoRegister}

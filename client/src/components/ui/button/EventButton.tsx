@@ -12,10 +12,10 @@ const ButtonTemplate = styled.button<IEventButtonStyle>`
   padding: ${(props) => props.padding};
   color: ${(props) => props.color};
   background-color: ${(props) =>
-    props.disabled ? cssToken.COLOR['gray-700'] : props.backgroundColor};
+    props.disabled ? cssToken.COLOR['gray-700'] : props.bgcolor};
   box-shadow: ${(props) => props.boxShadow};
   border: ${(props) => props.border || 'none'};
-  border-radius: ${(props) => props.borderRadius};
+  border-radius: ${(props) => props.brradius};
   cursor: pointer;
 
   display: flex;
@@ -37,6 +37,11 @@ const ButtonTemplate = styled.button<IEventButtonStyle>`
 
     &.skyblue {
       ${Button640}
+    }
+
+    &.communityStar {
+      width: 2.1875rem;
+      height: 2.1875rem;
     }
   }
 `;
