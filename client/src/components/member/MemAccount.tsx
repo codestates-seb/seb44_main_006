@@ -20,7 +20,7 @@ const MemAccountModal = () => {
   const navigate = useNavigate();
   const gotoMain = useMovePage('/');
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
+
   const LogintoggleModal = useLoginToggleModal();
   const LogoutoggleModal = useLogioutoggleModal();
 
@@ -55,26 +55,15 @@ const MemAccountModal = () => {
     queryKey: ['oauthInfoData'],
     queryFn: () => GetUserInfo(),
     onSuccess: (data) => {
-      const handleSuccess = async () => {
-        dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
-        if (accessToken && refreshToken) {
-          localStorage.setItem('accessToken', `Bearer ${accessToken}`);
-          localStorage.setItem('refreshToken', `${refreshToken}`);
-          localStorage.setItem('isLogin', JSON.stringify(true));
-          if (localStorage.getItem('isLogin')) {
-            dispatch(setUserOAuthActions.setIsLogin(true));
-          }
-          gotoMain();
+      dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
+      if (accessToken && refreshToken) {
+        localStorage.setItem('accessToken', `Bearer ${accessToken}`);
+        localStorage.setItem('refreshToken', `${refreshToken}`);
+        localStorage.setItem('isLogin', JSON.stringify(true));
+        if (localStorage.getItem('isLogin')) {
+          dispatch(setUserOAuthActions.setIsLogin(true));
         }
-        await queryClient.invalidateQueries(['oauthInfoData']);
-      };
-
-      handleSuccess().catch((error) => {
-        if (accessToken) {
-          const { response } = error as AxiosError;
-          if (response) navigate(`/error/${response.status}`);
-        }
-      });
+      }
     },
     onError: (error) => {
       if (accessToken) {

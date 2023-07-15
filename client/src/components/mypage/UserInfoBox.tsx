@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosError } from 'axios';
@@ -15,6 +15,7 @@ import InputContainer from '../ui/input/InputContainer';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
 import SettingIcon from '../../assets/SettingIcon';
+import useUserInfo from '../../querys/useUserInfo';
 
 interface IsNickNameT {
   toggleNickname?: boolean;
@@ -77,7 +78,6 @@ const ImgBox = styled.div`
   flex: 1;
 `;
 
-
 const SettingButton = styled.button`
   position: absolute;
   bottom: 0;
@@ -100,7 +100,7 @@ const FormBox = styled.form<IsNickNameT>`
 `;
 
 const UserInfoBox = () => {
-  const [nickName, setNickName] = useState<string>('');
+  const { userData } = useUserInfo();
   const [toggleNickname, setToggleNickname] = useState<boolean>(false);
   const [isName, setIsName] = useState<boolean>(true);
   const memNicknameRef = useRef<HTMLInputElement>(null);
@@ -108,23 +108,25 @@ const UserInfoBox = () => {
   const dispatch = useDispatch();
   const gotoRegister = useMovePage('/register');
   const gotoSetting = useMovePage('/setting');
-  const memNickname = useSelector(
-    (state: RootState) => state.userAuth.nickName
-  );
 
-  const userAuthInfo = useSelector(
-    (state: RootState) => state.userAuth.userInfo
-  );
+  const queryClient = useQueryClient();
 
   const mutation = useMutation(PatchMemNickname, {
     onSuccess: () => {
-      dispatch(setUserOAuthActions.paintMemNickname(nickName));
+      return queryClient.invalidateQueries(['user']);
     },
     onError: (error) => {
       const { response } = error as AxiosError;
       if (response) navigator(`/error/${response.status}`);
     },
   });
+
+  useEffect(() => {
+    if (toggleNickname && memNicknameRef.current && userData) {
+      memNicknameRef.current.focus();
+      memNicknameRef.current.value = userData.memberNickname;
+    }
+  }, [toggleNickname, userData]);
 
   const handleOpenNickname = () => {
     setToggleNickname(!toggleNickname);
@@ -140,20 +142,17 @@ const UserInfoBox = () => {
   };
 
   const paintNickname = (e: React.FormEvent<HTMLFormElement>) => {
-    if (isName) {
-      e.preventDefault();
-      mutation.mutate(nickName);
-      setToggleNickname(!toggleNickname);
-    }
-  };
+    e.preventDefault();
 
-  useEffect(() => {
-    if (memNickname && memNicknameRef.current) {
-      dispatch(setUserOAuthActions.paintMemNickname(memNickname));
-      memNicknameRef.current.value = memNickname;
-      setNickName(memNicknameRef.current.value);
+    if (memNicknameRef.current) {
+      const nickName = memNicknameRef.current.value;
+
+      if (isName && userData && nickName !== userData.memberNickname) {
+        mutation.mutate(nickName);
+      }
     }
-  }, [dispatch, memNickname, memNicknameRef, nickName]);
+    setToggleNickname(!toggleNickname);
+  };
 
   return (
     <UserInfoContainer>
@@ -162,7 +161,7 @@ const UserInfoBox = () => {
           styles={{
             size: '10.75rem',
           }}
-          src={userAuthInfo?.memberImageUrl}
+          src={userData?.memberImageUrl}
         />
         <SettingButton onClick={gotoSetting}>
           <SettingIcon />
@@ -170,11 +169,9 @@ const UserInfoBox = () => {
       </ImgBox>
       <RightWrap>
         <UserNicknameBox>
-          {!toggleNickname ? (
+          {!toggleNickname && userData ? (
             <>
-              <UserNickname>
-                {nickName === '' ? userAuthInfo?.memberNickname : nickName}
-              </UserNickname>
+              <UserNickname>{userData?.memberNickname}</UserNickname>
               <WriteBtn
                 toggleNickname={toggleNickname}
                 onClick={handleOpenNickname}
@@ -192,11 +189,8 @@ const UserInfoBox = () => {
             <FormBox onSubmit={paintNickname}>
               <InputContainer
                 type="title"
-                minLength={1}
+                minLength={2}
                 maxLength={10}
-                defaultValue={
-                  nickName === '' ? userAuthInfo?.memberNickname : nickName
-                }
                 onChange={onChangeName}
                 ref={memNicknameRef}
                 isValidate={isName}
