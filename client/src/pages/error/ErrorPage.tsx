@@ -13,6 +13,12 @@ const ErrorWrapper = styled.div`
   align-items: center;
   justify-content: center;
   background-color: black;
+
+  @media screen and (max-width: 768px) {
+    .errorBtn {
+      display: none;
+    }
+  }
 `;
 
 const ErrorPage = () => {
