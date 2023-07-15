@@ -171,7 +171,7 @@ const UserSetting = () => {
       )}
       <SettingBox>
         <TopContain>
-          <CloseButton onClick={gotoBack}/>
+          <CloseButton onClick={gotoBack} />
         </TopContain>
         <ImgBox>
           <UserInfoMy
@@ -219,7 +219,7 @@ const UserSetting = () => {
           </SettingList>
         </SettingListUl>
       </SettingBox>
-    </UserSettingContainer >
+    </UserSettingContainer>
   );
 };
 
