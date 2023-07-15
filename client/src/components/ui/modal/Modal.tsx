@@ -55,6 +55,7 @@ const ModalContainer = styled.section<IModalContainer>`
   z-index: 1002;
 
   @media screen and (max-width: 768px) {
+    width: ${cssToken.WIDTH['w-full']};
     height: 15.5625rem;
     border-top-left-radius: ${cssToken.BORDER['rounded-md']};
     border-top-right-radius: ${cssToken.BORDER['rounded-md']};
