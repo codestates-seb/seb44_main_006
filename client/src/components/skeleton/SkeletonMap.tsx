@@ -10,7 +10,7 @@ const MapDiv = styled(SkeletonDiv)`
   height: 60vh;
 `;
 const SkeletonMap = () => {
-  return <MapDiv />;
+  return <MapDiv className="skeletonMap" />;
 };
 
 export default SkeletonMap;

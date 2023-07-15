@@ -35,6 +35,7 @@ import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMa
 const PostOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
     ${mgpd}
+    margin-bottom: 4.5rem;
     row-gap: ${cssToken.SPACING['gap-20']};
     h3 {
       font-size: 1rem;

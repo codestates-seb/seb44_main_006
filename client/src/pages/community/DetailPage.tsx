@@ -34,16 +34,15 @@ import DeleteButton from '../../components/community/DeleteButton';
 import useUserInfo from '../../querys/useUserInfo';
 
 const DetailOutsideWrap = styled(OutsideWrap)`
-  ${mgpd};
-
   @media screen and (max-width: 768px) {
+    ${mgpd};
+    margin-bottom: 4.5rem;
     row-gap: ${cssToken.SPACING['gap-20']};
-
     h1:first-child {
       font-size: 1.25rem;
     }
 
-    textarea {
+    form > textarea {
       height: 6.25rem;
       font-size: ${cssToken.TEXT_SIZE['text-12']};
       margin-bottom: -0.25rem;

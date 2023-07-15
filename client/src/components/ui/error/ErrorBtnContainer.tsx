@@ -14,7 +14,7 @@ const BtnDiv = styled(FlexDiv)`
 const ErrorBtnContainer = () => {
   const navigate = useNavigate();
   return (
-    <BtnDiv>
+    <BtnDiv className="errorBtn">
       <GrayButton
         width="222px"
         height="53px"
