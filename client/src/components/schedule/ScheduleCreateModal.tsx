@@ -112,6 +112,7 @@ const DataChoiceWrapper = styled.div`
   @media (max-width: 768px) {
     gap: ${cssToken.SPACING['gap-12']};
     flex-direction: column;
+    font-size: 0.9rem;
   }
 
   @media (max-width: 480px) {
@@ -126,6 +127,16 @@ const WriteRightBox = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    input {
+      font-size: 0.8rem;
+    }
+
+    textarea {
+      font-size: 0.8rem;
+    }
+  }
 
   @media (max-width: 480px) {
     width: 95%;
@@ -255,7 +266,7 @@ const ScheduleCreateModal = () => {
           <WriteRightBox onChange={handleChange}>
             <InputContainer
               ref={titleRef}
-              description="일정의 제목을 작성해 주세요. (최대 30자, 필수)"
+              description="일정의 제목을 작성해 주세요."
               minLength={1}
               maxLength={30}
               isValidate={titleIsValidate}
@@ -267,7 +278,7 @@ const ScheduleCreateModal = () => {
             />
             <TextArea
               ref={descriptionRef}
-              description="일정의 상세 설명을 작성해 주세요. (최대 40자, 필수)"
+              description="일정의 상세 설명을 작성해 주세요."
               minLength={1}
               maxLength={40}
               isValidate={descIsValidate}
