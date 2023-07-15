@@ -8,6 +8,10 @@ const P = styled(TextStyle).attrs({ as: 'p' })`
   align-items: center;
   word-break: break-word;
   line-height: 2rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Text = ({

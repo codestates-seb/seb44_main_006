@@ -38,13 +38,20 @@ const ScheduleInfoBox = styled.div`
 
 const Btnbox = styled.div`
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  gap: ${cssToken.SPACING['gap-10']};
+
+  @media (max-width: 768px) {
+    .gray {
+      width: 100%;
+    }
+  }
 `;
 
 const ScheduleInfoTxt = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: ${cssToken.SPACING['gap-10']};
 `;
 
 const ScheduleTitle = styled.div`
@@ -86,7 +93,7 @@ const ScheduleBox = () => {
   }, [scroll]);
 
   return (
-    <ScheduleContainer ref={scrollRef}>
+    <ScheduleContainer ref={scrollRef} className="scheduleBox">
       <ScheduleInfoBox>
         <ScheduleInfoTxt>
           <ScheduleTitle>
@@ -116,7 +123,7 @@ const ScheduleBox = () => {
 
       <Btnbox>
         <GrayButton
-          width="100%"
+          width={cssToken.WIDTH['w-full']}
           height="50px"
           brradius="10px"
           isActive={choiceCategory}
@@ -125,7 +132,7 @@ const ScheduleBox = () => {
           카테고리 검색
         </GrayButton>
         <GrayButton
-          width="100%"
+          width={cssToken.WIDTH['w-full']}
           height="50px"
           brradius="10px"
           isActive={choiceDirect}

@@ -1,9 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import cssToken from '../../../styles/cssToken';
 
-const Wrapper = styled.div<{ ishide: boolean; contentHeight: number }>`
+const Wrapper = styled.div<{
+  ishide: boolean;
+  contentHeight: number;
+  param?: string;
+}>`
   width: 100%;
   height: 100vh;
   background-color: transparent;
@@ -16,11 +20,21 @@ const Wrapper = styled.div<{ ishide: boolean; contentHeight: number }>`
   }
 
   @media (max-width: 768px) {
-    position: fixed;
+    position: absolute;
     bottom: 0;
-    z-index: 1000;
-    height: ${(props) =>
-      props.ishide ? '2rem' : `calc(${props.contentHeight}px - 3rem)`};
+    left: 0;
+    right: 0;
+    z-index: 999;
+    overflow: ${(props) => props.param === 'detail' && 'auto'};
+    height: ${(props) => {
+      if (props.ishide) {
+        return '2rem';
+      }
+      if (props.param === 'detail') {
+        return `${props.contentHeight / 2 + 48}px`;
+      }
+      return `${props.contentHeight - 48}px`;
+    }};
     border-top-left-radius: ${cssToken.BORDER['rounded-md']};
     border-top-right-radius: ${cssToken.BORDER['rounded-md']};
     border: ${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['gray-500']};
@@ -46,11 +60,18 @@ const Header = styled.section`
 `;
 
 const Content = styled.div`
-  height: calc(100% - 2rem);
-  overflow-y: auto;
+  overflow: auto;
+  background-color: gray;
+  -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (max-width: 768px) {
+    .scheduleBox {
+      height: 91vh;
+    }
   }
 `;
 
@@ -63,29 +84,22 @@ const Handle = styled.div`
 
 interface Prop {
   children: React.ReactNode;
+  param?: string;
 }
 
-const BottomSheet = ({ children }: Prop) => {
+const BottomSheet = ({ children, param }: Prop) => {
   const [isHide, setIsHide] = useState(true);
-  const [contentHeight, setContentHeight] = useState(0);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
     setIsHide(!isHide);
   };
 
-  useEffect(() => {
-    if (contentRef.current) {
-      setContentHeight(contentRef.current.scrollHeight);
-    }
-  }, [children]);
-
   return (
-    <Wrapper ishide={isHide} contentHeight={contentHeight}>
+    <Wrapper ishide={isHide} contentHeight={window.innerHeight} param={param}>
       <Header onClick={handleClick}>
         <Handle />
       </Header>
-      <Content ref={contentRef}>{children}</Content>
+      <Content>{children}</Content>
     </Wrapper>
   );
 };
