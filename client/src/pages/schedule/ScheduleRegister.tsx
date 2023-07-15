@@ -16,6 +16,7 @@ import RegisterDetail from '../../components/register/RegisterDetail';
 import { placeListActions } from '../../store/placeList-slice';
 import BottomSheet from '../../components/ui/bottomsheet/BottomSheet';
 import { selectedIdActions } from '../../store/selectedId-slice';
+import useValidEnter from '../../hooks/useValidEnter';
 
 const KakaoMap = lazy(() => import('../../components/map/KakaoMap'));
 const Marker = lazy(() => import('../../components/map/Marker'));
@@ -61,6 +62,7 @@ const FloatButton = styled.button<{ bgcolor: string; fontcolor?: string }>`
 `;
 
 const ScheduleRegister = () => {
+  const checkValidEnter = useValidEnter();
   const [isCancel, setIsCancel] = useState<boolean>(false);
 
   const isSave = useSelector((state: RootState) => state.overlay.isOpen);
@@ -80,6 +82,10 @@ const ScheduleRegister = () => {
   const handleCancel = () => {
     setIsCancel(true);
   };
+
+  useEffect(() => {
+    checkValidEnter();
+  }, [checkValidEnter]);
 
   useEffect(() => {
     if (isEmpty) dispatch(placeListActions.resetList());
