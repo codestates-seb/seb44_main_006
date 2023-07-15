@@ -9,7 +9,7 @@ const MoveBtnDiv = styled(FlexDiv)`
   justify-content: center;
   margin-bottom: ${cssToken.SPACING['gap-50']};
 
-  @media screen and (max-height: 768px) {
+  @media screen and (max-width: 768px) {
     button {
       display: none;
     }

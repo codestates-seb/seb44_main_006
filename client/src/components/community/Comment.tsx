@@ -57,6 +57,7 @@ const FlexAround = styled(FlexDiv)`
   @media screen and (max-width: 768px) {
     textarea {
       height: 3.125rem;
+      font-size: 0.75rem;
     }
   }
 `;

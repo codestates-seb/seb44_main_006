@@ -29,7 +29,9 @@ const OutsideWrap = styled(FlexDiv)`
   row-gap: ${cssToken.SPACING['gap-50']};
 
   @media screen and (max-width: 768px) {
+    height: calc(100vh - 4.5rem);
     ${mgpd}
+    margin-bottom: 4.5rem;
     row-gap: ${cssToken.SPACING['gap-20']};
   }
 `;
@@ -39,11 +41,11 @@ const OverFlowDiv = styled.div`
   overflow: auto;
   background-color: ${cssToken.COLOR['gray-300']};
   padding: ${cssToken.SPACING['gap-24']};
+  margin-bottom: ${cssToken.SPACING['gap-24']};
 
   @media screen and (max-width: 500px) {
     padding-left: 0px;
     padding-right: 0px;
-    margin-bottom: ${cssToken.SPACING['gap-40']};
   }
 `;
 
@@ -63,6 +65,12 @@ const EmptyDiv = styled(FlexDiv)`
       font-size: 0.8125rem;
     }
   }
+`;
+
+const Jcbetween = styled(FlexDiv)`
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const SelectCardWrapper = styled(CardWrapper)`
@@ -119,54 +127,56 @@ const SelectSchedulePage = () => {
   return (
     <OutsideWrap>
       <Head />
-      <OverFlowDiv>
-        {isLoading && (
-          <SelectCardWrapper>
-            <SkeletonCardContainer length={4} />
-          </SelectCardWrapper>
-        )}
-        {registerCourses.length > 0 && (
-          <SelectCardWrapper>
-            {registerCourses.map((course) => (
-              <ContensCard
-                type="course"
-                key={course.courseId}
-                title={course.courseTitle}
-                text={course.courseContent}
-                likeCount={course.courseLikeCount}
-                userName={course.memberNickname}
-                thumbnail={course.courseThumbnail}
-                courseId={course.courseId}
-                selectId={selectId}
-                onClick={handleClickCard}
-              />
-            ))}
-          </SelectCardWrapper>
-        )}
-        {registerCourses.length < 1 && (
-          <EmptyDiv>
-            <Title styles={{ size: cssToken.TEXT_SIZE['text-80'] }}>텅</Title>
-            <Text
-              styles={{
-                size: cssToken.TEXT_SIZE['text-40'],
-                color: cssToken.COLOR['gray-900'],
-                weight: cssToken.FONT_WEIGHT.medium,
-              }}
-            >
-              커뮤니티에 등록할 수 있는 일정이 없습니다.
-            </Text>
-            <SkyBlueButton
-              brradius={cssToken.BORDER['rounded-md']}
-              width="187px"
-              height="55px"
-              onClick={gotoRegister}
-            >
-              일정등록하기
-            </SkyBlueButton>
-          </EmptyDiv>
-        )}
-      </OverFlowDiv>
-      <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />
+      <Jcbetween>
+        <OverFlowDiv>
+          {isLoading && (
+            <SelectCardWrapper>
+              <SkeletonCardContainer length={4} />
+            </SelectCardWrapper>
+          )}
+          {registerCourses.length > 0 && (
+            <SelectCardWrapper>
+              {registerCourses.map((course) => (
+                <ContensCard
+                  type="course"
+                  key={course.courseId}
+                  title={course.courseTitle}
+                  text={course.courseContent}
+                  likeCount={course.courseLikeCount}
+                  userName={course.memberNickname}
+                  thumbnail={course.courseThumbnail}
+                  courseId={course.courseId}
+                  selectId={selectId}
+                  onClick={handleClickCard}
+                />
+              ))}
+            </SelectCardWrapper>
+          )}
+          {registerCourses.length < 1 && (
+            <EmptyDiv>
+              <Title styles={{ size: cssToken.TEXT_SIZE['text-80'] }}>텅</Title>
+              <Text
+                styles={{
+                  size: cssToken.TEXT_SIZE['text-40'],
+                  color: cssToken.COLOR['gray-900'],
+                  weight: cssToken.FONT_WEIGHT.medium,
+                }}
+              >
+                커뮤니티에 등록할 수 있는 일정이 없습니다.
+              </Text>
+              <SkyBlueButton
+                brradius={cssToken.BORDER['rounded-md']}
+                width="187px"
+                height="55px"
+                onClick={gotoRegister}
+              >
+                일정등록하기
+              </SkyBlueButton>
+            </EmptyDiv>
+          )}
+        </OverFlowDiv>
+        <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />
+      </Jcbetween>
     </OutsideWrap>
   );
 };
