@@ -79,9 +79,11 @@ const Tags = styled.div`
   display: flex;
   gap: 0.3rem;
   flex-wrap: wrap;
+  height: 1.5625rem;
   > button {
     font-size: 12px;
     padding: 6px 8px 4px;
+    height: auto;
   }
 `;
 
