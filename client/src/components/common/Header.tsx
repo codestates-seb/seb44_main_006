@@ -38,7 +38,7 @@ const HeaderContainer = styled.header<HeaderStyle>`
     props?.ispath === '' ? 'none' : cssToken.SHADOW['shadow-lg']};
   z-index: 999;
 
-  @media (max-width: 780px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;

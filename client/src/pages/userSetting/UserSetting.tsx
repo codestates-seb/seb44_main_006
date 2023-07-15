@@ -39,7 +39,7 @@ const SettingBox = styled.section`
   flex-direction: column;
   gap: ${cssToken.SPACING['gap-50']};
   position: relative;
-  @media (max-width: 780px) {
+  @media (max-width: 768px) {
     width: ${cssToken.WIDTH['min-w-full']};
     height: ${cssToken.HEIGHT['h-screen']};
     border-radius: 0;
@@ -70,7 +70,7 @@ const SettingList = styled.li`
   justify-content: center;
   height: 5rem;
 
-  @media (max-width: 780px) {
+  @media (max-width: 768px) {
     padding: 0.25rem;
   }
 
