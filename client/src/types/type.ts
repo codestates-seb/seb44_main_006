@@ -186,6 +186,7 @@ export type IdT = {
   markerId: string;
   center: ILatLng;
   scroll?: null | number;
+  prevCenter?: ILatLng;
 };
 
 export interface ICSearchState {

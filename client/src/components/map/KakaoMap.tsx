@@ -17,7 +17,7 @@ type KakaoMapT = {
   height: string;
   children: Props['children'];
   center?: { lat: string; lng: string; level: number };
-  selected?: { lat: string; lng: string };
+  selected?: { lat: string; lng: string; level: number };
 };
 const KakaoMap = ({
   center,
@@ -39,7 +39,10 @@ const KakaoMap = ({
         lat: curLocation.coords?.latitude,
         lng: curLocation.coords?.longitude,
       };
-      const { level = 3, lat, lng } = center ?? currentPosition;
+
+      const { lat, lng } = center ?? currentPosition;
+      const level =
+        selected?.lat && selected?.lng ? selected.level : center?.level;
 
       const newMap = new kakao.maps.Map(element, {
         level,
