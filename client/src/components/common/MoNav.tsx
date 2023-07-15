@@ -10,13 +10,23 @@ import MyPageIcon from '../../assets/MyPageIcon';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { RootState } from '../../store';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
+import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 
-const MoNavContainer = styled.nav`
+type HeaderStyle = {
+  ispath?: string;
+};
+
+const MoNavContainer = styled.nav<HeaderStyle>`
   display: none;
   @media (max-width: 640px) {
+    display: ${(props) => {
+      if (props?.ispath === 'register' || props?.ispath === 'setting') {
+        return 'none';
+      }
+      return 'grid';
+    }};
     position: fixed;
     bottom: 0;
-    display: grid;
     background-color: #fff;
     border-top: 1px solid #dcdcdc;
     width: 100%;
@@ -43,9 +53,10 @@ const MoNav = () => {
   const userAuthInfo = useSelector(
     (state: RootState) => state.userAuth.userInfo
   );
+  const ispath = useLocationEndpoint();
 
   return (
-    <MoNavContainer>
+    <MoNavContainer ispath={ispath}>
       <Link to="/">
         <MainPageIcon />
         <span>메인</span>
