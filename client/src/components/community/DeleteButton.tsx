@@ -48,6 +48,10 @@ const DeleteButton = ({
       </EventButton>
       {modalIsOpen && (
         <Modal
+          backdropCallback={(e: React.MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+            toggleModal();
+          }}
           styles={{
             width: '47.0625rem',
             height: '28.375rem',
@@ -56,7 +60,6 @@ const DeleteButton = ({
           <ModalChildren
             leftBtnCallback={(e) => {
               e.stopPropagation();
-
               toggleModal();
             }}
             rightBtnCallback={(e) => {

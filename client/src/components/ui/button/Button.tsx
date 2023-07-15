@@ -43,7 +43,7 @@ export const ButtonTemplate = styled.button<IArgButtonStyle>`
       width: 4.375rem;
       height: 4.375rem;
       div {
-        font-size: 0.625rem;
+        font-size: 0.5rem;
       }
       svg {
         width: 18px;
