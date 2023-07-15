@@ -6,8 +6,10 @@ import EventButton from './EventButton';
 import cssToken from '../../../styles/cssToken';
 import { LikeBookMarkButtonT } from '../../../types/type';
 import { PostBookmark } from '../../../apis/api';
+import showToast from '../../../utils/showToast';
 
 const StarButton = ({
+  status,
   width,
   height,
   svgWidth,
@@ -19,6 +21,9 @@ const StarButton = ({
   const queryClient = useQueryClient();
   const mutation = useMutation(PostBookmark, {
     onSuccess: async () => {
+      if (status === 'add')
+        showToast('default', '마이페이지에 추가됐습니다.')();
+      else showToast('default', '마이페이지에서 삭제했습니다.')();
       await queryClient.invalidateQueries(['community']);
       await queryClient.invalidateQueries(['communityDetail']);
       await queryClient.invalidateQueries(['mypage']);

@@ -54,6 +54,7 @@ const ActionButtonContainerRes = ({
     <BtnDiv>
       {isLogin && memberEmail !== userData.memberEmail && (
         <StarButton
+          status={bookmarkStatus ? 'del' : 'add'}
           className="communityStar"
           courseId={courseId}
           width="3.75rem"
