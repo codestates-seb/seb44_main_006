@@ -18,7 +18,7 @@ type HeaderStyle = {
 
 const MoNavContainer = styled.nav<HeaderStyle>`
   display: none;
-  @media (max-width: 640px) {
+  @media (max-width: 780px) {
     display: ${(props) => {
       if (props?.ispath === 'register' || props?.ispath === 'setting') {
         return 'none';
