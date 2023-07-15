@@ -127,7 +127,8 @@ const ScheduleMapDetail = ({
   text: string;
   courseDday: string;
 }) => {
-  const latlng = useSelector((state: RootState) => state.marker.center);
+  const newCenter = useSelector((state: RootState) => state.marker.center);
+  const prevCenter = useSelector((state: RootState) => state.marker.prevCenter);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const gotoMain = useMovePage('/');
@@ -137,9 +138,21 @@ const ScheduleMapDetail = ({
 
   useEffect(() => {
     dispatch(
-      markerActions.selectMarker({ markerId: '', center: { lat: '', lng: '' } })
+      markerActions.selectMarker({
+        markerId: '',
+        center: {
+          lat: '',
+          lng: '',
+        },
+      })
     );
-  }, [dispatch]);
+    dispatch(
+      markerActions.setInitialCenter({
+        lat: destinationList[0].y,
+        lng: destinationList[0].x,
+      })
+    );
+  }, [destinationList, dispatch]);
 
   return (
     <FlexDiv>
@@ -216,11 +229,11 @@ const ScheduleMapDetail = ({
       <MapDiv>
         <KakaoMap
           center={{
-            lat: destinationList[0].y,
-            lng: destinationList[0].x,
+            lat: prevCenter?.lat || destinationList[0].y,
+            lng: prevCenter?.lng || destinationList[0].x,
             level: 6,
           }}
-          selected={latlng}
+          selected={{ lat: newCenter.lat, lng: newCenter.lng, level: 3 }}
           width="100%"
           height="100vh"
         >
