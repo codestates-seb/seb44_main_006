@@ -59,7 +59,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/auth/reissue").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.POST, "/auth/logout").hasAnyRole("USER","ADMIN")
-                        .antMatchers(HttpMethod.GET, "/courses/**").hasAnyRole("USER","ADMIN")
+//                        .antMatchers(HttpMethod.GET, "/courses/**").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.POST, "/courses").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.PATCH, "/courses/**").hasAnyRole("USER","ADMIN")
                         .antMatchers(HttpMethod.DELETE, "/courses/**").hasAnyRole("USER","ADMIN")
@@ -81,6 +81,7 @@ public class SecurityConfiguration {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return ((web) -> web
                 .ignoring()
+                .antMatchers(HttpMethod.GET, "/courses/**")
                 .antMatchers("/posts/read/**"));
     }
 
