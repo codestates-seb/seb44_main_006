@@ -20,13 +20,13 @@ const LocationButton = ({
         color: isActive
           ? cssToken.COLOR['point-500']
           : cssToken.COLOR['gray-900'],
-        backgroundColor: isActive
+        bgcolor: isActive
           ? cssToken.COLOR['point-100']
           : cssToken.COLOR['gray-300'],
         border: isActive
           ? `${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['point-500']}`
           : `${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['gray-700']}`,
-        borderRadius: cssToken.BORDER['rounded-md'],
+        brradius: cssToken.BORDER['rounded-md'],
         gap: cssToken.SPACING['gap-12'],
       }}
       onClick={onClick}

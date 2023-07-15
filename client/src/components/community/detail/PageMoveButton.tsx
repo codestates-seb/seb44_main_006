@@ -23,7 +23,7 @@ const PageMoveButton = () => {
       <GrayButton
         width="222px"
         height="53px"
-        borderRadius={cssToken.BORDER['rounded-md']}
+        brradius={cssToken.BORDER['rounded-md']}
         onClick={goToCommunity}
       >
         목록

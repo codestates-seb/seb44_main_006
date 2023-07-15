@@ -34,10 +34,10 @@ export interface IButtonStyle {
   padding?: string;
   margin?: string;
   color?: string;
-  backgroundColor?: string;
+  bgcolor?: string;
   boxShadow?: string;
   border?: string;
-  borderRadius?: string;
+  brradius?: string;
   gap?: string;
   isActive?: boolean;
   title?: string;

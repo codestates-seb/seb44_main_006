@@ -235,7 +235,7 @@ const ScheduleCreateModal = () => {
                 <GrayButton
                   width="150px"
                   height="2rem"
-                  borderRadius={cssToken.BORDER['rounded-s']}
+                  brradius={cssToken.BORDER['rounded-s']}
                   onClick={() => setIsThumbChouce(true)}
                 >
                   썸네일 선택
@@ -283,7 +283,7 @@ const ScheduleCreateModal = () => {
           <GrayButton
             width="150px"
             height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
+            brradius={cssToken.BORDER['rounded-md']}
             onClick={() => dispatch(overlayActions.toggleOverlay())}
           >
             뒤로가기
@@ -291,7 +291,7 @@ const ScheduleCreateModal = () => {
           <SkyBlueButton
             width="150px"
             height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
+            brradius={cssToken.BORDER['rounded-md']}
             onClick={handleSave}
           >
             저장하기
