@@ -11,6 +11,7 @@ import UserInfoMy from '../ui/UserInfoPfp';
 import { RootState } from '../../store';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLocationEndpoint from '../../hooks/useLocationEndpoint';
+import notUserImag from '../../assets/notUserImg.svg';
 
 type HeaderStyle = {
   ispath?: string;
@@ -81,7 +82,11 @@ const MoNav = () => {
             styles={{
               size: '1.75rem',
             }}
-            src={userAuthInfo?.memberImageUrl}
+            src={
+              !userAuthInfo?.memberImageUrl
+                ? notUserImag
+                : userAuthInfo?.memberImageUrl
+            }
           />
         ) : (
           <MyPageIcon />
