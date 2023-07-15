@@ -13,7 +13,8 @@ import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 
 const MoNavContainer = styled.nav`
   display: none;
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
+    height: 4.5rem;
     position: fixed;
     bottom: 0;
     display: grid;
