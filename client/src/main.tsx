@@ -9,6 +9,7 @@ import GlobalStyle from './GlobalStyle';
 import store from './store';
 import Header from './components/common/Header';
 import MoNav from './components/common/MoNav';
+import Loading from './components/ui/loading/Loading';
 
 const Main = lazy(() => import('./pages/Main'));
 const CommunityPage = lazy(() => import('./pages/community/CommunityPage'));
@@ -37,7 +38,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <Header />
-          <Suspense fallback={<div>로딩중...</div>}>
+          <Suspense fallback={<Loading />}>
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/register" element={<ScheduleRegister />} />
@@ -55,6 +56,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/setting" element={<UserSetting />} />
               <Route path="/error/:status" element={<ErrorPage />} />
+              <Route path="/loading" element={<Loading />} />
+              {/* // TODO 로딩은 나중에 빼야 함 */}
             </Routes>
           </Suspense>
           <MoNav />
