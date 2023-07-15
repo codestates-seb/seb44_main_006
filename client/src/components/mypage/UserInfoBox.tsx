@@ -1,11 +1,10 @@
 import { styled } from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { PatchMemNickname } from '../../apis/api';
