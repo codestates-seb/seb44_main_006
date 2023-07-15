@@ -46,6 +46,9 @@ const DetailOutsideWrap = styled(OutsideWrap)`
       height: 6.25rem;
       font-size: ${cssToken.TEXT_SIZE['text-12']};
       margin-bottom: -0.25rem;
+      border-bottom: none;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
     }
 
     form > p {
