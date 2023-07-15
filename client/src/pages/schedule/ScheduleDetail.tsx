@@ -1,10 +1,10 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosError } from 'axios';
 
-import { GetCourse } from '../../apis/api';
+import { GetCourse, GetShareSchedule } from '../../apis/api';
 import { PostReadT } from '../../types/apitype';
 import { scheduleDetailActions } from '../../store/scheduleData-slice';
 import { RootState } from '../../store';
@@ -14,10 +14,15 @@ const ScheduleDetail = () => {
   const dispatch = useDispatch();
   const { courseId } = useParams() as { courseId: string };
   const navigate = useNavigate();
+  const location = useLocation();
 
   useQuery({
     queryKey: ['resisterDetail'],
-    queryFn: () => GetCourse({ courseId }),
+    queryFn: () => {
+      return location.search === '?share'
+        ? GetShareSchedule({ courseId })
+        : GetCourse({ courseId });
+    },
     onSuccess: (data: { data: PostReadT }) => {
       dispatch(scheduleDetailActions.getCourseData(data.data.courseData));
       dispatch(

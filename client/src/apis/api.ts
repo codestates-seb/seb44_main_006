@@ -49,6 +49,9 @@ export const PatchMemNickname = async (nickname: string) => {
 
 export const GetMyList = async () => instance.get(`/api/members`);
 
+export const GetShareSchedule = async ({ courseId }: { courseId: string }) =>
+  instance.get(`/api/courses/${courseId}/share`);
+
 export const GetCourse = async ({ courseId }: { courseId: string }) =>
   instance.get(`/api/courses/${courseId}`);
 
