@@ -16,6 +16,7 @@ import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
 import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
 import Text from '../ui/text/Text';
+import ModalChildren from '../community/post/ModalChildren';
 
 const BtnBox = styled.div`
   display: flex;
@@ -104,41 +105,25 @@ const MemAccountModal = () => {
           }}
         />
       )}
+
       {LogoutmodalIsOpen && (
         <Modal
-          backdropCallback={LogoutoggleModal}
-          handleCloseBtn={LogoutoggleModal}
-          displayclosebtn
           styles={{
             width: '47.0625rem',
             height: '28.375rem',
-            borderradius: '0.9375rem',
-            gap: '3.125rem',
           }}
         >
-          <Text styles={{ size: cssToken.TEXT_SIZE['text-50'] }}>
-            로그아웃 하시겠습니까?
-          </Text>
-          <BtnBox>
-            <GrayButton
-              width="15.5625rem"
-              height="4.625rem"
-              fontsize={cssToken.TEXT_SIZE['text-24']}
-              brradius={cssToken.BORDER['rounded-md']}
-              onClick={LogoutoggleModal}
-            >
-              아니오
-            </GrayButton>
-            <SkyBlueButton
-              width="15.5625rem"
-              height="4.625rem"
-              fontsize={cssToken.TEXT_SIZE['text-24']}
-              brradius={cssToken.BORDER['rounded-md']}
-              onClick={handleLogout}
-            >
-              예
-            </SkyBlueButton>
-          </BtnBox>
+          <ModalChildren
+            leftBtnCallback={(e) => {
+              e.stopPropagation();
+              LogoutoggleModal();
+            }}
+            rightBtnCallback={(e) => {
+              e.stopPropagation();
+              handleLogout();
+            }}
+            content="정말 로그아웃 하시겠습니까?"
+          />
         </Modal>
       )}
     </>
