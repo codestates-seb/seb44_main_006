@@ -31,6 +31,7 @@ import Text from '../../components/ui/text/Text';
 import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
 import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
+import useValidEnter from '../../hooks/useValidEnter';
 
 const PostOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
@@ -73,6 +74,7 @@ const ErrorContainer = styled(GapDiv)`
 `;
 
 const PostCommunitypage = () => {
+  const checkValidEnter = useValidEnter();
   const scheduleid = useLocation().state as string;
   const quillRef = useRef<ReactQuill>(null);
   const gotoBack = useMovePage('/community/select', null, true);
@@ -102,8 +104,9 @@ const PostCommunitypage = () => {
   });
 
   useEffect(() => {
+    checkValidEnter();
     scrollToTop();
-  }, []);
+  }, [checkValidEnter]);
 
   const HandleBack = () => {
     if (isEmpty(removeTag(String(quillRef.current?.value)))) {

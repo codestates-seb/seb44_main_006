@@ -50,6 +50,12 @@ const setUserOAuthSlice = createSlice({
     paintMemNickname(state, action: PayloadAction<string>) {
       state.nickName = action.payload;
     },
+    openLoginModal(state) {
+      state.isLoginOpen = true;
+    },
+    closeLoginModal(state) {
+      state.isLoginOpen = false;
+    },
   },
 });
 

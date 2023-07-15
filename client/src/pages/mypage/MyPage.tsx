@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 import { FlexDiv } from '../../styles/styles';
 import { GetMyList } from '../../apis/api';
@@ -11,6 +12,7 @@ import useHandleTab from '../../hooks/useHandleTab';
 import { myInfoDataListActions } from '../../store/myInfoDataList-slice';
 import { RootState } from '../../store';
 import { MypCourseSummaryT, MyBookMarkSummaryT } from '../../types/apitype';
+import useValidEnter from '../../hooks/useValidEnter';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -22,6 +24,7 @@ const Wrapper = styled(FlexDiv)`
 `;
 
 const MyPage = () => {
+  const checkValidEnter = useValidEnter();
   const dispatch = useDispatch();
   const { selectTab, setTab } = useHandleTab();
   useQuery({
@@ -41,6 +44,10 @@ const MyPage = () => {
       );
     },
   });
+
+  useEffect(() => {
+    checkValidEnter();
+  }, [checkValidEnter]);
 
   const memberCourseList = useSelector(
     (state: RootState) => state.myInfoData.memberCourseList

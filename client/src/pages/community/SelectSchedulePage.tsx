@@ -19,6 +19,7 @@ import Text from '../../components/ui/text/Text';
 import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 import scrollToTop from '../../utils/scrollToTop';
 import SkeletonCardContainer from '../../components/community/skeleton/SkeletonCardContainer';
+import useValidEnter from '../../hooks/useValidEnter';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -80,6 +81,7 @@ const SelectCardWrapper = styled(CardWrapper)`
 `;
 
 const SelectSchedulePage = () => {
+  const checkValidEnter = useValidEnter();
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
   const navigate = useNavigate();
   const gotoBack = useMovePage('/community');
@@ -102,8 +104,9 @@ const SelectSchedulePage = () => {
   });
 
   useEffect(() => {
+    checkValidEnter();
     scrollToTop();
-  }, []);
+  }, [checkValidEnter]);
 
   const registerCourses = courses
     ? courses.filter((course: MemberCourseT) => course.isPosted === false)
