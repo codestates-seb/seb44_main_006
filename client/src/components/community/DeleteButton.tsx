@@ -9,6 +9,7 @@ import useToggleModal from '../../hooks/useToggleModal';
 import { DeleteCommunityPost, DeleteMyPageCourses } from '../../apis/api';
 import useMovePage from '../../hooks/useMovePage';
 import EventButton from '../ui/button/EventButton';
+import Trash from '../../assets/Trash';
 
 const DeleteButton = ({
   type,
@@ -35,15 +36,22 @@ const DeleteButton = ({
   return (
     <>
       <EventButton
+        styles={{
+          fontsize: '13px',
+        }}
         onClick={(e) => {
           e.stopPropagation();
           toggleModal();
         }}
       >
-        삭제
+        <Trash style={{ iconWidth: 16, iconHeight: 18 }} />
       </EventButton>
       {modalIsOpen && (
         <Modal
+          backdropCallback={(e: React.MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+            toggleModal();
+          }}
           styles={{
             width: '47.0625rem',
             height: '28.375rem',
@@ -52,7 +60,6 @@ const DeleteButton = ({
           <ModalChildren
             leftBtnCallback={(e) => {
               e.stopPropagation();
-
               toggleModal();
             }}
             rightBtnCallback={(e) => {

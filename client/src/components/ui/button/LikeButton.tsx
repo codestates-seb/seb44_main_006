@@ -33,8 +33,8 @@ const LikeButton = ({
   return (
     <EventButton onClick={handleLikeButton}>
       <svg
-        width={svgWidth || '23px'}
-        height={svgHeight || '21px'}
+        width={svgWidth || '18px'}
+        height={svgHeight || '18px'}
         viewBox="0 0 23 21"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

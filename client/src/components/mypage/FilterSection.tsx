@@ -109,9 +109,11 @@ const FilterSection = ({
                 date={formatData(String(post?.courseDday))}
               >
                 <DeleteButton type="mypage" postId={String(post.courseId)} />
-                <CopyButton endpoint={`community/${String(post.courseId)}`} />
+                <CopyButton
+                  endpoint={`register/detail/${String(post.courseId)}`}
+                />
                 <ShareKakaoButton
-                  endpoint={`community/${String(post.courseId)}`}
+                  endpoint={`register/detail/${String(post.courseId)}`}
                 />
               </ContensCard>
             ))

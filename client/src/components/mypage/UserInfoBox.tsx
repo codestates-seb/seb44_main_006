@@ -81,8 +81,8 @@ const ImgBox = styled.div`
     bottom: 0;
     right: 0;
     &:hover {
-    opacity: 1;
-   }
+      opacity: 1;
+    }
   }
 `;
 
@@ -209,7 +209,7 @@ const UserInfoBox = () => {
         <SkyBlueButton
           onClick={gotoRegister}
           height="25px"
-          borderRadius={`${cssToken.BORDER['rounded-tag']}`}
+          brradius={`${cssToken.BORDER['rounded-tag']}`}
         >
           일정 등록
         </SkyBlueButton>

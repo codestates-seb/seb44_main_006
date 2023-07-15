@@ -23,6 +23,7 @@ const ModalWrapper = styled.div`
   justify-content: center;
   width: ${cssToken.WIDTH['w-screen']};
   height: ${cssToken.HEIGHT['h-screen']};
+  z-index: 9999;
 `;
 
 const Backdrop = styled.div`

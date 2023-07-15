@@ -7,7 +7,7 @@ const cssToken = {
     'min-w-min': 'min-content',
     'min-w-max': 'max-content',
     'min-w-fit': 'fit-content',
-    'grid-min': '21.5rem',
+    'grid-min': '20.5rem',
   },
   HEIGHT: {
     'h-full': '100%',
@@ -15,6 +15,8 @@ const cssToken = {
     'h-min': 'min-content',
     'h-max': 'max-content',
     'h-fit': 'fit-content',
+    'mo-nav-height': '4.5rem',
+    'bottomsheet-header': '2rem',
   },
   COLOR: {
     'point-900': '#00D1FF',
@@ -26,7 +28,7 @@ const cssToken = {
     'gray-700': '#D3D3D3',
     'gray-600': '#DCDCDC',
     'gray-500': '#E6E6E6',
-    'gray-300': '#F8F8F8', // background
+    'gray-300': '#F8F8F8',
     'polyline-color': '#009EDC',
     'yellow-900': '#FFE81C',
     'yellow-100': '#FFFBD7',
@@ -42,6 +44,7 @@ const cssToken = {
     'text-18': '1.125rem',
     'text-16': '1rem',
     'text-14': '0.875rem',
+    'text-12': '0.75rem',
   },
   SPACING: {
     'px-50': '3.125rem',
@@ -50,6 +53,7 @@ const cssToken = {
     'gap-50': '3.125rem',
     'gap-40': '2.5rem',
     'gap-24': '1.5rem',
+    'gap-20': '1.25rem',
     'gap-16': '1rem',
     'gap-12': '0.75rem',
     'gap-10': '0.625rem',
@@ -71,6 +75,7 @@ const cssToken = {
     'shadow-lg':
       '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
     'shadow-2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    'shadow-4xl': 'rgba(0, 0, 0, 0.25) 0px 5px 15px',
   },
   OPCITY: {
     'opacity-0': 0,

@@ -21,6 +21,7 @@ import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
 import CalenderIcon from '../../assets/CalendarIcon';
 import formatData from '../../utils/sliceData';
+import BottomSheet from '../ui/bottomsheet/BottomSheet';
 
 const ScheduleDiv = styled(FlexDiv)`
   left: 0;
@@ -32,6 +33,10 @@ const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
   gap: 1rem;
   flex: 0 0 25rem;
+
+  @media (max-width: 768px) {
+    height: 80vh;
+  }
 `;
 
 const MapDiv = styled.div`
@@ -44,12 +49,29 @@ const LocationCardWrapper = styled.div`
 
 const Btnbox = styled.div`
   display: flex;
-  gap: 10px;
+  gap: ${cssToken.SPACING['gap-10']};
+
+  @media (max-width: 768px) {
+    display: none;
+
+    .gray {
+      width: 100%;
+    }
+    .skyblue {
+      width: 100%;
+    }
+  }
 `;
 
 const TopWrap = styled(FlexDiv)`
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.2rem;
+    }
+  }
 `;
 
 const DataInfoText = styled(FlexDiv)`
@@ -59,6 +81,38 @@ const DataInfoText = styled(FlexDiv)`
   gap: 0.1875rem;
   > svg {
     width: 14px;
+  }
+`;
+
+const FixedDiv = styled.div`
+  position: fixed;
+  display: none;
+  flex-direction: row;
+  gap: ${cssToken.SPACING['gap-12']};
+  top: ${cssToken.SPACING['gap-12']};
+  right: ${cssToken.SPACING['gap-12']};
+  z-index: 999;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+const FloatButton = styled.button<{ bgcolor: string; fontcolor?: string }>`
+  font-weight: ${cssToken.FONT_WEIGHT.bold};
+  width: 8rem;
+  height: 3rem;
+  border-radius: ${cssToken.BORDER['rounded-s']};
+  color: ${(props) => props.fontcolor};
+  background-color: ${(props) => props.bgcolor};
+  box-shadow: ${cssToken.SHADOW['shadow-4xl']};
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-weight: ${cssToken.FONT_WEIGHT.medium};
+    font-size: 0.8rem;
+    width: 5rem;
+    height: 2rem;
   }
 `;
 
@@ -73,7 +127,8 @@ const ScheduleMapDetail = ({
   text: string;
   courseDday: string;
 }) => {
-  const latlng = useSelector((state: RootState) => state.marker.center);
+  const newCenter = useSelector((state: RootState) => state.marker.center);
+  const prevCenter = useSelector((state: RootState) => state.marker.prevCenter);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const gotoMain = useMovePage('/');
@@ -83,75 +138,102 @@ const ScheduleMapDetail = ({
 
   useEffect(() => {
     dispatch(
-      markerActions.selectMarker({ markerId: '', center: { lat: '', lng: '' } })
+      markerActions.selectMarker({
+        markerId: '',
+        center: {
+          lat: '',
+          lng: '',
+        },
+      })
     );
-  }, [dispatch]);
+    dispatch(
+      markerActions.setInitialCenter({
+        lat: destinationList[0].y,
+        lng: destinationList[0].x,
+      })
+    );
+  }, [destinationList, dispatch]);
 
   return (
     <FlexDiv>
-      <ScheduleDiv>
-        <TopWrap>
-          <Title
+      <BottomSheet param="detail">
+        <ScheduleDiv>
+          <TopWrap>
+            <Title
+              styles={{
+                size: '1.5rem',
+                color: cssToken.COLOR.black,
+              }}
+            >
+              {title || ''}
+            </Title>
+
+            <DataInfoText>
+              <CalenderIcon />
+              {formatData(courseDday)}
+            </DataInfoText>
+          </TopWrap>
+          <Text
             styles={{
-              size: '1.5rem',
-              color: cssToken.COLOR.black,
+              size: '0.85rem',
+              color: cssToken.COLOR['gray-900'],
+              weight: 300,
             }}
           >
-            {title || ''}
-          </Title>
+            {text || ''}
+          </Text>
+          <LocationCardWrapper>
+            {destinationList.map((destination, idx) => (
+              <MapLocationCard
+                key={uuidv4()}
+                latlng={{ lat: destination.y, lng: destination.x }}
+                id={destination.id}
+                indexNum={idx + 1}
+                location={destination.placeName}
+              />
+            ))}
+          </LocationCardWrapper>
+          <Btnbox>
+            <GrayButton
+              width="100%"
+              height="50px"
+              brradius="10px"
+              onClick={gotoBack}
+            >
+              뒤로가기
+            </GrayButton>
+            <SkyBlueButton
+              width="100%"
+              height="50px"
+              brradius="10px"
+              onClick={gotoMain}
+            >
+              메인 페이지
+            </SkyBlueButton>
+          </Btnbox>
+        </ScheduleDiv>
+      </BottomSheet>
 
-          <DataInfoText>
-            <CalenderIcon />
-            {formatData(courseDday)}
-          </DataInfoText>
-        </TopWrap>
-        <Text
-          styles={{
-            size: '0.85rem',
-            color: cssToken.COLOR['gray-900'],
-            weight: 300,
-          }}
+      <FixedDiv>
+        <FloatButton bgcolor={cssToken.COLOR['gray-300']} onClick={gotoBack}>
+          <div>뒤로가기</div>
+        </FloatButton>
+        <FloatButton
+          bgcolor={cssToken.COLOR['point-900']}
+          fontcolor={cssToken.COLOR.white}
+          onClick={gotoMain}
         >
-          {text || ''}
-        </Text>
-        <LocationCardWrapper>
-          {destinationList.map((destination, idx) => (
-            <MapLocationCard
-              key={uuidv4()}
-              latlng={{ lat: destination.y, lng: destination.x }}
-              id={destination.id}
-              indexNum={idx + 1}
-              location={destination.placeName}
-            />
-          ))}
-        </LocationCardWrapper>
-        <Btnbox>
-          <GrayButton
-            width="100%"
-            height="50px"
-            borderRadius="10px"
-            onClick={gotoBack}
-          >
-            뒤로가기
-          </GrayButton>
-          <SkyBlueButton
-            width="100%"
-            height="50px"
-            borderRadius="10px"
-            onClick={gotoMain}
-          >
-            메인 페이지
-          </SkyBlueButton>
-        </Btnbox>
-      </ScheduleDiv>
+          <div>메인 페이지</div>
+        </FloatButton>
+      </FixedDiv>
       <MapDiv>
         <KakaoMap
           center={{
-            lat: destinationList[0].y,
-            lng: destinationList[0].x,
-            level: 3,
+            lat: prevCenter?.lat || destinationList[0].y,
+            lng: prevCenter?.lng || destinationList[0].x,
+            level: 6,
           }}
-          selected={latlng}
+          selected={{ lat: newCenter.lat, lng: newCenter.lng, level: 3 }}
           width="100%"
           height="100vh"
         >

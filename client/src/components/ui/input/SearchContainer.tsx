@@ -4,14 +4,15 @@ import { forwardRef, ForwardedRef, memo } from 'react';
 import Search from '../../../assets/Search';
 import cssToken from '../../../styles/cssToken';
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<StylesT>`
   position: relative;
-  width: ${cssToken.WIDTH['min-w-fit']};
+  width: ${(props) => props.width || '31.25rem'};
 `;
 
 const Input = styled.input<StylesT>`
+  display: inline-block;
   background-color: ${cssToken.COLOR['gray-300']};
-  width: ${(props) => props.width};
+  width: 100%;
   height: ${(props) => props.height};
   color: #424242;
   font-size: ${(props) => props.fontsize || cssToken.TEXT_SIZE['text-16']};
@@ -19,7 +20,7 @@ const Input = styled.input<StylesT>`
   padding-bottom: ${(props) => props.pb || cssToken.SPACING['gap-16']};
   padding-left: 1.125rem;
   padding-right: 3.5rem;
-  border: none;
+  border: 1px solid ${cssToken.COLOR['gray-600']};
   border-radius: ${cssToken.BORDER['rounded-input']};
 
   ::-webkit-input-placeholder {
@@ -47,20 +48,28 @@ type SearchT = {
   ) => void;
 };
 
+const Button = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1rem;
+  cursor: pointer;
+`;
+
 const SearchContainer = forwardRef(
   (
     { iconWidth, iconHeight, styles, searchClick }: SearchT,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
-      <InputWrapper>
+      <InputWrapper width={styles?.width}>
         <Input
           ref={ref}
           type="text"
           placeholder="검색어를 입력해주세요."
           {...styles}
         />
-        <button type="button" onClick={searchClick}>
+        <Button type="button" onClick={searchClick}>
           <Search
             style={{
               iconWidth: iconWidth || 25,
@@ -68,7 +77,7 @@ const SearchContainer = forwardRef(
               color: 'none',
             }}
           />
-        </button>
+        </Button>
       </InputWrapper>
     );
   }

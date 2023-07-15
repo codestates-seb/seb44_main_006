@@ -7,8 +7,8 @@ const WhiteButton = ({
   children,
   width,
   height,
-  backgroundColor,
-  borderRadius,
+  bgcolor,
+  brradius,
   onClick,
 }: IArgButtonStyle) => {
   return (
@@ -18,8 +18,8 @@ const WhiteButton = ({
         width,
         height,
         color: cssToken.COLOR.black,
-        backgroundColor: backgroundColor || cssToken.COLOR.white,
-        borderRadius,
+        bgcolor: bgcolor || cssToken.COLOR.white,
+        brradius,
       }}
     >
       {children}

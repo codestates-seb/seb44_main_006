@@ -34,10 +34,10 @@ export interface IButtonStyle {
   padding?: string;
   margin?: string;
   color?: string;
-  backgroundColor?: string;
+  bgcolor?: string;
   boxShadow?: string;
   border?: string;
-  borderRadius?: string;
+  brradius?: string;
   gap?: string;
   isActive?: boolean;
   title?: string;
@@ -60,6 +60,7 @@ export interface IEventButtonStyle extends IButtonStyle {
 
 export type LikeBookMarkButtonT = IEventButtonStyle & {
   courseId: number;
+  className?: string;
 };
 
 export type PlacesSearchResult = PlacesSearchResultItem[];
@@ -153,6 +154,7 @@ export interface ContCardInfo {
 }
 
 export interface LocationCardInfo {
+  id?: string;
   title?: string;
   category?: string;
   address?: string;
@@ -183,6 +185,8 @@ export interface ILatLng {
 export type IdT = {
   markerId: string;
   center: ILatLng;
+  scroll?: null | number;
+  prevCenter?: ILatLng;
 };
 
 export interface ICSearchState {

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { debounce } from 'lodash';
 
 import { CardCommonBox } from './Card.styled';
 
@@ -84,10 +85,11 @@ const MapLocationCard = ({
 
   const dispatch = useDispatch();
 
-  const handleHighlight = () => {
-    if (id && latlng)
+  const handleHighlight = debounce(() => {
+    if (id && latlng) {
       dispatch(markerActions.selectMarker({ markerId: id, center: latlng }));
-  };
+    }
+  }, 200);
 
   const handleDelete = (inputId: string) => {
     dispatch(scheduleListActions.deletePlace(inputId));

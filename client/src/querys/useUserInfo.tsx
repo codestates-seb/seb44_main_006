@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { GetUserInfo } from '../apis/api';
 
-type UserInfoT = {
+export type UserInfoT = {
   memberId: number; // 고유값(회원 식별자)
   memberEmail: string; // 고유값(회원 이메일)
   memberNickname: string; // 회원 닉네임

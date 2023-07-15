@@ -8,6 +8,7 @@ import App from './App';
 import GlobalStyle from './GlobalStyle';
 import store from './store';
 import Header from './components/common/Header';
+import MoNav from './components/common/MoNav';
 
 const Main = lazy(() => import('./pages/Main'));
 const CommunityPage = lazy(() => import('./pages/community/CommunityPage'));
@@ -54,6 +55,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <Route path="/error/:status" element={<ErrorPage />} />
             </Routes>
           </Suspense>
+          <MoNav />
           <App />
         </Provider>
       </QueryClientProvider>

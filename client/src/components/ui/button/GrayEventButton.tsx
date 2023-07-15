@@ -7,23 +7,24 @@ const GrayEventButton = ({
   children,
   width,
   height,
-  borderRadius,
+  brradius,
   fontsize,
   onClick,
   isActive,
 }: IEventButtonStyle) => {
   return (
     <EventButton
+      className="gray"
       onClick={onClick}
       styles={{
         width,
         height,
         fontsize,
         color: isActive ? cssToken.COLOR.white : cssToken.COLOR.black,
-        backgroundColor: isActive
+        bgcolor: isActive
           ? cssToken.COLOR['point-500']
           : cssToken.COLOR['gray-500'],
-        borderRadius,
+        brradius,
       }}
     >
       {children}

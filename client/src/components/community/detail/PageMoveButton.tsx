@@ -8,6 +8,12 @@ import { FlexDiv } from '../../../styles/styles';
 const MoveBtnDiv = styled(FlexDiv)`
   justify-content: center;
   margin-bottom: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-width: 768px) {
+    button {
+      display: none;
+    }
+  }
 `;
 const PageMoveButton = () => {
   const goToCommunity = useMovePage('/community');
@@ -17,7 +23,7 @@ const PageMoveButton = () => {
       <GrayButton
         width="222px"
         height="53px"
-        borderRadius={cssToken.BORDER['rounded-md']}
+        brradius={cssToken.BORDER['rounded-md']}
         onClick={goToCommunity}
       >
         목록
