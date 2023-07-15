@@ -26,6 +26,7 @@ const RegisterDetail = lazy(() => import('./pages/schedule/ScheduleDetail'));
 
 const DetailPage = lazy(() => import('./pages/community/DetailPage'));
 const MyPage = lazy(() => import('./pages/mypage/MyPage'));
+const UserSetting = lazy(() => import('./pages/userSetting/UserSetting'));
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <Route path="/community/post" element={<PostCommunitypage />} />
               <Route path="/community/:postId" element={<DetailPage />} />
               <Route path="/mypage" element={<MyPage />} />
+              <Route path="/setting" element={<UserSetting />} />
               <Route path="/error/:status" element={<ErrorPage />} />
             </Routes>
           </Suspense>

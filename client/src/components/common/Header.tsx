@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
 
 import Nav from './Nav';
 
@@ -9,6 +8,7 @@ import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
 import MemAccountModal from '../member/MemAccount';
+import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 
 type HeaderStyle = {
   ispath?: string;
@@ -16,7 +16,11 @@ type HeaderStyle = {
 
 const HeaderContainer = styled.header<HeaderStyle>`
   display: ${(props) => {
-    if (props?.ispath === 'register' || props?.ispath === 'error') {
+    if (
+      props?.ispath === 'register' ||
+      props?.ispath === 'error' ||
+      props?.ispath === 'setting'
+    ) {
       return 'none';
     }
     return 'flex';
@@ -34,7 +38,7 @@ const HeaderContainer = styled.header<HeaderStyle>`
     props?.ispath === '' ? 'none' : cssToken.SHADOW['shadow-lg']};
   z-index: 999;
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -48,14 +52,8 @@ const LogoImg = styled.img`
 `;
 
 const Header = () => {
-  const [ispath, setIsPath] = useState<string>('');
-  const location = useLocation();
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
-  const endpoint: string = location.pathname.split('/')[1];
-
-  useEffect(() => {
-    setIsPath(endpoint);
-  }, [endpoint]);
+  const ispath = useLocationEndpoint();
 
   return (
     <>

@@ -133,10 +133,10 @@ export type MypCourseSummaryT = {
   courseViewCount?: number;
   isPosted?: boolean;
   memberNickname?: string;
-  postId?: number;
 };
 
 export type MyBookMarkSummaryT = {
+  bookmarkId?: number;
   courseId?: number;
   courseLikeCount?: number;
   courseThumbnail?: string;
@@ -152,8 +152,8 @@ export type MyBookMarkSummaryT = {
 };
 
 export type MypSummaryT = {
-  memberCourseList?: MypCourseSummaryT[];
-  memberBookmarkedList?: MyBookMarkSummaryT[];
+  memberCourseList: MypCourseSummaryT[];
+  memberBookmarkedList: MyBookMarkSummaryT[];
 };
 
 // 일정 상세 페이지
