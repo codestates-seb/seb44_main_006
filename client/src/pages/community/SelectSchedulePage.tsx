@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
 import { mgpd } from './commonstyle';
@@ -81,10 +81,13 @@ const SelectCardWrapper = styled(CardWrapper)`
 `;
 
 const SelectSchedulePage = () => {
+  const prevPage = useLocation().state as string;
   const checkValidEnter = useValidEnter();
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
   const navigate = useNavigate();
-  const gotoBack = useMovePage('/community');
+  const gotoBack = useMovePage(
+    prevPage === 'mypage' ? '/mypage' : '/community'
+  );
   const gotoNext = useMovePage('/community/post', selectId);
   const gotoRegister = useMovePage('/register');
   const {

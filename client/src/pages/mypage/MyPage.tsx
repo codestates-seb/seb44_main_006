@@ -46,7 +46,7 @@ const FixedDiv = styled.div`
 const MyPage = () => {
   const checkValidEnter = useValidEnter();
   const dispatch = useDispatch();
-  const goToSelect = useMovePage('/community/select');
+  const goToSelect = useMovePage('/community/select', 'mypage');
   const { selectTab, setTab } = useHandleTab();
   const isLogin = getLoginStatus();
   useQuery({
