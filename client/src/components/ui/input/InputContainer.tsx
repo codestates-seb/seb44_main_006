@@ -28,6 +28,8 @@ const InputContainer = forwardRef(
       maxLength,
       styles,
       type,
+      textType,
+      text,
       isValidate,
       onkeypress,
       defaultValue,
@@ -39,6 +41,8 @@ const InputContainer = forwardRef(
       isValidate?: boolean;
       styles?: TextareaT;
       type?: 'title';
+      textType?: string;
+      text?: string;
       defaultValue?: string;
       // tag 입력 칸과 구분하기 위함
       onkeypress?: (e: KeyboardEvent<HTMLInputElement>) => void;
@@ -58,10 +62,14 @@ const InputContainer = forwardRef(
           defaultValue={defaultValue}
           onChange={onChange}
         />
-        {type === 'title' && !isValidate && (
+        {!textType && type === 'title' && !isValidate && (
           <Text styles={{ color: cssToken.COLOR['red-900'] }}>
             글자 수를 만족하지 못했습니다.
           </Text>
+        )}
+
+        {textType === 'nickName' && !isValidate && (
+          <Text styles={{ color: cssToken.COLOR['red-900'] }}>{text}</Text>
         )}
       </>
     );
