@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 import Text from '../ui/text/Text';
 import UserInfoMy from '../ui/UserInfoPfp';
@@ -193,4 +193,4 @@ const Comment = ({
   );
 };
 
-export default Comment;
+export default memo(Comment);

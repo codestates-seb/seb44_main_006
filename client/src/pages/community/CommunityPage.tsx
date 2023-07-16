@@ -74,10 +74,10 @@ const CommunityPage = () => {
   const goToSelect = useMovePage('/community/select');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isLogin = getLoginStatus();
-  const { selectTab, setTab } = useHandleTab();
-  const [tagName, setTagName] = useState<string>('');
+  const { selectTab, setTab } = useHandleTab(); // 전역
+  const [tagName, setTagName] = useState<string>(''); // 전역
   const dispatch = useDispatch();
-
+  // fitersection 페이지에서 인피니트 훅 불러오기
   const { data, fetchNextPage, hasNextPage, error, isFetchingNextPage } =
     useInfiniteScrollQuery({
       limit: LIMIT,

@@ -32,6 +32,7 @@ import CopyButton from '../../components/ui/button/CopyButton';
 import ShareKakaoButton from '../../components/ui/button/ShareKakaoButton';
 import DeleteButton from '../../components/community/DeleteButton';
 import useUserInfo from '../../querys/useUserInfo';
+import notClient from '../../assets/notUserImg.svg';
 
 const DetailOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
@@ -219,7 +220,13 @@ const DetailPage = () => {
           {isLoading && <SkeletonUserContainer />}
           {detailData && userInfo && (
             <>
-              <UserInfoMy src={userInfo.memberImageUrl} />
+              <UserInfoMy
+                src={
+                  detailData.memberNickname === '탈퇴한 사용자'
+                    ? notClient
+                    : userInfo.memberImageUrl
+                }
+              />
               <InfoContainer
                 writer={userInfo.memberNickname}
                 date={userInfo.courseUpdatedAt}
