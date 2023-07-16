@@ -10,10 +10,12 @@ import com.seb_main_006.domain.like.entity.Likes;
 import com.seb_main_006.domain.like.repository.LikesRepository;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
+import com.seb_main_006.domain.post.dto.PostPostDto;
 import com.seb_main_006.domain.post.entity.Post;
 import com.seb_main_006.domain.post.mapper.PostMapper;
 import com.seb_main_006.domain.post.repository.PostRepository;
 import com.seb_main_006.domain.post.repository.PostTagRepository;
+import com.seb_main_006.domain.tag.entity.Tag;
 import com.seb_main_006.domain.tag.repository.TagRepository;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.exception.BusinessLogicException;
@@ -28,7 +30,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,7 @@ class PostServiceTest {
     Member dummyMember;
     Course dummyCourse;
     Post dummyPost;
+    PostPostDto dummyPostDto;
 
 
     void initForFindPosts() {
@@ -99,6 +101,70 @@ class PostServiceTest {
         dummyMember = mock(Member.class);
         given(memberService.findVerifiedMember(anyString())).willReturn(dummyMember);
     }
+
+    void initForCreatePost() {
+        dummyPostDto = mock(PostPostDto.class);
+        given(dummyPostDto.getPostContent()).willReturn("post content");
+        given(dummyPostDto.getCourseId()).willReturn(1L);
+
+        dummyCourse = mock(Course.class);
+        given(courseService.findVerifiedCourse(anyLong())).willReturn(dummyCourse);
+
+        dummyMember = mock(Member.class);
+        given(memberService.findVerifiedMember(anyString())).willReturn(dummyMember);
+
+        // 예외 발생하지 않도록 mocking
+        doNothing().when(courseService).verifyNotMyCourse(dummyMember, dummyCourse);
+        given(postRepository.findByCourse(any(Course.class))).willReturn(Optional.empty());
+    }
+
+
+    @DisplayName("findVerifiedMember(), findVerifiedCourse() 메서드가 1번씩 호출되어야 한다.")
+    @Test
+    void createPost_1() {
+        // given
+        initForCreatePost();
+
+        // when
+        postService.createPost(dummyPostDto, "member@email.com");
+
+        // then
+        verify(memberService, times(1)).findVerifiedMember(anyString());
+        verify(courseService, times(1)).findVerifiedCourse(anyLong());
+    }
+
+    @DisplayName("postPostDto로 전달된 tags 배열의 길이만큼 tagRepository.findByTagName() 메서드가 호출된다.")
+    @Test
+    void createPost_2() {
+        // given
+        initForCreatePost();
+        given(dummyPostDto.getTags()).willReturn(new ArrayList<>(List.of("tag1", "tag2"))); // 2개의 요소를 갖는 태그 리스트 반환하도록 mocking
+
+        // when
+        postService.createPost(dummyPostDto, "member@email.com");
+
+        // then
+        verify(tagRepository, times(2)).findByTagName(anyString());
+    }
+
+    @DisplayName("tagRepository.findByTagName() 메서드가 호출되었을 때, " +
+            "결과값이 존재하지 않을 경우에만 tagRepository.save() 메서드가 호출된다.")
+    @Test
+    void createPost_3() {
+        // given
+        initForCreatePost();
+        given(dummyPostDto.getTags()).willReturn(new ArrayList<>(List.of("tag1", "tag2", "tag3"))); // 3개의 요소를 갖는 태그 리스트 반환하도록 mocking
+        given(tagRepository.findByTagName("tag1")).willReturn(Optional.empty()); // 결과 X
+        given(tagRepository.findByTagName("tag2")).willReturn(Optional.empty()); // 결과 X
+        given(tagRepository.findByTagName("tag3")).willReturn(Optional.of(new Tag("tag3"))); // 결과 O
+
+        // when
+        postService.createPost(dummyPostDto, "member@email.com");
+
+        // then
+        verify(tagRepository, times(2)).save(any(Tag.class));
+    }
+
 
 
     @ParameterizedTest
@@ -269,7 +335,6 @@ class PostServiceTest {
     void deletePost_3() {
         // given
         initForDeletePost_2();
-        given(dummyMember.getRoles()).willReturn(List.of("USER"));
 
         dummyCourse = new Course();
         dummyCourse.setPosted(true);
@@ -288,7 +353,6 @@ class PostServiceTest {
     void deletePost_4() {
         // given
         initForDeletePost_2();
-        given(dummyMember.getRoles()).willReturn(List.of("USER"));
 
         dummyCourse = new Course();
         dummyCourse.setLikesInCourse(new ArrayList<>(List.of(new Likes()))); // 기존 좋아요 1개라고 가정
@@ -310,7 +374,6 @@ class PostServiceTest {
     void deletePost_5() {
         // given
         initForDeletePost_2();
-        given(dummyMember.getRoles()).willReturn(List.of("USER"));
 
         dummyCourse = new Course();
         dummyCourse.setCourseLikeCount(10L); // 기존 likeCount 10
@@ -332,7 +395,6 @@ class PostServiceTest {
     void deletePost_6() {
         // given
         initForDeletePost_1();
-        given(dummyMember.getRoles()).willReturn(List.of("USER"));
 
         // when
         postService.deletePost(1L, "notAdmin@email.com");
