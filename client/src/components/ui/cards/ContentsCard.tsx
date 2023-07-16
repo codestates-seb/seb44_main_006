@@ -30,7 +30,7 @@ const ContensCardContainer = styled.section<{ selected?: boolean }>`
 `;
 
 const UserName = styled.span`
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: ${cssToken.FONT_WEIGHT.medium};
   color: ${cssToken.COLOR['gray-900']};
 `;
@@ -39,7 +39,6 @@ const ContensTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 0.9375rem;
 `;
 
 const ContensHeader = styled.div`
@@ -47,6 +46,7 @@ const ContensHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: ${cssToken.SPACING['gap-10']};
+  height: 2.5rem;
   @media (max-width: 768px) {
     justify-content: space-between;
   }
@@ -61,7 +61,7 @@ const TextLimit = css`
 
 const ContensTitle = styled.h3`
   line-height: 120%;
-  font-size: 20px;
+  font-size: 1.25rem;
   height: 1.4375rem;
   flex: 1;
   ${TextLimit};
@@ -71,7 +71,7 @@ const ContensTitle = styled.h3`
 const ContensText = styled.p`
   line-height: 120%;
   color: ${cssToken.COLOR['gray-900']};
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: ${cssToken.FONT_WEIGHT.medium};
   height: 2rem;
   ${TextLimit};
@@ -83,15 +83,16 @@ const Tags = styled.div`
   flex-wrap: wrap;
   height: 1.5625rem;
   > button {
-    font-size: 12px;
-    padding: 6px 8px 4px;
-    height: auto;
+    font-size: 0.75rem;
+    padding: 0.1875rem 0.5rem 0.125rem ;
   }
 `;
 
 const ContensMiddle = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
+  height: 100%;
+  justify-content: flex-end;
   gap: ${cssToken.SPACING['gap-12']};
   @media (max-width: 768px) {
   }
@@ -100,7 +101,7 @@ const ContensMiddle = styled.div`
 const TextWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: ${cssToken.SPACING['gap-10']};
 `;
 
 const ContensBottom = styled.div`
@@ -114,8 +115,7 @@ const LikeBtnBox = styled.div`
   align-items: center;
   justify-content: center;
   > button {
-    ${BUTTON_STYLES.nobgbtn}
-    margin-right: 3px;
+    margin-right: 0.1875rem;
   }
 `;
 
