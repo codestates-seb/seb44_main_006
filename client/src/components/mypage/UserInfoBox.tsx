@@ -136,7 +136,7 @@ const UserInfoBox = () => {
     if (e.target.value.length < 2 || e.target.value.length > 10) {
       setIsName(false);
       setErrMsg('글자 수를 만족하지 못했습니다.');
-    } else if (e.target.value === '탈퇴한 사용자') {
+    } else if (e.target.value.includes('탈퇴한 사용자')) {
       setIsName(false);
       setErrMsg('사용할 수 없는 닉네임입니다.');
     } else {
