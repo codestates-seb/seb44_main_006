@@ -18,6 +18,7 @@ import getLoginStatus from '../../utils/getLoginStatus';
 import useMovePage from '../../hooks/useMovePage';
 import CircleButton from '../../components/ui/button/CircleButton';
 import Pen from '../../assets/Pen';
+import scrollToTop from '../../utils/scrollToTop';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -66,6 +67,7 @@ const MyPage = () => {
 
   useEffect(() => {
     checkValidEnter();
+    scrollToTop();
   }, [checkValidEnter]);
 
   const memberCourseList = useSelector(
