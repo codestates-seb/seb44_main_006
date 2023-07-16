@@ -66,13 +66,13 @@ const SkeletonContentCard = () => {
   return (
     <CardContainer className="skeletonCardContainer">
       <NickDiv />
+      <ImgDiv className="skeletonImg" />
       <TitleDiv />
       <ContentDiv />
       <TagWrapper>
         <TagDiv />
         <TagDiv />
       </TagWrapper>
-      <ImgDiv className="skeletonImg" />
       <DateDiv />
     </CardContainer>
   );
