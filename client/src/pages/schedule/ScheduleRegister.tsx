@@ -68,7 +68,8 @@ const ScheduleRegister = () => {
   const isSave = useSelector((state: RootState) => state.overlay.isOpen);
   const places = useSelector((state: RootState) => state.placeList.list);
   const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
-
+  const newCenter = useSelector((state: RootState) => state.marker.center);
+  const map = useSelector((state: RootState) => state.map.map);
   const scheduleList = useSelector(
     (state: RootState) => state.scheduleList.list
   );
@@ -87,6 +88,17 @@ const ScheduleRegister = () => {
     checkValidEnter();
   }, [checkValidEnter]);
 
+  // Todo 리팩토링 해야할 듯?
+  useEffect(() => {
+    if (map && newCenter.lat && newCenter.lng) {
+      const moveLatlng = new kakao.maps.LatLng(
+        Number(newCenter.lat),
+        Number(newCenter.lng)
+      );
+      map.panTo(moveLatlng);
+    }
+  }, [map, newCenter]);
+
   useEffect(() => {
     if (isEmpty) dispatch(placeListActions.resetList());
     dispatch(selectedIdActions.allReset());
@@ -101,7 +113,6 @@ const ScheduleRegister = () => {
         <ScheduleBox />
         {isDetailShow && <RegisterDetail detailItem={detailItem} />}
       </BottomSheet>
-
       <Suspense>
         <KakaoMap
           width={cssToken.WIDTH['w-screen']}
