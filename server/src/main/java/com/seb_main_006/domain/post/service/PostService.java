@@ -245,8 +245,6 @@ public class PostService {
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Course course = findPost.getCourse();
 
-        log.info("게시글 삭제 시작2 course.getPost().getPostId()={}", course.getPost().getPostId());
-
         // ADMIN 권한이 없을 경우에만 본인 일정 여부 검증
         List<String> findRole = findMember.getRoles();
         if (!findRole.contains("ADMIN")) {
@@ -255,13 +253,6 @@ public class PostService {
 
         // course 에서의 post, likes, bookmarks 에 대한 연관관계 제거, isPosted 상태 업데이트
         course.removePost();
-
-        if(course.getPost()!=null){
-            log.info("게시글 삭제 시작2 course.getPost().getPostId={}", course.getPost().getPostId());
-        }
-        else{
-            log.info("getPost Null");
-        }
 
         likesRepository.deleteAllByCourse(course);
         bookmarkRepository.deleteAllByCourse(course);
