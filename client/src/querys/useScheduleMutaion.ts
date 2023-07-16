@@ -7,8 +7,12 @@ import { instance } from '../apis/api';
 import { IScheduleRequest } from '../types/type';
 import { selectedIdActions } from '../store/selectedId-slice';
 
+// FIXME 일정 저장, 수정 오류 시 여기로
 const checkRegister = async (data: IScheduleRequest) => {
-  const response: Response = await instance.post(`/api/courses`, data);
+  const response: Response =
+    data.type === 'patch' && data.courseId
+      ? await instance.patch(`/api/courses/${data.courseId}`, data)
+      : await instance.post(`/api/courses`, data);
   return response;
 };
 
