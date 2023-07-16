@@ -107,7 +107,6 @@ const UserInfoBox = () => {
   const dispatch = useDispatch();
   const gotoRegister = useMovePage('/register');
   const gotoSetting = useMovePage('/setting');
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation(PatchMemNickname, {
@@ -213,6 +212,7 @@ const UserInfoBox = () => {
           onClick={gotoRegister}
           height="25px"
           brradius={`${cssToken.BORDER['rounded-tag']}`}
+          disabled={userData && userData?.myCourseCount > 30}
         >
           일정 등록
         </SkyBlueButton>
