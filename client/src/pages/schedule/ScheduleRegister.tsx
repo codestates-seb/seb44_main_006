@@ -91,7 +91,7 @@ const ScheduleRegister = () => {
     setIsCancel(true);
   };
 
-  const fetchData = async () => {
+  const dispatchDestinationList = async () => {
     const response = await GetCourse({
       courseId,
     });
@@ -101,7 +101,7 @@ const ScheduleRegister = () => {
 
   useQuery({
     queryKey: ['modify'],
-    queryFn: fetchData,
+    queryFn: dispatchDestinationList,
     refetchOnWindowFocus: false,
     enabled: isModify === 'true',
   });
