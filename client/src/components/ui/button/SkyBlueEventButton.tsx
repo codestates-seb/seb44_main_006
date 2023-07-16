@@ -7,13 +7,14 @@ const SkyBlueEventButton = ({
   children,
   width,
   height,
-  borderRadius,
+  brradius,
   fontsize,
   onClick,
   disabled,
 }: IEventButtonStyle) => {
   return (
     <EventButton
+      className="skyblue"
       disabled={disabled}
       onClick={onClick}
       styles={{
@@ -21,8 +22,8 @@ const SkyBlueEventButton = ({
         height,
         fontsize,
         color: cssToken.COLOR.white,
-        backgroundColor: cssToken.COLOR['point-900'],
-        borderRadius,
+        bgcolor: cssToken.COLOR['point-500'],
+        brradius,
       }}
     >
       {children}

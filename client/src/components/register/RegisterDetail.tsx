@@ -10,6 +10,7 @@ import { PlacesSearchResultItem } from '../../types/type';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import { RootState } from '../../store';
 import scheduleDetailState from '../../utils/constant/scheduleDetailState';
+import showToast from '../../utils/showToast';
 
 const RegisterDetailContainer = styled.section`
   position: absolute;
@@ -29,7 +30,7 @@ const PlaceEmbedBox = styled.iframe`
   align-items: center;
   justify-content: center;
   width: ${cssToken.WIDTH['w-full']};
-  height: 100vh;
+  height: 90vh;
 `;
 
 const ButtonWrapper = styled.section`
@@ -39,6 +40,9 @@ const ButtonWrapper = styled.section`
   gap: ${cssToken.SPACING['gap-12']};
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  position: fixed;
+  left: 0;
+  bottom: 0;
 `;
 
 const RegisterDetail = ({
@@ -58,7 +62,6 @@ const RegisterDetail = ({
 
   const addSchedule = () => {
     const placeId = uuidv4();
-
     if (scheduleList.length < 10) {
       dispatch(
         scheduleListActions.addList({
@@ -73,6 +76,8 @@ const RegisterDetail = ({
           y: detailItem.y,
         })
       );
+    } else {
+      showToast('error', '일정은 10개까지 등록 가능합니다!')();
     }
     dispatch(showDetailActions.setIsShow(false));
   };
@@ -84,7 +89,7 @@ const RegisterDetail = ({
         <GrayButton
           width="7rem"
           height="3rem"
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
           onClick={handleClose}
         >
           닫기
@@ -92,7 +97,7 @@ const RegisterDetail = ({
         <SkyBlueButton
           width="7rem"
           height="3rem"
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
           onClick={addSchedule}
         >
           추가 하기

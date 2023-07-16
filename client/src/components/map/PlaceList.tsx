@@ -10,6 +10,7 @@ import cssToken from '../../styles/cssToken';
 import { showDetailActions } from '../../store/showDetail-slice';
 import useGeolocation from '../../hooks/useGeolocation';
 import Noresult from '../ui/Noresult';
+import { markerActions } from '../../store/marker-slice';
 
 const Wrapper = styled.div`
   display: flex;
@@ -82,25 +83,37 @@ const PlaceList = ({
     radius ? radius * 1000 : undefined
   );
 
-  const handleClick = (item: PlacesSearchResultItem) => {
+  const handleClick = (item: PlacesSearchResultItem, id: string) => {
     dispatch(showDetailActions.setIsShow(true));
     dispatch(showDetailActions.setItem(item));
+    dispatch(
+      markerActions.selectMarker({
+        markerId: id,
+        center: { lat: item.y, lng: item.x },
+      })
+    );
   };
 
   return isEmpty ? (
     <Noresult iconHeight={50} iconWidth={50} size="1rem" />
   ) : (
     <Wrapper>
-      {places.map((item: PlacesSearchResultItem) => (
-        <LocationCard
-          key={item.id}
-          title={item.place_name}
-          category={item.category_name ? item.category_name.split('>')[0] : ''}
-          address={item.road_address_name}
-          phone={item.phone}
-          onClick={() => handleClick(item)}
-        />
-      ))}
+      {places.map((item: PlacesSearchResultItem) => {
+        return (
+          <LocationCard
+            key={item.id}
+            id={item.id}
+            title={item.place_name}
+            category={
+              item.category_name ? item.category_name.split('>')[0] : ''
+            }
+            address={item.road_address_name}
+            phone={item.phone}
+            place_url={item.place_url}
+            onClick={() => handleClick(item, item.id)}
+          />
+        );
+      })}
       <PaginationWrapper ref={paginationRef} />
     </Wrapper>
   );

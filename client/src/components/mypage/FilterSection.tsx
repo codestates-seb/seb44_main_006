@@ -13,6 +13,8 @@ import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import Text from '../ui/text/Text';
 import useUserInfo from '../../querys/useUserInfo';
+import DeleteButton from '../community/DeleteButton';
+import formatData from '../../utils/sliceData';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -28,7 +30,7 @@ const FilterContainer = styled(FlexDiv)`
   top: -2.9375rem;
   column-gap: ${cssToken.SPACING['gap-50']};
   width: ${cssToken.WIDTH['w-full']};
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   justify-content: center;
 `;
 
@@ -53,6 +55,10 @@ const FilterSection = ({
   const { userData } = useUserInfo();
   const moveToDetail = (postId: number | undefined) => {
     if (postId !== undefined) navigate(`/community/${postId}`);
+  };
+
+  const moveToRegisterDetail = (courseId: number | undefined) => {
+    if (courseId !== undefined) navigate(`/register/detail/${courseId}`);
   };
 
   const isMemberCourseListEmpty =
@@ -93,25 +99,28 @@ const FilterSection = ({
           ? memberCourseList?.map((post: MypCourseSummaryT) => (
               <ContensCard
                 key={post.courseId}
-                type="post"
+                type="course"
                 title={post.courseTitle}
                 likeCount={post.courseLikeCount}
                 userName={post.memberNickname}
                 thumbnail={post.courseThumbnail}
-                onClick={moveToDetail}
+                onClick={moveToRegisterDetail}
                 courseId={post.courseId}
-                date={manufactureDate(post?.courseUpdatedAt)}
+                date={formatData(String(post?.courseDday))}
               >
-                <CopyButton endpoint={`community/${String(post.courseId)}`} />
+                <DeleteButton type="mypage" postId={String(post.courseId)} />
+                <CopyButton
+                  endpoint={`register/detail/${String(post.courseId)}`}
+                />
                 <ShareKakaoButton
-                  endpoint={`community/${String(post.courseId)}`}
+                  endpoint={`register/detail/${String(post.courseId)}`}
                 />
               </ContensCard>
             ))
           : memberBookmarkedList?.map((post: MyBookMarkSummaryT) => (
               <ContensCard
                 key={post.courseId}
-                type="course"
+                type="post"
                 title={post.courseTitle}
                 text={post.postContent}
                 likeCount={post.courseLikeCount}
@@ -121,6 +130,7 @@ const FilterSection = ({
                 onClick={moveToDetail}
                 courseId={post.courseId}
                 bookmarkStatus
+                postId={post.postId}
                 likeStatus={post.likeStatus}
                 date={manufactureDate(post?.courseUpdatedAt)}
               >

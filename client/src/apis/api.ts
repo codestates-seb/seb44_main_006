@@ -49,6 +49,9 @@ export const PatchMemNickname = async (nickname: string) => {
 
 export const GetMyList = async () => instance.get(`/api/members`);
 
+export const GetShareSchedule = async ({ courseId }: { courseId: string }) =>
+  instance.get(`/api/courses/${courseId}/share`);
+
 export const GetCourse = async ({ courseId }: { courseId: string }) =>
   instance.get(`/api/courses/${courseId}`);
 
@@ -96,6 +99,9 @@ export const PostComment = async ({
 
 export const DeleteCommunityPost = async ({ postId }: { postId: string }) =>
   instance.delete(`/api/posts/${postId}`);
+
+export const DeleteMyPageCourses = async ({ postId }: { postId: string }) =>
+  instance.delete(`/api/courses/${postId}`);
 
 export const PostBookmark = async ({ courseId }: { courseId: number }) =>
   instance.post(`/api/courses/${courseId}/bookmark`);

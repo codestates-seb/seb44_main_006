@@ -86,6 +86,22 @@ public class CourseService {
     }
 
     /**
+     * 일정 공유페이지
+     */
+    public CoursePostDto findCourseShare(Long courseId) {
+        Course findCourse = findVerifiedCourse(courseId);
+        String dateString = DateConverter.localDateToStringWithDay(findCourse.getCourseDday()); // Dday를 요일 정보 추가한 String 으로 변환
+
+        // Course -> CoursePostDto (응답 데이터 형식)
+        CoursePostDto response = courseMapper.courseToCourseDto(findCourse);
+        List<DestinationPostDto> destinationPostDtos = courseMapper.destinationsToDestinationDtos(findCourse.getDestinations());
+        response.setDestinationList(destinationPostDtos);
+        response.getCourseData().setCourseDday(dateString);
+
+        return response;
+    }
+
+    /**
      * 일정 수정
      */
     @Transactional
@@ -166,4 +182,6 @@ public class CourseService {
         newDes.setCourse(course);
         desList.add(newDes);
     }
+
+
 }

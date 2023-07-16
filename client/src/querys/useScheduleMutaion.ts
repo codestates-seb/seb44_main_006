@@ -23,6 +23,7 @@ const useScheduleMutation = () => {
       if (status !== '2') return;
       dispatch(selectedIdActions.allReset());
       await queryClient.invalidateQueries(['user']);
+      await queryClient.invalidateQueries(['mypage']);
     },
     onError: (error) => {
       const { response } = error as AxiosError;

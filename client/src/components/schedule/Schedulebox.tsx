@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ScheduleListBox from './ScheduleListBox';
 import DirectSearch from './DirectSearch';
@@ -11,11 +11,12 @@ import SubTitle from '../ui/text/SubTitle';
 import Text from '../ui/text/Text';
 import GrayButton from '../ui/button/GrayButton';
 import { placeListActions } from '../../store/placeList-slice';
+import { RootState } from '../../store';
 
 const ScheduleContainer = styled.section`
   left: 0;
   top: 0;
-  width: 25rem;
+  width: 100%;
   height: 100vh;
   background: #fff;
   padding: 15px;
@@ -27,23 +28,34 @@ const ScheduleContainer = styled.section`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media (max-width: 768px) {
+    height: 100%;
+  }
 `;
 
 const ScheduleInfoBox = styled.div`
-  margin-bottom: 15px;
-  border-bottom: 1px solid #dcdcdc;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Btnbox = styled.div`
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  gap: ${cssToken.SPACING['gap-10']};
+
+  @media (max-width: 768px) {
+    .gray {
+      width: 100%;
+    }
+  }
 `;
 
 const ScheduleInfoTxt = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: ${cssToken.SPACING['gap-10']};
 `;
 
 const ScheduleTitle = styled.div`
@@ -53,7 +65,9 @@ const ScheduleTitle = styled.div`
 `;
 
 const ScheduleBox = () => {
-  const [choiceCategory, setChoiceCategory] = useState(false);
+  const scroll = useSelector((state: RootState) => state.marker.scroll);
+  const scrollRef = useRef<HTMLElement>(null);
+  const [choiceCategory, setChoiceCategory] = useState(true);
   const [choiceDirect, setChoiceDirect] = useState(false);
   const dispatch = useDispatch();
 
@@ -71,8 +85,19 @@ const ScheduleBox = () => {
     dispatch(placeListActions.setIsEmpty(false));
   };
 
+  useEffect(() => {
+    if (scroll && scrollRef.current) {
+      const moveScroll = document.body.clientHeight / 2;
+      scrollRef.current.scrollTo({
+        top: scroll - moveScroll,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }
+  }, [scroll]);
+
   return (
-    <ScheduleContainer>
+    <ScheduleContainer ref={scrollRef} className="scheduleBox">
       <ScheduleInfoBox>
         <ScheduleInfoTxt>
           <ScheduleTitle>
@@ -90,7 +115,7 @@ const ScheduleBox = () => {
             styles={{
               size: '0.85rem',
               color: cssToken.COLOR['gray-900'],
-              weight: 300,
+              weight: 500,
             }}
           >
             최대 10개 추가할 수 있습니다.
@@ -100,29 +125,20 @@ const ScheduleBox = () => {
 
       <ScheduleListBox />
 
-      <SubTitle
-        styles={{
-          size: cssToken.COLOR['gray-900'],
-          color: cssToken.COLOR.black,
-        }}
-      >
-        장소 추가
-      </SubTitle>
-
       <Btnbox>
         <GrayButton
-          width="100%"
+          width={cssToken.WIDTH['w-full']}
           height="50px"
-          borderRadius="10px"
+          brradius="10px"
           isActive={choiceCategory}
           onClick={handleCategory}
         >
           카테고리 검색
         </GrayButton>
         <GrayButton
-          width="100%"
+          width={cssToken.WIDTH['w-full']}
           height="50px"
-          borderRadius="10px"
+          brradius="10px"
           isActive={choiceDirect}
           onClick={handleDirect}
         >

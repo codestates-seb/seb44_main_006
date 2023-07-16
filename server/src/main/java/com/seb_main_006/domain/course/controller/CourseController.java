@@ -49,6 +49,15 @@ public class CourseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 일정 공유 페이지
+    @GetMapping("/{courseId}/share")
+    public ResponseEntity<?> getCourseShare(@PathVariable @Positive Long courseId) {
+
+        CoursePostDto response = courseService.findCourseShare(courseId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // 일정 수정
     @PatchMapping("/{course-id}")
     public ResponseEntity patchCourse(@Valid @PathVariable("course-id") long courseId,

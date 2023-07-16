@@ -17,16 +17,32 @@ export const FlexDiv = styled.div`
 
 export const CardWrapper = styled.div`
   width: 100%;
-  height: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(405px, 405px));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(${cssToken.WIDTH['grid-min']}, auto)
+  );
   justify-content: center;
-  gap: ${cssToken.SPACING['gap-50']};
+  gap: ${cssToken.SPACING['gap-20']};
+
+  @media screen and (max-width: 768px) {
+    gap: ${cssToken.SPACING['gap-20']};
+  }
 `;
 
 export const HeadDiv = styled(FlexDiv)`
   flex-direction: column;
   row-gap: 3px;
+
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-size: 0.8125rem;
+    }
+  }
 `;
 
 export const GapDiv = styled(FlexDiv)`
@@ -44,7 +60,14 @@ export const OutsideWrap = styled(FlexDiv)`
 `;
 
 export const TagDiv = styled(FlexDiv)`
+  flex-wrap: wrap;
   column-gap: 0.5rem;
+  row-gap: 0.5rem;
+  @media screen and (max-width: 768px) {
+    button {
+      font-size: 0.625rem;
+    }
+  }
 `;
 
 export const BtnDiv = styled(FlexDiv)`
@@ -52,6 +75,11 @@ export const BtnDiv = styled(FlexDiv)`
   justify-content: center;
   column-gap: ${cssToken.SPACING['gap-12']};
   margin-bottom: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-width: 500px) {
+    margin-bottom: ${cssToken.SPACING['gap-20']};
+    align-self: flex-end;
+  }
 `;
 
 export const ModalChildrenDiv = styled(FlexDiv)`
@@ -62,12 +90,15 @@ export const ModalChildrenDiv = styled(FlexDiv)`
 `;
 
 export const ShareBtn = styled.button`
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1.3rem;
+  height: 1.3rem;
   padding: 0;
   > svg {
     width: 100%;
     height: 100%;
+    > path {
+      fill: #000;
+    }
   }
   cursor: pointer;
 `;

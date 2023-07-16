@@ -7,6 +7,7 @@ import PlaceList from '../map/PlaceList';
 import { selectedIdActions } from '../../store/selectedId-slice';
 
 const FormContainer = styled.form`
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

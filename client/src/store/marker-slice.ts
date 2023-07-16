@@ -1,11 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { IdT } from '../types/type';
+import { ILatLng, IdT } from '../types/type';
 
 const initialState: IdT = {
   markerId: '',
   center: { lat: '', lng: '' },
+  scroll: null,
+  prevCenter: { lat: '', lng: '' },
 };
 
 const markerSlice = createSlice({
@@ -15,10 +17,19 @@ const markerSlice = createSlice({
     selectMarker(state, action: PayloadAction<IdT>) {
       if (state.markerId === action.payload.markerId) {
         state.markerId = '';
+        state.scroll = null;
       } else {
         state.markerId = action.payload.markerId;
+        if (state.center.lat && state.center.lng)
+          state.prevCenter = state.center;
         state.center = action.payload.center;
       }
+    },
+    setscroll(state, action: PayloadAction<null | number>) {
+      state.scroll = action.payload;
+    },
+    setInitialCenter(state, action: PayloadAction<ILatLng>) {
+      state.prevCenter = action.payload;
     },
   },
 });

@@ -7,9 +7,6 @@ import { RootState } from '../../store';
 import ScheduleBox from '../../components/schedule/Schedulebox';
 import cssToken from '../../styles/cssToken';
 import { MarkerOff } from '../../components/map/index';
-import CircleButton from '../../components/ui/button/CircleButton';
-import SaveIcon from '../../assets/SaveIcon';
-import CloseIcon from '../../assets/CloseIcon';
 import ScheduleCreateModal from '../../components/schedule/ScheduleCreateModal';
 import { overlayActions } from '../../store/overlay-slice';
 import Polyline from '../../components/map/Polyline';
@@ -17,6 +14,9 @@ import makePolyline from '../../utils/makePolyline';
 import ScheduleCancelModal from '../../components/schedule/ScheduleCancelModal';
 import RegisterDetail from '../../components/register/RegisterDetail';
 import { placeListActions } from '../../store/placeList-slice';
+import BottomSheet from '../../components/ui/bottomsheet/BottomSheet';
+import { selectedIdActions } from '../../store/selectedId-slice';
+import useValidEnter from '../../hooks/useValidEnter';
 
 const KakaoMap = lazy(() => import('../../components/map/KakaoMap'));
 const Marker = lazy(() => import('../../components/map/Marker'));
@@ -27,32 +27,48 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const FixedDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${cssToken.SPACING['gap-16']};
   position: fixed;
-  right: ${cssToken.SPACING['gap-40']};
-  bottom: ${cssToken.SPACING['gap-40']};
+  display: flex;
+  flex-direction: row;
+  gap: ${cssToken.SPACING['gap-12']};
+  top: ${cssToken.SPACING['gap-12']};
+  right: ${cssToken.SPACING['gap-12']};
   z-index: 999;
 `;
 
-const ButtonDiv = styled.div`
-  margin-bottom: 0.25rem;
-`;
+const FloatButton = styled.button<{ bgcolor: string; fontcolor?: string }>`
+  font-weight: ${cssToken.FONT_WEIGHT.bold};
+  width: 8rem;
+  height: 3rem;
+  border-radius: ${cssToken.BORDER['rounded-s']};
+  color: ${(props) => props.fontcolor};
+  background-color: ${(props) => props.bgcolor};
+  box-shadow: ${cssToken.SHADOW['shadow-4xl']};
+  cursor: pointer;
 
-const RelativeDiv = styled.div`
-  position: relative;
+  @media (max-width: 768px) {
+    font-weight: ${cssToken.FONT_WEIGHT.medium};
+    font-size: 0.8rem;
+    width: 5rem;
+    height: 2rem;
+  }
 `;
 
 const ScheduleRegister = () => {
+  const checkValidEnter = useValidEnter();
   const [isCancel, setIsCancel] = useState<boolean>(false);
 
   const isSave = useSelector((state: RootState) => state.overlay.isOpen);
   const places = useSelector((state: RootState) => state.placeList.list);
   const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
+
   const scheduleList = useSelector(
     (state: RootState) => state.scheduleList.list
   );
@@ -68,7 +84,12 @@ const ScheduleRegister = () => {
   };
 
   useEffect(() => {
+    checkValidEnter();
+  }, [checkValidEnter]);
+
+  useEffect(() => {
     if (isEmpty) dispatch(placeListActions.resetList());
+    dispatch(selectedIdActions.allReset());
   }, [dispatch, isEmpty]);
 
   return (
@@ -76,13 +97,16 @@ const ScheduleRegister = () => {
       {isSave && <ScheduleCreateModal />}
       {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 
-      <RelativeDiv>
+      <BottomSheet>
         <ScheduleBox />
         {isDetailShow && <RegisterDetail detailItem={detailItem} />}
-      </RelativeDiv>
+      </BottomSheet>
 
       <Suspense>
-        <KakaoMap width="100vw" height="100vh">
+        <KakaoMap
+          width={cssToken.WIDTH['w-screen']}
+          height={cssToken.HEIGHT['h-screen']}
+        >
           {places.map((place: PlacesSearchResultItem) => (
             <Marker
               img={MarkerOff[0]}
@@ -106,29 +130,22 @@ const ScheduleRegister = () => {
       </Suspense>
 
       <FixedDiv>
-        <CircleButton width="100px" height="100px" onClick={handleCancel}>
-          <ButtonDiv>
-            <CloseIcon
-              style={{ iconWidth: 19, iconHeight: 19, color: 'black' }}
-            />
-          </ButtonDiv>
+        <FloatButton
+          bgcolor={cssToken.COLOR['gray-300']}
+          onClick={handleCancel}
+        >
           <div>취소하기</div>
-        </CircleButton>
-        <CircleButton
-          width="100px"
-          height="100px"
+        </FloatButton>
+        <FloatButton
+          bgcolor={cssToken.COLOR['point-900']}
+          fontcolor={cssToken.COLOR.white}
           onClick={() => {
             if (scheduleList.length > 0)
               dispatch(overlayActions.toggleOverlay());
           }}
         >
-          <ButtonDiv>
-            <SaveIcon
-              style={{ iconWidth: 22, iconHeight: 22, color: 'black' }}
-            />
-          </ButtonDiv>
           <div>저장하기</div>
-        </CircleButton>
+        </FloatButton>
       </FixedDiv>
     </Wrapper>
   );

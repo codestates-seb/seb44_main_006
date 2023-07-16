@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { debounce } from 'lodash';
 
 import { Props, TextareaT } from '../../types/type';
 import { mapActions } from '../../store/map-slice';
@@ -16,7 +17,7 @@ type KakaoMapT = {
   height: string;
   children: Props['children'];
   center?: { lat: string; lng: string; level: number };
-  selected?: { lat: string; lng: string };
+  selected?: { lat: string; lng: string; level: number };
 };
 const KakaoMap = ({
   center,
@@ -38,7 +39,10 @@ const KakaoMap = ({
         lat: curLocation.coords?.latitude,
         lng: curLocation.coords?.longitude,
       };
-      const { level = 3, lat, lng } = center ?? currentPosition;
+
+      const { lat, lng } = center ?? currentPosition;
+      const level =
+        selected?.lat && selected?.lng ? selected.level : center?.level;
 
       const newMap = new kakao.maps.Map(element, {
         level,
@@ -46,13 +50,17 @@ const KakaoMap = ({
         keyboardShortcuts: true,
       });
 
-      if (selected && selected?.lat) {
-        const moveLatlng = new kakao.maps.LatLng(
-          Number(selected.lat),
-          Number(selected.lng)
-        );
-        newMap.panTo(moveLatlng);
-      }
+      const debounceMap = debounce(() => {
+        if (selected && selected?.lat) {
+          const moveLatlng = new kakao.maps.LatLng(
+            Number(selected.lat),
+            Number(selected.lng)
+          );
+          newMap.panTo(moveLatlng);
+        }
+      }, 1000);
+
+      debounceMap();
 
       dispatch(mapActions.setMap(newMap));
       setLoad(true);

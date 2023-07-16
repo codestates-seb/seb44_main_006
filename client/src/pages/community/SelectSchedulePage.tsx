@@ -2,6 +2,9 @@ import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
+
+import { mgpd } from './commonstyle';
 
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -16,6 +19,7 @@ import Text from '../../components/ui/text/Text';
 import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 import scrollToTop from '../../utils/scrollToTop';
 import SkeletonCardContainer from '../../components/community/skeleton/SkeletonCardContainer';
+import useValidEnter from '../../hooks/useValidEnter';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -24,11 +28,26 @@ const OutsideWrap = styled(FlexDiv)`
   padding-right: ${cssToken.SPACING['py-100']};
   flex-direction: column;
   row-gap: ${cssToken.SPACING['gap-50']};
+
+  @media screen and (max-width: 768px) {
+    height: calc(100vh - 4.5rem);
+    ${mgpd}
+    margin-bottom: 4.5rem;
+    row-gap: ${cssToken.SPACING['gap-20']};
+  }
 `;
 
 const OverFlowDiv = styled.div`
   height: 62vh;
   overflow: auto;
+  background-color: ${cssToken.COLOR['gray-300']};
+  padding: ${cssToken.SPACING['gap-24']};
+  margin-bottom: ${cssToken.SPACING['gap-24']};
+
+  @media screen and (max-width: 500px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 `;
 
 const EmptyDiv = styled(FlexDiv)`
@@ -37,10 +56,32 @@ const EmptyDiv = styled(FlexDiv)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: ${cssToken.SPACING['gap-40']};
+  row-gap: ${cssToken.SPACING['gap-20']};
+
+  @media screen and (max-width: 768px) {
+    > h1 {
+      font-size: 1.875rem;
+    }
+    > p {
+      font-size: 0.8125rem;
+    }
+  }
+`;
+
+const Jcbetween = styled(FlexDiv)`
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const SelectCardWrapper = styled(CardWrapper)`
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(95%, auto));
+  }
 `;
 
 const SelectSchedulePage = () => {
+  const checkValidEnter = useValidEnter();
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
   const navigate = useNavigate();
   const gotoBack = useMovePage('/community');
@@ -63,8 +104,9 @@ const SelectSchedulePage = () => {
   });
 
   useEffect(() => {
+    checkValidEnter();
     scrollToTop();
-  }, []);
+  }, [checkValidEnter]);
 
   const registerCourses = courses
     ? courses.filter((course: MemberCourseT) => course.isPosted === false)
@@ -81,61 +123,63 @@ const SelectSchedulePage = () => {
   };
 
   if (error) {
-    // Todo error 객체 확인
-    navigate(`/error/500`);
+    const { response } = error as AxiosError;
+    if (response) navigate(`/error/${response.status}`);
   }
 
   return (
     <OutsideWrap>
       <Head />
-      <OverFlowDiv>
-        {isLoading && (
-          <CardWrapper>
-            <SkeletonCardContainer length={4} />
-          </CardWrapper>
-        )}
-        {registerCourses.length > 0 && (
-          <CardWrapper>
-            {registerCourses.map((course) => (
-              <ContensCard
-                type="course"
-                key={course.courseId}
-                title={course.courseTitle}
-                text={course.courseContent}
-                likeCount={course.courseLikeCount}
-                userName={course.memberNickname}
-                thumbnail={course.courseThumbnail}
-                courseId={course.courseId}
-                selectId={selectId}
-                onClick={handleClickCard}
-              />
-            ))}
-          </CardWrapper>
-        )}
-        {registerCourses.length < 1 && (
-          <EmptyDiv>
-            <Title styles={{ size: cssToken.TEXT_SIZE['text-80'] }}>텅</Title>
-            <Text
-              styles={{
-                size: cssToken.TEXT_SIZE['text-40'],
-                color: cssToken.COLOR['gray-900'],
-                weight: cssToken.FONT_WEIGHT.medium,
-              }}
-            >
-              커뮤니티에 등록할 수 있는 일정이 없습니다.
-            </Text>
-            <SkyBlueButton
-              borderRadius={cssToken.BORDER['rounded-md']}
-              width="187px"
-              height="55px"
-              onClick={gotoRegister}
-            >
-              일정등록하기
-            </SkyBlueButton>
-          </EmptyDiv>
-        )}
-      </OverFlowDiv>
-      <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />
+      <Jcbetween>
+        <OverFlowDiv>
+          {isLoading && (
+            <SelectCardWrapper>
+              <SkeletonCardContainer length={4} />
+            </SelectCardWrapper>
+          )}
+          {registerCourses.length > 0 && (
+            <SelectCardWrapper>
+              {registerCourses.map((course) => (
+                <ContensCard
+                  type="course"
+                  key={course.courseId}
+                  title={course.courseTitle}
+                  text={course.courseContent}
+                  likeCount={course.courseLikeCount}
+                  userName={course.memberNickname}
+                  thumbnail={course.courseThumbnail}
+                  courseId={course.courseId}
+                  selectId={selectId}
+                  onClick={handleClickCard}
+                />
+              ))}
+            </SelectCardWrapper>
+          )}
+          {registerCourses.length < 1 && (
+            <EmptyDiv>
+              <Title styles={{ size: cssToken.TEXT_SIZE['text-80'] }}>텅</Title>
+              <Text
+                styles={{
+                  size: cssToken.TEXT_SIZE['text-40'],
+                  color: cssToken.COLOR['gray-900'],
+                  weight: cssToken.FONT_WEIGHT.medium,
+                }}
+              >
+                커뮤니티에 등록할 수 있는 일정이 없습니다.
+              </Text>
+              <SkyBlueButton
+                brradius={cssToken.BORDER['rounded-md']}
+                width="187px"
+                height="55px"
+                onClick={gotoRegister}
+              >
+                일정등록하기
+              </SkyBlueButton>
+            </EmptyDiv>
+          )}
+        </OverFlowDiv>
+        <PageMoveBtnDiv grayCallback={gotoBack} skyblueCallback={goToWrite} />
+      </Jcbetween>
     </OutsideWrap>
   );
 };

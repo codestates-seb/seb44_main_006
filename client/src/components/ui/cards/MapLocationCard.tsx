@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { debounce } from 'lodash';
 
 import { CardCommonBox } from './Card.styled';
 
@@ -22,6 +23,13 @@ const MapLocationCardContainer = styled.section`
   &:last-child .last-circle::after {
     display: none;
   }
+
+  @media screen and (max-width: 768px) {
+    svg {
+      width: 13px;
+      height: 14px;
+    }
+  }
 `;
 
 const NumCircle = styled.span`
@@ -32,7 +40,7 @@ const NumCircle = styled.span`
   border-radius: ${cssToken.BORDER['rounded-full']};
   width: 2.1875rem;
   height: 2.1875rem;
-  background-color: ${cssToken.COLOR['point-900']};
+  background-color: ${cssToken.COLOR['point-500']};
   position: relative;
   &::after {
     content: '';
@@ -44,6 +52,17 @@ const NumCircle = styled.span`
     right: 50%;
     bottom: -120%;
     transform: translate(-50%, 0);
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.8125rem;
+    width: 1.8rem;
+    height: 1.8rem;
+
+    &::after {
+      height: 80%;
+      bottom: -100%;
+    }
   }
 `;
 
@@ -57,11 +76,20 @@ const LocationCard = styled.div<{ selected?: boolean }>`
   padding: ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-12']}
     ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-16']};
   ${CardCommonBox}
+
+  @media screen and (max-width: 768px) {
+    padding: ${cssToken.SPACING['gap-16']} ${cssToken.SPACING['gap-12']}
+      ${cssToken.SPACING['gap-16']} ${cssToken.SPACING['gap-12']};
+  }
 `;
 
 const LocationText = styled.p`
   font-size: ${cssToken.TEXT_SIZE['text-18']};
   font-weight: ${cssToken.FONT_WEIGHT.medium};
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.8125rem;
+  }
 `;
 
 const RightButtonArea = styled.section`
@@ -69,6 +97,10 @@ const RightButtonArea = styled.section`
   gap: 1rem;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
 const MapLocationCard = ({
@@ -84,10 +116,11 @@ const MapLocationCard = ({
 
   const dispatch = useDispatch();
 
-  const handleHighlight = () => {
-    if (id && latlng)
+  const handleHighlight = debounce(() => {
+    if (id && latlng) {
       dispatch(markerActions.selectMarker({ markerId: id, center: latlng }));
-  };
+    }
+  }, 200);
 
   const handleDelete = (inputId: string) => {
     dispatch(scheduleListActions.deletePlace(inputId));

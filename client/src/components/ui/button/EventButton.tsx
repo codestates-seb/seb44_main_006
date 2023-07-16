@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import { Button640 } from './buttonStyles';
+
 import { IEventButtonStyle, Props } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
 
@@ -10,10 +12,10 @@ const ButtonTemplate = styled.button<IEventButtonStyle>`
   padding: ${(props) => props.padding};
   color: ${(props) => props.color};
   background-color: ${(props) =>
-    props.disabled ? cssToken.COLOR['gray-700'] : props.backgroundColor};
+    props.disabled ? cssToken.COLOR['gray-700'] : props.bgcolor};
   box-shadow: ${(props) => props.boxShadow};
   border: ${(props) => props.border || 'none'};
-  border-radius: ${(props) => props.borderRadius};
+  border-radius: ${(props) => props.brradius};
   cursor: pointer;
 
   display: flex;
@@ -27,15 +29,32 @@ const ButtonTemplate = styled.button<IEventButtonStyle>`
   &:hover {
     opacity: 0.8;
   }
+
+  @media screen and (max-width: 768px) {
+    &.gray {
+      ${Button640}
+    }
+
+    &.skyblue {
+      ${Button640}
+    }
+
+    &.communityStar {
+      width: 2.1875rem;
+      height: 2.1875rem;
+    }
+  }
 `;
 
 const EventButton = ({
+  className,
   children,
   styles,
   onClick,
   onSubmit,
   disabled,
 }: {
+  className?: string;
   children?: Props['children'];
   styles?: IEventButtonStyle;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -44,6 +63,7 @@ const EventButton = ({
 }) => {
   return (
     <ButtonTemplate
+      className={className}
       {...styles}
       onClick={onClick}
       onSubmit={onSubmit}

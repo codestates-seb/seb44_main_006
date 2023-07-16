@@ -3,26 +3,44 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 
 import Text from '../ui/text/Text';
-import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { FlexDiv } from '../../styles/styles';
 import { DeleteComment, PatchComment } from '../../apis/api';
 import TextArea from '../ui/input/TextArea';
 import useUserInfo from '../../querys/useUserInfo';
 import { CommentT } from '../../types/apitype';
+import cssToken from '../../styles/cssToken';
 
 const CommentWrapper = styled.div`
   display: flex;
   width: 100%;
   gap: ${cssToken.SPACING['gap-12']};
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   padding-top: ${cssToken.SPACING['gap-16']};
   padding-bottom: ${cssToken.SPACING['gap-16']};
+
+  @media screen and (max-width: 768px) {
+    img {
+      width: 2.3125rem;
+      height: 2.3125rem;
+    }
+    p {
+      font-size: ${cssToken.TEXT_SIZE['text-12']};
+      line-height: 1.2rem;
+    }
+  }
 `;
 
 const Button = styled.button`
   cursor: pointer;
   color: #7b7b7b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media screen and (max-width: 768px) {
+    font-size: ${cssToken.TEXT_SIZE['text-12']};
+  }
 `;
 
 const FlexButtonDiv = styled(FlexDiv)`
@@ -39,6 +57,21 @@ const FlexAround = styled(FlexDiv)`
   width: 100%;
   flex-direction: column;
   justify-content: space-around;
+  @media screen and (max-width: 768px) {
+    textarea {
+      height: 3.125rem;
+      font-size: 0.75rem;
+    }
+  }
+`;
+
+const UserDiv = styled.div`
+  @media screen and (max-width: 768px) {
+    div {
+      width: fit-content;
+      height: fit-content;
+    }
+  }
 `;
 
 const Comment = ({
@@ -81,9 +114,9 @@ const Comment = ({
 
   return (
     <CommentWrapper>
-      <div>
+      <UserDiv>
         <UserInfoMy styles={{ size: '4.25rem' }} src={src} />
-      </div>
+      </UserDiv>
       <FlexAround>
         <FlexBetween>
           <Text

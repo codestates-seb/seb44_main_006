@@ -23,7 +23,6 @@ import useUserInfo from '../../querys/useUserInfo';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import { RootState } from '../../store';
-import SkeletonContentCard from '../skeleton/SkeletonContentCard';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -32,13 +31,18 @@ const FilterWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: ${cssToken.SPACING['gap-50']};
+  background-color: ${cssToken.COLOR['gray-300']};
+
+  @media screen and (max-width: 768px) {
+    padding: ${cssToken.SPACING['gap-20']};
+  }
 `;
 const FilterContainer = styled(FlexDiv)`
   position: absolute;
-  top: -2.9375rem;
+  top: -2.8rem;
   column-gap: ${cssToken.SPACING['gap-50']};
   width: ${cssToken.WIDTH['w-full']};
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   justify-content: center;
 `;
 
@@ -112,10 +116,10 @@ const FilterSection = ({
                     <ShareKakaoButton endpoint={`community/${post.postId}`} />
                   </ContensCard>
                 );
-              return <SkeletonContentCard />;
+              return <SkeletonCardContainer length={6} />;
             })
           )}
-        {isFetching && <SkeletonCardContainer length={11} />}
+        {isFetching && <SkeletonCardContainer length={6} />}
       </CardWrapper>
       {communityData && <div ref={ref} />}
     </FilterWrapper>

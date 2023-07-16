@@ -1,13 +1,13 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { setUserOAuthActions } from '../store/userAuth-slice';
 import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
+import useLoginToggleModal from '../hooks/useLoginToggleModal';
 
 const MainContainer = styled.main`
   cursor: none;
@@ -15,6 +15,7 @@ const MainContainer = styled.main`
   flex-direction: column-reverse;
   @media (min-width: 768px) {
     flex-direction: row;
+    cursor: default;
   }
 `;
 
@@ -41,10 +42,12 @@ const MainLink = styled(Link)`
   }
   @media (min-width: 768px) {
     font-size: 50px;
+    cursor: default;
   }
 
   @media (min-width: 1280px) {
     font-size: 70px;
+    cursor: default;
   }
 `;
 
@@ -53,7 +56,7 @@ const CommunitySection = styled(SectionBox)`
   transition: 0.3s;
   height: 100vh;
   > a {
-    color: ${cssToken.COLOR['point-900']};
+    color: ${cssToken.COLOR['point-500']};
     &:hover::after {
       content: '커뮤니티';
     }
@@ -84,7 +87,7 @@ const Main = () => {
   const [isHovered, setIsHovered] = useState<boolean>(true);
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
 
-  const dispatch = useDispatch();
+  const LogintoggleModal = useLoginToggleModal();
 
   const handleMouseEnter = () => {
     setIsHovered((prev) => !prev);
@@ -92,10 +95,6 @@ const Main = () => {
 
   const handleMouseLeave = () => {
     setIsHovered((prev) => !prev);
-  };
-
-  const LogintoggleModal = () => {
-    dispatch(setUserOAuthActions.toggleIsLogin());
   };
 
   return (

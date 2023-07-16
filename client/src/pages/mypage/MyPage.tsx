@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 import { FlexDiv } from '../../styles/styles';
 import { GetMyList } from '../../apis/api';
@@ -10,7 +11,8 @@ import FilterTab from '../../components/mypage/FilterTab';
 import useHandleTab from '../../hooks/useHandleTab';
 import { myInfoDataListActions } from '../../store/myInfoDataList-slice';
 import { RootState } from '../../store';
-import { MypCourseSummaryT, MyBookMarkSummaryT } from '../../types/apitype';
+import { MypSummaryT } from '../../types/apitype';
+import useValidEnter from '../../hooks/useValidEnter';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -22,24 +24,27 @@ const Wrapper = styled(FlexDiv)`
 `;
 
 const MyPage = () => {
+  const checkValidEnter = useValidEnter();
   const dispatch = useDispatch();
   const { selectTab, setTab } = useHandleTab();
   useQuery({
     queryKey: ['mypage'],
     queryFn: () => GetMyList(),
-    onSuccess: (data) => {
-      dispatch(
-        myInfoDataListActions.setDataCourse(
-          data?.data.memberCourseList as MypCourseSummaryT[]
-        )
-      );
-      dispatch(
-        myInfoDataListActions.setDataBookMark(
-          data?.data.memberBookmarkedList as MyBookMarkSummaryT[]
-        )
-      );
+    onSuccess: (data: { data: MypSummaryT }) => {
+      if (data) {
+        dispatch(
+          myInfoDataListActions.setDataCourse(data.data.memberCourseList)
+        );
+        dispatch(
+          myInfoDataListActions.setDataBookMark(data.data.memberBookmarkedList)
+        );
+      }
     },
   });
+
+  useEffect(() => {
+    checkValidEnter();
+  }, [checkValidEnter]);
 
   const memberCourseList = useSelector(
     (state: RootState) => state.myInfoData.memberCourseList

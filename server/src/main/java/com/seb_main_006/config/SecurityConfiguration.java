@@ -81,6 +81,7 @@ public class SecurityConfiguration {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return ((web) -> web
                 .ignoring()
+                .antMatchers("/courses/{coursesId}/share")
                 .antMatchers("/posts/read/**"));
     }
 
