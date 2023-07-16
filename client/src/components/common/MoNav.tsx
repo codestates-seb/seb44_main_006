@@ -105,7 +105,9 @@ const MoNav = () => {
             styles={{
               size: '1.5rem',
             }}
-            src={userData.memberImageUrl}
+            src={
+              !userData.memberImageUrl ? notUserImag : userData.memberImageUrl
+            }
           />
         ) : (
           <MyPageIcon />
