@@ -115,7 +115,7 @@ const FilterSection = ({
                     thumbnail={post.courseThumbnail}
                     onClick={moveToRegisterDetail}
                     courseId={post.courseId}
-                    date={`${formatData(String(post?.courseDday))} day `}
+                    date={`${formatData(String(post?.courseDday))}`}
                   >
                     <DeleteButton
                       type="mypage"
