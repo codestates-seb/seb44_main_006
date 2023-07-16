@@ -181,6 +181,7 @@ const PostCommunitypage = () => {
       </PostOutsideWrap>
       {modalIsOpen && (
         <Modal
+          className={['modal', 'modalContainer']}
           backdropCallback={toggleModal}
           handleCloseBtn={toggleModal}
           styles={{

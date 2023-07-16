@@ -160,6 +160,7 @@ const UserSetting = () => {
     <UserSettingContainer>
       {modalIsOpen && (
         <Modal
+          className={['modal', 'modalContainer']}
           styles={{
             width: '47.0625rem',
             height: '28.375rem',
