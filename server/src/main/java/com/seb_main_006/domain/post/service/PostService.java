@@ -61,21 +61,20 @@ public class PostService {
         Member findmember = memberService.findVerifiedMember(memberEmail);
         Course findcourse = courseService.findVerifiedCourse(postPostDto.getCourseId());
 
-        courseService.verifyNotMyCourse(findmember, findcourse); // 코스 작성자와 현재 로그인한 작성자가 동일한지 확인
+        log.info("게시글 생성 시작 findcourse.getCourseId={}, findmember.getMemberEmail={}", findcourse.getCourseId(), findmember.getMemberEmail());
 
+        courseService.verifyNotMyCourse(findmember, findcourse); // 코스 작성자와 현재 로그인한 작성자가 동일한지 확인
         verifyExistCourse(findcourse); // 작성한 코스가 있으면 예외처리
 
         Post post = new Post(); // 새로 저장할 Post 선언
-
         post.setPostContent(postPostDto.getPostContent()); // 저장할 post에 게시글내용과 코스 저장
-
         post.addCourse(findcourse); // Post에 코스 저장(연관관계 매핑)
 
         List<String> inputTags = postPostDto.getTags(); // 입력받은 태그 리스트를 postPostDto에서 꺼내옴
 
         // 입력받은 태그 리스트의 길이만큼 반복
         for (int i = 0; i < inputTags.size(); i++) {
-
+            log.info("게시글 생성시 태그 for문 시작!!!");
             String tagName = inputTags.get(i); // 입력받은 태그 이름 인덱스로 꺼내옴
 
             PostTag newPostTag = new PostTag(); // 저장할 새로운 PostTag선언
@@ -97,9 +96,10 @@ public class PostService {
         }
 
         // 포스팅 여부 처리
-        boolean posted = findcourse.isPosted();
-        findcourse.setPosted(!posted);
+        findcourse.setPosted(true);
         courseRepository.save(findcourse);
+
+        log.info("게시글 생성 종료전 post.getCourse.getCourseId={}", post.getCourse().getCourseId());
 
         // Post 테이블에 저장
         return postRepository.save(post);
@@ -147,6 +147,10 @@ public class PostService {
 
         Member member = new Member(0L);
 
+        if (tagName != null && tagName.isBlank()) {
+            tagName = null;
+        }
+
         // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             try {
@@ -162,9 +166,9 @@ public class PostService {
 
             // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
             if (sort == null) {
-                pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(true, pageRequest);
+                pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(pageRequest);
             } else {
-                pageResult = courseRepository.findAllByPostedOrderByLikeCount(true, pageRequest);
+                pageResult = courseRepository.findAllByPostedOrderByLikeCount(pageRequest);
             }
         } else {
             // 입력받은 태그 String 을 공백 기준으로 분리
@@ -293,9 +297,12 @@ public class PostService {
      */
     @Transactional
     public void deletePost(Long postId, String memberEmail) {
+        log.info("게시글 삭제 시작 postId={}, memberEmail={}", postId, memberEmail);
         Post findPost = findVerifiedPost(postId);
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Course course = findPost.getCourse();
+
+        log.info("게시글 삭제 시작2 course.getPost().getPostId()={}", course.getPost().getPostId());
 
         // ADMIN 권한이 없을 경우에만 본인 일정 여부 검증
         List<String> findRole = findMember.getRoles();
@@ -305,6 +312,14 @@ public class PostService {
 
         // course 에서의 post, likes, bookmarks 에 대한 연관관계 제거, isPosted 상태 업데이트
         course.removePost();
+
+        if(course.getPost()!=null){
+            log.info("게시글 삭제 시작2 course.getPost().getPostId={}", course.getPost().getPostId());
+        }
+        else{
+            log.info("getPost Null");
+        }
+
         likesRepository.deleteAllByCourse(course);
         bookmarkRepository.deleteAllByCourse(course);
         postRepository.delete(findPost);
@@ -312,7 +327,7 @@ public class PostService {
     }
 
     // 해당 코스로 작성된 게시글이 있는지 확인하는 메소드
-    private void verifyExistCourse(Course course) {
+    public void verifyExistCourse(Course course) {
         if (postRepository.findByCourse(course).isPresent()) {
             throw new BusinessLogicException(ExceptionCode.POST_EXISTS);
         }

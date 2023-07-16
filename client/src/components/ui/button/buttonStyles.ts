@@ -10,4 +10,20 @@ export const BUTTON_STYLES = {
     border-radius: ${cssToken.BORDER['rounded-full']};
     box-shadow: ${cssToken.SHADOW['shadow-lg']};
   `,
+  nobgbtn: css`
+    padding: 7px;
+    border-radius: 10px;
+    &:hover {
+      background-color: ${cssToken.COLOR['gray-300']};
+    }
+  `,
 };
+
+export const Button640 = css`
+  @media screen and (max-width: 640px) {
+    font-size: 0.875rem;
+    width: fit-content;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+`;

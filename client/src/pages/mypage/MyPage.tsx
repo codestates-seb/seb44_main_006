@@ -1,16 +1,23 @@
 import { styled } from 'styled-components';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { useState, useEffect, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import { FlexDiv } from '../../styles/styles';
-import UserInfoMy from '../../components/ui/UserInfoPfp';
-import { GetMyList, PatchMemNickname } from '../../apis/api';
-import { setUserOAuthActions } from '../../store/userAuth-slice';
+import { GetMyList } from '../../apis/api';
+import UserInfoBox from '../../components/mypage/UserInfoBox';
+import FilterSection from '../../components/mypage/FilterSection';
+import FilterTab from '../../components/mypage/FilterTab';
+import useHandleTab from '../../hooks/useHandleTab';
+import { myInfoDataListActions } from '../../store/myInfoDataList-slice';
+import { RootState } from '../../store';
+import { MypSummaryT } from '../../types/apitype';
+import useValidEnter from '../../hooks/useValidEnter';
+import getLoginStatus from '../../utils/getLoginStatus';
+import useMovePage from '../../hooks/useMovePage';
+import CircleButton from '../../components/ui/button/CircleButton';
 import Pen from '../../assets/Pen';
-import ContensCard from '../../components/ui/cards/ContentsCard';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -25,199 +32,80 @@ const Div = styled.div`
   margin-bottom: 0.25rem;
 `;
 
-const FixedDiv = styled.article`
+const FixedDiv = styled.div`
   position: fixed;
   right: ${cssToken.SPACING['gap-40']};
   bottom: ${cssToken.SPACING['gap-40']};
-`;
 
-const UserInfoContainer = styled.section`
-  display: flex;
-  align-items: center;
-  gap: 30px;
-`;
-
-const UserNicknameBox = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const UserNickname = styled.p`
-  font-weight: 700;
-  font-size: 30px;
-`;
-
-const WriteBtn = styled.button`
-  cursor: pointer;
-`;
-
-const ScheduleLink = styled(Link)`
-  text-decoration: none;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.2rem 0.95rem 0.95rem;
-  white-space: nowrap;
-  transition: ${cssToken.TRANSITION.basic};
-  font-size: 14px;
-  background: ${cssToken.COLOR['point-900']};
-  height: 25px;
-  border-radius: ${cssToken.BORDER['rounded-tag']};
-  color: ${cssToken.COLOR.white};
-`;
-
-const RightWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  @media screen and (max-width: 768px) {
+    right: 1rem;
+    bottom: 5.5rem;
+  }
 `;
 
 const MyPage = () => {
-  const [toggleNickname, setToggleNickname] = useState<boolean>(false);
-  const memNicknameRef = useRef<HTMLInputElement>(null);
+  const checkValidEnter = useValidEnter();
   const dispatch = useDispatch();
-  const memNickname = useSelector(
-    (state: RootState) => state.userAuth.nickName
-  );
-
-  const userAuthInfo = useSelector(
-    (state: RootState) => state.userAuth.userInfo
-  );
-
-  const { data: userInfoData } = useQuery({
-    queryKey: ['userInf'],
+  const goToSelect = useMovePage('/community/select');
+  const { selectTab, setTab } = useHandleTab();
+  const isLogin = getLoginStatus();
+  useQuery({
+    queryKey: ['mypage'],
     queryFn: () => GetMyList(),
-    onError: (error: AxiosError) => {
-      navigate(`/error/${error.status as string}`);
+    onSuccess: (data: { data: MypSummaryT }) => {
+      if (data) {
+        dispatch(
+          myInfoDataListActions.setDataCourse(data.data.memberCourseList)
+        );
+        dispatch(
+          myInfoDataListActions.setDataBookMark(data.data.memberBookmarkedList)
+        );
+      }
     },
   });
-
-
-  const memberCourseList = userInfoData?.data?.memberCourseList[0];
-  const memberBookmarkedList = userInfoData?.data?.memberBookmarkedList;
-
-  console.log(userAuthInfo);
-  console.log(memberCourseList);
-
-
-  const mutation = useMutation(PatchMemNickname, {
-    onSuccess: () => {
-      dispatch(setUserOAuthActions.paintMemNickname(memNicknameRef.current));
-
-    },
-    onError: (error) => {
-      navigate(`/ error / ${error.status as string}`);
-    },
-  });
-
-  const handleOpenNickname = () => {
-    setToggleNickname(!toggleNickname);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setUserOAuthActions.paintMemNickname(e.target.value));
-  };
-
-  const paintNickname = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    mutation.mutate(memNickname);
-    setToggleNickname(!toggleNickname);
-  };
 
   useEffect(() => {
-    memNicknameRef.current = memNickname;
-  });
+    checkValidEnter();
+  }, [checkValidEnter]);
 
+  const memberCourseList = useSelector(
+    (state: RootState) => state.myInfoData.memberCourseList
+  );
+  const memberBookmarkedList = useSelector(
+    (state: RootState) => state.myInfoData.memberBookmarkedList
+  );
 
   return (
     <Wrapper>
-      <UserInfoContainer>
-        <UserInfoMy
-          styles={{
-            size: '10.75rem',
-          }}
-          src={userAuthInfo?.memberImageUrl}
+      <UserInfoBox />
+      <FilterSection
+        memberBookmarkedList={memberBookmarkedList}
+        memberCourseList={memberCourseList}
+        selectTab={selectTab}
+      >
+        <FilterTab
+          content="일정"
+          selectTab={selectTab}
+          tab="First"
+          onClick={setTab}
         />
-        <RightWrap>
-          <UserNicknameBox>
-            {!toggleNickname ? (
-              <>
-                <UserNickname>
-                  {memNicknameRef.current
-                    ? memNicknameRef.current
-                    : userAuthInfo?.memberNickname}
-                </UserNickname>
-                <WriteBtn onClick={handleOpenNickname}>
-                  <Pen
-                    style={{
-                      iconWidth: '20px',
-                      iconHeight: '20px',
-                      color: '#000',
-                    }}
-                  />
-                </WriteBtn>
-              </>
-            ) : (
-              <form onSubmit={paintNickname}>
-                <input
-                  type="text"
-                  defaultValue={
-                    memNicknameRef.current
-                      ? memNicknameRef.current
-                      : userAuthInfo?.memberNickname
-                  }
-                  onChange={handleChange}
-                  ref={memNicknameRef}
-                />
-                <WriteBtn>
-                  <Pen
-                    style={{
-                      iconWidth: 20,
-                      iconHeight: 20,
-                      color: '#000',
-                    }}
-                  />
-                </WriteBtn>
-              </form>
-            )}
-          </UserNicknameBox>
-          <ScheduleLink to="/register">일정 등록</ScheduleLink>
-        </RightWrap>
-      </UserInfoContainer>
-
-      <section>
-
-
-
-        {/* title=""
-          text=""
-          likeCount=""
-          tag=""
-          userName=""
-          thumbnail=""
-          onClick=""
-          selectId=""
-          postId=""
-          courseId=""
-          children=""
-          likeStatus=""
-          bookmarkStatus=""
-          type=""
-          date="" */}
-        {/* {
-          memberCourseList.map((el, idx) => (
-            <ContensCard
-              key={idx}
-              title={el.courseTitle}
-
-            />
-          ))
-        } */}
-        <ContensCard
+        <FilterTab
+          content="즐겨찾기"
+          selectTab={selectTab}
+          tab="Second"
+          onClick={setTab}
         />
-      </section>
+      </FilterSection>
+      {isLogin && (
+        <FixedDiv onClick={goToSelect}>
+          <CircleButton width="117px" height="117px">
+            <Div>
+              <Pen style={{ iconWidth: 28, iconHeight: 28, color: 'black' }} />
+            </Div>
+            <div>자랑하기</div>
+          </CircleButton>
+        </FixedDiv>
+      )}
     </Wrapper>
   );
 };

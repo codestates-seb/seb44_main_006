@@ -1,17 +1,16 @@
 import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
-import cssToken from '../../styles/cssToken';
 import CategoryButton from '../ui/button/CategoryButton';
 import { ICSearchState } from '../../types/type';
 import { RootState } from '../../store';
 import { selectedIdActions } from '../../store/selectedId-slice';
 
 const Wrapper = styled.section`
-  width: ${cssToken.WIDTH['w-full']};
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   justify-content: center;
 `;
 
@@ -34,7 +33,7 @@ const CategoryContainer = ({ dispatch }: Props) => {
     '백화점',
     '영화관',
     '경기장',
-    '버스정류장',
+    '버스터미널',
   ];
   const selectedId = useSelector(
     (state: RootState) => state.selectedId.categoryId
@@ -51,7 +50,7 @@ const CategoryContainer = ({ dispatch }: Props) => {
       {arr.map((name) => (
         <CategoryButton
           key={name}
-          width="7rem"
+          width="100%"
           height="2rem"
           selectedid={selectedId}
           categoryname={name}

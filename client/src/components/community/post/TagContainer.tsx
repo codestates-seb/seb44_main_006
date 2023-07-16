@@ -1,4 +1,6 @@
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { styled } from 'styled-components';
 
 import { ChooseTag } from './DescriptionZip';
 
@@ -6,6 +8,16 @@ import { GapDiv, TagDiv } from '../../../styles/styles';
 import InputContainer from '../../ui/input/InputContainer';
 import TagButton from '../../ui/button/TagButton';
 import cssToken from '../../../styles/cssToken';
+
+const TagGapDiv = styled(GapDiv)`
+  row-gap: ${cssToken.SPACING['gap-10']};
+  @media screen and (max-width: 768px) {
+    input {
+      font-size: 0.7rem;
+      padding: 0.5rem;
+    }
+  }
+`;
 
 const TagContainer = ({
   tags,
@@ -44,13 +56,13 @@ const TagContainer = ({
     } else {
       inputRef.current!.readOnly = false;
       setPlaceholder(
-        '태그 작성 후 엔터를 해주세요. 추가된 태그 클릭시 삭제 됩니다.'
+        '엔터를 누르면 태그가 작성되고 클릭 시 태그가 삭제 됩니다.'
       );
     }
   }, [tags]);
 
   return (
-    <GapDiv>
+    <TagGapDiv>
       <ChooseTag />
       <>
         <InputContainer
@@ -65,6 +77,7 @@ const TagContainer = ({
           {tags.length > 0 &&
             tags.map((tag: string) => (
               <TagButton
+                key={uuidv4()}
                 tagname={tag}
                 onClick={removeTag}
                 width={cssToken.WIDTH['min-w-fit']}
@@ -75,7 +88,7 @@ const TagContainer = ({
             ))}
         </TagDiv>
       </>
-    </GapDiv>
+    </TagGapDiv>
   );
 };
 

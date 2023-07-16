@@ -1,25 +1,29 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 
-import { PostReqT } from '../types/apitype';
+import { CommunityListT, PostReqT } from '../types/apitype';
 
-const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
-const accessToken = localStorage.getItem('accessToken');
-const refreshToken = localStorage.getItem('refreshToken');
+const PROXY = window.location.hostname === 'localhost' ? '' : '';
 
 export const instance = axios.create({
   baseURL: PROXY,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: accessToken,
-    RefreshToken: refreshToken,
   },
 });
 
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    config.headers.Authorization = accessToken;
-    config.headers.RefreshToken = refreshToken;
-    return config;
+    const newConfig = { ...config };
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    newConfig.headers.Authorization = accessToken;
+    newConfig.headers.RefreshToken = refreshToken;
+    return newConfig;
   },
   (error: AxiosError) => {
     return Promise.reject(error);
@@ -37,11 +41,16 @@ export const GetUserInfo = async () => instance.get(`/api/auth/members`);
 
 export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
 
-export const PatchMemNickname = async ({ nickname }: { nickname: string }) => {
+export const DeleteAccount = async () => instance.delete('/api/members');
+
+export const PatchMemNickname = async (nickname: string) => {
   await instance.patch(`/api/members`, { memberNickname: nickname });
 };
 
 export const GetMyList = async () => instance.get(`/api/members`);
+
+export const GetShareSchedule = async ({ courseId }: { courseId: string }) =>
+  instance.get(`/api/courses/${courseId}/share`);
 
 export const GetCourse = async ({ courseId }: { courseId: string }) =>
   instance.get(`/api/courses/${courseId}`);
@@ -58,14 +67,16 @@ export const GetCommunityList = async ({
   tagName?: string | undefined;
 }) => {
   const essential = `/api/posts/read?page=${pageParam}&limit=${limit}`;
-  const optSort = sort === 'Like' ? '&sort=like' : '';
+  const optSort = sort === 'Second' ? '&sort=like' : '';
   const optTagName = tagName ? `&tagName=${tagName}` : '';
   const request = essential + optSort + optTagName;
-  const res = await instance.get(request);
+  const res: AxiosResponse<CommunityListT> = await instance.get(request);
   return {
     communityListData: res.data.data,
     current_page: pageParam,
-    isLast: (res.data.pageInfo.totalPages as number) === pageParam,
+    isLast:
+      res.data.pageInfo.totalPages === pageParam ||
+      res.data.pageInfo.totalPages === 0,
   };
 };
 
@@ -88,6 +99,9 @@ export const PostComment = async ({
 
 export const DeleteCommunityPost = async ({ postId }: { postId: string }) =>
   instance.delete(`/api/posts/${postId}`);
+
+export const DeleteMyPageCourses = async ({ postId }: { postId: string }) =>
+  instance.delete(`/api/courses/${postId}`);
 
 export const PostBookmark = async ({ courseId }: { courseId: number }) =>
   instance.post(`/api/courses/${courseId}/bookmark`);

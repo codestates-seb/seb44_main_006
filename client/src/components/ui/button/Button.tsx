@@ -1,20 +1,21 @@
 import { styled } from 'styled-components';
-import React, { MouseEvent } from 'react';
 
-import { IButtonStyle, Props } from '../../../types/type';
+import { Button640 } from './buttonStyles';
+
+import { IArgButtonStyle, Props } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
 
-const ButtonTemplate = styled.button<IButtonStyle>`
+export const ButtonTemplate = styled.button<IArgButtonStyle>`
   width: ${(props) => props.width || 'fit-content'};
   height: ${(props) => props.height || 'fit-content'};
   margin: ${(props) => props.margin};
   padding: ${(props) => props.padding};
   color: ${(props) => props.color};
   background-color: ${(props) =>
-    props.disabled ? cssToken.COLOR['gray-700'] : props.backgroundColor};
+    props.disabled ? cssToken.COLOR['gray-700'] : props.bgcolor};
   box-shadow: ${(props) => props.boxShadow};
   border: ${(props) => props.border || 'none'};
-  border-radius: ${(props) => props.borderRadius};
+  border-radius: ${(props) => props.brradius};
   cursor: pointer;
 
   display: flex;
@@ -28,6 +29,28 @@ const ButtonTemplate = styled.button<IButtonStyle>`
   &:hover {
     opacity: 0.8;
   }
+
+  @media screen and (max-width: 768px) {
+    &.gray {
+      ${Button640}
+    }
+
+    &.skyblue {
+      ${Button640}
+    }
+
+    &.circle {
+      width: 4.375rem;
+      height: 4.375rem;
+      div {
+        font-size: 0.5rem;
+      }
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
 `;
 
 const Button = ({
@@ -36,15 +59,18 @@ const Button = ({
   onClick,
   onSubmit,
   disabled,
+  className,
 }: {
+  className?: string;
   children?: Props['children'];
-  styles?: IButtonStyle;
-  onClick?: (arg0?: string | React.MouseEvent<HTMLButtonElement>) => void;
+  styles?: IArgButtonStyle;
+  onClick?: (arg0?: string | undefined) => void;
   onSubmit?: () => void;
   disabled?: boolean;
 }) => {
   return (
     <ButtonTemplate
+      className={className}
       {...styles}
       onClick={onClick}
       onSubmit={onSubmit}

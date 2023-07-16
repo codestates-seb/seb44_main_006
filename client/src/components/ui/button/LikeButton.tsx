@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { debounce } from 'lodash';
 
-import Button from './Button';
+import EventButton from './EventButton';
 
 import cssToken from '../../../styles/cssToken';
 import { LikeBookMarkButtonT } from '../../../types/type';
@@ -13,24 +13,28 @@ const LikeButton = ({
   isActive,
   courseId,
 }: LikeBookMarkButtonT) => {
-  const { postId } = useParams();
   const queryClient = useQueryClient();
   const mutation = useMutation(PostLike, {
-    // Fixme 키 추가하기
-    onSuccess: () =>
-      postId
-        ? queryClient.invalidateQueries(['communityDetail'])
-        : queryClient.invalidateQueries(['community']),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['community']);
+      await queryClient.invalidateQueries(['communityDetail']);
+      await queryClient.invalidateQueries(['mypage']);
+    },
   });
+
+  const PushLike = debounce(() => {
+    mutation.mutate({ courseId });
+  }, 300);
+
   const handleLikeButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (courseId) mutation.mutate({ courseId });
+    if (courseId) PushLike();
   };
   return (
-    <Button onClick={handleLikeButton}>
+    <EventButton onClick={handleLikeButton}>
       <svg
-        width={svgWidth || '23px'}
-        height={svgHeight || '21px'}
+        width={svgWidth || '18px'}
+        height={svgHeight || '18px'}
         viewBox="0 0 23 21"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +46,7 @@ const LikeButton = ({
           }
         />
       </svg>
-    </Button>
+    </EventButton>
   );
 };
 

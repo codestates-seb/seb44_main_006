@@ -1,6 +1,6 @@
 import { InfiniteQueryObserverResult } from '@tanstack/react-query';
 
-import { CommentT, IScheduleListItem } from './type';
+import { IScheduleListItem } from './type';
 
 export interface MemberCourseT {
   courseContent: string;
@@ -40,7 +40,7 @@ export type PostReadT = {
     courseDday: string;
     courseTitle: string;
     courseContent: string;
-    coureThumbnail: string;
+    courseThumbnail: string;
   };
   destinationList: IScheduleListItem[];
 };
@@ -111,3 +111,67 @@ export type FetchNextPageT = () => Promise<
     unknown
   >
 >;
+
+export interface CommentT {
+  answerId?: number; // 고유값(댓글 식별자)
+  answererEmail?: string; // 고유값(댓글 작성자 이메일)
+  answererNickname: string; // 댓글 작성자 닉네임
+  answerContent: string; // 댓글 내용
+  answererImageUrl: string; // 댓글 작성자 이미지 URL
+  answerUpdatedAt: string; // 댓글 수정한 날짜, ex) "2023-06-30 Fri"
+}
+
+// 마이 페이지
+export type MypCourseSummaryT = {
+  courseContent?: string;
+  courseDday?: string;
+  courseId?: number;
+  courseLikeCount?: number;
+  courseThumbnail?: string;
+  courseTitle?: string;
+  courseUpdatedAt?: string;
+  courseViewCount?: number;
+  isPosted?: boolean;
+  memberNickname?: string;
+};
+
+export type MyBookMarkSummaryT = {
+  bookmarkId?: number;
+  courseId?: number;
+  courseLikeCount?: number;
+  courseThumbnail?: string;
+  courseTitle?: string;
+  courseUpdatedAt?: string;
+  courseViewCount?: number;
+  likeStatus?: boolean;
+  memberNickname?: string;
+  postContent?: string;
+  postCreatedAt?: string;
+  postId?: number;
+  tags?: string[];
+};
+
+export type MypSummaryT = {
+  memberCourseList: MypCourseSummaryT[];
+  memberBookmarkedList: MyBookMarkSummaryT[];
+};
+
+// 일정 상세 페이지
+export type DestinationListT = {
+  categoryGroupCode?: string;
+  categoryGroupName?: string;
+  id?: string;
+  phone?: string;
+  placeName?: string;
+  placeUrl?: string;
+  roadAddressName?: string;
+  x?: string;
+  y?: string;
+};
+
+export type CourseDatassT = {
+  courseContent?: string;
+  courseDday?: string;
+  courseThumbnail?: string;
+  courseTitle?: string;
+};

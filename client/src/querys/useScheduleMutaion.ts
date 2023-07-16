@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
@@ -15,12 +15,15 @@ const checkRegister = async (data: IScheduleRequest) => {
 const useScheduleMutation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const scheduleMutation = useMutation(checkRegister, {
-    onSuccess: (data) => {
+    // Todo post 버그 터지면 여기로
+    onSuccess: async (data) => {
       const status = data.status.toString()[0];
       if (status !== '2') return;
       dispatch(selectedIdActions.allReset());
-      navigate('/');
+      await queryClient.invalidateQueries(['user']);
+      await queryClient.invalidateQueries(['mypage']);
     },
     onError: (error) => {
       const { response } = error as AxiosError;

@@ -17,7 +17,7 @@ const PageMoveBtnDiv = ({
       <GrayButton
         width="222px"
         height="53px"
-        borderRadius={cssToken.BORDER['rounded-md']}
+        brradius={cssToken.BORDER['rounded-md']}
         onClick={grayCallback}
       >
         뒤로가기
@@ -25,7 +25,7 @@ const PageMoveBtnDiv = ({
       <SkyBlueButton
         width="222px"
         height="53px"
-        borderRadius={cssToken.BORDER['rounded-md']}
+        brradius={cssToken.BORDER['rounded-md']}
         onClick={skyblueCallback}
         disabled={disabled}
       >

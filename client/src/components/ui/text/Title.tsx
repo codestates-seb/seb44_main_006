@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { memo } from 'react';
 
 import { Props, TextStyleT } from '../../../types/type';
 import { TextStyle } from '../../../styles/styles';
@@ -15,4 +16,4 @@ const Title = ({
   return <H1 {...styles}>{children}</H1>;
 };
 
-export default Title;
+export default memo(Title);

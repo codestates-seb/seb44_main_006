@@ -1,17 +1,18 @@
 import { styled } from 'styled-components';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import { mgpd } from './commonstyle';
+
 import cssToken from '../../styles/cssToken';
 import { GapDiv, OutsideWrap } from '../../styles/styles';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import {
-  ExampleDescription,
   MyCourseBoast,
   WritePost,
 } from '../../components/community/post/DescriptionZip';
@@ -27,16 +28,53 @@ import { GetCourse, PostCommunity } from '../../apis/api';
 import { PostReadT } from '../../types/apitype';
 import removeTag from '../../utils/removeTag';
 import Text from '../../components/ui/text/Text';
+import scrollToTop from '../../utils/scrollToTop';
+import isEmpty from '../../utils/isEmpty';
+import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
+import useValidEnter from '../../hooks/useValidEnter';
+
+const PostOutsideWrap = styled(OutsideWrap)`
+  @media screen and (max-width: 768px) {
+    ${mgpd}
+    margin-bottom: 4.5rem;
+    row-gap: ${cssToken.SPACING['gap-20']};
+    h3 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.8125rem;
+      line-height: 1rem;
+    }
+  }
+`;
 
 const QuillDiv = styled(GapDiv)`
-  margin-bottom: '0.1875rem';
+  margin-bottom: 0.1875rem;
+  .ql-toolbar {
+    height: 2.625rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+
+    .ql-formats {
+      display: flex;
+      flex-direction: row;
+    }
+  }
 `;
 
 const ErrorContainer = styled(GapDiv)`
-  margin-bottom: ${cssToken.SPACING['gap-24']};
+  margin-bottom: ${cssToken.SPACING['gap-12']};
+
+  @media screen and (max-width: 768px) {
+    margin-top: 2rem;
+  }
 `;
 
 const PostCommunitypage = () => {
+  const checkValidEnter = useValidEnter();
   const scheduleid = useLocation().state as string;
   const quillRef = useRef<ReactQuill>(null);
   const gotoBack = useMovePage('/community/select', null, true);
@@ -46,12 +84,13 @@ const PostCommunitypage = () => {
   const [tags, setTags] = useState<string[] | []>([]);
   const [isValidate, setIsValidate] = useState<boolean>(true);
 
-  const { data: courses } = useQuery({
+  const { data: courses, isLoading } = useQuery({
     queryKey: ['course'],
     queryFn: () => GetCourse({ courseId: scheduleid }),
     refetchOnWindowFocus: false,
     select: (data: { data: PostReadT }) => data.data,
   });
+
   const mutation = useMutation(PostCommunity, {
     onSuccess(data) {
       navigate(`/community/${data.headers.location as string}`, {
@@ -63,20 +102,22 @@ const PostCommunitypage = () => {
       if (response) navigate(`/error/${response.status}`);
     },
   });
-  const isEditorEmpty = () => {
-    const inputString = String(quillRef.current?.value);
-    const sanitizedValue: string = removeTag(inputString).trim();
-    return sanitizedValue.length === 0;
-  };
+
+  useEffect(() => {
+    checkValidEnter();
+    scrollToTop();
+  }, [checkValidEnter]);
+
   const HandleBack = () => {
-    if (isEditorEmpty()) {
+    if (isEmpty(removeTag(String(quillRef.current?.value)))) {
       gotoBack();
       return;
     }
     toggleModal();
   };
+
   const HandleNext = () => {
-    if (!isEditorEmpty()) {
+    if (!isEmpty(removeTag(String(quillRef.current?.value)))) {
       mutation.mutate({
         courseId: Number(scheduleid),
         postContent: String(quillRef.current!.value),
@@ -87,22 +128,24 @@ const PostCommunitypage = () => {
     quillRef.current?.focus();
     setIsValidate(false);
   };
+
   const goToback = () => {
     gotoBack();
     toggleModal();
   };
+
   const HandleQuillChange = () => {
-    if (!isEditorEmpty()) {
+    if (!isEmpty(removeTag(String(quillRef.current?.value)))) {
       setIsValidate(true);
     }
   };
 
   return (
     <>
-      <OutsideWrap>
+      <PostOutsideWrap>
         <MyCourseBoast />
         <GapDiv>
-          <ExampleDescription />
+          {isLoading && <SkeletonMapContainer />}
           {courses && (
             <MapContainer
               title={courses.courseData.courseTitle}
@@ -111,21 +154,23 @@ const PostCommunitypage = () => {
           )}
         </GapDiv>
 
-        <QuillDiv>
-          <WritePost />
-          <ReactQuill
-            onChange={HandleQuillChange}
-            ref={quillRef}
-            style={{ height: '200px' }}
-          />
-        </QuillDiv>
-        <ErrorContainer>
-          {!isValidate && (
-            <Text styles={{ color: cssToken.COLOR['red-900'] }}>
-              글자 수를 만족하지 못했습니다.
-            </Text>
-          )}
-        </ErrorContainer>
+        <>
+          <QuillDiv>
+            <WritePost />
+            <ReactQuill
+              onChange={HandleQuillChange}
+              ref={quillRef}
+              style={{ height: '200px' }}
+            />
+          </QuillDiv>
+          <ErrorContainer>
+            {!isValidate && (
+              <Text styles={{ color: cssToken.COLOR['red-900'] }}>
+                글자 수를 만족하지 못했습니다.
+              </Text>
+            )}
+          </ErrorContainer>
+        </>
 
         <TagContainer tags={tags} setTags={setTags} />
         <Warning />
@@ -133,7 +178,7 @@ const PostCommunitypage = () => {
           grayCallback={HandleBack}
           skyblueCallback={HandleNext}
         />
-      </OutsideWrap>
+      </PostOutsideWrap>
       {modalIsOpen && (
         <Modal
           backdropCallback={toggleModal}

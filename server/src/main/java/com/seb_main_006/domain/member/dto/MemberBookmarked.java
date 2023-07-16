@@ -15,6 +15,8 @@ public class MemberBookmarked {
 
     private Long postId;
 
+    private Long bookmarkId;
+
     private String courseTitle;
 
     private String postContent;
@@ -35,14 +37,15 @@ public class MemberBookmarked {
 
     private List<String> tags;
 
-    public MemberBookmarked(Course course, String memberNickname, Boolean likeStatus){
+    public MemberBookmarked(Course course, Boolean likeStatus, Long bookmarkId){
 
         this.courseId = course.getCourseId();
         this.postId = course.getPost().getPostId();
+        this.bookmarkId = bookmarkId;
         this.courseTitle = course.getCourseTitle();
         this.postContent = course.getPost().getPostContent();
         this.courseThumbnail = course.getCourseThumbnail();
-        this.memberNickname = memberNickname;
+        this.memberNickname = course.getMember().getMemberNickname();
         this.courseLikeCount = course.getCourseLikeCount();
         this.courseViewCount = course.getCourseViewCount();
         this.likeStatus = likeStatus;

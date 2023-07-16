@@ -1,16 +1,16 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { IButtonStyle } from '../../../types/type';
+import { IArgButtonStyle } from '../../../types/type';
 
 const WhiteButton = ({
   children,
   width,
   height,
-  backgroundColor,
-  borderRadius,
+  bgcolor,
+  brradius,
   onClick,
-}: IButtonStyle) => {
+}: IArgButtonStyle) => {
   return (
     <Button
       onClick={onClick}
@@ -18,8 +18,8 @@ const WhiteButton = ({
         width,
         height,
         color: cssToken.COLOR.black,
-        backgroundColor: backgroundColor || cssToken.COLOR.white,
-        borderRadius,
+        bgcolor: bgcolor || cssToken.COLOR.white,
+        brradius,
       }}
     >
       {children}

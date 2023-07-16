@@ -30,14 +30,14 @@ public class MemberCourse {
 
     private LocalDateTime courseUpdatedAt;
 
-    public MemberCourse(Course course, String memberNickname){
+    public MemberCourse(Course course){
 
         this.courseId = course.getCourseId();
         this.courseDday = DateConverter.localDateToStringWithDay(course.getCourseDday());
         this.courseTitle = course.getCourseTitle();
         this.courseContent = course.getCourseContent();
         this.courseThumbnail = course.getCourseThumbnail();
-        this.memberNickname = memberNickname;
+        this.memberNickname = course.getMember().getMemberNickname();
         this.courseLikeCount = course.getCourseLikeCount();
         this.courseViewCount = course.getCourseViewCount();
         this.isPosted = course.isPosted();

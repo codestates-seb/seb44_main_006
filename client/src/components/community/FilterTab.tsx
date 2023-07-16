@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { memo } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import Text from '../ui/text/Text';
@@ -6,8 +7,14 @@ import Text from '../ui/text/Text';
 const FilterDiv = styled.div<{ selected: boolean }>`
   padding-bottom: 0.5rem;
   border-bottom: 0.375rem solid
-    ${(props) => (props.selected ? cssToken.COLOR['point-900'] : 'transparent')};
+    ${(props) => (props.selected ? cssToken.COLOR['point-500'] : 'transparent')};
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    > p {
+      font-size: 1.125rem;
+    }
+  }
 `;
 const FilterTab = ({
   selectTab,
@@ -15,10 +22,10 @@ const FilterTab = ({
   content,
   onClick,
 }: {
-  selectTab: 'Newest' | 'Like';
-  tab: 'Newest' | 'Like';
+  selectTab: 'First' | 'Second';
+  tab: 'First' | 'Second';
   content: string;
-  onClick: (tab: 'Newest' | 'Like') => void;
+  onClick: (tab: 'First' | 'Second') => void;
 }) => {
   return (
     <FilterDiv
@@ -39,4 +46,4 @@ const FilterTab = ({
   );
 };
 
-export default FilterTab;
+export default memo(FilterTab);

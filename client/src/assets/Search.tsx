@@ -1,25 +1,8 @@
-import { styled } from 'styled-components';
-
 import { IconStyle } from '../types/type';
 
-const Svg = styled.svg`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 20px;
-  cursor: pointer;
-`;
-
-const Search = ({
-  style,
-  onClick,
-}: {
-  style: IconStyle;
-  onClick?: () => void;
-}) => {
+const Search = ({ style }: { style: IconStyle }) => {
   return (
-    <Svg
-      onClick={onClick}
+    <svg
       width={style.iconWidth}
       height={style.iconHeight}
       viewBox="0 0 27 27"
@@ -33,7 +16,7 @@ const Search = ({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </Svg>
+    </svg>
   );
 };
 

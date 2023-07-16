@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { memo } from 'react';
 
 import cssToken from '../../../styles/cssToken';
 import { TagDiv } from '../../../styles/styles';
@@ -16,4 +17,4 @@ const TagContainer = ({ tagArr }: { tagArr: string[] }) => {
   );
 };
 
-export default TagContainer;
+export default memo(TagContainer);

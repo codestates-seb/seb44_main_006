@@ -1,5 +1,8 @@
 import { styled } from 'styled-components';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
@@ -13,14 +16,42 @@ import useMovePage from '../../hooks/useMovePage';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 import { LIMIT } from '../../utils/constant/constant';
+import { communityBasicActions } from '../../store/communitybasic-slice';
 
 const Wrapper = styled(FlexDiv)`
-  margin-top: 3.125rem;
+  margin-top: 1.875rem;
   width: 100%;
   flex-direction: column;
   align-items: center;
   padding-top: 6.5rem;
-  row-gap: 7.75rem;
+  row-gap: 6rem;
+
+  > form {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 768px) {
+    margin-bottom: 4.5rem;
+    margin-top: 0px;
+    padding-top: ${cssToken.SPACING['gap-20']};
+    row-gap: 5rem;
+    > form > div {
+      width: 80%;
+      > input {
+        padding-right: 3rem;
+        font-size: 0.8125rem;
+      }
+      > button {
+        right: 0.8rem;
+        > svg {
+          width: 1.125rem;
+          height: 1.125rem;
+        }
+      }
+    }
+  }
 `;
 
 const Div = styled.div`
@@ -31,34 +62,48 @@ const FixedDiv = styled.div`
   position: fixed;
   right: ${cssToken.SPACING['gap-40']};
   bottom: ${cssToken.SPACING['gap-40']};
+
+  @media screen and (max-width: 768px) {
+    right: 1rem;
+    bottom: 5.5rem;
+  }
 `;
 
 const CommunityPage = () => {
+  const navigate = useNavigate();
   const goToSelect = useMovePage('/community/select');
-  const goToError = useMovePage('/error/500');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isLogin = getLoginStatus();
-  const { selectTab, setTab } = useHandleTab();
-  const [tagName, setTagName] = useState<string>('');
-
-  const { data, fetchNextPage, isSuccess, hasNextPage, error } =
+  const { selectTab, setTab } = useHandleTab(); // 전역
+  const [tagName, setTagName] = useState<string>(''); // 전역
+  const dispatch = useDispatch();
+  // fitersection 페이지에서 인피니트 훅 불러오기
+  const { data, fetchNextPage, hasNextPage, error, isFetchingNextPage } =
     useInfiniteScrollQuery({
       limit: LIMIT,
       tagName: tagName || '',
       sort: selectTab,
     });
 
-  const SearchPost = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (data) {
+      dispatch(communityBasicActions.setData(data?.pages));
+    }
+  }, [data, dispatch]);
+
+  const SearchPost = (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     if (searchInputRef.current) {
       const keyword = searchInputRef.current?.value;
-      setTab('Newest');
       setTagName(keyword);
     }
   };
 
   if (error) {
-    goToError();
+    const { response } = error as AxiosError;
+    if (response) navigate(`/error/${response.status}`);
   }
 
   return (
@@ -66,6 +111,7 @@ const CommunityPage = () => {
       <Wrapper>
         <form onSubmit={SearchPost}>
           <SearchContainer
+            searchClick={SearchPost}
             ref={searchInputRef}
             iconWidth={24}
             iconHeight={24}
@@ -74,29 +120,26 @@ const CommunityPage = () => {
               height: '50px',
               fontsize: cssToken.TEXT_SIZE['text-18'],
             }}
-            callback={SearchPost}
           />
         </form>
-        {isSuccess && (
-          <FilterSection
-            communityData={data!.pages}
-            hasNextPage={hasNextPage}
-            fetchNextPage={fetchNextPage}
-          >
-            <FilterTab
-              content="최신순"
-              selectTab={selectTab}
-              tab="Newest"
-              onClick={setTab}
-            />
-            <FilterTab
-              content="좋아요순"
-              selectTab={selectTab}
-              tab="Like"
-              onClick={setTab}
-            />
-          </FilterSection>
-        )}
+        <FilterSection
+          hasNextPage={hasNextPage}
+          fetchNextPage={fetchNextPage}
+          isFetching={isFetchingNextPage}
+        >
+          <FilterTab
+            content="최신순"
+            selectTab={selectTab}
+            tab="First"
+            onClick={setTab}
+          />
+          <FilterTab
+            content="좋아요순"
+            selectTab={selectTab}
+            tab="Second"
+            onClick={setTab}
+          />
+        </FilterSection>
       </Wrapper>
       {isLogin && (
         <FixedDiv onClick={goToSelect}>

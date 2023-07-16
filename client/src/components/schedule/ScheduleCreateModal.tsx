@@ -21,15 +21,19 @@ import { RootState } from '../../store';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import useScheduleMutation from '../../querys/useScheduleMutaion';
 import dateToString from '../../utils/dateToString';
+import { placeListActions } from '../../store/placeList-slice';
 
 interface UrlProp {
   url: string;
 }
+interface WrapperProp {
+  display: string;
+}
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<WrapperProp>`
   width: ${cssToken.WIDTH['w-full']};
   height: ${cssToken.HEIGHT['h-full']};
-  display: flex;
+  display: ${(props) => props.display};
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -49,6 +53,13 @@ const WriteContainer = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: ${cssToken.SPACING['gap-24']};
+  }
 `;
 
 const WriteLeftBox = styled.section`
@@ -58,6 +69,12 @@ const WriteLeftBox = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 480px) {
+    width: 95%;
+    height: 25rem;
+    gap: ${cssToken.SPACING['gap-12']};
+  }
 `;
 
 const ThumbnailBox = styled.div<UrlProp>`
@@ -70,6 +87,20 @@ const ThumbnailBox = styled.div<UrlProp>`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    height: 100%;
+    gap: ${cssToken.SPACING['gap-12']};
+  }
+`;
+
+const SelfEnd = styled.div<{ bgUrl: boolean }>`
+  height: ${(props) => (props.bgUrl ? '100%' : '')};
+  display: flex;
+  align-items: end;
+  padding-bottom: ${(props) =>
+    props.bgUrl ? cssToken.SPACING['gap-50'] : '0rem'};
 `;
 
 const DataChoiceWrapper = styled.div`
@@ -77,6 +108,16 @@ const DataChoiceWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: ${cssToken.SPACING['gap-24']};
+
+  @media (max-width: 768px) {
+    gap: ${cssToken.SPACING['gap-12']};
+    flex-direction: column;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: row;
+  }
 `;
 
 const WriteRightBox = styled.section`
@@ -86,6 +127,20 @@ const WriteRightBox = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    input {
+      font-size: 0.8rem;
+    }
+
+    textarea {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 95%;
+  }
 `;
 
 const ButtonWrapper = styled.section`
@@ -96,7 +151,8 @@ const ButtonWrapper = styled.section`
 `;
 
 const DateInputBox = styled(DatePicker)`
-  border: solid 1px #dcdcdc;
+  border: solid 1px ${cssToken.COLOR['gray-600']};
+  padding: 0.5rem;
   text-align: center;
 `;
 
@@ -136,7 +192,8 @@ const ScheduleCreateModal = () => {
       });
       dispatch(overlayActions.toggleOverlay());
       dispatch(scheduleListActions.resetList());
-      navigate('/');
+      dispatch(placeListActions.resetList());
+      navigate('/mypage');
     }
   };
 
@@ -162,93 +219,96 @@ const ScheduleCreateModal = () => {
         width: '65rem',
         height: '40rem',
         borderradius: `${cssToken.BORDER['rounded-s']}`,
+        position: 'relative',
       }}
     >
-      {isThumbChoice ? (
-        <ThumbnailChoiceContainer setIsThumbChouce={setIsThumbChouce} />
-      ) : (
-        <Wrapper>
-          <TitleContainer>
-            <Title styles={{ size: `${cssToken.TEXT_SIZE['text-32']}` }}>
-              일정 저장하기
-            </Title>
-            <SubTitle styles={{ weight: 300 }}>
-              일정 저장 시 주요 내용을 작성해 주세요!
-            </SubTitle>
-          </TitleContainer>
+      <ThumbnailChoiceContainer
+        setIsThumbChouce={setIsThumbChouce}
+        display={isThumbChoice ? 'flex' : 'none'}
+      />
+      <Wrapper display={isThumbChoice ? 'none' : 'flex'}>
+        <TitleContainer>
+          <Title styles={{ size: `${cssToken.TEXT_SIZE['text-32']}` }}>
+            일정 저장하기
+          </Title>
+          <SubTitle styles={{ weight: 300 }}>
+            일정 저장 시 주요 내용을 작성해 주세요!
+          </SubTitle>
+        </TitleContainer>
 
-          <WriteContainer>
-            <WriteLeftBox>
-              <ThumbnailBox url={bgUrl}>
-                {!bgUrl && (
-                  <Thumbnail style={{ iconWidth: 125, iconHeight: 103 }} />
-                )}
+        <WriteContainer>
+          <WriteLeftBox>
+            <ThumbnailBox url={bgUrl}>
+              {!bgUrl && (
+                <Thumbnail style={{ iconWidth: 125, iconHeight: 103 }} />
+              )}
+              <SelfEnd bgUrl={!!bgUrl}>
                 <GrayButton
                   width="150px"
                   height="2rem"
-                  borderRadius={cssToken.BORDER['rounded-s']}
+                  brradius={cssToken.BORDER['rounded-s']}
                   onClick={() => setIsThumbChouce(true)}
                 >
                   썸네일 선택
                 </GrayButton>
-              </ThumbnailBox>
-              <DataChoiceWrapper>
-                <div>일정 날짜 선택</div>
-                <DateInputBox
-                  minDate={new Date()}
-                  dateFormat="yyyy년 MM월 dd일"
-                  selected={choiceDate}
-                  onChange={(date: Date) => date && setChoiceDate(date)}
-                />
-              </DataChoiceWrapper>
-            </WriteLeftBox>
-            <WriteRightBox onChange={handleChange}>
-              <InputContainer
-                ref={titleRef}
-                description="일정의 제목을 작성해 주세요. (최대 30자, 필수)"
-                minLength={1}
-                maxLength={30}
-                isValidate={titleIsValidate}
-                type="title"
-                styles={{
-                  width: `${cssToken.WIDTH['w-full']}`,
-                  height: `${cssToken.HEIGHT['h-min']}`,
-                }}
+              </SelfEnd>
+            </ThumbnailBox>
+            <DataChoiceWrapper>
+              <div>일정 날짜 선택</div>
+              <DateInputBox
+                minDate={new Date()}
+                dateFormat="yyyy년 MM월 dd일"
+                selected={choiceDate}
+                onChange={(date: Date) => date && setChoiceDate(date)}
               />
-              <TextArea
-                ref={descriptionRef}
-                description="일정의 상세 설명을 작성해 주세요. (최대 40자, 필수)"
-                minLength={1}
-                maxLength={40}
-                isValidate={descIsValidate}
-                styles={{
-                  width: `${cssToken.WIDTH['w-full']}`,
-                  height: `${cssToken.HEIGHT['h-full']}`,
-                }}
-              />
-            </WriteRightBox>
-          </WriteContainer>
+            </DataChoiceWrapper>
+          </WriteLeftBox>
+          <WriteRightBox onChange={handleChange}>
+            <InputContainer
+              ref={titleRef}
+              description="일정의 제목을 작성해 주세요."
+              minLength={1}
+              maxLength={30}
+              isValidate={titleIsValidate}
+              type="title"
+              styles={{
+                width: `${cssToken.WIDTH['w-full']}`,
+                height: `${cssToken.HEIGHT['h-min']}`,
+              }}
+            />
+            <TextArea
+              ref={descriptionRef}
+              description="일정의 상세 설명을 작성해 주세요."
+              minLength={1}
+              maxLength={40}
+              isValidate={descIsValidate}
+              styles={{
+                width: `${cssToken.WIDTH['w-full']}`,
+                height: `${cssToken.HEIGHT['h-full']}`,
+              }}
+            />
+          </WriteRightBox>
+        </WriteContainer>
 
-          <ButtonWrapper>
-            <GrayButton
-              width="150px"
-              height="50px"
-              borderRadius={cssToken.BORDER['rounded-md']}
-              onClick={() => dispatch(overlayActions.toggleOverlay())}
-            >
-              뒤로가기
-            </GrayButton>
-            <SkyBlueButton
-              width="150px"
-              height="50px"
-              borderRadius={cssToken.BORDER['rounded-md']}
-              onClick={handleSave}
-            >
-              저장하기
-            </SkyBlueButton>
-          </ButtonWrapper>
-        </Wrapper>
-      )}
+        <ButtonWrapper>
+          <GrayButton
+            width="150px"
+            height="50px"
+            brradius={cssToken.BORDER['rounded-md']}
+            onClick={() => dispatch(overlayActions.toggleOverlay())}
+          >
+            뒤로가기
+          </GrayButton>
+          <SkyBlueButton
+            width="150px"
+            height="50px"
+            brradius={cssToken.BORDER['rounded-md']}
+            onClick={handleSave}
+          >
+            저장하기
+          </SkyBlueButton>
+        </ButtonWrapper>
+      </Wrapper>
     </Modal>
   );
 };

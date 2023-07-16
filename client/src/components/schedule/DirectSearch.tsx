@@ -7,6 +7,7 @@ import PlaceList from '../map/PlaceList';
 import { selectedIdActions } from '../../store/selectedId-slice';
 
 const FormContainer = styled.form`
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +23,9 @@ const DirectSearch = () => {
     dispatch(selectedIdActions.setTagId(''));
   }, [dispatch]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     if (inputRef.current) {
       setSearchPlace(inputRef.current.value);
@@ -33,9 +36,9 @@ const DirectSearch = () => {
   return (
     <>
       <FormContainer onSubmit={handleSubmit}>
-        <SearchContainer ref={inputRef} />
+        <SearchContainer searchClick={handleSubmit} ref={inputRef} />
       </FormContainer>
-      <PlaceList searchPlace={searchPlace} />{' '}
+      <PlaceList searchPlace={searchPlace} />
     </>
   );
 };

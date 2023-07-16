@@ -9,6 +9,7 @@ import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import { selectedIdActions } from '../../store/selectedId-slice';
+import { placeListActions } from '../../store/placeList-slice';
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-full']};
@@ -40,6 +41,7 @@ const ScheduleCancelModal = ({
   const navigateMain = useMovePage('/');
 
   const handleYes = () => {
+    dispatch(placeListActions.resetList());
     dispatch(scheduleListActions.resetList());
     dispatch(selectedIdActions.allReset());
     setIsCancel(true);
@@ -66,7 +68,7 @@ const ScheduleCancelModal = ({
           <GrayButton
             width="150px"
             height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
+            brradius={cssToken.BORDER['rounded-md']}
             onClick={handleYes}
           >
             네
@@ -74,7 +76,7 @@ const ScheduleCancelModal = ({
           <SkyBlueButton
             width="150px"
             height="50px"
-            borderRadius={cssToken.BORDER['rounded-md']}
+            brradius={cssToken.BORDER['rounded-md']}
             onClick={handleNo}
           >
             아니오

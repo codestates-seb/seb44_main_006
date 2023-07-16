@@ -1,8 +1,8 @@
 import cssToken from '../../../styles/cssToken';
 import { BtnDiv, ModalChildrenDiv } from '../../../styles/styles';
-import { Voidfunc } from '../../../types/type';
-import GrayButton from '../../ui/button/GrayButton';
-import SkyBlueButton from '../../ui/button/SkyBlueButton';
+import { MouseEventfunc } from '../../../types/type';
+import GrayEventButton from '../../ui/button/GrayEventButton';
+import SkyBlueEventButton from '../../ui/button/SkyBlueEventButton';
 import Text from '../../ui/text/Text';
 
 const ModalChildren = ({
@@ -10,33 +10,32 @@ const ModalChildren = ({
   rightBtnCallback,
   content,
 }: {
-  leftBtnCallback: Voidfunc;
-  rightBtnCallback: Voidfunc;
+  leftBtnCallback: MouseEventfunc;
+  rightBtnCallback: MouseEventfunc;
   content: string;
 }) => {
   return (
     <ModalChildrenDiv>
       <Text styles={{ size: cssToken.TEXT_SIZE['text-50'] }}>{content}</Text>
       <BtnDiv>
-        <GrayButton
-          // Fixme event type
+        <GrayEventButton
           onClick={leftBtnCallback}
           width="15.5625rem"
           height="4.625rem"
           fontsize={cssToken.TEXT_SIZE['text-24']}
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
         >
           아니오
-        </GrayButton>
-        <SkyBlueButton
+        </GrayEventButton>
+        <SkyBlueEventButton
           onClick={rightBtnCallback}
           width="15.5625rem"
           height="4.625rem"
           fontsize={cssToken.TEXT_SIZE['text-24']}
-          borderRadius={cssToken.BORDER['rounded-md']}
+          brradius={cssToken.BORDER['rounded-md']}
         >
           예
-        </SkyBlueButton>
+        </SkyBlueEventButton>
       </BtnDiv>
     </ModalChildrenDiv>
   );

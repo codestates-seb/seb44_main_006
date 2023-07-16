@@ -5,6 +5,7 @@ import com.seb_main_006.domain.destination.entity.Destination;
 import com.seb_main_006.domain.like.entity.Likes;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.post.entity.Post;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -79,6 +80,8 @@ public class Course {
     public void removePost() {
         this.setPosted(false);
         this.setPost(null);
+        this.setCourseLikeCount(0);
+        this.setCourseViewCount(0);
         this.getLikesInCourse().clear();
         this.getBookmarksInCourse().clear();
     }

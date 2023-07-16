@@ -1,19 +1,20 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { IButtonStyle } from '../../../types/type';
+import { IArgButtonStyle } from '../../../types/type';
 
 const SkyBlueButton = ({
   children,
   width,
   height,
-  borderRadius,
+  brradius,
   fontsize,
   onClick,
   disabled,
-}: IButtonStyle) => {
+}: IArgButtonStyle) => {
   return (
     <Button
+      className="skyblue"
       disabled={disabled}
       onClick={onClick}
       styles={{
@@ -21,8 +22,8 @@ const SkyBlueButton = ({
         height,
         fontsize,
         color: cssToken.COLOR.white,
-        backgroundColor: cssToken.COLOR['point-900'],
-        borderRadius,
+        bgcolor: cssToken.COLOR['point-500'],
+        brradius,
       }}
     >
       {children}

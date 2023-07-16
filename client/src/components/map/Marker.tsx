@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
+import { debounce } from 'lodash';
 
 import { Props } from '../../types/type';
 import defaultOptions from '../../utils/constant/constant';
@@ -9,15 +10,14 @@ import { RootState } from '../../store';
 import { MarkerOff, MarkerOn } from '.';
 
 type MarkerT = {
-  lat?: string;
-  lng?: string;
+  lat: string;
+  lng: string;
   id: string;
   img?: string;
   idx?: number;
   children?: Props['children'];
 };
 
-// Todo 장소 추가했을 때 marker 리덕스 markerID 초기화하기
 const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
   const map = useSelector((state: RootState) => state.map.map);
   const markerId = useSelector((state: RootState) => state.marker.markerId);
@@ -26,20 +26,35 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
   useEffect(() => {
     const markerLat = Number(lat) || defaultOptions.lat;
     const markerLng = Number(lng) || defaultOptions.lng;
-    const markerWidth = 30;
-    const markerheight = 60;
+    const markerWidth = 40;
+    const markerheight = 70;
 
     const setIamge = () => {
       const index = idx ?? -1;
       if (img) {
-        if (markerId === id) return MarkerOn[0];
-        return MarkerOff[0];
+        if (markerId === id)
+          return {
+            image: MarkerOn[0],
+            zIndex: 2,
+          };
+        return {
+          image: MarkerOff[0],
+          zIndex: 1,
+        };
       }
-      if (markerId === id) return MarkerOn[index + 1];
-      return MarkerOff[index + 1];
+      if (markerId === id) {
+        return {
+          image: MarkerOn[index + 1],
+          zIndex: 4,
+        };
+      }
+      return {
+        image: MarkerOff[index + 1],
+        zIndex: 3,
+      };
     };
 
-    const image = setIamge();
+    const { image, zIndex } = setIamge();
 
     const markerImage = new kakao.maps.MarkerImage(
       image,
@@ -50,10 +65,17 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
       map,
       position: new kakao.maps.LatLng(markerLat, markerLng),
       image: markerImage,
+      zIndex,
     });
 
+    const clickMarker = debounce(() => {
+      dispatch(
+        markerActions.selectMarker({ markerId: id, center: { lat, lng } })
+      );
+    }, 200);
+
     const setMarkerId = () => {
-      dispatch(markerActions.selectMarker(id));
+      clickMarker();
     };
 
     kakao.maps.event.addListener(marker, 'click', setMarkerId);

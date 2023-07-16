@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-type UserQAuthInfo = {
+export type UserQAuthInfo = {
   memberEmail?: string;
   memberId?: number;
   memberImageUrl?: string;
@@ -12,16 +12,16 @@ type UserQAuthInfo = {
   myCourseCount?: number;
 };
 
-interface LoginState {
+export interface LoginState {
   isLogin?: string | boolean;
   userInfo?: UserQAuthInfo;
-  isLoginOpen?: boolean | undefined;
-  isLogoutOpen?: boolean | undefined;
+  isLoginOpen?: boolean;
+  isLogoutOpen?: boolean;
   nickName?: string;
 }
 
 const logined = localStorage.getItem('isLogin');
-const transLogined = JSON.parse(logined);
+const transLogined = logined ? !!JSON.parse(logined) : false;
 
 const initialState: LoginState = {
   isLogin: transLogined,
@@ -49,6 +49,12 @@ const setUserOAuthSlice = createSlice({
     },
     paintMemNickname(state, action: PayloadAction<string>) {
       state.nickName = action.payload;
+    },
+    openLoginModal(state) {
+      state.isLoginOpen = true;
+    },
+    closeLoginModal(state) {
+      state.isLoginOpen = false;
     },
   },
 });

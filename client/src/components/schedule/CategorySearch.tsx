@@ -49,6 +49,7 @@ const CategorySearch = () => {
     radius: undefined,
     category: '',
   });
+
   const reduxDispatch = useDispatch();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -81,7 +82,7 @@ const CategorySearch = () => {
           <SkyBlueButton
             width="76px"
             height="35px"
-            borderRadius={cssToken.BORDER['rounded-s']}
+            brradius={cssToken.BORDER['rounded-s']}
             onClick={handleClick}
           >
             적용
@@ -91,7 +92,7 @@ const CategorySearch = () => {
       <PlaceList
         searchPlace={searchPlace.category}
         radius={searchPlace.radius}
-      />{' '}
+      />
     </>
   );
 };

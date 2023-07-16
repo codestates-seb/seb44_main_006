@@ -10,20 +10,17 @@ interface Prop {
 }
 
 interface StyleProp {
-  url: string;
+  src: string;
   isactive: boolean;
   onClick: (arg0: string, arg1: string) => void;
 }
 
-const ImageDiv = styled.div<StyleProp>`
+const ImageDiv = styled.img<StyleProp>`
   width: 20rem;
   height: 14rem;
-  background-image: url(${(props) => props.url});
-  background-size: cover;
-  background-repeat: no-repeat;
   border: ${(props) =>
     props.isactive
-      ? `3px solid ${cssToken.COLOR['point-900']}`
+      ? `3px solid ${cssToken.COLOR['point-500']}`
       : '3px solid transparent'};
   cursor: pointer;
 `;
@@ -33,7 +30,7 @@ const ImageCard = ({ id, selectedid, url, onClick }: Prop) => {
 
   return (
     <ImageDiv
-      url={url}
+      src={url}
       onClick={() => (onClick ? onClick(id, url) : '')}
       isactive={isActive}
     />

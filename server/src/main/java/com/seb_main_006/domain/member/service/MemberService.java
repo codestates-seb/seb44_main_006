@@ -76,7 +76,7 @@ public class MemberService {
         List<MemberCourse> newMemberCourseList = new ArrayList<>();
         for(int i=0; i<myCourseList.size(); i++){
             Course findCourse = myCourseList.get(i);
-            MemberCourse newMemberCourse = new MemberCourse(findCourse, findMember.getMemberNickname());
+            MemberCourse newMemberCourse = new MemberCourse(findCourse);
             newMemberCourseList.add(newMemberCourse);
         }
 
@@ -85,13 +85,13 @@ public class MemberService {
         for(int i=0; i<myBookmarkedList.size(); i++){
             Bookmark findBookmark = myBookmarkedList.get(i);
             boolean likeStatus = likesRepository.findByMemberAndCourse(findMember, findBookmark.getCourse()).isPresent();
-            MemberBookmarked newMemberBookmarked = new MemberBookmarked(findBookmark.getCourse(), findMember.getMemberNickname(), likeStatus);
+            MemberBookmarked newMemberBookmarked = new MemberBookmarked(findBookmark.getCourse(), likeStatus, findBookmark.getBookmarkId());
             newMemberBookmarkedList.add(newMemberBookmarked);
-
         }
+
         // 업데이트시간 기준 정렬(최근 업데이트가 빠른 기준 내림차순 정렬)
         newMemberCourseList.sort(Comparator.comparing(MemberCourse::getCourseUpdatedAt).reversed());
-        newMemberBookmarkedList.sort(Comparator.comparing(MemberBookmarked::getPostCreatedAt).reversed());
+        newMemberBookmarkedList.sort(Comparator.comparing(MemberBookmarked::getBookmarkId).reversed());
 
         // MypageResponseDto에 값넣고 리턴
         MyPageResponseDto myPageResponseDto = new MyPageResponseDto();

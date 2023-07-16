@@ -6,14 +6,21 @@ import StarButton from '../../ui/button/StarButton';
 import LikeButton from '../../ui/button/LikeButton';
 import Text from '../../ui/text/Text';
 import DeleteButton from '../DeleteButton';
-import useUserInfo from '../../../hooks/useUserInfo';
+import useUserInfo from '../../../querys/useUserInfo';
+import ShareKakaoButton from '../../ui/button/ShareKakaoButton';
+import CopyButton from '../../ui/button/CopyButton';
 
 const BtnDiv = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-12']};
   align-items: center;
+  justify-content: start;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
-const StarDiv = styled(FlexDiv)`
+const LikeDiv = styled(FlexDiv)`
   height: 70%;
   background-color: ${cssToken.COLOR['gray-300']};
   padding-left: ${cssToken.SPACING['gap-12']};
@@ -44,22 +51,32 @@ const ActionButtonContainer = ({
 
   return (
     <BtnDiv>
-      {userData && memberEmail === userData.memberEmail && (
-        <DeleteButton postId={postId} />
-      )}
+      <>
+        <CopyButton endpoint={`community/${postId}`} />
+        <ShareKakaoButton endpoint={`community/${postId}`} />
+        {userData && memberEmail === userData.memberEmail && (
+          <DeleteButton postId={postId} />
+        )}
+      </>
       {isLogin && userData && memberEmail !== userData.memberEmail && (
         <StarButton
+          status={bookmarkStatus ? 'del' : 'add'}
+          className="communityStar"
           courseId={courseId}
           width="3.75rem"
           height="3.75rem"
           isActive={bookmarkStatus}
         />
       )}
-      <StarDiv>
+      <LikeDiv>
         {isLogin && (
           <>
             {userData && memberEmail !== userData.memberEmail ? (
-              <LikeButton isActive={likeStatus} courseId={courseId} />
+              <LikeButton
+                className="communityLike"
+                isActive={likeStatus}
+                courseId={courseId}
+              />
             ) : (
               <Text styles={{ weight: cssToken.FONT_WEIGHT.medium }}>
                 좋아요
@@ -74,7 +91,7 @@ const ActionButtonContainer = ({
             {LikeCount}
           </>
         )}
-      </StarDiv>
+      </LikeDiv>
     </BtnDiv>
   );
 };

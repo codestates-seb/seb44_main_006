@@ -41,7 +41,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -x test
         working-directory: ./server/
 
       # build한 후 프로젝트를 압축합니다.

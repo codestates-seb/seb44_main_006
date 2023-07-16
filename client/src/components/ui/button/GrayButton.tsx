@@ -1,29 +1,30 @@
 import Button from './Button';
 
 import cssToken from '../../../styles/cssToken';
-import { IButtonStyle } from '../../../types/type';
+import { IArgButtonStyle } from '../../../types/type';
 
 const GrayButton = ({
   children,
   width,
   height,
-  borderRadius,
+  brradius,
   fontsize,
   onClick,
   isActive,
-}: IButtonStyle) => {
+}: IArgButtonStyle) => {
   return (
     <Button
+      className="gray"
       onClick={onClick}
       styles={{
         width,
         height,
         fontsize,
         color: isActive ? cssToken.COLOR.white : cssToken.COLOR.black,
-        backgroundColor: isActive
-          ? cssToken.COLOR['point-900']
+        bgcolor: isActive
+          ? cssToken.COLOR['point-500']
           : cssToken.COLOR['gray-500'],
-        borderRadius,
+        brradius,
       }}
     >
       {children}

@@ -23,6 +23,7 @@ const ModalWrapper = styled.div`
   justify-content: center;
   width: ${cssToken.WIDTH['w-screen']};
   height: ${cssToken.HEIGHT['h-screen']};
+  z-index: 9999;
 `;
 
 const Backdrop = styled.div`
@@ -109,7 +110,7 @@ const LoginModal = ({
 }) => {
   const handleLogin = ({ path }: { path: string }) => {
     const srcServerPath = import.meta.env.VITE_LOGIN_URL;
-    window.location.href = `${srcServerPath}/oauth2/authorization/${path}`;
+    window.location.href = `${srcServerPath}/oauth2/authorization/${path}?local`;
   };
 
   return (

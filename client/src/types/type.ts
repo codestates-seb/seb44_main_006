@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type Voidfunc = (arg0: React.MouseEvent<HTMLButtonElement>) => void;
+export type MouseEventfunc = (e: React.MouseEvent<HTMLButtonElement>) => void;
 
 export type TextStyleT = {
   size?: string;
@@ -34,14 +34,13 @@ export interface IButtonStyle {
   padding?: string;
   margin?: string;
   color?: string;
-  backgroundColor?: string;
+  bgcolor?: string;
   boxShadow?: string;
   border?: string;
-  borderRadius?: string;
+  brradius?: string;
   gap?: string;
   isActive?: boolean;
   title?: string;
-  onClick?: (arg0?: string | React.MouseEvent<HTMLButtonElement>) => void;
   onSubmit?: () => void;
   tagname?: string;
   categoryname?: string;
@@ -51,8 +50,18 @@ export interface IButtonStyle {
   isreset?: boolean;
 }
 
-export type LikeBookMarkButtonT = IButtonStyle & {
-  courseId?: number;
+export interface IArgButtonStyle extends IButtonStyle {
+  onClick?: (arg0?: string | undefined) => void;
+}
+
+export interface IEventButtonStyle extends IButtonStyle {
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export type LikeBookMarkButtonT = IEventButtonStyle & {
+  status?: 'add' | 'del';
+  courseId: number;
+  className?: string;
 };
 
 export type PlacesSearchResult = PlacesSearchResultItem[];
@@ -60,16 +69,16 @@ export type PlacesSearchResult = PlacesSearchResultItem[];
 export interface PlacesSearchResultItem {
   id: string;
   place_name: string;
-  category_name: string;
+  category_name?: string;
   category_group_code?: `${CategoryCode}` | `${Exclude<CategoryCode, ''>}`[];
   category_group_name: string;
   phone: string;
-  address_name: string;
+  address_name?: string;
   road_address_name: string;
   x: string;
   y: string;
   place_url: string;
-  distance: string;
+  distance?: string;
 }
 
 export type TScheduleList = IScheduleListItem[];
@@ -146,39 +155,42 @@ export interface ContCardInfo {
 }
 
 export interface LocationCardInfo {
+  id: string;
   title?: string;
   category?: string;
   address?: string;
   phone?: string;
   isAction?: boolean;
   onClick?: () => void;
+  place_url?: string;
+  x: string;
+  y: string;
 }
 
 export interface MapLocationCardInfo {
   indexNum?: number;
   location?: string;
+  latlng?: { lat: string; lng: string };
   id?: string;
   placeId?: string;
   onClick?: ({ id }: { id: string | undefined }) => void;
-}
-
-export interface CommentT {
-  answerId?: number; // 고유값(댓글 식별자)
-  answererEmail?: string; // 고유값(댓글 작성자 이메일)
-  answererNickname: string; // 댓글 작성자 닉네임
-  answerContent: string; // 댓글 내용
-  answererImageUrl: string; // 댓글 작성자 이미지 URL
-  answerUpdatedAt: string; // 댓글 수정한 날짜, ex) "2023-06-30 Fri"
+  type?: 'register';
 }
 
 export interface RouteState {
   state?: string | number | undefined;
 }
 
-export type IdT = string | undefined;
+export interface ILatLng {
+  lat: string;
+  lng: string;
+}
 
-export type MarkerT = {
-  markerId: IdT;
+export type IdT = {
+  markerId: string;
+  center: ILatLng;
+  scroll?: null | number;
+  prevCenter?: ILatLng;
 };
 
 export interface ICSearchState {

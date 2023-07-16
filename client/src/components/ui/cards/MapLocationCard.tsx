@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { debounce } from 'lodash';
 
 import { CardCommonBox } from './Card.styled';
 
@@ -9,6 +10,8 @@ import { RootState } from '../../../store';
 import Button from '../button/Button';
 import Trash from '../../../assets/Trash';
 import { scheduleListActions } from '../../../store/scheduleList-slice';
+import { markerActions } from '../../../store/marker-slice';
+import ThreeLine from '../../../assets/ThreeLine';
 
 const MapLocationCardContainer = styled.section`
   display: flex;
@@ -20,6 +23,13 @@ const MapLocationCardContainer = styled.section`
   &:last-child .last-circle::after {
     display: none;
   }
+
+  @media screen and (max-width: 768px) {
+    svg {
+      width: 13px;
+      height: 14px;
+    }
+  }
 `;
 
 const NumCircle = styled.span`
@@ -30,7 +40,7 @@ const NumCircle = styled.span`
   border-radius: ${cssToken.BORDER['rounded-full']};
   width: 2.1875rem;
   height: 2.1875rem;
-  background-color: ${cssToken.COLOR['point-900']};
+  background-color: ${cssToken.COLOR['point-500']};
   position: relative;
   &::after {
     content: '';
@@ -43,36 +53,76 @@ const NumCircle = styled.span`
     bottom: -120%;
     transform: translate(-50%, 0);
   }
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.8125rem;
+    width: 1.8rem;
+    height: 1.8rem;
+
+    &::after {
+      height: 80%;
+      bottom: -100%;
+    }
+  }
 `;
 
 const LocationCard = styled.div<{ selected?: boolean }>`
+  background-color: ${cssToken.COLOR.white};
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex: 1;
   width: ${cssToken.WIDTH['w-full']};
-  padding: ${cssToken.SPACING['gap-24']};
+  padding: ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-12']}
+    ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-16']};
   ${CardCommonBox}
+
+  @media screen and (max-width: 768px) {
+    padding: ${cssToken.SPACING['gap-16']} ${cssToken.SPACING['gap-12']}
+      ${cssToken.SPACING['gap-16']} ${cssToken.SPACING['gap-12']};
+  }
 `;
 
 const LocationText = styled.p`
   font-size: ${cssToken.TEXT_SIZE['text-18']};
   font-weight: ${cssToken.FONT_WEIGHT.medium};
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.8125rem;
+  }
+`;
+
+const RightButtonArea = styled.section`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+
+  @media screen and (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
 const MapLocationCard = ({
   indexNum,
   location,
+  latlng,
   id,
-  placeId,
-  onClick,
+  type,
 }: MapLocationCardInfo) => {
   const index = indexNum ?? -1;
   const markerId = useSelector((state: RootState) => state.marker.markerId);
   const selected = !!(id && id === markerId);
+
   const dispatch = useDispatch();
 
-  const handleClick = (inputId: string) => {
+  const handleHighlight = debounce(() => {
+    if (id && latlng) {
+      dispatch(markerActions.selectMarker({ markerId: id, center: latlng }));
+    }
+  }, 200);
+
+  const handleDelete = (inputId: string) => {
     dispatch(scheduleListActions.deletePlace(inputId));
   };
 
@@ -84,17 +134,20 @@ const MapLocationCard = ({
       <LocationCard
         selected={selected}
         onClick={() => {
-          if (onClick) onClick({ id });
+          handleHighlight();
         }}
       >
         <LocationText>{location}</LocationText>
-        <Button
-          onClick={() => {
-            if (placeId) handleClick(placeId);
-          }}
-        >
-          <Trash style={{ iconWidth: 16, iconHeight: 18 }} />
-        </Button>
+        <RightButtonArea>
+          {type && <ThreeLine style={{ iconWidth: 17, iconHeight: 18 }} />}
+          <Button
+            onClick={() => {
+              if (id) handleDelete(id);
+            }}
+          >
+            {type && <Trash style={{ iconWidth: 16, iconHeight: 18 }} />}
+          </Button>
+        </RightButtonArea>
       </LocationCard>
     </MapLocationCardContainer>
   );

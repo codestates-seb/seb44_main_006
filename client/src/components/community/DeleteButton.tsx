@@ -1,54 +1,71 @@
 import { useSelector } from 'react-redux';
-import { useMutation } from '@tanstack/react-query';
-import { styled } from 'styled-components';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import ModalChildren from './post/ModalChildren';
 
 import Modal from '../ui/modal/Modal';
 import { RootState } from '../../store';
 import useToggleModal from '../../hooks/useToggleModal';
-import { DeleteCommunityPost } from '../../apis/api';
+import { DeleteCommunityPost, DeleteMyPageCourses } from '../../apis/api';
 import useMovePage from '../../hooks/useMovePage';
+import EventButton from '../ui/button/EventButton';
+import Trash from '../../assets/Trash';
+import showToast from '../../utils/showToast';
 
-const Button = styled.button`
-  cursor: pointer;
-`;
-
-const DeleteButton = ({ postId }: { postId: string }) => {
-  const goToCommunity = useMovePage('/community');
+const DeleteButton = ({
+  type,
+  postId,
+}: {
+  type?: 'mypage';
+  postId: string;
+}) => {
+  const url = type ? '/mypage' : '/community';
+  const goToPage = useMovePage(url);
   const modalIsOpen = useSelector((state: RootState) => state.overlay.isOpen);
   const toggleModal = useToggleModal();
-  const mutate = useMutation(DeleteCommunityPost, {
-    onSuccess() {
-      // Todo 다른 페이지 refetch 해야할 수도?
+  const queryClient = useQueryClient();
+  const query = type ? DeleteMyPageCourses : DeleteCommunityPost;
+  const mutate = useMutation(query, {
+    onSuccess: async () => {
+      showToast('success', '삭제 완료!')();
       toggleModal();
-      goToCommunity();
+      await queryClient.invalidateQueries(['community']);
+      await queryClient.invalidateQueries(['mypage']);
+      await queryClient.invalidateQueries(['user']);
+      goToPage();
     },
   });
   return (
     <>
-      <Button
-        type="button"
-        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+      <EventButton
+        styles={{
+          fontsize: '13px',
+        }}
+        onClick={(e) => {
           e.stopPropagation();
           toggleModal();
         }}
       >
-        삭제
-      </Button>
+        <Trash style={{ iconWidth: 16, iconHeight: 18 }} />
+      </EventButton>
       {modalIsOpen && (
         <Modal
+          backdropCallback={(e: React.MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+            toggleModal();
+          }}
           styles={{
             width: '47.0625rem',
             height: '28.375rem',
           }}
         >
           <ModalChildren
-            leftBtnCallback={(e: React.MouseEvent<HTMLButtonElement>) => {
+            leftBtnCallback={(e) => {
               e.stopPropagation();
               toggleModal();
             }}
-            rightBtnCallback={() => {
+            rightBtnCallback={(e) => {
+              e.stopPropagation();
               mutate.mutate({ postId });
             }}
             content="정말 삭제하시겠습니까?"

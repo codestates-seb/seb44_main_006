@@ -5,6 +5,7 @@ import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.auth.jwt.Subject;
+import com.seb_main_006.global.auth.redis.RedisUtil;
 import com.seb_main_006.global.auth.redis.RefreshToken;
 import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
@@ -36,12 +37,14 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final RedisUtil redisUtil;
 
-    public OAuth2MemberSuccessHandler(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils, MemberService memberService, RefreshTokenRedisRepository refreshTokenRedisRepository) {
+    public OAuth2MemberSuccessHandler(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils, MemberService memberService, RefreshTokenRedisRepository refreshTokenRedisRepository, RedisUtil redisUtil) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.memberService = memberService;
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
+        this.redisUtil = redisUtil;
     }
 
     // 소셜(구글)로그인 성공시 이메일, 닉네임, 프로필이미지 가져와서 DB에 저장 후 리다이렉트
@@ -57,6 +60,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String imgURL = String.valueOf(oAuth2User.getAttributes().get("picture"));
         String provider = String.valueOf(oAuth2User.getAttributes().get("provider"));
         List<String> authorities = authorityUtils.createRoles(email);
+
+        if (email == null || email.equals("null")) {
+            ErrorResponder.sendErrorResponse(response, ExceptionCode.TEMPORARY_ERROR);
+            return;
+        }
 
         // DB에 같은 이메일로 저장된 회원 정보가 존재하고, 현재 로그인하려는 Provider와 다를 경우 -> 이미 가입된 정보가 있음 예외 던지기
         String existProvider = memberService.findExistEmailAndDiffProvider(email, provider);
@@ -140,6 +148,19 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     // 리다이렉트 URL생성(URL에 accessToken과 refreshToken담아서 전달)
     private URI createURI(String accessToken, String refreshToken) {
+        log.info("createURI Method: redis.get(local) = {}", redisUtil.get("local"));
+
+        String scheme = "https";
+        String host = "harumate.netlify.app";
+        int port = 443;
+
+        if (redisUtil.get("local") != null) {
+            scheme = "http";
+            host = "localhost";
+            port = 5173;
+            redisUtil.delete("local");
+        }
+
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
         queryParams.add("access_token", accessToken);
@@ -147,9 +168,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("http")
-                .host("localhost")
-                .port(5173)
+                .scheme(scheme)
+                .host(host)
+                .port(port)
                 .queryParams(queryParams)
                 .build()
                 .toUri();
