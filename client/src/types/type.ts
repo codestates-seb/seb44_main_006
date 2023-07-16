@@ -139,7 +139,7 @@ export interface ContCardInfo {
   userName?: string;
   title?: string;
   text?: string;
-  likeCount?: number;
+  likeCount: number | string;
   thumbnail?: string;
   tag?: string[];
   onClick?: (arg0?: number) => void;

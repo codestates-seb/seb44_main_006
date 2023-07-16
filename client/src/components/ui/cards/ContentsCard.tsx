@@ -13,6 +13,7 @@ import { ContCardInfo } from '../../../types/type';
 import getLoginStatus from '../../../utils/getLoginStatus';
 import removeTag from '../../../utils/removeTag';
 import defaultThumbnail from '../../../assets/defaultThumbnail.jpeg';
+import thousandTok from '../../../utils/thousandTok';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
@@ -203,7 +204,7 @@ const ContensCard = ({
           {isLogin && !isMine && likeStatus !== undefined && courseId && (
             <LikeButton isActive={likeStatus} courseId={courseId} />
           )}
-          <DataText>{likeCount} likes</DataText>
+          <DataText>{thousandTok(likeCount)} likes</DataText>
         </LikeBtnBox>
         <DataText>{date}</DataText>
       </ContensBottom>

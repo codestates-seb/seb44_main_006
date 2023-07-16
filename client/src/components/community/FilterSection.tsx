@@ -23,6 +23,7 @@ import useUserInfo from '../../querys/useUserInfo';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import { RootState } from '../../store';
+import thousandTok from '../../utils/thousandTok';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -97,7 +98,7 @@ const FilterSection = ({
                     type="post"
                     title={post.courseTitle}
                     text={post.postContent}
-                    likeCount={post.courseLikeCount}
+                    likeCount={thousandTok(post.courseLikeCount)}
                     tag={post.tags}
                     userName={post.memberNickname}
                     thumbnail={post.courseThumbnail}

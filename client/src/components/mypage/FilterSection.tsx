@@ -16,6 +16,7 @@ import Text from '../ui/text/Text';
 import useUserInfo from '../../querys/useUserInfo';
 import DeleteButton from '../community/DeleteButton';
 import formatData from '../../utils/sliceData';
+import thousandTok from '../../utils/thousandTok';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -110,7 +111,7 @@ const FilterSection = ({
                     type="course"
                     title={post.courseTitle}
                     text={post.courseContent}
-                    likeCount={post.courseLikeCount}
+                    likeCount={thousandTok(post.courseLikeCount)}
                     userName={post.memberNickname}
                     thumbnail={post.courseThumbnail}
                     onClick={moveToRegisterDetail}
@@ -139,7 +140,7 @@ const FilterSection = ({
                     type="post"
                     title={post.courseTitle}
                     text={post.postContent}
-                    likeCount={post.courseLikeCount}
+                    likeCount={thousandTok(post.courseLikeCount)}
                     tag={post.tags}
                     userName={post.memberNickname}
                     thumbnail={post.courseThumbnail}
