@@ -30,7 +30,7 @@ const CursorContainer = styled.div<CursorInfo>`
     top: 50%;
     background-image: ${(props) =>
       props.isMouseHover ? `url(${cursorOff})` : `url(${cursorOn})`};
-    background-size: cover;
+    background-size: ${(props) => (props.isMouseHover ? `cover` : '20px')};
     background-repeat: no-repeat;
     background-position: center;
     display: block;
