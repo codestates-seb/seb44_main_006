@@ -31,7 +31,6 @@ const TagContainer = ({
     '태그 작성 후 엔터를 해주세요. 추가된 태그 클릭시 삭제 됩니다.'
   );
   const makeTag = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
     if (e.key === 'Enter') {
       if (!inputRef.current) return;
       const { current } = inputRef;
