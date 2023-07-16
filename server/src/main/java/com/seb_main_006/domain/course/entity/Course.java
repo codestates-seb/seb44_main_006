@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -80,6 +81,20 @@ public class Course {
         this.setPost(null);
         this.getLikesInCourse().clear();
         this.getBookmarksInCourse().clear();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Course)) return false;
+        Course course = (Course) o;
+        return courseId == course.courseId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(courseId);
     }
 }
 
