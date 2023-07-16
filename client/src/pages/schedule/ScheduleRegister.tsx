@@ -92,8 +92,10 @@ const ScheduleRegister = () => {
   };
 
   const fetchData = async () => {
-    const response: AxiosResponse<PostReadT> = await GetCourse({ courseId });
-    const { destinationList }: PostReadT = response.data;
+    const response = await GetCourse({
+      courseId,
+    });
+    const { destinationList }: PostReadT = response.data as PostReadT;
     dispatch(scheduleListActions.updateList(destinationList));
   };
 
@@ -101,7 +103,6 @@ const ScheduleRegister = () => {
     queryKey: ['modify'],
     queryFn: fetchData,
     refetchOnWindowFocus: false,
-    select: (data: { data: PostReadT }) => data.data,
     enabled: isModify === 'true',
   });
 
