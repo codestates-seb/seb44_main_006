@@ -56,8 +56,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/setting" element={<UserSetting />} />
               <Route path="/error/:status" element={<ErrorPage />} />
-              <Route path="/loading" element={<Loading />} />
-              {/* // TODO 로딩은 나중에 빼야 함 */}
+              <Route
+                path="*"
+                element={<ErrorPage />}
+                errorElement={<ErrorPage />}
+              />
             </Routes>
           </Suspense>
           <MoNav />
