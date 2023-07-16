@@ -11,6 +11,7 @@ const P = styled(TextStyle).attrs({ as: 'p' })`
 
   @media (max-width: 768px) {
     font-size: 0.8rem;
+    line-height: 1.3rem;
   }
 `;
 
