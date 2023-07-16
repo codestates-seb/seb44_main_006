@@ -85,7 +85,7 @@ const FilterSection = ({
           등록된{' '}
           {userData &&
             (selectTab === 'First'
-              ? `일정이 (30/${userData.myCourseCount})`
+              ? `일정이 (${userData.myCourseCount}/30)`
               : ` 즐겨찾기가 ${userData.myBookmarkCount}`)}
           개 있습니다.
         </Text>
