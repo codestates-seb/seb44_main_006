@@ -57,7 +57,7 @@ const ModalContainer = styled.section<IModalContainer>`
 
   &.modalContainer {
     @media screen and (max-width: 768px) {
-      position: absolute;
+      position: fixed;
       bottom: 0;
 
       width: ${cssToken.WIDTH['w-full']};
