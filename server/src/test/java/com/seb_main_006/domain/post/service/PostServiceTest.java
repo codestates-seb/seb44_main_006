@@ -58,7 +58,6 @@ class PostServiceTest {
     @Mock private PostTagRepository postTagRepository;
     @Mock private LikesRepository likesRepository;
     @Mock private BookmarkRepository bookmarkRepository;
-
     private JwtTokenizer jwtTokenizer = new JwtTokenizer(new ObjectMapper());
 
     PageImpl<Course> dummyPageResult;
@@ -206,9 +205,12 @@ class PostServiceTest {
         given(courseRepository.findAllByPostedOrderByUpdatedAt(any(PageRequest.class)))
                 .willReturn(dummyPageResult);
 
-        // when, then
-        String validAccessToken = "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYWxzdWRkbDI1QGdtYWlsLmNvbSIsInN1YiI6IntcInVzZXJuYW1lXCI6XCJhbHN1ZGRsMjVAZ21haWwuY29tXCIsXCJ0b2tlblR5cGVcIjpcIkFjY2Vzc1Rva2VuXCJ9IiwiaWF0IjoxNjg5MDU2Mzk5LCJleHAiOjE2OTIwNTYzOTl9.mDi7YsAR-4PciXKocwAQLjw7Czi22cxNUqSfsDri7OUpWza85a_pMUWNXsaBqiSXhRCXvs4K1Kzt-3rxlLbIog";
-        assertDoesNotThrow(() -> postService.findPosts(0, 10, null, validAccessToken, null));
+        // when
+        String validToken = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYWxzdWRkbDI1QGdtYWlsLmNvbSIsInN1YiI6IntcInVzZXJuYW1lXCI6XCJhbHN1ZGRsMjVAZ21haWwuY29tXCIsXCJ0b2tlblR5cGVcIjpcIkFjY2Vzc1Rva2VuXCJ9IiwiaWF0IjoxNjg5MzIzNjc2LCJleHAiOjE2OTIzMjM2NzZ9.MExZnug5H8Ixi5F5CYdogeoq0PwOFiKYw0vwQ0swGNk";
+        postService.findPosts(0, 10, null, validToken, null);
+
+        // then
+        verify(memberService).findVerifiedMember(anyString());
     }
 
     @DisplayName("tagName == null 이고, sort == null 일 경우, " +
