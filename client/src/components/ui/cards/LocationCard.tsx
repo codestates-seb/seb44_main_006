@@ -9,6 +9,7 @@ import cssToken from '../../../styles/cssToken';
 import { LocationCardInfo } from '../../../types/type';
 import { RootState } from '../../../store';
 import { markerActions } from '../../../store/marker-slice';
+import EventButton from '../button/EventButton';
 
 const LocationCardContainer = styled.section<{ selected: boolean }>`
   display: flex;
@@ -16,6 +17,7 @@ const LocationCardContainer = styled.section<{ selected: boolean }>`
   padding: ${cssToken.SPACING['gap-16']};
   gap: ${cssToken.SPACING['gap-10']};
   ${CardCommonBox}
+  cursor: default;
 
   @media screen and (max-width: 768px) {
   }
@@ -55,6 +57,12 @@ const LocationPhone = styled.span`
   ${LocationInfoText}
 `;
 
+const BottomWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const LocationA = styled.a`
   font-size: ${cssToken.TEXT_SIZE['text-12']};
   color: ${cssToken.COLOR['point-500']};
@@ -66,18 +74,40 @@ const LocationA = styled.a`
   }
 `;
 
+const AddButton = styled(EventButton)`
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.5rem;
+  font-weight: ${cssToken.FONT_WEIGHT.light};
+  color: ${cssToken.COLOR['point-900']};
+  background-color: ${cssToken.COLOR['point-100']};
+  border-radius: ${cssToken.BORDER['rounded-full']};
+  cursor: pointer;
+`;
+
 const LocationCard = ({
   id,
   title,
   category,
   address,
   phone,
-  // onClick,
+  onClick,
   place_url,
+  x,
+  y,
 }: LocationCardInfo) => {
   const cardRef = useRef<HTMLElement>(null);
   const dispatch = useDispatch();
   const selectedId = useSelector((state: RootState) => state.marker.markerId);
+
+  const highlightMarker = () => {
+    dispatch(
+      markerActions.selectMarker({
+        markerId: id,
+        center: { lat: y, lng: x },
+      })
+    );
+  };
 
   useEffect(() => {
     if (cardRef.current && selectedId === id) {
@@ -86,7 +116,11 @@ const LocationCard = ({
   }, [dispatch, id, selectedId]);
 
   return (
-    <LocationCardContainer ref={cardRef} selected={selectedId === id}>
+    <LocationCardContainer
+      ref={cardRef}
+      selected={selectedId === id}
+      onClick={highlightMarker}
+    >
       <LocationTop>
         <LocationTitle>{title}</LocationTitle>
         <TagButton>{category}</TagButton>
@@ -95,9 +129,12 @@ const LocationCard = ({
       <LocationAddress>{address}</LocationAddress>
       <LocationPhone>{phone}</LocationPhone>
 
-      <LocationA href={place_url} target="_blank" rel="noreferrer">
-        자세히 보러가기
-      </LocationA>
+      <BottomWrapper>
+        <LocationA href={place_url} target="_blank" rel="noreferrer">
+          자세히 보러가기
+        </LocationA>
+        <AddButton onClick={onClick}>+</AddButton>
+      </BottomWrapper>
     </LocationCardContainer>
   );
 };

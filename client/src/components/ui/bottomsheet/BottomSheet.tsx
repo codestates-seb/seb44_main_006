@@ -30,7 +30,7 @@ const Wrapper = styled.div<{
     overflow: ${(props) => props.param === 'detail' && 'auto'};
     height: ${(props) => {
       if (props.ishide) {
-        return `calc(${cssToken.HEIGHT['bottomsheet-header']} + ${cssToken.HEIGHT['mo-nav-height']})`;
+        return cssToken.HEIGHT['bottomsheet-header'];
       }
       if (props.param === 'detail') {
         return `${props.contentHeight / 2 + 360}px`;

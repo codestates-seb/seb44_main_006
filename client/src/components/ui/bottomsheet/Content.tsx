@@ -10,18 +10,14 @@ const ContentWrapper = styled.div<{ wrapperHeight: number }>`
   }
 
   @media (max-width: 768px) {
-    height: ${(props) => `${props.wrapperHeight * 0.8}px`};
+    height: ${(props) => `${props.wrapperHeight * 0.9}px`};
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   @media (max-height: 700px) {
-    height: ${(props) => `${props.wrapperHeight * 0.75}px`};
-  }
-
-  @media (max-height: 600px) {
-    height: ${(props) => `${props.wrapperHeight * 0.7}px`};
+    height: ${(props) => `${props.wrapperHeight * 0.85}px`};
   }
 `;
 

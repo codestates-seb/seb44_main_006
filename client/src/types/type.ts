@@ -155,7 +155,7 @@ export interface ContCardInfo {
 }
 
 export interface LocationCardInfo {
-  id?: string;
+  id: string;
   title?: string;
   category?: string;
   address?: string;
@@ -163,6 +163,8 @@ export interface LocationCardInfo {
   isAction?: boolean;
   onClick?: () => void;
   place_url?: string;
+  x: string;
+  y: string;
 }
 
 export interface MapLocationCardInfo {
