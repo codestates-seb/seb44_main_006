@@ -31,6 +31,7 @@ const TagContainer = ({
     '태그 작성 후 엔터를 해주세요. 추가된 태그 클릭시 삭제 됩니다.'
   );
   const makeTag = (e: KeyboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
     if (e.key === 'Enter') {
       if (!inputRef.current) return;
       const { current } = inputRef;
@@ -50,7 +51,6 @@ const TagContainer = ({
 
   useEffect(() => {
     if (tags.length >= 5) {
-      //
       inputRef.current!.readOnly = true;
       setPlaceholder('최대 태그 개수를 만족하였습니다.');
     } else {
