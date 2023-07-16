@@ -51,6 +51,9 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     line-height: 1;
+    @supports (-webkit-touch-callout: none) {
+    height: -webkit-fill-available;
+    }
   }
   ol, ul {
     list-style: none;

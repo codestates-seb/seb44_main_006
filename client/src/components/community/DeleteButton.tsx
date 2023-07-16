@@ -50,6 +50,7 @@ const DeleteButton = ({
       </EventButton>
       {modalIsOpen && (
         <Modal
+          className={['modal', 'modalContainer']}
           backdropCallback={(e: React.MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
             toggleModal();

@@ -54,6 +54,7 @@ const ScheduleCancelModal = ({
 
   return (
     <Modal
+      className={['modal', 'modalContainer']}
       styles={{
         width: '25rem',
         height: '15rem',

@@ -26,7 +26,9 @@ const ModalWrapper = styled.div`
   z-index: 1000;
 
   @media screen and (max-width: 768px) {
-    align-items: end;
+    &.modal {
+      align-items: end;
+    }
   }
 `;
 
@@ -54,60 +56,64 @@ const ModalContainer = styled.section<IModalContainer>`
   background-color: #ffffff;
   z-index: 1002;
 
-  @media screen and (max-width: 768px) {
-    width: ${cssToken.WIDTH['w-full']};
-    height: 15.5625rem;
-    border-top-left-radius: ${cssToken.BORDER['rounded-md']};
-    border-top-right-radius: ${cssToken.BORDER['rounded-md']};
-    justify-content: space-around;
-    font-weight: ${cssToken.FONT_WEIGHT.medium};
+  &.modalContainer {
+    @media screen and (max-width: 768px) {
+      width: ${cssToken.WIDTH['w-full']};
+      height: 15.5625rem;
 
-    > div {
-      padding-top: ${cssToken.SPACING['gap-50']};
-      padding-left: ${cssToken.SPACING['gap-20']};
-      padding-right: ${cssToken.SPACING['gap-20']};
-      align-items: center;
-    }
+      border-radius: none;
+      border-top-left-radius: ${cssToken.BORDER['rounded-md']};
+      border-top-right-radius: ${cssToken.BORDER['rounded-md']};
 
-    p {
-      display: flex;
-      justify-content: center;
-      font-size: ${cssToken.TEXT_SIZE['text-32']};
+      justify-content: space-around;
       font-weight: ${cssToken.FONT_WEIGHT.medium};
-    }
 
-    button {
-      height: 3rem;
-    }
+      > div {
+        padding-top: ${cssToken.SPACING['gap-50']};
+        padding-left: ${cssToken.SPACING['gap-20']};
+        padding-right: ${cssToken.SPACING['gap-20']};
+        align-items: center;
+      }
 
-    .gray {
-      width: 10rem;
-    }
+      p {
+        display: flex;
+        justify-content: center;
+        font-size: ${cssToken.TEXT_SIZE['text-32']};
+        font-weight: ${cssToken.FONT_WEIGHT.medium};
+      }
 
-    .skyblue {
-      width: 10rem;
-    }
-  }
+      button {
+        height: 3rem;
+      }
 
-  @media screen and (max-width: 500px) {
-    p {
-      font-size: ${cssToken.TEXT_SIZE['text-24']};
-    }
+      .gray {
+        width: 10rem;
+      }
 
-    button {
-      height: 2.1875rem;
+      .skyblue {
+        width: 10rem;
+      }
     }
+    @media screen and (max-width: 500px) {
+      p {
+        font-size: ${cssToken.TEXT_SIZE['text-24']};
+      }
 
-    .gray {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
-      width: 8.5rem;
-    }
+      button {
+        height: 2.1875rem;
+      }
 
-    .skyblue {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
-      width: 8.5rem;
+      .gray {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        width: 8.5rem;
+      }
+
+      .skyblue {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        width: 8.5rem;
+      }
     }
   }
 `;
@@ -127,17 +133,19 @@ const Modal = ({
   styles,
   backdropCallback,
   handleCloseBtn,
+  className,
 }: {
   children?: Props['children'];
   displayclosebtn?: boolean;
   styles?: IModalContainer;
   backdropCallback?: (e: React.MouseEvent<HTMLDivElement>) => void;
   handleCloseBtn?: () => void;
+  className?: string[];
 }) => {
   return ReactDOM.createPortal(
-    <ModalWrapper>
+    <ModalWrapper className={className ? className[0] : ''}>
       <Backdrop onClick={backdropCallback} />
-      <ModalContainer {...styles}>
+      <ModalContainer className={className ? className[1] : ''} {...styles}>
         {children}
         {displayclosebtn && (
           <CloseButtonDiv>
