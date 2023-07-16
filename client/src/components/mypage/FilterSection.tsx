@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 
+import SkeletonCardContainer from '../community/skeleton/SkeletonCardContainer';
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -101,50 +102,62 @@ const FilterSection = ({
 
       <CardWrapper>
         {memberCourseList && selectTab === 'First'
-          ? memberCourseList?.map((post: MypCourseSummaryT) => (
-              <ContensCard
-                key={post.courseId}
-                type="course"
-                title={post.courseTitle}
-                likeCount={post.courseLikeCount}
-                userName={post.memberNickname}
-                thumbnail={post.courseThumbnail}
-                onClick={moveToRegisterDetail}
-                courseId={post.courseId}
-                date={formatData(String(post?.courseDday))}
-              >
-                <DeleteButton type="mypage" postId={String(post.courseId)} />
-                <CopyButton
-                  endpoint={`register/detail/${String(post.courseId)}`}
-                />
-                <ShareKakaoButton
-                  endpoint={`register/detail/${String(post.courseId)}`}
-                />
-              </ContensCard>
-            ))
-          : memberBookmarkedList?.map((post: MyBookMarkSummaryT) => (
-              <ContensCard
-                key={post.courseId}
-                type="post"
-                title={post.courseTitle}
-                text={post.postContent}
-                likeCount={post.courseLikeCount}
-                tag={post.tags}
-                userName={post.memberNickname}
-                thumbnail={post.courseThumbnail}
-                onClick={moveToDetail}
-                courseId={post.courseId}
-                bookmarkStatus
-                postId={post.postId}
-                likeStatus={post.likeStatus}
-                date={manufactureDate(post?.courseUpdatedAt)}
-              >
-                <CopyButton endpoint={`community/${String(post.postId)}`} />
-                <ShareKakaoButton
-                  endpoint={`community/${String(post.postId)}`}
-                />
-              </ContensCard>
-            ))}
+          ? memberCourseList?.map((post: MypCourseSummaryT) => {
+              if (post.courseId !== -1)
+                return (
+                  <ContensCard
+                    key={post.courseId}
+                    type="course"
+                    title={post.courseTitle}
+                    text={post.courseContent}
+                    likeCount={post.courseLikeCount}
+                    userName={post.memberNickname}
+                    thumbnail={post.courseThumbnail}
+                    onClick={moveToRegisterDetail}
+                    courseId={post.courseId}
+                    date={`${formatData(String(post?.courseDday))} day `}
+                  >
+                    <DeleteButton
+                      type="mypage"
+                      postId={String(post.courseId)}
+                    />
+                    <CopyButton
+                      endpoint={`register/detail/${String(post.courseId)}`}
+                    />
+                    <ShareKakaoButton
+                      endpoint={`register/detail/${String(post.courseId)}`}
+                    />
+                  </ContensCard>
+                );
+              return <SkeletonCardContainer length={6} />;
+            })
+          : memberBookmarkedList?.map((post: MyBookMarkSummaryT) => {
+              if (post.courseId !== -1)
+                return (
+                  <ContensCard
+                    key={post.courseId}
+                    type="post"
+                    title={post.courseTitle}
+                    text={post.postContent}
+                    likeCount={post.courseLikeCount}
+                    tag={post.tags}
+                    userName={post.memberNickname}
+                    thumbnail={post.courseThumbnail}
+                    onClick={moveToDetail}
+                    courseId={post.courseId}
+                    bookmarkStatus
+                    postId={post.postId}
+                    likeStatus={post.likeStatus}
+                    date={manufactureDate(post?.courseUpdatedAt)}
+                  >
+                    <CopyButton endpoint={`community/${String(post.postId)}`} />
+                    <ShareKakaoButton
+                      endpoint={`community/${String(post.postId)}`}
+                    />
+                  </ContensCard>
+                );
+              return <SkeletonCardContainer length={6} />;
+            })}
       </CardWrapper>
       <div ref={ref} />
     </FilterWrapper>

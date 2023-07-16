@@ -101,6 +101,7 @@ const FormBox = styled.form<IsNickNameT>`
 const UserInfoBox = () => {
   const { userData } = useUserInfo();
   const [toggleNickname, setToggleNickname] = useState<boolean>(false);
+  const [errMsg, setErrMsg] = useState<string>('');
   const [isName, setIsName] = useState<boolean>(true);
   const memNicknameRef = useRef<HTMLInputElement>(null);
   const navigator = useNavigate();
@@ -134,6 +135,10 @@ const UserInfoBox = () => {
     dispatch(setUserOAuthActions.paintMemNickname(e.target.value));
     if (e.target.value.length < 2 || e.target.value.length > 10) {
       setIsName(false);
+      setErrMsg('글자 수를 만족하지 못했습니다.');
+    } else if (e.target.value.includes('탈퇴한 사용자')) {
+      setIsName(false);
+      setErrMsg('사용할 수 없는 닉네임입니다.');
     } else {
       setIsName(true);
     }
@@ -187,6 +192,8 @@ const UserInfoBox = () => {
             <FormBox onSubmit={paintNickname}>
               <InputContainer
                 type="title"
+                textType="nickName"
+                text={errMsg}
                 minLength={2}
                 maxLength={10}
                 onChange={onChangeName}

@@ -172,18 +172,20 @@ const ContensCard = ({
             )}
           </ContensHeader>
           {text && <ContensText>{removeTag(text)}</ContensText>}
-          <Tags>
-            {tag?.map((tagItem: string) => (
-              <TagButton
-                width={cssToken.WIDTH['min-w-fit']}
-                height={cssToken.HEIGHT['h-fit']}
-                isActive={false}
-                key={tagItem}
-              >
-                {tagItem}
-              </TagButton>
-            ))}
-          </Tags>
+          {tag && (
+            <Tags>
+              {tag?.map((tagItem: string) => (
+                <TagButton
+                  width={cssToken.WIDTH['min-w-fit']}
+                  height={cssToken.HEIGHT['h-fit']}
+                  isActive={false}
+                  key={tagItem}
+                >
+                  {tagItem}
+                </TagButton>
+              ))}
+            </Tags>
+          )}
         </TextWrap>
 
         <ThumbnailBox
