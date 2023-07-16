@@ -109,12 +109,13 @@ const FilterSection = ({
                     key={post.courseId}
                     type="course"
                     title={post.courseTitle}
+                    text={post.courseContent}
                     likeCount={post.courseLikeCount}
                     userName={post.memberNickname}
                     thumbnail={post.courseThumbnail}
                     onClick={moveToRegisterDetail}
                     courseId={post.courseId}
-                    date={formatData(String(post?.courseDday))}
+                    date={`${formatData(String(post?.courseDday))} day `}
                   >
                     <DeleteButton
                       type="mypage"
