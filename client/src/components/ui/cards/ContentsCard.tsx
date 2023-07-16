@@ -12,6 +12,7 @@ import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
 import getLoginStatus from '../../../utils/getLoginStatus';
 import removeTag from '../../../utils/removeTag';
+import defaultThumbnail from '../../../assets/defaultThumbnail.jpeg';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
@@ -194,7 +195,7 @@ const ContensCard = ({
             height: '0',
             brradius: cssToken.BORDER['rounded-s'],
           }}
-          src={thumbnail}
+          src={thumbnail || defaultThumbnail}
         />
       </ContensMiddle>
       <ContensBottom>
