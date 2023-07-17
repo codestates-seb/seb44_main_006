@@ -16,6 +16,7 @@ import { IScheduleListItem } from '../../types/type';
 import makePolyline from '../../utils/makePolyline';
 import { RootState } from '../../store';
 import { markerActions } from '../../store/marker-slice';
+import usePanMap from '../../hooks/usePanMap';
 
 const OutsideWrapper = styled(FlexDiv)`
   @media screen and (max-width: 768px) {
@@ -59,11 +60,16 @@ const MapContainer = ({
   destinationList: IScheduleListItem[];
   title: string;
 }) => {
-  const newCenter = useSelector((state: RootState) => state.marker.center);
-  const prevCenter = useSelector((state: RootState) => state.marker.prevCenter);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(
+      markerActions.setInitialCenter({
+        lat: destinationList[0].y,
+        lng: destinationList[0].x,
+        level: 6,
+      })
+    );
     dispatch(
       markerActions.selectMarker({
         markerId: '',
@@ -73,61 +79,43 @@ const MapContainer = ({
         },
       })
     );
-    dispatch(
-      markerActions.setInitialCenter({
-        lat: destinationList[0].y,
-        lng: destinationList[0].x,
-      })
-    );
   }, [destinationList, dispatch]);
 
+  usePanMap();
+
   return (
-    <>
-      {!prevCenter && <SkeletonMapContainer />}
-      {prevCenter && (
-        <OutsideWrapper>
-          <ScheduleDiv>
-            <Title styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
-              {title || ''}
-            </Title>
-            <LocationCardWrapper>
-              {destinationList.map((destination, idx) => (
-                <MapLocationCard
-                  key={uuidv4()}
-                  latlng={{ lat: destination.y, lng: destination.x }}
-                  id={destination.id}
-                  indexNum={idx + 1}
-                  location={destination.placeName}
-                />
-              ))}
-            </LocationCardWrapper>
-          </ScheduleDiv>
-          <MapDiv>
-            <KakaoMap
-              center={{
-                lat: prevCenter.lat,
-                lng: prevCenter.lng,
-                level: 6,
-              }}
-              width="100%"
-              height="60vh"
-              selected={{ lat: newCenter.lat, lng: newCenter.lng, level: 3 }}
-            >
-              {destinationList.map((destination, idx) => (
-                <Marker
-                  key={uuidv4()}
-                  lat={destination.y}
-                  lng={destination.x}
-                  id={destination.id ?? ''}
-                  idx={idx}
-                />
-              ))}
-              <Polyline linePos={makePolyline(destinationList)} />
-            </KakaoMap>
-          </MapDiv>
-        </OutsideWrapper>
-      )}
-    </>
+    <OutsideWrapper>
+      <ScheduleDiv>
+        <Title styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
+          {title || ''}
+        </Title>
+        <LocationCardWrapper>
+          {destinationList.map((destination, idx) => (
+            <MapLocationCard
+              key={uuidv4()}
+              latlng={{ lat: destination.y, lng: destination.x }}
+              id={destination.id}
+              indexNum={idx + 1}
+              location={destination.placeName}
+            />
+          ))}
+        </LocationCardWrapper>
+      </ScheduleDiv>
+      <MapDiv>
+        <KakaoMap width="100%" height="60vh">
+          {destinationList.map((destination, idx) => (
+            <Marker
+              key={uuidv4()}
+              lat={destination.y}
+              lng={destination.x}
+              id={destination.id ?? ''}
+              idx={idx}
+            />
+          ))}
+          <Polyline linePos={makePolyline(destinationList)} />
+        </KakaoMap>
+      </MapDiv>
+    </OutsideWrapper>
   );
 };
 

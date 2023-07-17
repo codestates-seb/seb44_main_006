@@ -184,13 +184,14 @@ export interface RouteState {
 export interface ILatLng {
   lat: string;
   lng: string;
+  level?: number;
 }
 
 export type IdT = {
   markerId: string;
   center: ILatLng;
   scroll?: null | number;
-  prevCenter?: ILatLng;
+  firstCourse?: ILatLng;
 };
 
 export interface ICSearchState {

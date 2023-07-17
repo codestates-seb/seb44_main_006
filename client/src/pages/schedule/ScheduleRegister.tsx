@@ -17,6 +17,7 @@ import { placeListActions } from '../../store/placeList-slice';
 import BottomSheet from '../../components/ui/bottomsheet/BottomSheet';
 import { selectedIdActions } from '../../store/selectedId-slice';
 import useValidEnter from '../../hooks/useValidEnter';
+import panTo from '../../utils/panTo';
 
 const KakaoMap = lazy(() => import('../../components/map/KakaoMap'));
 const Marker = lazy(() => import('../../components/map/Marker'));
@@ -88,14 +89,9 @@ const ScheduleRegister = () => {
     checkValidEnter();
   }, [checkValidEnter]);
 
-  // Todo 리팩토링 해야할 듯?
   useEffect(() => {
     if (map && newCenter.lat && newCenter.lng) {
-      const moveLatlng = new kakao.maps.LatLng(
-        Number(newCenter.lat),
-        Number(newCenter.lng)
-      );
-      map.panTo(moveLatlng);
+      panTo({ map, newCenter });
     }
   }, [map, newCenter]);
 

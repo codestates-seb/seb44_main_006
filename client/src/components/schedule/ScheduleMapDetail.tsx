@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { memo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,6 @@ import Text from '../ui/text/Text';
 import MapLocationCard from '../ui/cards/MapLocationCard';
 import { IScheduleListItem } from '../../types/type';
 import makePolyline from '../../utils/makePolyline';
-import { RootState } from '../../store';
 import { markerActions } from '../../store/marker-slice';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
@@ -22,6 +21,7 @@ import useMovePage from '../../hooks/useMovePage';
 import CalenderIcon from '../../assets/CalendarIcon';
 import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
+import usePanMap from '../../hooks/usePanMap';
 
 const ScheduleDiv = styled(FlexDiv)`
   left: 0;
@@ -127,8 +127,6 @@ const ScheduleMapDetail = ({
   text: string;
   courseDday: string;
 }) => {
-  const newCenter = useSelector((state: RootState) => state.marker.center);
-  const prevCenter = useSelector((state: RootState) => state.marker.prevCenter);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const gotoMain = useMovePage('/');
@@ -138,6 +136,13 @@ const ScheduleMapDetail = ({
 
   useEffect(() => {
     dispatch(
+      markerActions.setInitialCenter({
+        lat: destinationList[0].y,
+        lng: destinationList[0].x,
+        level: 6,
+      })
+    );
+    dispatch(
       markerActions.selectMarker({
         markerId: '',
         center: {
@@ -146,13 +151,9 @@ const ScheduleMapDetail = ({
         },
       })
     );
-    dispatch(
-      markerActions.setInitialCenter({
-        lat: destinationList[0].y,
-        lng: destinationList[0].x,
-      })
-    );
   }, [destinationList, dispatch]);
+
+  usePanMap();
 
   return (
     <FlexDiv>
@@ -227,16 +228,7 @@ const ScheduleMapDetail = ({
         </FloatButton>
       </FixedDiv>
       <MapDiv>
-        <KakaoMap
-          center={{
-            lat: prevCenter?.lat || destinationList[0].y,
-            lng: prevCenter?.lng || destinationList[0].x,
-            level: 6,
-          }}
-          selected={{ lat: newCenter.lat, lng: newCenter.lng, level: 3 }}
-          width="100%"
-          height="100vh"
-        >
+        <KakaoMap width="100%" height="100vh">
           {destinationList.map((destination, idx) => (
             <Marker
               key={uuidv4()}
