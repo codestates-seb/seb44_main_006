@@ -9,6 +9,7 @@ import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
 import UserInfoMy from '../ui/UserInfoPfp';
 import useUserInfo from '../../querys/useUserInfo';
+import notUserImag from '../../assets/notUserImg.svg';
 
 type NavT = {
   ispath?: string;
@@ -40,7 +41,8 @@ const MenuToggleBtn = styled.div`
   gap: 8px;
 
   > div {
-    border: 2px solid #fff;
+    border: 2px solid ${cssToken.COLOR['gray-500']};
+    background: ${cssToken.COLOR.white};
   }
 
   &:hover span {
@@ -60,10 +62,7 @@ const ArrowFigure = styled.span<NavT>`
   border-right: 5px solid transparent;
 
   &.change_figure {
-    border-top: ${(props) =>
-      props?.ispath === 'mypage'
-        ? `8px solid ${cssToken.COLOR['gray-900']}`
-        : `8px solid ${cssToken.COLOR['gray-300']}`};
+    border-top: ${cssToken.COLOR['gray-900']};
   }
 `;
 
@@ -133,7 +132,7 @@ const Nav = ({
               styles={{
                 size: '2.5rem',
               }}
-              src={userData && userData?.memberImageUrl}
+              src={userData ? userData?.memberImageUrl : notUserImag}
             />
             <ArrowFigure
               className={scrollPosition < 100 ? '' : 'change_figure'}
