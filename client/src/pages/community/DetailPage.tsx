@@ -151,7 +151,14 @@ const DetailPage = () => {
     },
     onError: (err) => {
       const { response } = err as AxiosError;
-      if (response) navigate(`/error/${response.status}`);
+      if (response) {
+        navigate('/error', {
+          state: {
+            status: response.status,
+            errormsg: response.statusText,
+          },
+        });
+      }
     },
   });
   const { userData } = useUserInfo();
@@ -177,7 +184,14 @@ const DetailPage = () => {
 
   if (error) {
     const { response } = error as AxiosError;
-    if (response) navigate(`/error/${response.status}`);
+    if (response) {
+      navigate('/error', {
+        state: {
+          status: response.status,
+          errormsg: response.statusText,
+        },
+      });
+    }
   }
 
   const postInfo = useMemo(() => {

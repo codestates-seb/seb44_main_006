@@ -118,7 +118,14 @@ const UserInfoBox = () => {
     },
     onError: (error) => {
       const { response } = error as AxiosError;
-      if (response) navigator(`/error/${response.status}`);
+      if (response) {
+        navigator('/error', {
+          state: {
+            status: response.status,
+            errormsg: response.statusText,
+          },
+        });
+      }
     },
   });
 
