@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -17,6 +17,8 @@ const MemAccountModal = () => {
   const [searchParams] = useSearchParams();
   const accessToken = searchParams.get('access_token');
   const refreshToken = searchParams.get('refresh_token');
+  const statusText = searchParams.get('status');
+  const messageText = searchParams.get('message');
   const navigate = useNavigate();
   const gotoMain = useMovePage('/');
   const dispatch = useDispatch();
@@ -49,8 +51,6 @@ const MemAccountModal = () => {
     mutation.mutate();
   };
 
-  // TODO: Redux toolkit 이용해 전역으로 유저 정보 관리하기
-  //! 유저 정보 새로고침해야 값을 받을 수 있는 이슈
   useQuery({
     queryKey: ['oauthInfoData'],
     queryFn: () => GetUserInfo(),
@@ -63,16 +63,17 @@ const MemAccountModal = () => {
         if (localStorage.getItem('isLogin')) {
           dispatch(setUserOAuthActions.setIsLogin(true));
         }
+        gotoMain();
       }
     },
     onError: (error) => {
       if (accessToken) {
         const { response } = error as AxiosError;
-        if (response) {
+        if (response && statusText && messageText) {
           navigate('/error', {
             state: {
-              status: response.status,
-              errormsg: response.statusText,
+              status: statusText,
+              errormsg: messageText,
             },
           });
         }
