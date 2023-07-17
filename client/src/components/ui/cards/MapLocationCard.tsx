@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { debounce } from 'lodash';
+import { useEffect, useRef } from 'react';
 
 import { CardCommonBox } from './Card.styled';
 
@@ -110,11 +111,16 @@ const MapLocationCard = ({
   id,
   type,
 }: MapLocationCardInfo) => {
-  const index = indexNum ?? -1;
+  const locationRef = useRef<HTMLDivElement>(null);
   const markerId = useSelector((state: RootState) => state.marker.markerId);
+  const dispatch = useDispatch();
+  const index = indexNum ?? -1;
   const selected = !!(id && id === markerId);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (locationRef.current && selected)
+      dispatch(markerActions.setscroll(locationRef.current.offsetTop));
+  }, [dispatch, selected]);
 
   const handleHighlight = debounce(() => {
     if (id && latlng) {
@@ -132,6 +138,7 @@ const MapLocationCard = ({
         {indexNum}
       </NumCircle>
       <LocationCard
+        ref={locationRef}
         selected={selected}
         onClick={() => {
           handleHighlight();

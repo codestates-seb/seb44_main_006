@@ -6,19 +6,33 @@ function calculateDDay(targetDate: string) {
   return daysDiff;
 }
 
-const formatData = (Days: string) => {
+function getWeekday(dateStr: string) {
+  const date = new Date(dateStr);
+  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+  const weekdayIndex = date.getDay();
+  const weekday = weekdays[weekdayIndex];
+  return weekday;
+}
+
+const formatData = (Days: string, location?: string) => {
   if (Days) {
     console.log(Days);
     console.log(calculateDDay(Days.split(',')[0]));
     const Dday = calculateDDay(Days.split(',')[0]);
-    if (Dday < 0) return `D+${Dday * -1}`;
-    if (Dday === 0) return 'D-day';
-    if (Dday > 100) {
+    if (location) {
+      // 일정 상세페이지인 경우
       const year = Days.slice(2, 4);
       const month = Days.slice(5, 7);
       const day = Days.slice(8, 10);
-      return `${year}.${month}.${day}`;
+
+      const dateStr = Days.slice(0, 10);
+      const weekday = getWeekday(dateStr);
+
+      return `${year}.${month}.${day} ${weekday}`;
     }
+    if (Dday < 0) return `D+${Dday * -1}`;
+    if (Dday === 0) return 'D-day';
+
     return `D-${Dday}`;
   }
   return '';

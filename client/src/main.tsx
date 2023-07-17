@@ -32,14 +32,15 @@ const UserSetting = lazy(() => import('./pages/userSetting/UserSetting'));
 
 const queryClient = new QueryClient();
 
+// Todo 추후 리팩토링 필요함 (component로 정리하기)
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <GlobalStyle />
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
-          <Header />
           <Suspense fallback={<Loading />}>
+            <Header />
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/register" element={<ScheduleRegister />} />
@@ -63,8 +64,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 errorElement={<ErrorPage />}
               />
             </Routes>
+            <Footer />
           </Suspense>
-          <Footer />
           <MoNav />
           <App />
         </Provider>

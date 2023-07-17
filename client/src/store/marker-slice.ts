@@ -7,7 +7,7 @@ const initialState: IdT = {
   markerId: '',
   center: { lat: '', lng: '' },
   scroll: null,
-  prevCenter: { lat: '', lng: '' },
+  firstCourse: { lat: '', lng: '', level: 6 },
 };
 
 const markerSlice = createSlice({
@@ -20,8 +20,6 @@ const markerSlice = createSlice({
         state.scroll = null;
       } else {
         state.markerId = action.payload.markerId;
-        if (state.center.lat && state.center.lng)
-          state.prevCenter = state.center;
         state.center = action.payload.center;
       }
     },
@@ -29,7 +27,7 @@ const markerSlice = createSlice({
       state.scroll = action.payload;
     },
     setInitialCenter(state, action: PayloadAction<ILatLng>) {
-      state.prevCenter = action.payload;
+      state.firstCourse = action.payload;
     },
   },
 });
