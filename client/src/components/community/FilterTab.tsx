@@ -5,7 +5,7 @@ import cssToken from '../../styles/cssToken';
 import Text from '../ui/text/Text';
 
 const FilterDiv = styled.div<{ selected: boolean }>`
-  padding-bottom: 0.5rem;
+  margin: ${cssToken.SPACING['gap-20']};
   border-bottom: 0.375rem solid
     ${(props) => (props.selected ? cssToken.COLOR['point-500'] : 'transparent')};
   cursor: pointer;

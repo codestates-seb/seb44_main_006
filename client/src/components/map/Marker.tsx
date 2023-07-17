@@ -68,14 +68,10 @@ const Marker = ({ lat, lng, id, img, idx, children }: MarkerT) => {
       zIndex,
     });
 
-    const clickMarker = debounce(() => {
+    const setMarkerId = () => {
       dispatch(
         markerActions.selectMarker({ markerId: id, center: { lat, lng } })
       );
-    }, 200);
-
-    const setMarkerId = () => {
-      clickMarker();
     };
 
     kakao.maps.event.addListener(marker, 'click', setMarkerId);

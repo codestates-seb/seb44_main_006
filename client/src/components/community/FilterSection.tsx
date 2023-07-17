@@ -33,22 +33,21 @@ const FilterWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: ${cssToken.SPACING['gap-50']};
-  background-color: ${cssToken.COLOR['gray-300']};
+  padding-top: 0px;
 
   @media screen and (max-width: 768px) {
     padding: ${cssToken.SPACING['gap-20']};
+    padding-top: 0px;
   }
 `;
 const FilterContainer = styled(FlexDiv)`
-  position: absolute;
-  top: -2.8rem;
-  column-gap: ${cssToken.SPACING['gap-50']};
+  margin: ${cssToken.SPACING['gap-20']};
+  column-gap: ${cssToken.SPACING['gap-16']};
   width: ${cssToken.WIDTH['w-full']};
-  border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   justify-content: center;
 
   @media screen and (max-width: 768px) {
-    top: -2.3rem;
+    margin: 0px;
   }
 `;
 

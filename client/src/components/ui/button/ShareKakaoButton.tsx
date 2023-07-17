@@ -18,6 +18,7 @@ const ShareKakaoButton = ({
   }, 200);
   return (
     <ShareBtn
+      className="kakao"
       type="button"
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();

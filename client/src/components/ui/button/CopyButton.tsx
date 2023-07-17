@@ -15,6 +15,7 @@ const CopyButton = ({ endpoint }: { endpoint: string }) => {
   }, 200);
   return (
     <ShareBtn
+      className="copy"
       type="button"
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();

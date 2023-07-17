@@ -8,7 +8,6 @@ import { mgpd } from './commonstyle';
 
 import InfoContainer from '../../components/community/detail/InfoContainer';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
-import Title from '../../components/ui/text/Title';
 import cssToken from '../../styles/cssToken';
 import { FlexDiv, OutsideWrap } from '../../styles/styles';
 import MapContainer from '../../components/community/MapContainer';
@@ -27,14 +26,8 @@ import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
 import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
 import SkeletonUserContainer from '../../components/community/skeleton/SkeletonUserContainer';
-import ActionButtonContainerRes from '../../components/community/detail/ActionButtonContainerRes';
-import CopyButton from '../../components/ui/button/CopyButton';
-import ShareKakaoButton from '../../components/ui/button/ShareKakaoButton';
-import DeleteButton from '../../components/community/DeleteButton';
-import useUserInfo from '../../querys/useUserInfo';
 import notClient from '../../assets/notUserImg.svg';
-import Text from '../../components/ui/text/Text';
-import thousandTok from '../../utils/thousandTok';
+import LocationInfoWrapper from '../../components/community/detail/LocationInfoWrapper';
 
 const DetailOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
@@ -60,38 +53,40 @@ const DetailOutsideWrap = styled(OutsideWrap)`
   }
 `;
 
-const HEADDiv = styled(FlexDiv)`
-  justify-content: space-between;
-
+const ContentInfoDiv = styled(FlexDiv)`
+  align-items: center;
+  column-gap: ${cssToken.SPACING['gap-24']};
   @media screen and (max-width: 768px) {
-    img {
-      width: 3.25rem;
-      height: 3.25rem;
-    }
-    p {
-      font-size: ${cssToken.TEXT_SIZE['text-12']};
-    }
+    column-gap: ${cssToken.SPACING['gap-10']};
   }
 `;
 
-const ResponseDiv = styled(FlexDiv)`
-  justify-content: space-between;
+const MainTextInfoDiv = styled(FlexDiv)`
+  flex-direction: column;
+  row-gap: ${cssToken.SPACING['gap-24']};
+  flex: 1.5;
 `;
 
-const UersDiv = styled(FlexDiv)`
-  align-items: center;
-  column-gap: ${cssToken.SPACING['gap-24']};
-
+const MainDiv = styled(FlexDiv)`
   @media screen and (max-width: 768px) {
-    column-gap: ${cssToken.SPACING['gap-10']};
+    flex-direction: column;
+  }
+`;
 
-    div {
-      width: fit-content;
-      height: fit-content;
-      img {
-        width: 3.3125rem;
-        height: 3.3125rem;
-      }
+const InfoDiv = styled(FlexDiv)`
+  column-gap: ${cssToken.SPACING['gap-10']};
+  width: 100%;
+
+  @media screen and (max-width: 1050px) {
+    .userImg {
+      width: 3.25rem;
+      height: 3.25rem;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .userImg {
+      width: 3rem;
+      height: 3rem;
     }
   }
 `;
@@ -104,25 +99,12 @@ const ContentDiv = styled(FlexDiv)`
 
 const CommentBtn = styled(FlexDiv)`
   justify-content: flex-end;
-
   @media screen and (max-width: 768px) {
     .skyblue {
       width: 100%;
       border-radius: 0px;
       height: 2.0625rem;
     }
-  }
-`;
-
-const SharBtnDiv = styled(FlexDiv)`
-  column-gap: ${cssToken.SPACING['gap-10']};
-  p {
-    display: flex;
-    align-items: flex-start;
-  }
-
-  @media screen and (min-width: 768px) {
-    display: none;
   }
 `;
 
@@ -161,7 +143,6 @@ const DetailPage = () => {
       }
     },
   });
-  const { userData } = useUserInfo();
 
   useEffect(() => {
     scrollToTop();
@@ -222,78 +203,49 @@ const DetailPage = () => {
 
   return (
     <DetailOutsideWrap>
-      <ResponseDiv>
-        <Title styles={{ size: cssToken.TEXT_SIZE['text-40'] }}>
-          나의 코스 자랑하기
-        </Title>
-        {detailData && userData && (
-          <SharBtnDiv>
-            <Text
-              styles={{
-                weight: cssToken.FONT_WEIGHT.medium,
-              }}
-            >
-              조회수 {thousandTok(detailData.courseViewCount)}
-            </Text>
-            <CopyButton endpoint={`community/${detailData.postId}`} />
-            <ShareKakaoButton endpoint={`community/${detailData.postId}`} />
-            {userData && detailData.memberEmail === userData.memberEmail && (
-              <DeleteButton postId={detailData.postId} />
+      <MainDiv>
+        <MainTextInfoDiv>
+          <ContentInfoDiv>
+            {isLoading && <SkeletonUserContainer />}
+            {detailData && userInfo && (
+              <InfoDiv>
+                <UserInfoMy
+                  styles={{ size: '4rem' }}
+                  src={
+                    detailData.memberNickname === '탈퇴한 사용자'
+                      ? notClient
+                      : userInfo.memberImageUrl
+                  }
+                />
+                <InfoContainer
+                  writer={userInfo.memberNickname}
+                  date={userInfo.courseUpdatedAt}
+                  viewCount={detailData.courseViewCount}
+                />
+              </InfoDiv>
             )}
-          </SharBtnDiv>
-        )}
-      </ResponseDiv>
-      <HEADDiv>
-        <UersDiv>
-          {isLoading && <SkeletonUserContainer />}
-          {detailData && userInfo && (
-            <>
-              <UserInfoMy
-                src={
-                  detailData.memberNickname === '탈퇴한 사용자'
-                    ? notClient
-                    : userInfo.memberImageUrl
-                }
-              />
-              <InfoContainer
-                writer={userInfo.memberNickname}
-                date={userInfo.courseUpdatedAt}
-              />
-            </>
-          )}
-        </UersDiv>
-        {detailData && postId && (
-          <>
-            <ActionButtonContainer
-              memberEmail={detailData.memberEmail}
-              bookmarkStatus={detailData.bookmarkStatus}
-              likeStatus={detailData.likeStatus}
-              LikeCount={detailData.courseLikeCount}
-              isLogin={!!isLogin}
-              postId={postId}
-              viewCount={detailData.courseViewCount}
-              courseId={detailData.courseInfo.courseId}
+          </ContentInfoDiv>
+          {postInfo && postInfo.destinationList && (
+            <LocationInfoWrapper
+              title={postInfo.postTitle}
+              destinationList={postInfo.destinationList}
             />
-            {userData && (
-              <ActionButtonContainerRes
-                userData={userData}
-                memberEmail={detailData.memberEmail}
-                bookmarkStatus={detailData.bookmarkStatus}
-                likeStatus={detailData.likeStatus}
-                LikeCount={detailData.courseLikeCount}
-                isLogin={!!isLogin}
-                courseId={detailData.courseInfo.courseId}
-              />
-            )}
-          </>
+          )}
+        </MainTextInfoDiv>
+        {isLoading && <SkeletonMapContainer />}
+        {postInfo.destinationList && (
+          <MapContainer destinationList={postInfo.destinationList} />
         )}
-      </HEADDiv>
-
-      {isLoading && <SkeletonMapContainer />}
-      {detailData && postInfo.destinationList && (
-        <MapContainer
-          destinationList={postInfo.destinationList}
-          title={postInfo.postTitle}
+      </MainDiv>
+      {detailData && postId && (
+        <ActionButtonContainer
+          memberEmail={detailData.memberEmail}
+          bookmarkStatus={detailData.bookmarkStatus}
+          likeStatus={detailData.likeStatus}
+          LikeCount={detailData.courseLikeCount}
+          isLogin={!!isLogin}
+          postId={postId}
+          courseId={detailData.courseInfo.courseId}
         />
       )}
       <ContentDiv>
