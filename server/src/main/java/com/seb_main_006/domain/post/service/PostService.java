@@ -360,7 +360,7 @@ public class PostService {
         Set<Course> searchCourseSet = new HashSet<>();
 
         for (String inputWord : inputWords) {
-            Set<Course> courseSet = courseRepository.searchCourseOrderByUpdatedAt(inputWord);
+            List<Course> courseSet = courseRepository.searchCourseOrderByUpdatedAt(inputWord);
             searchCourseSet.addAll(courseSet);
         }
 
