@@ -27,6 +27,7 @@ import thousandTok from '../../utils/thousandTok';
 
 const FilterWrapper = styled.div`
   width: 100%;
+  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -45,6 +46,10 @@ const FilterContainer = styled(FlexDiv)`
   width: ${cssToken.WIDTH['w-full']};
   border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    top: -2.3rem;
+  }
 `;
 
 const FilterSection = ({

@@ -164,6 +164,9 @@ const ScheduleMapDetail = ({
         },
       })
     );
+    return () => {
+      dispatch(markerActions.reset());
+    };
   }, [destinationList, dispatch]);
 
   usePanMap();
