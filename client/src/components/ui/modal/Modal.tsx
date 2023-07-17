@@ -80,7 +80,7 @@ const ModalContainer = styled.section<IModalContainer>`
       p {
         display: flex;
         justify-content: center;
-        font-size: ${cssToken.TEXT_SIZE['text-32']};
+        font-size: ${cssToken.TEXT_SIZE['text-16']};
         font-weight: ${cssToken.FONT_WEIGHT.medium};
       }
 
@@ -97,10 +97,6 @@ const ModalContainer = styled.section<IModalContainer>`
       }
     }
     @media screen and (max-width: 500px) {
-      p {
-        font-size: ${cssToken.TEXT_SIZE['text-24']};
-      }
-
       button {
         height: 2.1875rem;
       }
