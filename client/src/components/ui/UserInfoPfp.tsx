@@ -31,7 +31,7 @@ export const Img = styled.img`
 
 const UserInfoMy = ({ styles, src }: UserInfo) => {
   return (
-    <UserImgContainer {...styles}>
+    <UserImgContainer className="userImg" {...styles}>
       <Img src={src} alt="userImg" />
     </UserImgContainer>
   );

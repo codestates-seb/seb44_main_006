@@ -9,26 +9,60 @@ import DeleteButton from '../DeleteButton';
 import useUserInfo from '../../../querys/useUserInfo';
 import ShareKakaoButton from '../../ui/button/ShareKakaoButton';
 import CopyButton from '../../ui/button/CopyButton';
-import thousandTok from '../../../utils/thousandTok';
 
 const BtnDiv = styled(FlexDiv)`
+  margin-top: -2.625rem;
   column-gap: ${cssToken.SPACING['gap-12']};
   align-items: center;
-  justify-content: start;
+  justify-content: end;
+
+  > button > svg,
+  > div > button > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .kakao,
+  .copy {
+    width: fit-content;
+    height: fit-content;
+    svg {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
 
   @media screen and (max-width: 768px) {
-    display: none;
+    margin-top: 0;
+
+    > button > svg,
+    > div > button > svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .kakao,
+    .copy {
+      svg {
+        width: 1.4rem;
+        height: 1.4rem;
+      }
+    }
   }
 `;
 
 const LikeDiv = styled(FlexDiv)`
-  height: 70%;
+  height: 3.75rem;
   background-color: ${cssToken.COLOR['gray-300']};
   padding-left: ${cssToken.SPACING['gap-12']};
   padding-right: ${cssToken.SPACING['gap-12']};
   border-radius: ${cssToken.BORDER['rounded-md']};
   align-items: center;
   column-gap: 0.25rem;
+
+  @media screen and (max-width: 768px) {
+    height: 2.1875rem;
+  }
 `;
 
 const ActionButtonContainer = ({
@@ -39,7 +73,6 @@ const ActionButtonContainer = ({
   likeStatus,
   courseId,
   memberEmail,
-  viewCount,
 }: {
   LikeCount: number;
   isLogin: boolean;
@@ -48,19 +81,11 @@ const ActionButtonContainer = ({
   likeStatus: boolean;
   courseId: number;
   memberEmail: string;
-  viewCount: number;
 }) => {
-  const { userData } = useUserInfo();
+  const { userData } = useUserInfo(isLogin);
 
   return (
     <BtnDiv>
-      <Text
-        styles={{
-          weight: cssToken.FONT_WEIGHT.medium,
-        }}
-      >
-        조회수 {thousandTok(viewCount)}
-      </Text>
       <>
         <CopyButton endpoint={`community/${postId}`} />
         <ShareKakaoButton endpoint={`community/${postId}`} />
