@@ -18,8 +18,8 @@ const BtnDiv = styled(FlexDiv)`
 
   > button > svg,
   > div > button > svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
   }
 
   .kakao,
@@ -37,12 +37,15 @@ const BtnDiv = styled(FlexDiv)`
 
     > button > svg,
     > div > button > svg {
-      width: 1rem;
-      height: 1rem;
+      width: 1.2rem;
+      height: 1.2rem;
     }
 
     .kakao,
     .copy {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       svg {
         width: 1.4rem;
         height: 1.4rem;
@@ -62,6 +65,10 @@ const LikeDiv = styled(FlexDiv)`
 
   @media screen and (max-width: 768px) {
     height: 2.1875rem;
+    font-size: ${cssToken.TEXT_SIZE['text-12']};
+    > p {
+      font-size: ${cssToken.TEXT_SIZE['text-12']};
+    }
   }
 `;
 
