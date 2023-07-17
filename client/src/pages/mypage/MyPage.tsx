@@ -30,6 +30,7 @@ const Wrapper = styled(FlexDiv)`
   @media (max-width: 768px) {
     margin-top: 50px;
     padding-top: 0;
+    row-gap: 5.75rem;
   }
 `;
 
