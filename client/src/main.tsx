@@ -38,8 +38,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <GlobalStyle />
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
-          <Header />
           <Suspense fallback={<Loading />}>
+            <Header />
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/register" element={<ScheduleRegister />} />
@@ -63,8 +63,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 errorElement={<ErrorPage />}
               />
             </Routes>
+            <Footer />
           </Suspense>
-          <Footer />
           <MoNav />
           <App />
         </Provider>
