@@ -21,7 +21,6 @@ const useScheduleMutation = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const scheduleMutation = useMutation(checkRegister, {
-    // Todo post 버그 터지면 여기로
     onSuccess: async (data) => {
       const status = data.status.toString()[0];
       if (status !== '2') return;
@@ -31,7 +30,14 @@ const useScheduleMutation = () => {
     },
     onError: (error) => {
       const { response } = error as AxiosError;
-      if (response) navigate(`/error/${response.status}`);
+      if (response) {
+        navigate('/error', {
+          state: {
+            status: response.status,
+            errormsg: response.statusText,
+          },
+        });
+      }
     },
   });
 

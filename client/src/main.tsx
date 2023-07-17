@@ -57,7 +57,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <Route path="/community/:postId" element={<DetailPage />} />
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/setting" element={<UserSetting />} />
-              <Route path="/error/:status" element={<ErrorPage />} />
+              <Route path="/error" element={<ErrorPage />} />
               <Route
                 path="*"
                 element={<ErrorPage />}

@@ -1,9 +1,10 @@
 import { styled } from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import CatContainer from '../../components/ui/error/CatContainer';
 import ErrorBtnContainer from '../../components/ui/error/ErrorBtnContainer';
 import cssToken from '../../styles/cssToken';
+import Text from '../../components/ui/text/Text';
 
 const ErrorWrapper = styled.div`
   width: ${cssToken.WIDTH['w-screen']};
@@ -13,7 +14,7 @@ const ErrorWrapper = styled.div`
   align-items: center;
   justify-content: center;
   background-color: black;
-
+  row-gap: ${cssToken.SPACING['gap-20']};
   @media screen and (max-width: 768px) {
     .errorBtn {
       display: none;
@@ -21,11 +22,24 @@ const ErrorWrapper = styled.div`
   }
 `;
 
+type ResError = {
+  status: number;
+  errormsg: string;
+};
+
 const ErrorPage = () => {
-  const { status } = useParams();
+  const response = useLocation().state as ResError;
   return (
     <ErrorWrapper>
-      <CatContainer status={Number(status)} />
+      <CatContainer status={response.status} />
+      <Text
+        styles={{
+          color: cssToken.COLOR.white,
+          weight: cssToken.FONT_WEIGHT.medium,
+        }}
+      >
+        {response.errormsg}
+      </Text>
       <ErrorBtnContainer />
     </ErrorWrapper>
   );
