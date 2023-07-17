@@ -21,6 +21,7 @@ const FooterContainer = styled.footer<FootreStyle>`
   padding: ${cssToken.SPACING['gap-40']} 0;
 
   @media (max-width: 768px) {
+    display: none;
     margin-bottom: 4.5rem;
     padding: ${cssToken.SPACING['gap-24']} 0;
   }
@@ -37,10 +38,6 @@ const InfoText = styled.ul`
   display: flex;
   gap: 0.3125rem;
   margin-bottom: 10px;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
 
   > li {
     display: flex;
