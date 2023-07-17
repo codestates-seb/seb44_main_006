@@ -42,6 +42,8 @@ const MainLink = styled.button`
     transition: 0.3s;
     position: absolute;
     top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
   }
 
   &:hover::after {
