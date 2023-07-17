@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { FlexDiv } from '../../styles/styles';
@@ -14,7 +14,6 @@ import Text from '../ui/text/Text';
 import MapLocationCard from '../ui/cards/MapLocationCard';
 import { IScheduleListItem } from '../../types/type';
 import makePolyline from '../../utils/makePolyline';
-import { RootState } from '../../store';
 import { markerActions } from '../../store/marker-slice';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
@@ -22,6 +21,8 @@ import useMovePage from '../../hooks/useMovePage';
 import CalenderIcon from '../../assets/CalendarIcon';
 import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
+import usePanMap from '../../hooks/usePanMap';
+import useCourseListScroll from '../../hooks/useCourseListScroll';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 
@@ -136,8 +137,7 @@ const ScheduleMapDetail = ({
   text: string;
   courseDday: string;
 }) => {
-  const newCenter = useSelector((state: RootState) => state.marker.center);
-  const prevCenter = useSelector((state: RootState) => state.marker.prevCenter);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const isLogin = getLoginStatus();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -149,6 +149,13 @@ const ScheduleMapDetail = ({
 
   useEffect(() => {
     dispatch(
+      markerActions.setInitialCenter({
+        lat: destinationList[0].y,
+        lng: destinationList[0].x,
+        level: 6,
+      })
+    );
+    dispatch(
       markerActions.selectMarker({
         markerId: '',
         center: {
@@ -157,13 +164,15 @@ const ScheduleMapDetail = ({
         },
       })
     );
-    dispatch(
-      markerActions.setInitialCenter({
-        lat: destinationList[0].y,
-        lng: destinationList[0].x,
-      })
-    );
   }, [destinationList, dispatch]);
+
+  usePanMap();
+  useCourseListScroll({
+    element: scrollRef.current,
+    clientHeight: scrollRef.current
+      ? scrollRef.current.offsetHeight
+      : undefined,
+  });
 
   return (
     <FlexDiv>
@@ -193,7 +202,7 @@ const ScheduleMapDetail = ({
           >
             {text || ''}
           </Text>
-          <LocationCardWrapper>
+          <LocationCardWrapper ref={scrollRef}>
             {destinationList.map((destination, idx) => (
               <MapLocationCard
                 key={uuidv4()}
@@ -240,16 +249,7 @@ const ScheduleMapDetail = ({
         </FloatButton>
       </FixedDiv>
       <MapDiv>
-        <KakaoMap
-          center={{
-            lat: prevCenter?.lat || destinationList[0].y,
-            lng: prevCenter?.lng || destinationList[0].x,
-            level: 6,
-          }}
-          selected={{ lat: newCenter.lat, lng: newCenter.lng, level: 3 }}
-          width="100%"
-          height="100vh"
-        >
+        <KakaoMap width="100%" height="100vh">
           {destinationList.map((destination, idx) => (
             <Marker
               key={uuidv4()}

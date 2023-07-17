@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { styled } from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { debounce } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Props, TextareaT } from '../../types/type';
 import { mapActions } from '../../store/map-slice';
 import useGeolocation from '../../hooks/useGeolocation';
+import { RootState } from '../../store';
 
 const MapContainer = styled.section<TextareaT>`
   width: ${(props) => props.width || '100vw'};
@@ -16,20 +16,15 @@ type KakaoMapT = {
   width: string;
   height: string;
   children: Props['children'];
-  center?: { lat: string; lng: string; level: number };
-  selected?: { lat: string; lng: string; level: number };
 };
-const KakaoMap = ({
-  center,
-  selected,
-  width,
-  height,
-  children,
-  ...options
-}: KakaoMapT) => {
+
+const KakaoMap = ({ width, height, children, ...options }: KakaoMapT) => {
   const [load, setLoad] = useState(false);
   const dispatch = useDispatch();
   const curLocation = useGeolocation();
+  const firstCourse = useSelector(
+    (state: RootState) => state.marker.firstCourse
+  );
 
   const loadHandler = useCallback(
     (element: HTMLElement) => {
@@ -39,38 +34,20 @@ const KakaoMap = ({
         lat: curLocation.coords?.latitude,
         lng: curLocation.coords?.longitude,
       };
-
-      const { lat, lng } = center ?? currentPosition;
-      const level =
-        selected?.lat && selected?.lng ? selected.level : center?.level;
-
+      const { level, lat, lng } = firstCourse ?? currentPosition;
       const newMap = new kakao.maps.Map(element, {
         level,
         center: new kakao.maps.LatLng(Number(lat), Number(lng)),
         keyboardShortcuts: true,
       });
-
-      const debounceMap = debounce(() => {
-        if (selected && selected?.lat) {
-          const moveLatlng = new kakao.maps.LatLng(
-            Number(selected.lat),
-            Number(selected.lng)
-          );
-          newMap.panTo(moveLatlng);
-        }
-      }, 1000);
-
-      debounceMap();
-
       dispatch(mapActions.setMap(newMap));
       setLoad(true);
     },
     [
       curLocation.coords?.latitude,
       curLocation.coords?.longitude,
-      center,
-      selected,
       dispatch,
+      firstCourse,
     ]
   );
 
