@@ -10,6 +10,7 @@ import store from './store';
 import Header from './components/common/Header';
 import MoNav from './components/common/MoNav';
 import Loading from './components/ui/loading/Loading';
+import Footer from './components/common/Footer';
 
 const Main = lazy(() => import('./pages/Main'));
 const CommunityPage = lazy(() => import('./pages/community/CommunityPage'));
@@ -63,6 +64,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               />
             </Routes>
           </Suspense>
+          <Footer />
           <MoNav />
           <App />
         </Provider>
