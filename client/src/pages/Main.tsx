@@ -135,7 +135,7 @@ const Main = () => {
   const LogintoggleModal = useLoginToggleModal();
 
   const checkScheduleCount = () => {
-    if (userInfo && userInfo.myCourseCount > 30) {
+    if (userInfo && userInfo.myCourseCount >= 30) {
       showToast('warning', `일정은 30개를 초과해서 만드실 수 없습니다!`)();
       return;
     }
