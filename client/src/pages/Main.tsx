@@ -94,6 +94,7 @@ const ScheduleSection = styled(SectionBox)`
 
   > img {
     position: absolute;
+    -webkit-user-drag: none;
     transition: 1s;
   }
 
