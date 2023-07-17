@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { FlexDiv } from '../../styles/styles';
@@ -14,7 +14,6 @@ import Text from '../ui/text/Text';
 import MapLocationCard from '../ui/cards/MapLocationCard';
 import { IScheduleListItem } from '../../types/type';
 import makePolyline from '../../utils/makePolyline';
-import { RootState } from '../../store';
 import { markerActions } from '../../store/marker-slice';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
@@ -22,17 +21,20 @@ import useMovePage from '../../hooks/useMovePage';
 import CalenderIcon from '../../assets/CalendarIcon';
 import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
+import usePanMap from '../../hooks/usePanMap';
+import useCourseListScroll from '../../hooks/useCourseListScroll';
 import getLoginStatus from '../../utils/getLoginStatus';
+import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 
 const ScheduleDiv = styled(FlexDiv)`
   left: 0;
   top: 0;
-  height: 100vh;
-  background: #fff;
-  padding: 15px;
+  height: ${cssToken.HEIGHT['h-screen']};
+  background: ${cssToken.COLOR.black};
+  padding: ${cssToken.SPACING['gap-16']};
   overflow: auto;
   flex-direction: column;
-  gap: 1rem;
+  gap: ${cssToken.SPACING['gap-16']};
   flex: 0 0 25rem;
 
   @media (max-width: 768px) {
@@ -41,7 +43,7 @@ const ScheduleDiv = styled(FlexDiv)`
 `;
 
 const MapDiv = styled.div`
-  width: 100%;
+  width: ${cssToken.WIDTH['w-full']};
 `;
 
 const LocationCardWrapper = styled.div`
@@ -56,18 +58,24 @@ const Btnbox = styled.div`
     display: none;
 
     .gray {
-      width: 100%;
+      width: ${cssToken.WIDTH['w-full']};
     }
     .skyblue {
-      width: 100%;
+      width: ${cssToken.WIDTH['w-full']};
     }
   }
 `;
 
 const TopWrap = styled(FlexDiv)`
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  flex-direction: column-reverse;
+  gap: ${cssToken.SPACING['gap-10']};
 
+  > h1 {
+    flex: 2;
+    gap: 0.3125rem;
+  }
   @media (max-width: 768px) {
     h1 {
       font-size: 1.2rem;
@@ -78,10 +86,11 @@ const TopWrap = styled(FlexDiv)`
 const DataInfoText = styled(FlexDiv)`
   font-size: 0.8125rem;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  width: ${cssToken.WIDTH['w-full']};
   gap: 0.1875rem;
   > svg {
-    width: 14px;
+    width: 0.875rem;
   }
 `;
 
@@ -128,17 +137,24 @@ const ScheduleMapDetail = ({
   text: string;
   courseDday: string;
 }) => {
-  const newCenter = useSelector((state: RootState) => state.marker.center);
-  const prevCenter = useSelector((state: RootState) => state.marker.prevCenter);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const isLogin = getLoginStatus();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocationEndpoint();
   const gotoMain = useMovePage('/');
   const gotoBack = () => {
     navigate(-1);
   };
 
   useEffect(() => {
+    dispatch(
+      markerActions.setInitialCenter({
+        lat: destinationList[0].y,
+        lng: destinationList[0].x,
+        level: 6,
+      })
+    );
     dispatch(
       markerActions.selectMarker({
         markerId: '',
@@ -148,13 +164,15 @@ const ScheduleMapDetail = ({
         },
       })
     );
-    dispatch(
-      markerActions.setInitialCenter({
-        lat: destinationList[0].y,
-        lng: destinationList[0].x,
-      })
-    );
   }, [destinationList, dispatch]);
+
+  usePanMap();
+  useCourseListScroll({
+    element: scrollRef.current,
+    clientHeight: scrollRef.current
+      ? scrollRef.current.offsetHeight
+      : undefined,
+  });
 
   return (
     <FlexDiv>
@@ -172,7 +190,7 @@ const ScheduleMapDetail = ({
 
             <DataInfoText>
               <CalenderIcon />
-              {formatData(courseDday)}
+              {formatData(courseDday, location)}
             </DataInfoText>
           </TopWrap>
           <Text
@@ -184,7 +202,7 @@ const ScheduleMapDetail = ({
           >
             {text || ''}
           </Text>
-          <LocationCardWrapper>
+          <LocationCardWrapper ref={scrollRef}>
             {destinationList.map((destination, idx) => (
               <MapLocationCard
                 key={uuidv4()}
@@ -231,16 +249,7 @@ const ScheduleMapDetail = ({
         </FloatButton>
       </FixedDiv>
       <MapDiv>
-        <KakaoMap
-          center={{
-            lat: prevCenter?.lat || destinationList[0].y,
-            lng: prevCenter?.lng || destinationList[0].x,
-            level: 6,
-          }}
-          selected={{ lat: newCenter.lat, lng: newCenter.lng, level: 3 }}
-          width="100%"
-          height="100vh"
-        >
+        <KakaoMap width="100%" height="100vh">
           {destinationList.map((destination, idx) => (
             <Marker
               key={uuidv4()}

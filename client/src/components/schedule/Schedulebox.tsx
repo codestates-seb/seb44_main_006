@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import ScheduleListBox from './ScheduleListBox';
 import DirectSearch from './DirectSearch';
@@ -11,7 +11,7 @@ import SubTitle from '../ui/text/SubTitle';
 import Text from '../ui/text/Text';
 import GrayButton from '../ui/button/GrayButton';
 import { placeListActions } from '../../store/placeList-slice';
-import { RootState } from '../../store';
+import useCourseListScroll from '../../hooks/useCourseListScroll';
 
 const ScheduleContainer = styled.section`
   left: 0;
@@ -65,7 +65,6 @@ const ScheduleTitle = styled.div`
 `;
 
 const ScheduleBox = ({ ismodify }: { ismodify: string }) => {
-  const scroll = useSelector((state: RootState) => state.marker.scroll);
   const scrollRef = useRef<HTMLElement>(null);
   const [choiceCategory, setChoiceCategory] = useState(true);
   const [choiceDirect, setChoiceDirect] = useState(false);
@@ -85,16 +84,7 @@ const ScheduleBox = ({ ismodify }: { ismodify: string }) => {
     dispatch(placeListActions.setIsEmpty(false));
   };
 
-  useEffect(() => {
-    if (scroll && scrollRef.current) {
-      const moveScroll = document.body.clientHeight / 2;
-      scrollRef.current.scrollTo({
-        top: scroll - moveScroll,
-        left: 0,
-        behavior: 'smooth',
-      });
-    }
-  }, [scroll]);
+  useCourseListScroll({ element: scrollRef.current });
 
   return (
     <ScheduleContainer ref={scrollRef} className="scheduleBox">

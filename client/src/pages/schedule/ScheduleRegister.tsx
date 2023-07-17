@@ -19,6 +19,7 @@ import { placeListActions } from '../../store/placeList-slice';
 import BottomSheet from '../../components/ui/bottomsheet/BottomSheet';
 import { selectedIdActions } from '../../store/selectedId-slice';
 import useValidEnter from '../../hooks/useValidEnter';
+import panTo from '../../utils/panTo';
 import useModifyCheck from '../../hooks/useModifyCheck';
 import { GetCourse } from '../../apis/api';
 import { PostReadT } from '../../types/apitype';
@@ -76,7 +77,8 @@ const ScheduleRegister = () => {
   const isSave = useSelector((state: RootState) => state.overlay.isOpen);
   const places = useSelector((state: RootState) => state.placeList.list);
   const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
-
+  const newCenter = useSelector((state: RootState) => state.marker.center);
+  const map = useSelector((state: RootState) => state.map.map);
   const scheduleList = useSelector(
     (state: RootState) => state.scheduleList.list
   );
@@ -111,6 +113,12 @@ const ScheduleRegister = () => {
   }, [checkValidEnter]);
 
   useEffect(() => {
+    if (map && newCenter.lat && newCenter.lng) {
+      panTo({ map, newCenter });
+    }
+  }, [map, newCenter]);
+
+  useEffect(() => {
     if (isEmpty) dispatch(placeListActions.resetList());
     dispatch(selectedIdActions.allReset());
   }, [dispatch, isEmpty]);
@@ -126,7 +134,6 @@ const ScheduleRegister = () => {
         <ScheduleBox ismodify={isModify} />
         {isDetailShow && <RegisterDetail detailItem={detailItem} />}
       </BottomSheet>
-
       <Suspense>
         <KakaoMap
           width={cssToken.WIDTH['w-screen']}
