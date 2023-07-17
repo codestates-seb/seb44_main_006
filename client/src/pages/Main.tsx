@@ -1,20 +1,15 @@
 import { styled } from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
+import { useSelector } from 'react-redux';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
 import useLoginToggleModal from '../hooks/useLoginToggleModal';
-import { GetUserInfo } from '../apis/api';
-import { PostReadT, UserInfoT } from '../types/apitype';
 import showToast from '../utils/showToast';
 import useMovePage from '../hooks/useMovePage';
-import { setUserOAuthActions } from '../store/userAuth-slice';
 import useUserInfo from '../querys/useUserInfo';
 
 const MainContainer = styled.main`

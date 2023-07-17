@@ -154,10 +154,7 @@ const PostCommunitypage = () => {
         <GapDiv>
           {isLoading && <SkeletonMapContainer />}
           {courses && (
-            <MapContainer
-              title={courses.courseData.courseTitle}
-              destinationList={courses.destinationList}
-            />
+            <MapContainer destinationList={courses.destinationList} />
           )}
         </GapDiv>
 

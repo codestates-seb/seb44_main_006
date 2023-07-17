@@ -14,7 +14,7 @@ import ModalChildren from '../../components/community/post/ModalChildren';
 import useMovePage from '../../hooks/useMovePage';
 import useToggleModal from '../../hooks/useToggleModal';
 import { setUserOAuthActions } from '../../store/userAuth-slice';
-import { setThemeModeActions } from '../../store/thememode-slice';
+// import { setThemeModeActions } from '../../store/thememode-slice';
 import LightIcon from '../../assets/LightIcon';
 import DarkIcon from '../../assets/DarkIcon';
 import CloseButton from '../../components/ui/button/CloseButton';
@@ -54,7 +54,7 @@ const ImgBox = styled.div`
   align-items: center;
   gap: ${cssToken.SPACING['gap-20']};
 
-  > button{
+  > button {
     background: #d3d3d3;
   }
   @media (max-width: 768px) {
@@ -176,10 +176,10 @@ const UserSetting = () => {
     mutation.mutate();
   };
 
-  const handleTheme = (theme: string) => {
-    dispatch(setThemeModeActions.setThemeMode(theme));
-    showToast('default', '서비스 준비중!')();
-  };
+  // const handleTheme = (theme: string) => {
+  //   dispatch(setThemeModeActions.setThemeMode(theme));
+  //   showToast('default', '서비스 준비중!')();
+  // };
 
   const handlePreparing = () => {
     showToast('default', '서비스 준비중!')();

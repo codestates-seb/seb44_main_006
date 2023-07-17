@@ -2,7 +2,6 @@ import { useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-import { ScriptElementKind } from 'typescript';
 
 import useKeywordSearch from '../../hooks/useKeywordSearch';
 import { Pagination, PlacesSearchResultItem } from '../../types/type';

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { LoginState } from '../../store/userAuth-slice';
 import cssToken from '../../styles/cssToken';
 import WhiteButton from '../ui/button/WhiteButton';
-import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
@@ -62,9 +61,9 @@ const ArrowFigure = styled.span<NavT>`
 
   &.change_figure {
     border-top: ${(props) =>
-    props?.ispath === 'mypage'
-      ? `8px solid ${cssToken.COLOR['gray-900']}`
-      : `8px solid ${cssToken.COLOR['gray-300']}`};
+      props?.ispath === 'mypage'
+        ? `8px solid ${cssToken.COLOR['gray-900']}`
+        : `8px solid ${cssToken.COLOR['gray-300']}`};
   }
 `;
 
@@ -116,7 +115,6 @@ const Nav = ({
   const gotoCommunity = useMovePage('/community');
   const gotoMypage = useMovePage('/mypage');
   const gotoSetting = useMovePage('/setting');
-  const gotoRegister = useMovePage('/register');
   const LogintoggleModal = useLoginToggleModal();
   const LogoutoggleModal = useLogioutoggleModal();
   const { userData } = useUserInfo(!!isLoggedIn);
@@ -137,7 +135,10 @@ const Nav = ({
               }}
               src={userData && userData?.memberImageUrl}
             />
-            <ArrowFigure className={scrollPosition < 100 ? '' : 'change_figure'} ispath={ispath} />
+            <ArrowFigure
+              className={scrollPosition < 100 ? '' : 'change_figure'}
+              ispath={ispath}
+            />
           </MenuToggleBtn>
           {isMenuToggle && (
             <MenuUl onMouseLeave={handleMenuToggle}>
