@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { FlexDiv } from '../../styles/styles';
@@ -22,6 +22,7 @@ import CalenderIcon from '../../assets/CalendarIcon';
 import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
 import usePanMap from '../../hooks/usePanMap';
+import useCourseListScroll from '../../hooks/useCourseListScroll';
 
 const ScheduleDiv = styled(FlexDiv)`
   left: 0;
@@ -127,6 +128,7 @@ const ScheduleMapDetail = ({
   text: string;
   courseDday: string;
 }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const gotoMain = useMovePage('/');
@@ -154,6 +156,12 @@ const ScheduleMapDetail = ({
   }, [destinationList, dispatch]);
 
   usePanMap();
+  useCourseListScroll({
+    element: scrollRef.current,
+    clientHeight: scrollRef.current
+      ? scrollRef.current.offsetHeight
+      : undefined,
+  });
 
   return (
     <FlexDiv>
@@ -183,7 +191,7 @@ const ScheduleMapDetail = ({
           >
             {text || ''}
           </Text>
-          <LocationCardWrapper>
+          <LocationCardWrapper ref={scrollRef}>
             {destinationList.map((destination, idx) => (
               <MapLocationCard
                 key={uuidv4()}

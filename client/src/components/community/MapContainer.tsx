@@ -1,9 +1,7 @@
 import { styled } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { memo, useEffect } from 'react';
-
-import SkeletonMapContainer from './skeleton/SkeletonMapContainer';
+import { memo, useEffect, useRef } from 'react';
 
 import { FlexDiv } from '../../styles/styles';
 import KakaoMap from '../map/KakaoMap';
@@ -14,9 +12,9 @@ import Title from '../ui/text/Title';
 import MapLocationCard from '../ui/cards/MapLocationCard';
 import { IScheduleListItem } from '../../types/type';
 import makePolyline from '../../utils/makePolyline';
-import { RootState } from '../../store';
 import { markerActions } from '../../store/marker-slice';
 import usePanMap from '../../hooks/usePanMap';
+import useCourseListScroll from '../../hooks/useCourseListScroll';
 
 const OutsideWrapper = styled(FlexDiv)`
   @media screen and (max-width: 768px) {
@@ -60,6 +58,7 @@ const MapContainer = ({
   destinationList: IScheduleListItem[];
   title: string;
 }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -82,6 +81,12 @@ const MapContainer = ({
   }, [destinationList, dispatch]);
 
   usePanMap();
+  useCourseListScroll({
+    element: scrollRef.current,
+    clientHeight: scrollRef.current
+      ? scrollRef.current.offsetHeight
+      : undefined,
+  });
 
   return (
     <OutsideWrapper>
@@ -89,7 +94,7 @@ const MapContainer = ({
         <Title styles={{ size: cssToken.TEXT_SIZE['text-24'] }}>
           {title || ''}
         </Title>
-        <LocationCardWrapper>
+        <LocationCardWrapper ref={scrollRef}>
           {destinationList.map((destination, idx) => (
             <MapLocationCard
               key={uuidv4()}
