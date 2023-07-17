@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
 import { mgpd } from './commonstyle';
@@ -20,6 +20,7 @@ import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 import scrollToTop from '../../utils/scrollToTop';
 import SkeletonCardContainer from '../../components/community/skeleton/SkeletonCardContainer';
 import useValidEnter from '../../hooks/useValidEnter';
+import thousandTok from '../../utils/thousandTok';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -81,10 +82,13 @@ const SelectCardWrapper = styled(CardWrapper)`
 `;
 
 const SelectSchedulePage = () => {
+  const prevPage = useLocation().state as string;
   const checkValidEnter = useValidEnter();
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
   const navigate = useNavigate();
-  const gotoBack = useMovePage('/community');
+  const gotoBack = useMovePage(
+    prevPage === 'mypage' ? '/mypage' : '/community'
+  );
   const gotoNext = useMovePage('/community/post', selectId);
   const gotoRegister = useMovePage('/register');
   const {
@@ -145,7 +149,7 @@ const SelectSchedulePage = () => {
                   key={course.courseId}
                   title={course.courseTitle}
                   text={course.courseContent}
-                  likeCount={course.courseLikeCount}
+                  likeCount={thousandTok(course.courseLikeCount)}
                   userName={course.memberNickname}
                   thumbnail={course.courseThumbnail}
                   courseId={course.courseId}

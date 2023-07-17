@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
+import cssToken from '../../styles/cssToken';
 import { FlexDiv } from '../../styles/styles';
 import { GetMyList } from '../../apis/api';
 import UserInfoBox from '../../components/mypage/UserInfoBox';
@@ -13,6 +14,11 @@ import { myInfoDataListActions } from '../../store/myInfoDataList-slice';
 import { RootState } from '../../store';
 import { MypSummaryT } from '../../types/apitype';
 import useValidEnter from '../../hooks/useValidEnter';
+import getLoginStatus from '../../utils/getLoginStatus';
+import useMovePage from '../../hooks/useMovePage';
+import CircleButton from '../../components/ui/button/CircleButton';
+import Pen from '../../assets/Pen';
+import scrollToTop from '../../utils/scrollToTop';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -23,10 +29,27 @@ const Wrapper = styled(FlexDiv)`
   row-gap: 7.75rem;
 `;
 
+const Div = styled.div`
+  margin-bottom: 0.25rem;
+`;
+
+const FixedDiv = styled.div`
+  position: fixed;
+  right: ${cssToken.SPACING['gap-40']};
+  bottom: ${cssToken.SPACING['gap-40']};
+
+  @media screen and (max-width: 768px) {
+    right: 1rem;
+    bottom: 5.5rem;
+  }
+`;
+
 const MyPage = () => {
   const checkValidEnter = useValidEnter();
   const dispatch = useDispatch();
+  const goToSelect = useMovePage('/community/select', 'mypage');
   const { selectTab, setTab } = useHandleTab();
+  const isLogin = getLoginStatus();
   useQuery({
     queryKey: ['mypage'],
     queryFn: () => GetMyList(),
@@ -44,6 +67,7 @@ const MyPage = () => {
 
   useEffect(() => {
     checkValidEnter();
+    scrollToTop();
   }, [checkValidEnter]);
 
   const memberCourseList = useSelector(
@@ -74,6 +98,16 @@ const MyPage = () => {
           onClick={setTab}
         />
       </FilterSection>
+      {isLogin && (
+        <FixedDiv onClick={goToSelect}>
+          <CircleButton width="117px" height="117px">
+            <Div>
+              <Pen style={{ iconWidth: 28, iconHeight: 28, color: 'black' }} />
+            </Div>
+            <div>자랑하기</div>
+          </CircleButton>
+        </FixedDiv>
+      )}
     </Wrapper>
   );
 };

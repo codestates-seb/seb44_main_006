@@ -8,6 +8,12 @@ const FilterDiv = styled.div<{ selected: boolean }>`
   border-bottom: 0.375rem solid
     ${(props) => (props.selected ? cssToken.COLOR['point-500'] : 'transparent')};
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    > p {
+      font-size: 1.125rem;
+    }
+  }
 `;
 const FilterTab = ({
   selectTab,

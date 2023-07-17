@@ -32,6 +32,9 @@ import CopyButton from '../../components/ui/button/CopyButton';
 import ShareKakaoButton from '../../components/ui/button/ShareKakaoButton';
 import DeleteButton from '../../components/community/DeleteButton';
 import useUserInfo from '../../querys/useUserInfo';
+import notClient from '../../assets/notUserImg.svg';
+import Text from '../../components/ui/text/Text';
+import thousandTok from '../../utils/thousandTok';
 
 const DetailOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
@@ -113,6 +116,11 @@ const CommentBtn = styled(FlexDiv)`
 
 const SharBtnDiv = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-10']};
+  p {
+    display: flex;
+    align-items: flex-start;
+  }
+
   @media screen and (min-width: 768px) {
     display: none;
   }
@@ -206,6 +214,13 @@ const DetailPage = () => {
         </Title>
         {detailData && userData && (
           <SharBtnDiv>
+            <Text
+              styles={{
+                weight: cssToken.FONT_WEIGHT.medium,
+              }}
+            >
+              조회수 {thousandTok(detailData.courseViewCount)}
+            </Text>
             <CopyButton endpoint={`community/${detailData.postId}`} />
             <ShareKakaoButton endpoint={`community/${detailData.postId}`} />
             {userData && detailData.memberEmail === userData.memberEmail && (
@@ -219,7 +234,13 @@ const DetailPage = () => {
           {isLoading && <SkeletonUserContainer />}
           {detailData && userInfo && (
             <>
-              <UserInfoMy src={userInfo.memberImageUrl} />
+              <UserInfoMy
+                src={
+                  detailData.memberNickname === '탈퇴한 사용자'
+                    ? notClient
+                    : userInfo.memberImageUrl
+                }
+              />
               <InfoContainer
                 writer={userInfo.memberNickname}
                 date={userInfo.courseUpdatedAt}
@@ -236,6 +257,7 @@ const DetailPage = () => {
               LikeCount={detailData.courseLikeCount}
               isLogin={!!isLogin}
               postId={postId}
+              viewCount={detailData.courseViewCount}
               courseId={detailData.courseInfo.courseId}
             />
             {userData && (
@@ -253,7 +275,6 @@ const DetailPage = () => {
         )}
       </HEADDiv>
 
-      {/* //Todo Suspense로 아예 페이지 거는게 나을듯 ? */}
       {isLoading && <SkeletonMapContainer />}
       {detailData && postInfo.destinationList && (
         <MapContainer

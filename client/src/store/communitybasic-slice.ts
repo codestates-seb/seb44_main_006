@@ -36,6 +36,7 @@ const communityBasicSlice = createSlice({
   reducers: {
     setData(state, action: PayloadAction<InfiniteScrollT[]>) {
       state.communityList = action.payload;
+      // 기존 state.communityList 와 비교해서 달라진 일부 배열만 리덕스 샬롯 이퀄
     },
   },
 });

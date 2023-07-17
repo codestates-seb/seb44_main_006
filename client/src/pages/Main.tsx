@@ -1,7 +1,8 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
@@ -15,6 +16,7 @@ const MainContainer = styled.main`
   flex-direction: column-reverse;
   @media (min-width: 768px) {
     flex-direction: row;
+    cursor: default;
   }
 `;
 
@@ -41,10 +43,12 @@ const MainLink = styled(Link)`
   }
   @media (min-width: 768px) {
     font-size: 50px;
+    cursor: default;
   }
 
   @media (min-width: 1280px) {
     font-size: 70px;
+    cursor: default;
   }
 `;
 
@@ -81,10 +85,26 @@ const ScheduleSection = styled(SectionBox)`
 `;
 
 const Main = () => {
+  const queryClient = useQueryClient();
   const [isHovered, setIsHovered] = useState<boolean>(true);
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
 
   const LogintoggleModal = useLoginToggleModal();
+
+  useEffect(() => {
+    const getUserData = async () => {
+      await queryClient.invalidateQueries(['user']);
+    };
+    if (isLoggedIn) {
+      getUserData()
+        .then(() => {
+          console.log('유저정보 가져오기 성공');
+        })
+        .catch(() => {
+          console.log('유저정보가져오기 실패');
+        });
+    }
+  }, [isLoggedIn, queryClient]);
 
   const handleMouseEnter = () => {
     setIsHovered((prev) => !prev);

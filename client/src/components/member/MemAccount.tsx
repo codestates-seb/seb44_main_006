@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { UserQAuthInfo, setUserOAuthActions } from '../../store/userAuth-slice';
@@ -20,7 +20,7 @@ const MemAccountModal = () => {
   const navigate = useNavigate();
   const gotoMain = useMovePage('/');
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
+
   const LogintoggleModal = useLoginToggleModal();
   const LogoutoggleModal = useLogioutoggleModal();
 
@@ -55,26 +55,15 @@ const MemAccountModal = () => {
     queryKey: ['oauthInfoData'],
     queryFn: () => GetUserInfo(),
     onSuccess: (data) => {
-      const handleSuccess = async () => {
-        dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
-        if (accessToken && refreshToken) {
-          localStorage.setItem('accessToken', `Bearer ${accessToken}`);
-          localStorage.setItem('refreshToken', `${refreshToken}`);
-          localStorage.setItem('isLogin', JSON.stringify(true));
-          if (localStorage.getItem('isLogin')) {
-            dispatch(setUserOAuthActions.setIsLogin(true));
-          }
-          gotoMain();
+      dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
+      if (accessToken && refreshToken) {
+        localStorage.setItem('accessToken', `Bearer ${accessToken}`);
+        localStorage.setItem('refreshToken', `${refreshToken}`);
+        localStorage.setItem('isLogin', JSON.stringify(true));
+        if (localStorage.getItem('isLogin')) {
+          dispatch(setUserOAuthActions.setIsLogin(true));
         }
-        await queryClient.invalidateQueries(['oauthInfoData']);
-      };
-
-      handleSuccess().catch((error) => {
-        if (accessToken) {
-          const { response } = error as AxiosError;
-          if (response) navigate(`/error/${response.status}`);
-        }
-      });
+      }
     },
     onError: (error) => {
       if (accessToken) {
@@ -100,6 +89,7 @@ const MemAccountModal = () => {
 
       {LogoutmodalIsOpen && (
         <Modal
+          className={['modal', 'modalContainer']}
           styles={{
             width: '47.0625rem',
             height: '28.375rem',

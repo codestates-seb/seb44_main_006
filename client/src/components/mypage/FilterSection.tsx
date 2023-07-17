@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 
+import SkeletonCardContainer from '../community/skeleton/SkeletonCardContainer';
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
@@ -15,6 +16,7 @@ import Text from '../ui/text/Text';
 import useUserInfo from '../../querys/useUserInfo';
 import DeleteButton from '../community/DeleteButton';
 import formatData from '../../utils/sliceData';
+import thousandTok from '../../utils/thousandTok';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -23,11 +25,16 @@ const FilterWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: ${cssToken.SPACING['gap-50']};
+  background-color: ${cssToken.COLOR['gray-300']};
+
+  @media screen and (max-width: 768px) {
+    padding: ${cssToken.SPACING['gap-20']};
+  }
 `;
 
 const FilterContainer = styled(FlexDiv)`
   position: absolute;
-  top: -2.9375rem;
+  top: -2.8rem;
   column-gap: ${cssToken.SPACING['gap-50']};
   width: ${cssToken.WIDTH['w-full']};
   border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
@@ -80,7 +87,7 @@ const FilterSection = ({
           등록된{' '}
           {userData &&
             (selectTab === 'First'
-              ? `일정이 ${userData.myCourseCount}`
+              ? `일정이 (${userData.myCourseCount}/30)`
               : ` 즐겨찾기가 ${userData.myBookmarkCount}`)}
           개 있습니다.
         </Text>
@@ -96,50 +103,62 @@ const FilterSection = ({
 
       <CardWrapper>
         {memberCourseList && selectTab === 'First'
-          ? memberCourseList?.map((post: MypCourseSummaryT) => (
-              <ContensCard
-                key={post.courseId}
-                type="course"
-                title={post.courseTitle}
-                likeCount={post.courseLikeCount}
-                userName={post.memberNickname}
-                thumbnail={post.courseThumbnail}
-                onClick={moveToRegisterDetail}
-                courseId={post.courseId}
-                date={formatData(String(post?.courseDday))}
-              >
-                <DeleteButton type="mypage" postId={String(post.courseId)} />
-                <CopyButton
-                  endpoint={`register/detail/${String(post.courseId)}`}
-                />
-                <ShareKakaoButton
-                  endpoint={`register/detail/${String(post.courseId)}`}
-                />
-              </ContensCard>
-            ))
-          : memberBookmarkedList?.map((post: MyBookMarkSummaryT) => (
-              <ContensCard
-                key={post.courseId}
-                type="post"
-                title={post.courseTitle}
-                text={post.postContent}
-                likeCount={post.courseLikeCount}
-                tag={post.tags}
-                userName={post.memberNickname}
-                thumbnail={post.courseThumbnail}
-                onClick={moveToDetail}
-                courseId={post.courseId}
-                bookmarkStatus
-                postId={post.postId}
-                likeStatus={post.likeStatus}
-                date={manufactureDate(post?.courseUpdatedAt)}
-              >
-                <CopyButton endpoint={`community/${String(post.postId)}`} />
-                <ShareKakaoButton
-                  endpoint={`community/${String(post.postId)}`}
-                />
-              </ContensCard>
-            ))}
+          ? memberCourseList?.map((post: MypCourseSummaryT) => {
+              if (post.courseId !== -1)
+                return (
+                  <ContensCard
+                    key={post.courseId}
+                    type="course"
+                    title={post.courseTitle}
+                    text={post.courseContent}
+                    likeCount={thousandTok(post.courseLikeCount)}
+                    userName={post.memberNickname}
+                    thumbnail={post.courseThumbnail}
+                    onClick={moveToRegisterDetail}
+                    courseId={post.courseId}
+                    date={`${formatData(String(post?.courseDday))}`}
+                  >
+                    <DeleteButton
+                      type="mypage"
+                      postId={String(post.courseId)}
+                    />
+                    <CopyButton
+                      endpoint={`register/detail/${String(post.courseId)}`}
+                    />
+                    <ShareKakaoButton
+                      endpoint={`register/detail/${String(post.courseId)}`}
+                    />
+                  </ContensCard>
+                );
+              return <SkeletonCardContainer length={6} />;
+            })
+          : memberBookmarkedList?.map((post: MyBookMarkSummaryT) => {
+              if (post.courseId !== -1)
+                return (
+                  <ContensCard
+                    key={post.courseId}
+                    type="post"
+                    title={post.courseTitle}
+                    text={post.postContent}
+                    likeCount={thousandTok(post.courseLikeCount)}
+                    tag={post.tags}
+                    userName={post.memberNickname}
+                    thumbnail={post.courseThumbnail}
+                    onClick={moveToDetail}
+                    courseId={post.courseId}
+                    bookmarkStatus
+                    postId={post.postId}
+                    likeStatus={post.likeStatus}
+                    date={manufactureDate(post?.courseUpdatedAt)}
+                  >
+                    <CopyButton endpoint={`community/${String(post.postId)}`} />
+                    <ShareKakaoButton
+                      endpoint={`community/${String(post.postId)}`}
+                    />
+                  </ContensCard>
+                );
+              return <SkeletonCardContainer length={6} />;
+            })}
       </CardWrapper>
       <div ref={ref} />
     </FilterWrapper>

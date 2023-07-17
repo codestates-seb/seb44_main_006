@@ -10,6 +10,7 @@ import { DeleteCommunityPost, DeleteMyPageCourses } from '../../apis/api';
 import useMovePage from '../../hooks/useMovePage';
 import EventButton from '../ui/button/EventButton';
 import Trash from '../../assets/Trash';
+import showToast from '../../utils/showToast';
 
 const DeleteButton = ({
   type,
@@ -26,6 +27,7 @@ const DeleteButton = ({
   const query = type ? DeleteMyPageCourses : DeleteCommunityPost;
   const mutate = useMutation(query, {
     onSuccess: async () => {
+      showToast('success', '삭제 완료!')();
       toggleModal();
       await queryClient.invalidateQueries(['community']);
       await queryClient.invalidateQueries(['mypage']);
@@ -48,6 +50,7 @@ const DeleteButton = ({
       </EventButton>
       {modalIsOpen && (
         <Modal
+          className={['modal', 'modalContainer']}
           backdropCallback={(e: React.MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
             toggleModal();

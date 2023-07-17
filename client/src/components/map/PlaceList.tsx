@@ -1,16 +1,18 @@
 import { useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 import useKeywordSearch from '../../hooks/useKeywordSearch';
 import { Pagination, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
 import LocationCard from '../ui/cards/LocationCard';
 import cssToken from '../../styles/cssToken';
-import { showDetailActions } from '../../store/showDetail-slice';
 import useGeolocation from '../../hooks/useGeolocation';
 import Noresult from '../ui/Noresult';
 import { markerActions } from '../../store/marker-slice';
+import { scheduleListActions } from '../../store/scheduleList-slice';
+import showToast from '../../utils/showToast';
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,6 +38,9 @@ const PlaceList = ({
   const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
   const schedule = useSelector(
     (state: RootState) => state.scheduleList.lastItem
+  );
+  const scheduleList = useSelector(
+    (state: RootState) => state.scheduleList.list
   );
 
   const paginationRef = useRef<HTMLDivElement>(null);
@@ -84,14 +89,30 @@ const PlaceList = ({
   );
 
   const handleClick = (item: PlacesSearchResultItem, id: string) => {
-    dispatch(showDetailActions.setIsShow(true));
-    dispatch(showDetailActions.setItem(item));
-    dispatch(
-      markerActions.selectMarker({
-        markerId: id,
-        center: { lat: item.y, lng: item.x },
-      })
-    );
+    const placeId = uuidv4();
+    if (scheduleList.length < 10) {
+      dispatch(
+        scheduleListActions.addList({
+          placeName: item.place_name,
+          placeUrl: item.place_url,
+          roadAddressName: item.road_address_name,
+          id: placeId,
+          phone: item.phone,
+          categoryGroupCode: item.category_group_code,
+          categoryGroupName: item.category_group_name,
+          x: item.x,
+          y: item.y,
+        })
+      );
+      dispatch(
+        markerActions.selectMarker({
+          markerId: id,
+          center: { lat: item.y, lng: item.x },
+        })
+      );
+    } else {
+      showToast('error', '일정은 10개까지 등록 가능합니다!')();
+    }
   };
 
   return isEmpty ? (
@@ -109,7 +130,10 @@ const PlaceList = ({
             }
             address={item.road_address_name}
             phone={item.phone}
+            place_url={item.place_url}
             onClick={() => handleClick(item, item.id)}
+            x={item.x}
+            y={item.y}
           />
         );
       })}

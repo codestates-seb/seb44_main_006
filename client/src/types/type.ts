@@ -59,6 +59,7 @@ export interface IEventButtonStyle extends IButtonStyle {
 }
 
 export type LikeBookMarkButtonT = IEventButtonStyle & {
+  status?: 'add' | 'del';
   courseId: number;
   className?: string;
 };
@@ -138,7 +139,7 @@ export interface ContCardInfo {
   userName?: string;
   title?: string;
   text?: string;
-  likeCount?: number;
+  likeCount: number | string;
   thumbnail?: string;
   tag?: string[];
   onClick?: (arg0?: number) => void;
@@ -154,13 +155,16 @@ export interface ContCardInfo {
 }
 
 export interface LocationCardInfo {
-  id?: string;
+  id: string;
   title?: string;
   category?: string;
   address?: string;
   phone?: string;
   isAction?: boolean;
   onClick?: () => void;
+  place_url?: string;
+  x: string;
+  y: string;
 }
 
 export interface MapLocationCardInfo {
@@ -203,4 +207,6 @@ export interface ICourseData {
 export interface IScheduleRequest {
   courseData: ICourseData;
   destinationList: TScheduleList;
+  type?: string;
+  courseId?: string;
 }

@@ -38,6 +38,10 @@ const CursorContainer = styled.div<CursorInfo>`
     transform: translate(-50%, -50%);
     transition: background-image 0.2s;
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const CursorPointer = ({ isMouseHover }: CursorInfo) => {
