@@ -25,7 +25,6 @@ const Wrapper = styled(FlexDiv)`
   width: 100%;
   flex-direction: column;
   align-items: center;
-  padding-top: 6.5rem;
   row-gap: 7.75rem;
   @media (max-width: 768px) {
     margin-top: 50px;
