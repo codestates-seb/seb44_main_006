@@ -16,6 +16,8 @@ const Wrapper = styled.div<{
   overflow: hidden;
   transition: height 0.3s ease-in-out;
   flex: 0 0 25rem;
+  box-shadow: ${cssToken.SHADOW['shadow-4xl']};
+  z-index: 999;
 
   &::-webkit-scrollbar {
     display: none;
