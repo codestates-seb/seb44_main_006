@@ -30,7 +30,7 @@ const ScheduleDiv = styled(FlexDiv)`
   left: 0;
   top: 0;
   height: ${cssToken.HEIGHT['h-screen']};
-  background: ${cssToken.COLOR.black};
+  background: ${cssToken.COLOR.white};
   padding: ${cssToken.SPACING['gap-16']};
   overflow: auto;
   flex-direction: column;
