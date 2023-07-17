@@ -27,6 +27,10 @@ const Wrapper = styled(FlexDiv)`
   align-items: center;
   padding-top: 6.5rem;
   row-gap: 7.75rem;
+  @media (max-width: 768px) {
+    margin-top: 50px;
+    padding-top: 0;
+  }
 `;
 
 const Div = styled.div`
