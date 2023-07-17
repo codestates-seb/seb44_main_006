@@ -191,18 +191,19 @@ const UserSetting = () => {
         <Modal
           className={['modal', 'modalContainer']}
           styles={{
-            width: '47.0625rem',
-            height: '28.375rem',
+            width: '25rem',
+            height: '15rem',
+            borderradius: `${cssToken.BORDER['rounded-s']}`,
           }}
         >
           <ModalChildren
             leftBtnCallback={(e) => {
               e.stopPropagation();
-              toggleModal();
+              handleLogout();
             }}
             rightBtnCallback={(e) => {
               e.stopPropagation();
-              handleLogout();
+              toggleModal();
             }}
             content="정말 회원 탈퇴 하시겠습니까?"
           />
