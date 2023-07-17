@@ -33,9 +33,11 @@ const FilterWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: ${cssToken.SPACING['gap-50']};
+  padding-top: 0px;
 
   @media screen and (max-width: 768px) {
     padding: ${cssToken.SPACING['gap-20']};
+    padding-top: 0px;
   }
 `;
 const FilterContainer = styled(FlexDiv)`
@@ -45,7 +47,7 @@ const FilterContainer = styled(FlexDiv)`
   justify-content: center;
 
   @media screen and (max-width: 768px) {
-    top: -2.3rem;
+    margin: 0px;
   }
 `;
 
