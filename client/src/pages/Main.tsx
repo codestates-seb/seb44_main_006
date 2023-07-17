@@ -13,10 +13,10 @@ import useLoginToggleModal from '../hooks/useLoginToggleModal';
 const MainContainer = styled.main`
   cursor: none;
   display: flex;
-  flex-direction: column-reverse;
-  @media (min-width: 768px) {
-    flex-direction: row;
+  flex-direction: row;
+  @media (max-width: 768px) {
     cursor: default;
+    flex-direction: column-reverse;
   }
 `;
 
@@ -32,36 +32,52 @@ const MainLink = styled(Link)`
   cursor: none;
   text-decoration: none;
   outline: none;
-  font-size: 50px;
+  font-size: 70px;
   font-weight: ${cssToken.FONT_WEIGHT.bold};
+  position: relative;
+
+  &::after {
+    transition: 0.3s;
+    position: absolute;
+    top: 0;
+  }
+
+  &:hover::after {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
   > span {
     display: block;
     width: ${cssToken.WIDTH['w-full']};
   }
   &:hover span {
-    display: none;
-  }
-  @media (min-width: 768px) {
-    font-size: 50px;
-    cursor: default;
+    visibility: hidden;
   }
 
-  @media (min-width: 1280px) {
-    font-size: 70px;
+  @media (max-width: 1280px) {
+    font-size: 50px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 50px;
     cursor: default;
   }
 `;
 
 const CommunitySection = styled(SectionBox)`
   background: ${cssToken.COLOR.white};
-  transition: 0.3s;
   height: 100vh;
+  padding: 0 30px;
+
   > a {
     color: ${cssToken.COLOR['point-500']};
     &:hover::after {
       content: '커뮤니티';
     }
   }
+
   @media (min-width: 768px) {
     flex: 1;
   }
@@ -72,15 +88,31 @@ const ScheduleSection = styled(SectionBox)`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  transition: 0.3s;
+  flex: 2;
+  position: relative;
+  overflow: hidden;
+
+  > img {
+    position: absolute;
+    -webkit-user-drag: none;
+    transition: 1s;
+  }
+
   > a {
+    position: relative;
+    z-index: 2;
     color: ${cssToken.COLOR.white};
     &:hover::after {
       content: '일정 등록';
     }
   }
-  @media (min-width: 768px) {
-    flex: 2;
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    flex: auto;
   }
 `;
 
@@ -135,6 +167,7 @@ const Main = () => {
         >
           <span>Schedule</span>
         </MainLink>
+        <img src={`${mainImg}`} alt="bgimg" />
       </ScheduleSection>
     </MainContainer>
   );
