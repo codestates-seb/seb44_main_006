@@ -84,7 +84,10 @@ const ScheduleBox = ({ ismodify }: { ismodify: string }) => {
     dispatch(placeListActions.setIsEmpty(false));
   };
 
-  useCourseListScroll({ element: scrollRef.current });
+  useCourseListScroll({
+    element: scrollRef.current,
+    clientHeight: document.body.offsetHeight / 2,
+  });
 
   return (
     <ScheduleContainer ref={scrollRef} className="scheduleBox">

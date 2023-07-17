@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
-import { debounce } from 'lodash';
 
 import { Props } from '../../types/type';
 import defaultOptions from '../../utils/constant/constant';

@@ -83,7 +83,7 @@ const Tags = styled.div`
   height: 1.5625rem;
   > button {
     font-size: 0.75rem;
-    padding: 0.1875rem 0.5rem 0.125rem ;
+    padding: 0.1875rem 0.5rem 0.125rem;
   }
 `;
 
@@ -203,7 +203,7 @@ const ContensCard = ({
           {isLogin && !isMine && likeStatus !== undefined && courseId && (
             <LikeButton isActive={likeStatus} courseId={courseId} />
           )}
-          <DataText>{thousandTok(likeCount)} likes</DataText>
+          <DataText>{thousandTok(Number(likeCount))} likes</DataText>
         </LikeBtnBox>
         <DataText>{date}</DataText>
       </ContensBottom>
