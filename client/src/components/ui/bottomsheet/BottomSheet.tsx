@@ -35,7 +35,7 @@ const Wrapper = styled.div<{
         return cssToken.HEIGHT['bottomsheet-header'];
       }
       if (props.param === 'detail') {
-        return `${props.contentHeight / 2 + 360}px`;
+        return `${props.contentHeight / 2 + 200}px`;
       }
       return `${props.contentHeight - 48}px`;
     }};
@@ -51,12 +51,7 @@ const Header = styled.section<{
   display: none;
 
   @media (max-width: 768px) {
-    height: ${(props) => {
-      if (props.ishide) {
-        return `calc(${cssToken.HEIGHT['bottomsheet-header']} + ${cssToken.HEIGHT['mo-nav-height']})`;
-      }
-      return cssToken.HEIGHT['bottomsheet-header'];
-    }};
+    height: ${cssToken.HEIGHT['bottomsheet-header']};
     display: flex;
     justify-content: center;
     padding-top: 1rem;

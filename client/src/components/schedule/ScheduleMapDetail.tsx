@@ -38,7 +38,7 @@ const ScheduleDiv = styled(FlexDiv)`
   flex: 0 0 25rem;
 
   @media (max-width: 768px) {
-    height: 80vh;
+    height: 90vh;
   }
 `;
 
@@ -233,7 +233,7 @@ const ScheduleMapDetail = ({
               brradius="10px"
               onClick={gotoMain}
             >
-              메인 페이지
+              메인
             </SkyBlueButton>
           </Btnbox>
         </ScheduleDiv>
@@ -248,7 +248,7 @@ const ScheduleMapDetail = ({
           fontcolor={cssToken.COLOR.white}
           onClick={gotoMain}
         >
-          <div>메인 페이지</div>
+          <div>메인</div>
         </FloatButton>
       </FixedDiv>
       <MapDiv>
