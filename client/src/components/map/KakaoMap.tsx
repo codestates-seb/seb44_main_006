@@ -34,7 +34,8 @@ const KakaoMap = ({ width, height, children, ...options }: KakaoMapT) => {
         lat: curLocation.coords?.latitude,
         lng: curLocation.coords?.longitude,
       };
-      const { level, lat, lng } = firstCourse ?? currentPosition;
+      const { level, lat, lng } =
+        firstCourse?.lat && firstCourse?.lng ? firstCourse : currentPosition;
       const newMap = new kakao.maps.Map(element, {
         level,
         center: new kakao.maps.LatLng(Number(lat), Number(lng)),

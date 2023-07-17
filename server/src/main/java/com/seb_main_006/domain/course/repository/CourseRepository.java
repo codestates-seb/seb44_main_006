@@ -26,5 +26,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
         @Query("select c from Course c join c.post p where c.isPosted = true " +
                 "order by c.courseLikeCount desc, p.postCreatedAt desc ")
         Page<Course> findAllByPostedOrderByLikeCount(PageRequest pageRequest);
-
 }
+

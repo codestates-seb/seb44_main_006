@@ -29,6 +29,12 @@ const markerSlice = createSlice({
     setInitialCenter(state, action: PayloadAction<ILatLng>) {
       state.firstCourse = action.payload;
     },
+    reset(state) {
+      state.markerId = '';
+      state.center = { lat: '', lng: '' };
+      state.scroll = null;
+      state.firstCourse = { lat: '', lng: '', level: 6 };
+    },
   },
 });
 
