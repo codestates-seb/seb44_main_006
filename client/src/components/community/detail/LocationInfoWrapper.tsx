@@ -21,6 +21,7 @@ const ScheduleDiv = styled(FlexDiv)`
 
   @media screen and (max-width: 768px) {
     margin-bottom: ${cssToken.SPACING['gap-20']};
+    height: fit-content;
     max-height: 29vh;
     h1 {
       font-size: 1.125rem;
