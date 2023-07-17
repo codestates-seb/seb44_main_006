@@ -12,6 +12,7 @@ import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
 import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
 import ModalChildren from '../community/post/ModalChildren';
+import cssToken from '../../styles/cssToken';
 
 const MemAccountModal = () => {
   const [searchParams] = useSearchParams();
@@ -99,8 +100,9 @@ const MemAccountModal = () => {
         <Modal
           className={['modal', 'modalContainer']}
           styles={{
-            width: '47.0625rem',
-            height: '28.375rem',
+            width: '25rem',
+            height: '15rem',
+            borderradius: `${cssToken.BORDER['rounded-s']}`,
           }}
         >
           <ModalChildren
