@@ -5,6 +5,7 @@ import { FlexDiv } from '../../../styles/styles';
 import SkeletonMap from '../../skeleton/SkeletonMap';
 
 const MapContainerDiv = styled(FlexDiv)`
+  width: 100%;
   @media screen and (max-width: 768px) {
     flex-direction: column;
     &.skeletonScheduleDiv {
