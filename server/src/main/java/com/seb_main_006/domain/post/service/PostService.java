@@ -205,7 +205,7 @@ public class PostService {
     public PostListResponseDto searchPosts(int page, int limit, String sort, String accessToken, String searchWord) {
 
         Member member = new Member(0L);
-
+        log.info(searchWord);
         if (searchWord != null && searchWord.isBlank()) {
             searchWord = null;
         }
@@ -235,6 +235,10 @@ public class PostService {
 
             // sort 값에 따라 정렬기준 다르게 적용한 결과 리스트
             List<Course> searchCourseList = getSearchCourseResult(inputWords, sort);
+            
+            for(int i=0; i<searchCourseList.size(); i++){
+                log.info(searchCourseList.get(i).getCourseTitle());
+            }
 
 
             // 변환한 List<Question> 을 Page 로 생성
@@ -348,6 +352,7 @@ public class PostService {
         Set<Course> searchCourseSet = new HashSet<>();
 
         for (String inputWord : inputWords) {
+
 //            Set<Course> courseSet = courseRepository.searchCourseOrderByUpdatedAt(inputWord);
             List<Course> courseSet = postRepository.searchCourseOrderByWord(inputWord);
             searchCourseSet.addAll(courseSet);
