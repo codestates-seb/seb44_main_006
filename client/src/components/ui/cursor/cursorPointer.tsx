@@ -22,6 +22,7 @@ const CursorContainer = styled.div<CursorInfo>`
   border-radius: 50%;
   box-shadow: ${cssToken.SHADOW['shadow-lg']};
   transition: width 0.2s, height 0.2s;
+  z-index: 50;
   &::after {
     content: '';
     position: absolute;
@@ -29,7 +30,7 @@ const CursorContainer = styled.div<CursorInfo>`
     top: 50%;
     background-image: ${(props) =>
       props.isMouseHover ? `url(${cursorOff})` : `url(${cursorOn})`};
-    background-size: cover;
+    background-size: ${(props) => (props.isMouseHover ? `cover` : '20px')};
     background-repeat: no-repeat;
     background-position: center;
     display: block;

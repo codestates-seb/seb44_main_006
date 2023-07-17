@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
@@ -24,4 +26,9 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
         @Query("select c from Course c join c.post p where c.isPosted = true " +
                 "order by c.courseLikeCount desc, p.postCreatedAt desc ")
         Page<Course> findAllByPostedOrderByLikeCount(PageRequest pageRequest);
+
+        @Query("select distinct c from Course c join c.post p join p.postTagsInPost pt join pt.tag t " +
+                "where c.isPosted = true and (c.courseTitle like %:inputWord% or t.tagName like %:inputWord% or p.postContent like %:inputWord%) ")
+        Set<Course> searchCourseOrderByUpdatedAt(@Param("inputWord") String inputWord);
+
 }
