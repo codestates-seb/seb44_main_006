@@ -83,6 +83,7 @@ const Comment = ({
   answerId,
 }: CommentT) => {
   const { userData } = useUserInfo();
+
   const commentRef = useRef<HTMLTextAreaElement>(null);
   const [isEditing, setEditing] = useState<boolean>(false);
   const queryClient = useQueryClient();
@@ -128,33 +129,34 @@ const Comment = ({
             {nickName}
           </Text>
           <FlexDiv>
-            {userData && userData.memberEmail === email && (
-              <FlexButtonDiv>
-                {!isEditing && (
-                  <Button
-                    onClick={() => {
-                      setEditing(true);
-                    }}
-                  >
-                    수정
-                  </Button>
-                )}
-                {isEditing && (
-                  <Button onClick={handlePatchComment}>수정완료</Button>
-                )}
-                {isEditing ? (
-                  <Button
-                    onClick={() => {
-                      setEditing(false);
-                    }}
-                  >
-                    취소
-                  </Button>
-                ) : (
-                  <Button onClick={handleDeleteComment}>삭제</Button>
-                )}
-              </FlexButtonDiv>
-            )}
+            {userData &&
+              (userData.isAdmin || userData.memberEmail === email) && (
+                <FlexButtonDiv>
+                  {!isEditing && (
+                    <Button
+                      onClick={() => {
+                        setEditing(true);
+                      }}
+                    >
+                      수정
+                    </Button>
+                  )}
+                  {isEditing && (
+                    <Button onClick={handlePatchComment}>수정완료</Button>
+                  )}
+                  {isEditing ? (
+                    <Button
+                      onClick={() => {
+                        setEditing(false);
+                      }}
+                    >
+                      취소
+                    </Button>
+                  ) : (
+                    <Button onClick={handleDeleteComment}>삭제</Button>
+                  )}
+                </FlexButtonDiv>
+              )}
 
             <Text
               styles={{

@@ -96,9 +96,10 @@ const ActionButtonContainer = ({
       <>
         <CopyButton endpoint={`community/${postId}`} />
         <ShareKakaoButton endpoint={`community/${postId}`} />
-        {userData && memberEmail === userData.memberEmail && (
-          <DeleteButton postId={postId} />
-        )}
+        {userData &&
+          (userData.isAdmin || memberEmail === userData.memberEmail) && (
+            <DeleteButton postId={postId} />
+          )}
       </>
       {isLogin && userData && memberEmail !== userData.memberEmail && (
         <StarButton
