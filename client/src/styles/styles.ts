@@ -17,7 +17,6 @@ export const FlexDiv = styled.div`
 
 export const CardWrapper = styled.div`
   width: 100%;
-  height: 100%;
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
