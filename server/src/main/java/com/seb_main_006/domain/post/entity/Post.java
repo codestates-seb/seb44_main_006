@@ -38,7 +38,4 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Answer> answersInPost = new ArrayList<>(); // answer entity와 연관관계 매핑(1:다)
 
-    public void addCourse(Course course){
-        this.course = course;
-    }
 }

@@ -68,7 +68,7 @@ public class PostService {
 
         Post post = new Post(); // 새로 저장할 Post 선언
         post.setPostContent(postPostDto.getPostContent()); // 저장할 post에 게시글내용과 코스 저장
-        post.addCourse(findcourse); // Post에 코스 저장(연관관계 매핑)
+        post.setCourse(findcourse); // Post에 코스 저장(연관관계 매핑)
 
         List<String> inputTags = postPostDto.getTags(); // 입력받은 태그 리스트를 postPostDto에서 꺼내옴
 
@@ -305,8 +305,6 @@ public class PostService {
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Course course = findPost.getCourse();
 
-        log.info("게시글 삭제 시작2 course.getPost().getPostId()={}", course.getPost().getPostId());
-
         // ADMIN 권한이 없을 경우에만 본인 일정 여부 검증
         List<String> findRole = findMember.getRoles();
         if (!findRole.contains("ADMIN")) {
@@ -315,13 +313,6 @@ public class PostService {
 
         // course 에서의 post, likes, bookmarks 에 대한 연관관계 제거, isPosted 상태 업데이트
         course.removePost();
-
-        if(course.getPost()!=null){
-            log.info("게시글 삭제 시작2 course.getPost().getPostId={}", course.getPost().getPostId());
-        }
-        else{
-            log.info("getPost Null");
-        }
 
         likesRepository.deleteAllByCourse(course);
         bookmarkRepository.deleteAllByCourse(course);
