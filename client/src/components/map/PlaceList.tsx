@@ -2,6 +2,7 @@ import { useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { ScriptElementKind } from 'typescript';
 
 import useKeywordSearch from '../../hooks/useKeywordSearch';
 import { Pagination, PlacesSearchResultItem } from '../../types/type';
@@ -21,10 +22,35 @@ const Wrapper = styled.div`
 `;
 
 const PaginationWrapper = styled.section`
-  width: 100px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  width: 100%;
+
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: ${cssToken.SPACING['gap-12']};
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: ${cssToken.BORDER['rounded-full']};
+    color: ${cssToken.COLOR.white};
+    background-color: ${cssToken.COLOR['gray-500']};
+    text-decoration: none;
+
+    &.on {
+      background-color: ${cssToken.COLOR['point-900']};
+    }
+
+    &:hover {
+      box-shadow: ${cssToken.SHADOW['shadow-4xl']};
+    }
+  }
 `;
 
 const PlaceList = ({
@@ -54,7 +80,7 @@ const PlaceList = ({
     : '33.450701';
 
   const displayPagination = useCallback((pagination: Pagination) => {
-    const fragment = document.createDocumentFragment();
+    const div = document.createElement('div');
 
     while (paginationRef.current?.firstChild) {
       paginationRef.current.removeChild(paginationRef.current.firstChild);
@@ -75,9 +101,9 @@ const PlaceList = ({
         })(i);
       }
 
-      fragment.appendChild(el);
+      div.appendChild(el);
     }
-    paginationRef.current?.appendChild(fragment);
+    paginationRef.current?.appendChild(div);
   }, []);
 
   useKeywordSearch(
