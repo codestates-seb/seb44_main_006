@@ -23,4 +23,10 @@ public interface PostTagRepository extends JpaRepository<PostTag, Long> {
             "where pt.tag in :tagList " +
             "order by c.courseLikeCount desc, c.courseUpdatedAt desc ")
     Page<Course> findByTagInOrderByLikeCount(@Param("tagList") List<Tag> tagList, Pageable pageable);
+
+    @Query("select distinct c " +
+            "from PostTag pt join pt.post p join pt.post.course c " +
+            "where pt.tag in :tagList ")
+    List<Course> findByTagInOrderByWord(@Param("tagList") List<Tag> tagList);
+
 }
