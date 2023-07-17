@@ -17,6 +17,7 @@ import getLoginStatus from '../../utils/getLoginStatus';
 import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 import { LIMIT } from '../../utils/constant/constant';
 import { communityBasicActions } from '../../store/communitybasic-slice';
+import scrollToTop from '../../utils/scrollToTop';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 1.875rem;
@@ -84,6 +85,10 @@ const CommunityPage = () => {
       tagName: tagName || '',
       sort: selectTab,
     });
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   useEffect(() => {
     if (data) {
