@@ -139,7 +139,7 @@ export interface ContCardInfo {
   userName?: string;
   title?: string;
   text?: string;
-  likeCount?: number;
+  likeCount: number | string;
   thumbnail?: string;
   tag?: string[];
   onClick?: (arg0?: number) => void;
@@ -207,4 +207,6 @@ export interface ICourseData {
 export interface IScheduleRequest {
   courseData: ICourseData;
   destinationList: TScheduleList;
+  type?: string;
+  courseId?: string;
 }

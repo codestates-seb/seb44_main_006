@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 
 import { Props } from '../../../types/type';
-import CloseButton from '../button/CloseButton';
 import cssToken from '../../../styles/cssToken';
 
 interface IModalContainer {
@@ -58,6 +57,9 @@ const ModalContainer = styled.section<IModalContainer>`
 
   &.modalContainer {
     @media screen and (max-width: 768px) {
+      position: fixed;
+      bottom: 0;
+
       width: ${cssToken.WIDTH['w-full']};
       height: 15.5625rem;
 
@@ -118,25 +120,13 @@ const ModalContainer = styled.section<IModalContainer>`
   }
 `;
 
-const CloseButtonDiv = styled.div`
-  width: fit-content;
-  height: fit-content;
-  position: absolute;
-  padding: 8px;
-  top: 0;
-  right: 0;
-`;
-
 const Modal = ({
   children,
-  displayclosebtn,
   styles,
   backdropCallback,
-  handleCloseBtn,
   className,
 }: {
   children?: Props['children'];
-  displayclosebtn?: boolean;
   styles?: IModalContainer;
   backdropCallback?: (e: React.MouseEvent<HTMLDivElement>) => void;
   handleCloseBtn?: () => void;
@@ -147,11 +137,6 @@ const Modal = ({
       <Backdrop onClick={backdropCallback} />
       <ModalContainer className={className ? className[1] : ''} {...styles}>
         {children}
-        {displayclosebtn && (
-          <CloseButtonDiv>
-            <CloseButton onClick={handleCloseBtn} />
-          </CloseButtonDiv>
-        )}
       </ModalContainer>
     </ModalWrapper>,
     document.getElementById('overlay-root')!

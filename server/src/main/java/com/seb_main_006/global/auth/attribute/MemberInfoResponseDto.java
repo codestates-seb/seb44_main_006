@@ -15,15 +15,17 @@ public class MemberInfoResponseDto {
     private String memberImageUrl;
     private Integer myBookmarkCount;
     private Integer myCourseCount;
+    private Boolean isAdmin;
 
-    public static MemberInfoResponseDto of(Member member, int myCourseCount, int myBookmarkCount) {
+    public static MemberInfoResponseDto of(Member member, int myCourseCount, int myBookmarkCount, boolean isAdmin) {
         return MemberInfoResponseDto.builder()
                 .memberId(member.getMemberId())
                 .memberEmail(member.getMemberEmail())
                 .memberNickname(member.getMemberNickname())
                 .memberImageUrl(member.getMemberImageUrl())
-                .myCourseCount(myCourseCount)
                 .myBookmarkCount(myBookmarkCount)
+                .myCourseCount(myCourseCount)
+                .isAdmin(isAdmin)
                 .build();
     }
 }

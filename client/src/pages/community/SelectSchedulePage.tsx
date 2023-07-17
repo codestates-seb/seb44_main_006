@@ -20,6 +20,7 @@ import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 import scrollToTop from '../../utils/scrollToTop';
 import SkeletonCardContainer from '../../components/community/skeleton/SkeletonCardContainer';
 import useValidEnter from '../../hooks/useValidEnter';
+import thousandTok from '../../utils/thousandTok';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -148,7 +149,7 @@ const SelectSchedulePage = () => {
                   key={course.courseId}
                   title={course.courseTitle}
                   text={course.courseContent}
-                  likeCount={course.courseLikeCount}
+                  likeCount={thousandTok(course.courseLikeCount)}
                   userName={course.memberNickname}
                   thumbnail={course.courseThumbnail}
                   courseId={course.courseId}

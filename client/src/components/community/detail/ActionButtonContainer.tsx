@@ -9,6 +9,7 @@ import DeleteButton from '../DeleteButton';
 import useUserInfo from '../../../querys/useUserInfo';
 import ShareKakaoButton from '../../ui/button/ShareKakaoButton';
 import CopyButton from '../../ui/button/CopyButton';
+import thousandTok from '../../../utils/thousandTok';
 
 const BtnDiv = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-12']};
@@ -38,6 +39,7 @@ const ActionButtonContainer = ({
   likeStatus,
   courseId,
   memberEmail,
+  viewCount,
 }: {
   LikeCount: number;
   isLogin: boolean;
@@ -46,11 +48,19 @@ const ActionButtonContainer = ({
   likeStatus: boolean;
   courseId: number;
   memberEmail: string;
+  viewCount: number;
 }) => {
   const { userData } = useUserInfo();
 
   return (
     <BtnDiv>
+      <Text
+        styles={{
+          weight: cssToken.FONT_WEIGHT.medium,
+        }}
+      >
+        조회수 {thousandTok(viewCount)}
+      </Text>
       <>
         <CopyButton endpoint={`community/${postId}`} />
         <ShareKakaoButton endpoint={`community/${postId}`} />
