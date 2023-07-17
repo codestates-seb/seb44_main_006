@@ -40,6 +40,10 @@ const FilterContainer = styled(FlexDiv)`
   width: ${cssToken.WIDTH['w-full']};
   border-bottom: 1px solid ${cssToken.COLOR['gray-600']};
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    top: -2.2rem;
+  }
 `;
 
 const CounterContainer = styled.div`

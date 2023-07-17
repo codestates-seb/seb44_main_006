@@ -63,6 +63,7 @@ const FixedDiv = styled.div`
   position: fixed;
   right: ${cssToken.SPACING['gap-40']};
   bottom: ${cssToken.SPACING['gap-40']};
+  z-index: 1;
 
   @media screen and (max-width: 768px) {
     right: 1rem;

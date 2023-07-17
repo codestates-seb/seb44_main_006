@@ -27,7 +27,10 @@ const UserInfoContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
+  gap: 1.875rem;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const UserNicknameBox = styled.div`
@@ -37,7 +40,10 @@ const UserNicknameBox = styled.div`
 
 const UserNickname = styled.p`
   font-weight: 700;
-  font-size: 30px;
+  font-size: 1.875rem;
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
 `;
 
 const WriteBtn = styled.button<IsNickNameT>`
@@ -70,6 +76,10 @@ const RightWrap = styled.div`
     padding: 1.1rem 0.98rem 0.98rem;
     font-size: 14px;
   }
+
+  @media (max-width: 640px) {
+    align-items: center;
+  }
 `;
 
 const ImgBox = styled.div`
@@ -77,6 +87,13 @@ const ImgBox = styled.div`
   display: flex;
   justify-content: flex-end;
   flex: 1;
+
+  @media (max-width: 768px) {
+    > div {
+      width: 6rem;
+      height: 6rem;
+    }
+  }
 `;
 
 const SettingButton = styled.button`
@@ -92,12 +109,30 @@ const SettingButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  @media (max-width: 768px) {
+    & {
+      height: 2.3rem;
+      width: 2.3rem;
+    }
+  }
 `;
 
 const FormBox = styled.form<IsNickNameT>`
   display: flex;
   flex-direction: ${(props) => (props.isValidate ? 'row' : 'column')};
   position: relative;
+  @media (max-width: 768px) {
+    > p {
+      height: 2.3rem;
+      width: 2.3rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    > input {
+      font-size:12px;
+    }
+  }
 `;
 
 const UserInfoBox = () => {

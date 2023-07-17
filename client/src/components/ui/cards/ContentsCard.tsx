@@ -31,7 +31,7 @@ const ContensCardContainer = styled.section<{ selected?: boolean }>`
 const UserName = styled.span`
   font-size: 0.8125rem;
   font-weight: ${cssToken.FONT_WEIGHT.medium};
-  color: ${cssToken.COLOR['gray-900']};
+  color: ${cssToken.COLOR.black};
 `;
 
 const ContensTop = styled.div`
@@ -154,7 +154,7 @@ const ContensCard = ({
       selected={selected}
     >
       <ContensTop>
-        <UserName>{userName || '탈퇴한 회원'}</UserName>
+        <UserName>{userName || '탈퇴한 사용자'}</UserName>
         <OptionButton isActive={false}>{children}</OptionButton>
       </ContensTop>
 

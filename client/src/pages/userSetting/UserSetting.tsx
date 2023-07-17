@@ -18,6 +18,7 @@ import { setThemeModeActions } from '../../store/thememode-slice';
 import LightIcon from '../../assets/LightIcon';
 import DarkIcon from '../../assets/DarkIcon';
 import CloseButton from '../../components/ui/button/CloseButton';
+import showToast from '../../utils/showToast';
 
 const UserSettingContainer = styled.article`
   display: flex;
@@ -39,6 +40,7 @@ const SettingBox = styled.section`
   flex-direction: column;
   gap: ${cssToken.SPACING['gap-50']};
   position: relative;
+
   @media (max-width: 768px) {
     width: ${cssToken.WIDTH['min-w-full']};
     height: ${cssToken.HEIGHT['h-screen']};
@@ -51,6 +53,16 @@ const ImgBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${cssToken.SPACING['gap-20']};
+
+  > button{
+    background: #d3d3d3;
+  }
+  @media (max-width: 768px) {
+    > div {
+      width: 9rem;
+      height: 9rem;
+    }
+  }
 `;
 
 const SettingListUl = styled.ul`
@@ -69,13 +81,18 @@ const SettingList = styled.li`
   padding: ${cssToken.SPACING['gap-20']};
   justify-content: center;
   height: 5rem;
-
-  @media (max-width: 768px) {
-    padding: 0.25rem;
-  }
+  gap: 0.625rem;
 
   span {
     flex: 1;
+    font-size: ${cssToken.TEXT_SIZE['text-16']};
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.25rem;
+    span {
+      font-size: 0.8125rem;
+    }
   }
 `;
 
@@ -89,6 +106,10 @@ const Button = styled.button`
   font-size: ${cssToken.TEXT_SIZE['text-14']};
   color: #999;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 0.8125rem;
+  }
 `;
 
 const BtnBox = styled.div`
@@ -96,6 +117,9 @@ const BtnBox = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  @media (max-width: 768px) {
+    flex: 2;
+  }
 `;
 
 const IconButton = styled.button`
@@ -154,6 +178,11 @@ const UserSetting = () => {
 
   const handleTheme = (theme: string) => {
     dispatch(setThemeModeActions.setThemeMode(theme));
+    showToast('default', '서비스 준비중!')();
+  };
+
+  const handlePreparing = () => {
+    showToast('default', '서비스 준비중!')();
   };
 
   return (
@@ -191,12 +220,11 @@ const UserSetting = () => {
             src={userAuthInfo?.memberImageUrl}
           />
           <SkyBlueEventButton
-            onClick={() => toggleModal()}
+            onClick={handlePreparing}
             width="150px"
             height="40px"
             brradius={`${cssToken.BORDER['rounded-tag']}`}
             fontsize={`${cssToken.TEXT_SIZE['text-14']}`}
-            disabled
           >
             이미지 변경
           </SkyBlueEventButton>
@@ -207,14 +235,15 @@ const UserSetting = () => {
             <BtnBox className="IconBtn">
               <IconButton
                 className={ThemMode === 'light' ? 'active' : ''}
-                onClick={() => handleTheme('light')}
+                onClick={handlePreparing}
+                // onClick={() => handleTheme('light')}
               >
                 <LightIcon />
               </IconButton>
               <IconButton
                 className={ThemMode === 'dark' ? 'active' : ''}
-                onClick={() => handleTheme('dark')}
-                disabled
+                onClick={handlePreparing}
+                // onClick={() => handleTheme('dark')}
               >
                 <DarkIcon />
               </IconButton>
