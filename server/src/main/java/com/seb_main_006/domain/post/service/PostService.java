@@ -205,7 +205,7 @@ public class PostService {
     public PostListResponseDto searchPosts(int page, int limit, String sort, String accessToken, String searchWord) {
 
         Member member = new Member(0L);
-
+        log.info(searchWord);
         if (searchWord != null && searchWord.isBlank()) {
             searchWord = null;
         }
