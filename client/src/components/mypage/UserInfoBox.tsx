@@ -130,7 +130,7 @@ const FormBox = styled.form<IsNickNameT>`
 
   @media (max-width: 640px) {
     > input {
-      font-size:12px;
+      font-size: 12px;
     }
   }
 `;
