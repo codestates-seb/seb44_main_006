@@ -206,6 +206,10 @@ public class PostService {
 
         Member member = new Member(0L);
 
+        if (searchWord != null && searchWord.isBlank()) {
+            searchWord = null;
+        }
+
         // 토큰 관련 예외 모두 통과시키기
         if (accessToken != null && !accessToken.equals("")) {
             try {
@@ -218,7 +222,6 @@ public class PostService {
         Page<Course> pageResult = null;
 
         if (searchWord == null) {
-
             // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
             if (sort == null) {
                 pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(pageRequest);
@@ -228,7 +231,7 @@ public class PostService {
 
         } else {
             // 입력받은 태그 String 을 공백 기준으로 분리
-            String[] inputWords = searchWord.split(" ");
+            String[] inputWords = searchWord.trim().split(" ");
 
             // sort 값에 따라 정렬기준 다르게 적용한 결과 리스트
             List<Course> searchCourseList = getSearchCourseResult(inputWords, sort);
