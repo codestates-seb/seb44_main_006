@@ -55,7 +55,13 @@ const TextArea = forwardRef(
           disabled={disabled}
         />
         {!isValidate && (
-          <Text styles={{ color: cssToken.COLOR['red-900'] }}>
+          <Text
+            styles={{
+              color: cssToken.COLOR['red-900'],
+              size: '0.9rem',
+              weight: 500,
+            }}
+          >
             글자 수를 만족하지 못했습니다.
           </Text>
         )}
