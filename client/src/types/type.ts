@@ -208,4 +208,6 @@ export interface ICourseData {
 export interface IScheduleRequest {
   courseData: ICourseData;
   destinationList: TScheduleList;
+  type?: string;
+  courseId?: string;
 }

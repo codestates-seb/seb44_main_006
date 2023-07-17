@@ -70,16 +70,21 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String existProvider = memberService.findExistEmailAndDiffProvider(email, provider);
         log.info("existProvider = {}", existProvider);
 
+        ExceptionCode exceptionCode = null;
+
         if (existProvider != null) {
             switch (existProvider) {
                 case "GOOGLE":
-                    ErrorResponder.sendErrorResponse(response, ExceptionCode.GOOGLE_ACCOUNT_EXISTS);
+                    String uri1 = createURI(null, null, ExceptionCode.GOOGLE_ACCOUNT_EXISTS).toString();
+                    getRedirectStrategy().sendRedirect(request, response, uri1);
                     return;
                 case "KAKAO":
-                    ErrorResponder.sendErrorResponse(response, ExceptionCode.KAKAO_ACCOUNT_EXISTS);
+                    String uri2 = createURI(null, null, ExceptionCode.KAKAO_ACCOUNT_EXISTS).toString();
+                    getRedirectStrategy().sendRedirect(request, response, uri2);
                     return;
                 case "NAVER":
-                    ErrorResponder.sendErrorResponse(response, ExceptionCode.NAVER_ACCOUNT_EXISTS);
+                    String uri3 = createURI(null, null, ExceptionCode.NAVER_ACCOUNT_EXISTS).toString();
+                    getRedirectStrategy().sendRedirect(request, response, uri3);
                     return;
                 default:
                     break;
@@ -113,7 +118,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         System.out.println("findToken.getId() = " + findToken.getId());
         System.out.println("refreshToken2 = " + refreshToken2);
 
-        String uri = createURI(accessToken, refreshToken).toString();
+        String uri = createURI(accessToken, refreshToken, null).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
@@ -147,7 +152,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     }
 
     // 리다이렉트 URL생성(URL에 accessToken과 refreshToken담아서 전달)
-    private URI createURI(String accessToken, String refreshToken) {
+    private URI createURI(String accessToken, String refreshToken, ExceptionCode exceptionCode) {
         log.info("createURI Method: redis.get(local) = {}", redisUtil.get("local"));
 
         String scheme = "https";
@@ -163,8 +168,17 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
-        queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
+        if (exceptionCode != null) {
+            queryParams.add("access_token", null);
+            queryParams.add("refresh_token", null);
+            queryParams.add("status", String.valueOf(exceptionCode.getStatus()));
+            queryParams.add("message", exceptionCode.getMessage());
+        } else {
+            queryParams.add("access_token", accessToken);
+            queryParams.add("refresh_token", refreshToken);
+            queryParams.add("status", null);
+            queryParams.add("message", null);
+        }
 
         return UriComponentsBuilder
                 .newInstance()

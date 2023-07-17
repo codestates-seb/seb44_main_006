@@ -23,16 +23,18 @@ import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
 import usePanMap from '../../hooks/usePanMap';
 import useCourseListScroll from '../../hooks/useCourseListScroll';
+import getLoginStatus from '../../utils/getLoginStatus';
+import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 
 const ScheduleDiv = styled(FlexDiv)`
   left: 0;
   top: 0;
-  height: 100vh;
-  background: #fff;
-  padding: 15px;
+  height: ${cssToken.HEIGHT['h-screen']};
+  background: ${cssToken.COLOR.black};
+  padding: ${cssToken.SPACING['gap-16']};
   overflow: auto;
   flex-direction: column;
-  gap: 1rem;
+  gap: ${cssToken.SPACING['gap-16']};
   flex: 0 0 25rem;
 
   @media (max-width: 768px) {
@@ -41,7 +43,7 @@ const ScheduleDiv = styled(FlexDiv)`
 `;
 
 const MapDiv = styled.div`
-  width: 100%;
+  width: ${cssToken.WIDTH['w-full']};
 `;
 
 const LocationCardWrapper = styled.div`
@@ -56,18 +58,24 @@ const Btnbox = styled.div`
     display: none;
 
     .gray {
-      width: 100%;
+      width: ${cssToken.WIDTH['w-full']};
     }
     .skyblue {
-      width: 100%;
+      width: ${cssToken.WIDTH['w-full']};
     }
   }
 `;
 
 const TopWrap = styled(FlexDiv)`
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  flex-direction: column-reverse;
+  gap: ${cssToken.SPACING['gap-10']};
 
+  > h1 {
+    flex: 2;
+    gap: 0.3125rem;
+  }
   @media (max-width: 768px) {
     h1 {
       font-size: 1.2rem;
@@ -78,10 +86,11 @@ const TopWrap = styled(FlexDiv)`
 const DataInfoText = styled(FlexDiv)`
   font-size: 0.8125rem;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  width: ${cssToken.WIDTH['w-full']};
   gap: 0.1875rem;
   > svg {
-    width: 14px;
+    width: 0.875rem;
   }
 `;
 
@@ -129,8 +138,10 @@ const ScheduleMapDetail = ({
   courseDday: string;
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isLogin = getLoginStatus();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocationEndpoint();
   const gotoMain = useMovePage('/');
   const gotoBack = () => {
     navigate(-1);
@@ -179,7 +190,7 @@ const ScheduleMapDetail = ({
 
             <DataInfoText>
               <CalenderIcon />
-              {formatData(courseDday)}
+              {formatData(courseDday, location)}
             </DataInfoText>
           </TopWrap>
           <Text
@@ -203,14 +214,16 @@ const ScheduleMapDetail = ({
             ))}
           </LocationCardWrapper>
           <Btnbox>
-            <GrayButton
-              width="100%"
-              height="50px"
-              brradius="10px"
-              onClick={gotoBack}
-            >
-              뒤로가기
-            </GrayButton>
+            {isLogin && (
+              <GrayButton
+                width="100%"
+                height="50px"
+                brradius="10px"
+                onClick={gotoBack}
+              >
+                뒤로가기
+              </GrayButton>
+            )}
             <SkyBlueButton
               width="100%"
               height="50px"

@@ -83,7 +83,7 @@ public class PostController {
             accessToken = authorization.replaceAll("Bearer ", "");
         }
 
-        PostListResponseDto response = postService.findPosts(page - 1, limit, sort, accessToken, tagName);
+        PostListResponseDto response = postService.searchPosts(page - 1, limit, sort, accessToken, tagName);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

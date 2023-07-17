@@ -17,6 +17,7 @@ import useUserInfo from '../../querys/useUserInfo';
 import DeleteButton from '../community/DeleteButton';
 import formatData from '../../utils/sliceData';
 import thousandTok from '../../utils/thousandTok';
+import EditorButton from '../ui/button/EditorButton';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -118,6 +119,7 @@ const FilterSection = ({
                     courseId={post.courseId}
                     date={`${formatData(String(post?.courseDday))}`}
                   >
+                    <EditorButton courseId={String(post?.courseId)} />
                     <DeleteButton
                       type="mypage"
                       postId={String(post.courseId)}

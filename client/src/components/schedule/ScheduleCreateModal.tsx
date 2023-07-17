@@ -156,7 +156,13 @@ const DateInputBox = styled(DatePicker)`
   text-align: center;
 `;
 
-const ScheduleCreateModal = () => {
+const ScheduleCreateModal = ({
+  ismodify,
+  courseId,
+}: {
+  ismodify: string;
+  courseId: string;
+}) => {
   const [isThumbChoice, setIsThumbChouce] = useState(false);
   const [choiceDate, setChoiceDate] = useState(new Date());
   const [titleIsValidate, setTitleIsValidate] = useState(false);
@@ -181,15 +187,32 @@ const ScheduleCreateModal = () => {
 
       setTitleIsValidate(true);
       setDescIsValidate(true);
-      scheduleMutation.mutate({
-        courseData: {
-          courseDday: `${dateToString(choiceDate)}`,
-          courseTitle: titleRef.current.value,
-          courseContent: descriptionRef.current.value,
-          courseThumbnail: bgUrl,
-        },
-        destinationList: [...destinationList],
-      });
+
+      // TODO 여기에 isModify로 조건부 호출
+      if (ismodify === 'true') {
+        scheduleMutation.mutate({
+          courseData: {
+            courseDday: `${dateToString(choiceDate)}`,
+            courseTitle: titleRef.current.value,
+            courseContent: descriptionRef.current.value,
+            courseThumbnail: bgUrl,
+          },
+          destinationList: [...destinationList],
+          type: 'patch',
+          courseId,
+        });
+      } else {
+        scheduleMutation.mutate({
+          courseData: {
+            courseDday: `${dateToString(choiceDate)}`,
+            courseTitle: titleRef.current.value,
+            courseContent: descriptionRef.current.value,
+            courseThumbnail: bgUrl,
+          },
+          destinationList: [...destinationList],
+        });
+      }
+
       dispatch(overlayActions.toggleOverlay());
       dispatch(scheduleListActions.resetList());
       dispatch(placeListActions.resetList());

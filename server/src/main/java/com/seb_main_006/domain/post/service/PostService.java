@@ -6,6 +6,8 @@ import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.course.repository.CourseRepository;
 import com.seb_main_006.domain.course.service.CourseService;
 import com.seb_main_006.domain.like.repository.LikesRepository;
+import com.seb_main_006.domain.member.dto.MemberBookmarked;
+import com.seb_main_006.domain.member.dto.MemberCourse;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
 import com.seb_main_006.domain.post.dto.PostDetailResponseDto;
@@ -25,7 +27,10 @@ import com.seb_main_006.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
@@ -63,7 +68,7 @@ public class PostService {
 
         Post post = new Post(); // 새로 저장할 Post 선언
         post.setPostContent(postPostDto.getPostContent()); // 저장할 post에 게시글내용과 코스 저장
-        post.addCourse(findcourse); // Post에 코스 저장(연관관계 매핑)
+        post.setCourse(findcourse); // Post에 코스 저장(연관관계 매핑)
 
         List<String> inputTags = postPostDto.getTags(); // 입력받은 태그 리스트를 postPostDto에서 꺼내옴
 
@@ -194,6 +199,61 @@ public class PostService {
         return new PostListResponseDto(postDataList, pageResult);
     }
 
+    /**
+     * 게시글 검색
+     */
+    public PostListResponseDto searchPosts(int page, int limit, String sort, String accessToken, String searchWord) {
+
+        Member member = new Member(0L);
+
+        if (searchWord != null && searchWord.isBlank()) {
+            searchWord = null;
+        }
+
+        // 토큰 관련 예외 모두 통과시키기
+        if (accessToken != null && !accessToken.equals("")) {
+            try {
+                String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
+                member = memberService.findVerifiedMember(memberEmail);
+            } catch (Exception e) {}
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, limit);
+        Page<Course> pageResult = null;
+
+        if (searchWord == null) {
+            // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
+            if (sort == null) {
+                pageResult = courseRepository.findAllByPostedOrderByUpdatedAt(pageRequest);
+            } else {
+                pageResult = courseRepository.findAllByPostedOrderByLikeCount(pageRequest);
+            }
+
+        } else {
+            // 입력받은 태그 String 을 공백 기준으로 분리
+            String[] inputWords = searchWord.trim().split(" ");
+
+            // sort 값에 따라 정렬기준 다르게 적용한 결과 리스트
+            List<Course> searchCourseList = getSearchCourseResult(inputWords, sort);
+
+            // 변환한 List<Question> 을 Page 로 생성
+            int start = (int) pageRequest.getOffset(); // 페이지 시작 데이터 위치
+            int end = Math.min(start + pageRequest.getPageSize(), searchCourseList.size()); // 페이지의 마지막 데이터 위치
+            pageResult = new PageImpl<>(searchCourseList.subList(start, end), pageRequest, searchCourseList.size());// Paging 된 리스트로 생성
+        }
+
+        // 응답 데이터 형식으로 변환해서 리턴 (없는 데이터 : likeStatus, bookmarkStatus)
+        List<PostDataForList> postDataList = new ArrayList<>();
+
+        for (Course course : pageResult.getContent()) {
+            boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
+            boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
+            postDataList.add(PostDataForList.of(course, likeStatus, bookmarkStatus));
+        }
+
+        return new PostListResponseDto(postDataList, pageResult);
+    }
+
 //    /**
 //     * 태그로 게시글 (미사용)
 //     */
@@ -245,8 +305,6 @@ public class PostService {
         Member findMember = memberService.findVerifiedMember(memberEmail);
         Course course = findPost.getCourse();
 
-        log.info("게시글 삭제 시작2 course.getPost().getPostId()={}", course.getPost().getPostId());
-
         // ADMIN 권한이 없을 경우에만 본인 일정 여부 검증
         List<String> findRole = findMember.getRoles();
         if (!findRole.contains("ADMIN")) {
@@ -255,13 +313,6 @@ public class PostService {
 
         // course 에서의 post, likes, bookmarks 에 대한 연관관계 제거, isPosted 상태 업데이트
         course.removePost();
-
-        if(course.getPost()!=null){
-            log.info("게시글 삭제 시작2 course.getPost().getPostId={}", course.getPost().getPostId());
-        }
-        else{
-            log.info("getPost Null");
-        }
 
         likesRepository.deleteAllByCourse(course);
         bookmarkRepository.deleteAllByCourse(course);
@@ -287,5 +338,38 @@ public class PostService {
     public void viewCountUp(Long postId) {
         Post post = findVerifiedPost(postId);
         post.getCourse().setCourseViewCount(post.getCourse().getCourseViewCount() + 1);
+    }
+
+
+    // 검색어가 존재할 때 sort 값에 따라 다른 정렬 기준(메서드) 적용한 결과 리스트 반환
+    private List<Course> getSearchCourseResult(String[] inputWords, String sort) {
+
+        Set<Course> searchCourseSet = new HashSet<>();
+
+        for (String inputWord : inputWords) {
+            Set<Course> courseSet = courseRepository.searchCourseOrderByUpdatedAt(inputWord);
+            searchCourseSet.addAll(courseSet);
+        }
+
+        List<Course> searchCourseList = new ArrayList<>(searchCourseSet);
+
+        // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
+        if (sort == null) {
+            searchCourseList.sort(Comparator.comparing(course -> course.getPost().getPostCreatedAt()));
+            Collections.reverse(searchCourseList);
+
+        } else {
+            searchCourseList = searchCourseList.stream()
+                    .sorted(Comparator.comparing(Course::getCourseLikeCount).reversed()
+                            .thenComparing(Comparator.comparing(course -> {
+                                if (course.getPost() == null) {
+                                    return null; // null 값을 반환하여 null이 우선 순위가 낮도록 설정
+                                }
+                                return course.getPost().getPostCreatedAt();
+                            }, Comparator.nullsLast(Comparator.reverseOrder()))))
+                    .collect(Collectors.toList());
+        }
+
+        return searchCourseList;
     }
 }
