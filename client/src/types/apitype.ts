@@ -175,3 +175,14 @@ export type CourseDatassT = {
   courseThumbnail?: string;
   courseTitle?: string;
 };
+
+// 회원 정보 조회
+export type UserInfoT = {
+  memberId: number; // 고유값(회원 식별자)
+  memberEmail: string; // 고유값(회원 이메일)
+  memberNickname: string; // 회원 닉네임
+  memberImageUrl: string; // 회원 이미지 URL
+  myCourseCount: number; // 내가 작성한 코스의 개수
+  myBookmarkCount: number; // 내가 즐겨찾기한 커뮤니티 글의 개수
+  isAdmin: boolean; // admin 권한이 있으면 true, 아니면 false
+};

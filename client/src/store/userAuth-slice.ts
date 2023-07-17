@@ -13,7 +13,7 @@ export type UserQAuthInfo = {
 };
 
 export interface LoginState {
-  isLogin?: string | boolean;
+  isLogin?: boolean;
   userInfo?: UserQAuthInfo;
   isLoginOpen?: boolean;
   isLogoutOpen?: boolean;
