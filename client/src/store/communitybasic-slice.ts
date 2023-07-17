@@ -21,6 +21,10 @@ const communityBasicSlice = createSlice({
     setTab(state, action: PayloadAction<'First' | 'Second'>) {
       state.selectedTab = action.payload;
     },
+    reset(state) {
+      state.searchKeyword = '';
+      state.selectedTab = 'First';
+    },
   },
 });
 

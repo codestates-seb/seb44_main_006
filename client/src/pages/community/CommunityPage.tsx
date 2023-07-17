@@ -97,7 +97,10 @@ const CommunityPage = () => {
 
   useEffect(() => {
     scrollToTop();
-  }, []);
+    return () => {
+      dispatch(communityBasicActions.reset());
+    };
+  }, [dispatch]);
 
   const SearchPost = (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
