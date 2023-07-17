@@ -49,6 +49,12 @@ const ModalContainer = styled.section<IModalContainer>`
   gap: ${(props) => props.gap};
   background-color: ${cssToken.COLOR.white};
   z-index: 20;
+  @media (max-width: 768px) {
+    border-radius: 0.9375rem 0.9375rem 0 0;
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+  }
 `;
 
 const CloseButtonDiv = styled.div`
@@ -87,6 +93,7 @@ const KaKaoBtn = styled(Button)`
   margin-top: 30px;
   background: #fae100;
   border: 1px solid #fae100;
+  color: #000;
   > svg {
     width: 30px;
   }
