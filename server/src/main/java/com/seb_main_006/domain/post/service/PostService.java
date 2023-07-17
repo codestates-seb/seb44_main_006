@@ -235,6 +235,10 @@ public class PostService {
 
             // sort 값에 따라 정렬기준 다르게 적용한 결과 리스트
             List<Course> searchCourseList = getSearchCourseResult(inputWords, sort);
+            
+            for(int i=0; i<searchCourseList.size(); i++){
+                log.info(searchCourseList.get(i).getCourseTitle());
+            }
 
             // 변환한 List<Question> 을 Page 로 생성
             int start = (int) pageRequest.getOffset(); // 페이지 시작 데이터 위치
