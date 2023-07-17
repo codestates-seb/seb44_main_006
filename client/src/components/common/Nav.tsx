@@ -62,7 +62,7 @@ const ArrowFigure = styled.span<NavT>`
   border-right: 5px solid transparent;
 
   &.change_figure {
-    border-top: ${cssToken.COLOR['gray-900']};
+    border-top: 8px solid ${cssToken.COLOR['gray-900']};
   }
 `;
 
