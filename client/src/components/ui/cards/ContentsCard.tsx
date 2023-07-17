@@ -115,6 +115,7 @@ const LikeBtnBox = styled.div`
   justify-content: center;
   > button {
     margin-right: 0.1875rem;
+    padding: 0;
   }
 `;
 
