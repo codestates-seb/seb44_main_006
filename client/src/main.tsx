@@ -32,6 +32,7 @@ const UserSetting = lazy(() => import('./pages/userSetting/UserSetting'));
 
 const queryClient = new QueryClient();
 
+// Todo 추후 리팩토링 필요함 (component로 정리하기)
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
