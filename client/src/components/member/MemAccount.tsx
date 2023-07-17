@@ -108,11 +108,11 @@ const MemAccountModal = () => {
           <ModalChildren
             leftBtnCallback={(e) => {
               e.stopPropagation();
-              LogoutoggleModal();
+              handleLogout();
             }}
             rightBtnCallback={(e) => {
               e.stopPropagation();
-              handleLogout();
+              LogoutoggleModal();
             }}
             content="정말 로그아웃 하시겠습니까?"
           />
