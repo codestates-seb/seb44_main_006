@@ -23,15 +23,15 @@ const MoNavContainer = styled.nav<HeaderStyle>`
   display: none;
   @media (max-width: 768px) {
     display: ${(props) => {
-    if (
-      props?.ispath === 'register' ||
-      props?.ispath === 'setting' ||
-      props?.ispathPull === '/community/select'
-    ) {
-      return 'none';
-    }
-    return 'grid';
-  }};
+      if (
+        props?.ispath === 'register' ||
+        props?.ispath === 'setting' ||
+        props?.ispathPull === '/community/select'
+      ) {
+        return 'none';
+      }
+      return 'grid';
+    }};
     height: 4.5rem;
     position: fixed;
     bottom: 0;
@@ -73,7 +73,7 @@ const MoNavContainer = styled.nav<HeaderStyle>`
 const MoNav = () => {
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
   const LogintoggleModal = useLoginToggleModal();
-  const { userData } = useUserInfo();
+  const { userData } = useUserInfo(!!isLoggedIn);
   const ispath = useLocationEndpoint();
   const location = useLocation();
   const pathPull = location?.pathname;

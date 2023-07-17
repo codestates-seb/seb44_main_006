@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 
 import Nav from './Nav';
 
@@ -28,15 +29,20 @@ const HeaderContainer = styled.header<HeaderStyle>`
   align-items: center;
   justify-content: space-between;
   padding: ${cssToken.SPACING['gap-10']} ${cssToken.SPACING['gap-24']};
-  background: ${(props) =>
-    props?.ispath === '' ? 'transparent' : cssToken.COLOR.white};
+  border-bottom: 1px solid transparent;
+  background: transparent;
   position: fixed;
   top: 0;
   left: 0;
   width: ${cssToken.WIDTH['w-full']};
-  box-shadow: ${(props) =>
-    props?.ispath === '' ? 'none' : cssToken.SHADOW['shadow-lg']};
+  transition: 0.3s;
   z-index: 999;
+
+  &.change_header {
+    background: #fff;
+    border-bottom: 1px solid ${cssToken.COLOR['gray-300']};
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.03);
+  }
 
   @media (max-width: 768px) {
     display: none;
@@ -44,7 +50,7 @@ const HeaderContainer = styled.header<HeaderStyle>`
 `;
 
 const LogoBox = styled.h1`
-  width: 150px;
+  width: 125px;
 `;
 
 const LogoImg = styled.img`
@@ -55,16 +61,32 @@ const Header = () => {
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
   const ispath = useLocationEndpoint();
 
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const updateScroll = () => {
+    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', updateScroll);
+  });
+
   return (
     <>
       <MemAccountModal />
-      <HeaderContainer ispath={ispath}>
+      <HeaderContainer
+        className={scrollPosition < 100 ? '' : 'change_header'}
+        ispath={ispath}
+      >
         <LogoBox>
           <Link to="/">
             <LogoImg src={LogoBlack} alt="logo-harumate" />
           </Link>
         </LogoBox>
-        <Nav ispath={ispath} isLoggedIn={isLoggedIn} />
+        <Nav
+          scrollPosition={scrollPosition}
+          ispath={ispath}
+          isLoggedIn={isLoggedIn}
+        />
       </HeaderContainer>
     </>
   );
