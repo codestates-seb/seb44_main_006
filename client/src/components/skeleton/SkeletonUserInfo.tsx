@@ -5,6 +5,7 @@ import { FlexDiv, SkeletonDiv } from '../../styles/styles';
 
 const UserContainer = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-24']};
+  flex: 1.5;
   @media screen and (max-width: 768px) {
     .skeletonImg {
       width: 3.3125rem;

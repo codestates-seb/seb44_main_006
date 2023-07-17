@@ -1,7 +1,15 @@
 import { styled } from 'styled-components';
 
+import SkeletonLocationContainer from './SkeletonLocationContainer';
+
 import cssToken from '../../../styles/cssToken';
 import { FlexDiv, SkeletonDiv } from '../../../styles/styles';
+import { TitleDiv } from '../../skeleton/SkeletonContentCard';
+
+const Wrapper = styled(FlexDiv)`
+  flex-direction: column;
+  row-gap: ${cssToken.SPACING['gap-20']};
+`;
 
 const UserContainer = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-24']};
@@ -49,15 +57,29 @@ const DateDiv = styled(SkeletonDiv)`
   height: 1.5rem;
 `;
 
+const ScheduleDiv = styled(FlexDiv)`
+  flex-direction: column;
+  flex: 1;
+  height: 60vh;
+  overflow: auto;
+  row-gap: ${cssToken.SPACING['gap-12']};
+`;
+
 const SkeletonUserContainer = () => {
   return (
-    <UserContainer>
-      <UserImg className="skeletonImg" />
-      <UserWrapper className="skeletonUserWrapper">
-        <NickNameDiv className="skeletonNickName" />
-        <DateDiv className="skeletonDate" />
-      </UserWrapper>
-    </UserContainer>
+    <Wrapper>
+      <UserContainer>
+        <UserImg className="skeletonImg" />
+        <UserWrapper className="skeletonUserWrapper">
+          <NickNameDiv className="skeletonNickName" />
+          <DateDiv className="skeletonDate" />
+        </UserWrapper>
+      </UserContainer>
+      <ScheduleDiv>
+        <TitleDiv className="skeletonMapTitle" />
+        <SkeletonLocationContainer length={3} />
+      </ScheduleDiv>
+    </Wrapper>
   );
 };
 

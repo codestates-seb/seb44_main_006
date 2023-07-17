@@ -28,6 +28,7 @@ import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMa
 import SkeletonUserContainer from '../../components/community/skeleton/SkeletonUserContainer';
 import notClient from '../../assets/notUserImg.svg';
 import LocationInfoWrapper from '../../components/community/detail/LocationInfoWrapper';
+import SkeletonDetail from '../../components/community/skeleton/SkeletonDetail';
 
 const DetailOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
@@ -204,9 +205,9 @@ const DetailPage = () => {
   return (
     <DetailOutsideWrap>
       <MainDiv>
+        {isLoading && <SkeletonDetail />}
         <MainTextInfoDiv>
           <ContentInfoDiv>
-            {isLoading && <SkeletonUserContainer />}
             {detailData && userInfo && (
               <InfoDiv>
                 <UserInfoMy
@@ -232,7 +233,6 @@ const DetailPage = () => {
             />
           )}
         </MainTextInfoDiv>
-        {isLoading && <SkeletonMapContainer />}
         {postInfo.destinationList && (
           <MapContainer destinationList={postInfo.destinationList} />
         )}
