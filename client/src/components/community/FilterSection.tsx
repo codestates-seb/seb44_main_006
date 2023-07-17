@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { throttle } from 'lodash';
 import { AxiosError } from 'axios';
@@ -9,13 +9,11 @@ import { AxiosError } from 'axios';
 import NoResults from './NoResults';
 import DeleteButton from './DeleteButton';
 import SkeletonCardContainer from './skeleton/SkeletonCardContainer';
-import FilterTab from './FilterTab';
 import FilterTabDiv from './FilterTabDiv';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
-import { CardWrapper, FlexDiv } from '../../styles/styles';
-import { Props } from '../../types/type';
+import { CardWrapper } from '../../styles/styles';
 import { CommunitySummaryT, InfiniteScrollT } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
 import useUserInfo from '../../querys/useUserInfo';
@@ -35,16 +33,18 @@ const FilterWrapper = styled.div`
   align-items: center;
   padding: ${cssToken.SPACING['gap-50']};
   padding-top: 0px;
-
   @media screen and (max-width: 768px) {
     padding: ${cssToken.SPACING['gap-20']};
     padding-top: 0px;
   }
 `;
 
+// Todo 이전 데이터 리렌더링 방지하기
 const FilterSection = () => {
   const [ref, inView] = useInView();
+  const scrollCnt = useRef<number>(0);
   const navigate = useNavigate();
+  const [prevData, setPrevData] = useState<[]>();
   const selectedTab = useSelector(
     (state: RootState) => state.communityBasic.selectedTab
   );
@@ -52,7 +52,6 @@ const FilterSection = () => {
     (state: RootState) => state.communityBasic.searchKeyword
   );
   const { userData } = useUserInfo();
-
   const {
     data: communityData,
     fetchNextPage,
@@ -90,6 +89,7 @@ const FilterSection = () => {
   useEffect(() => {
     if (inView && hasNextPage) {
       fetcNexthData();
+      scrollCnt.current += 1;
     }
   }, [inView, hasNextPage, fetcNexthData]);
 
@@ -99,6 +99,7 @@ const FilterSection = () => {
       {communityData &&
         communityData.pages[0].communityListData.length === 0 && <NoResults />}
       <CardWrapper>
+        {!communityData && <SkeletonCardContainer length={6} />}
         {communityData &&
           communityData.pages.map((datas: InfiniteScrollT) =>
             datas.communityListData.map((post: CommunitySummaryT) => {

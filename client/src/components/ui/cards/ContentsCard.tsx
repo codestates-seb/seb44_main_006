@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { memo } from 'react';
 
 import { CardCommonBox } from './Card.styled';
 
@@ -211,4 +212,4 @@ const ContensCard = ({
   );
 };
 
-export default ContensCard;
+export default memo(ContensCard);
