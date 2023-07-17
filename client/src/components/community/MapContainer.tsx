@@ -17,6 +17,9 @@ const MapDiv = styled.div`
   flex: 3;
   @media screen and (max-width: 768px) {
     margin-left: 0px;
+    > section {
+      height: 60vh;
+    }
   }
 `;
 
