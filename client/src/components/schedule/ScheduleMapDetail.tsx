@@ -66,9 +66,14 @@ const Btnbox = styled.div`
 `;
 
 const TopWrap = styled(FlexDiv)`
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  flex-direction: column-reverse;
+  gap: 10px;
 
+  > h1 {
+    flex: 2;
+  }
   @media (max-width: 768px) {
     h1 {
       font-size: 1.2rem;
@@ -79,7 +84,8 @@ const TopWrap = styled(FlexDiv)`
 const DataInfoText = styled(FlexDiv)`
   font-size: 0.8125rem;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  width: 100%;
   gap: 0.1875rem;
   > svg {
     width: 14px;
@@ -169,6 +175,7 @@ const ScheduleMapDetail = ({
               styles={{
                 size: '1.5rem',
                 color: cssToken.COLOR.black,
+                gap: '5px',
               }}
             >
               {title || ''}
