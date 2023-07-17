@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
 
 import { IScheduleListItem, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
@@ -97,7 +96,7 @@ const ScheduleRegister = () => {
     const response = await GetCourse({
       courseId,
     });
-    const { destinationList }: PostReadT = response.data as PostReadT;
+    const { destinationList } = response.data as PostReadT;
     dispatch(scheduleListActions.updateList(destinationList));
   };
 

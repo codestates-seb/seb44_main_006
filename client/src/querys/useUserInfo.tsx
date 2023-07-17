@@ -11,12 +11,13 @@ export type UserInfoT = {
   myBookmarkCount: number; // 내가 즐겨찾기한 커뮤니티 글의 개수
 };
 
-const useUserInfo = () => {
+const useUserInfo = (enabled: boolean) => {
   const { data: userData } = useQuery({
     queryKey: ['user'],
     queryFn: GetUserInfo,
     refetchOnWindowFocus: false,
     select: (data: { data: UserInfoT }) => data.data,
+    enabled,
   });
   return {
     userData,

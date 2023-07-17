@@ -1,14 +1,21 @@
 import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useQueryClient } from '@tanstack/react-query';
+import { useDispatch, useSelector } from 'react-redux';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
 
 import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
 import useLoginToggleModal from '../hooks/useLoginToggleModal';
+import { GetUserInfo } from '../apis/api';
+import { PostReadT, UserInfoT } from '../types/apitype';
+import showToast from '../utils/showToast';
+import useMovePage from '../hooks/useMovePage';
+import { setUserOAuthActions } from '../store/userAuth-slice';
+import useUserInfo from '../querys/useUserInfo';
 
 const MainContainer = styled.main`
   cursor: none;
@@ -28,7 +35,7 @@ const SectionBox = styled.section`
   justify-content: center;
 `;
 
-const MainLink = styled(Link)`
+const MainLink = styled.button`
   cursor: none;
   text-decoration: none;
   outline: none;
@@ -71,7 +78,7 @@ const CommunitySection = styled(SectionBox)`
   height: 100vh;
   padding: 0 30px;
 
-  > a {
+  > button {
     color: ${cssToken.COLOR['point-500']};
     &:hover::after {
       content: '커뮤니티';
@@ -98,7 +105,7 @@ const ScheduleSection = styled(SectionBox)`
     transition: 1s;
   }
 
-  > a {
+  > button {
     position: relative;
     z-index: 2;
     color: ${cssToken.COLOR.white};
@@ -120,8 +127,20 @@ const Main = () => {
   const queryClient = useQueryClient();
   const [isHovered, setIsHovered] = useState<boolean>(true);
   const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
+  const goToRegister = useMovePage('/register');
+  const goToCommunity = useMovePage('/community');
+
+  const { userData: userInfo } = useUserInfo(!!isLoggedIn);
 
   const LogintoggleModal = useLoginToggleModal();
+
+  const checkScheduleCount = () => {
+    if (userInfo && userInfo.myCourseCount > 30) {
+      showToast('warning', `일정은 30개를 초과해서 만드실 수 없습니다!`)();
+      return;
+    }
+    goToRegister();
+  };
 
   useEffect(() => {
     const getUserData = async () => {
@@ -151,7 +170,7 @@ const Main = () => {
       <CursorPointer isMouseHover={isHovered} />
       <CommunitySection>
         <MainLink
-          to="/community"
+          onClick={goToCommunity}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -160,8 +179,7 @@ const Main = () => {
       </CommunitySection>
       <ScheduleSection>
         <MainLink
-          onClick={isLoggedIn ? undefined : LogintoggleModal}
-          to={isLoggedIn ? '/register' : '/'}
+          onClick={isLoggedIn ? checkScheduleCount : LogintoggleModal}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
