@@ -15,6 +15,7 @@ import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
 import SettingIcon from '../../assets/SettingIcon';
 import useUserInfo from '../../querys/useUserInfo';
+import SkeletonUserInfoContainer from '../skeleton/SkeletonUserInfo';
 
 interface IsNickNameT {
   toggleNickname?: boolean;
@@ -25,6 +26,7 @@ const UserInfoContainer = styled.section`
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 30px;
 `;
 
@@ -101,6 +103,7 @@ const FormBox = styled.form<IsNickNameT>`
 const UserInfoBox = () => {
   const { userData } = useUserInfo();
   const [toggleNickname, setToggleNickname] = useState<boolean>(false);
+  const [errMsg, setErrMsg] = useState<string>('');
   const [isName, setIsName] = useState<boolean>(true);
   const memNicknameRef = useRef<HTMLInputElement>(null);
   const navigator = useNavigate();
@@ -134,6 +137,10 @@ const UserInfoBox = () => {
     dispatch(setUserOAuthActions.paintMemNickname(e.target.value));
     if (e.target.value.length < 2 || e.target.value.length > 10) {
       setIsName(false);
+      setErrMsg('글자 수를 만족하지 못했습니다.');
+    } else if (e.target.value.includes('탈퇴한 사용자')) {
+      setIsName(false);
+      setErrMsg('사용할 수 없는 닉네임입니다.');
     } else {
       setIsName(true);
     }
@@ -154,69 +161,77 @@ const UserInfoBox = () => {
 
   return (
     <UserInfoContainer>
-      <ImgBox>
-        <UserInfoMy
-          styles={{
-            size: '10.75rem',
-          }}
-          src={userData?.memberImageUrl}
-        />
-        <SettingButton onClick={gotoSetting}>
-          <SettingIcon />
-        </SettingButton>
-      </ImgBox>
-      <RightWrap>
-        <UserNicknameBox>
-          {!toggleNickname && userData ? (
-            <>
-              <UserNickname>{userData?.memberNickname}</UserNickname>
-              <WriteBtn
-                toggleNickname={toggleNickname}
-                onClick={handleOpenNickname}
-              >
-                <Pen
-                  style={{
-                    iconWidth: 20,
-                    iconHeight: 20,
-                    color: '#000',
-                  }}
-                />
-              </WriteBtn>
-            </>
-          ) : (
-            <FormBox onSubmit={paintNickname}>
-              <InputContainer
-                type="title"
-                minLength={2}
-                maxLength={10}
-                onChange={onChangeName}
-                ref={memNicknameRef}
-                isValidate={isName}
-                styles={{
-                  width: '100%',
-                }}
-              />
-              <WriteBtn isValidate={isName} toggleNickname={toggleNickname}>
-                <Pen
-                  style={{
-                    iconWidth: 20,
-                    iconHeight: 20,
-                    color: '#000',
-                  }}
-                />
-              </WriteBtn>
-            </FormBox>
-          )}
-        </UserNicknameBox>
-        <SkyBlueButton
-          onClick={gotoRegister}
-          height="25px"
-          brradius={`${cssToken.BORDER['rounded-tag']}`}
-          disabled={userData && userData?.myCourseCount > 30}
-        >
-          일정 등록
-        </SkyBlueButton>
-      </RightWrap>
+      {userData && userData ? (
+        <>
+          <ImgBox>
+            <UserInfoMy
+              styles={{
+                size: '10.75rem',
+              }}
+              src={userData?.memberImageUrl}
+            />
+            <SettingButton onClick={gotoSetting}>
+              <SettingIcon />
+            </SettingButton>
+          </ImgBox>
+          <RightWrap>
+            <UserNicknameBox>
+              {!toggleNickname && userData ? (
+                <>
+                  <UserNickname>{userData?.memberNickname}</UserNickname>
+                  <WriteBtn
+                    toggleNickname={toggleNickname}
+                    onClick={handleOpenNickname}
+                  >
+                    <Pen
+                      style={{
+                        iconWidth: 20,
+                        iconHeight: 20,
+                        color: '#000',
+                      }}
+                    />
+                  </WriteBtn>
+                </>
+              ) : (
+                <FormBox onSubmit={paintNickname}>
+                  <InputContainer
+                    type="title"
+                    textType="nickName"
+                    text={errMsg}
+                    minLength={2}
+                    maxLength={10}
+                    onChange={onChangeName}
+                    ref={memNicknameRef}
+                    isValidate={isName}
+                    styles={{
+                      width: '100%',
+                    }}
+                  />
+                  <WriteBtn isValidate={isName} toggleNickname={toggleNickname}>
+                    <Pen
+                      style={{
+                        iconWidth: 20,
+                        iconHeight: 20,
+                        color: '#000',
+                      }}
+                    />
+                  </WriteBtn>
+                </FormBox>
+              )}
+            </UserNicknameBox>
+            <SkyBlueButton
+              onClick={gotoRegister}
+              height="25px"
+              brradius={`${cssToken.BORDER['rounded-tag']}`}
+              disabled={userData && userData?.myCourseCount >= 30}
+            >
+              일정 등록
+            </SkyBlueButton>
+          </RightWrap>
+        </>
+      ) : (
+        <SkeletonUserInfoContainer />
+      )}
     </UserInfoContainer>
   );
 };

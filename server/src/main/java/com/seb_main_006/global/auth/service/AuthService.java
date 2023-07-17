@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -82,6 +83,7 @@ public class AuthService {
      */
     public MemberInfoResponseDto getMemberInfo(String accessToken) {
         Member member = new Member();
+        boolean isAdmin = false;
 
         if (accessToken != null && !accessToken.equals("")) {
             try {
@@ -92,8 +94,13 @@ public class AuthService {
             }
         }
 
+        if(member.getRoles().size() != 0){
+            List<String> roleList = member.getRoles();
+           isAdmin = roleList.contains("ADMIN");
+        }
+
         int myCourseCount = member.getCourses().size();
         int myBookmarkCount = bookmarkService.getBookmarkCount(member);
-        return MemberInfoResponseDto.of(member, myCourseCount, myBookmarkCount);
+        return MemberInfoResponseDto.of(member, myCourseCount, myBookmarkCount, isAdmin);
     }
 }

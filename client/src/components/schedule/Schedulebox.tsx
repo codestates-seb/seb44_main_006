@@ -64,7 +64,7 @@ const ScheduleTitle = styled.div`
   justify-content: space-between;
 `;
 
-const ScheduleBox = () => {
+const ScheduleBox = ({ ismodify }: { ismodify: string }) => {
   const scroll = useSelector((state: RootState) => state.marker.scroll);
   const scrollRef = useRef<HTMLElement>(null);
   const [choiceCategory, setChoiceCategory] = useState(true);
@@ -107,7 +107,7 @@ const ScheduleBox = () => {
                 color: cssToken.COLOR.black,
               }}
             >
-              일정 등록
+              {ismodify === 'true' ? '일정 수정' : '일정 등록'}
             </SubTitle>
           </ScheduleTitle>
 

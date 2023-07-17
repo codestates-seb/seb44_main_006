@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Suspense, lazy, useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
 
 import { IScheduleListItem, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
@@ -17,6 +19,10 @@ import { placeListActions } from '../../store/placeList-slice';
 import BottomSheet from '../../components/ui/bottomsheet/BottomSheet';
 import { selectedIdActions } from '../../store/selectedId-slice';
 import useValidEnter from '../../hooks/useValidEnter';
+import useModifyCheck from '../../hooks/useModifyCheck';
+import { GetCourse } from '../../apis/api';
+import { PostReadT } from '../../types/apitype';
+import { scheduleListActions } from '../../store/scheduleList-slice';
 
 const KakaoMap = lazy(() => import('../../components/map/KakaoMap'));
 const Marker = lazy(() => import('../../components/map/Marker'));
@@ -63,6 +69,8 @@ const FloatButton = styled.button<{ bgcolor: string; fontcolor?: string }>`
 
 const ScheduleRegister = () => {
   const checkValidEnter = useValidEnter();
+  const { isModify, courseId } = useModifyCheck();
+
   const [isCancel, setIsCancel] = useState<boolean>(false);
 
   const isSave = useSelector((state: RootState) => state.overlay.isOpen);
@@ -83,8 +91,23 @@ const ScheduleRegister = () => {
     setIsCancel(true);
   };
 
+  const dispatchDestinationList = async () => {
+    const response = await GetCourse({
+      courseId,
+    });
+    const { destinationList }: PostReadT = response.data as PostReadT;
+    dispatch(scheduleListActions.updateList(destinationList));
+  };
+
+  useQuery({
+    queryKey: ['modify'],
+    queryFn: dispatchDestinationList,
+    refetchOnWindowFocus: false,
+    enabled: isModify === 'true',
+  });
+
   useEffect(() => {
-    checkValidEnter();
+    checkValidEnter(); // 로그인 상태 아닐 때 url을 직접 검색해서 들어오면 메인으로 돌려보냄
   }, [checkValidEnter]);
 
   useEffect(() => {
@@ -94,11 +117,13 @@ const ScheduleRegister = () => {
 
   return (
     <Wrapper>
-      {isSave && <ScheduleCreateModal />}
+      {isSave && (
+        <ScheduleCreateModal ismodify={isModify} courseId={courseId} />
+      )}
       {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 
       <BottomSheet>
-        <ScheduleBox />
+        <ScheduleBox ismodify={isModify} />
         {isDetailShow && <RegisterDetail detailItem={detailItem} />}
       </BottomSheet>
 
@@ -144,7 +169,7 @@ const ScheduleRegister = () => {
               dispatch(overlayActions.toggleOverlay());
           }}
         >
-          <div>저장하기</div>
+          <div>{isModify === 'true' ? '수정하기' : '저장하기'}</div>
         </FloatButton>
       </FixedDiv>
     </Wrapper>
