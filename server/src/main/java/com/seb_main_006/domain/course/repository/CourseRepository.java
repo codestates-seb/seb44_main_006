@@ -27,7 +27,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
                 "order by c.courseLikeCount desc, p.postCreatedAt desc ")
         Page<Course> findAllByPostedOrderByLikeCount(PageRequest pageRequest);
 
-        @Query("select distinct c from Course c join c.post p join p.postTagsInPost pt join pt.tag t " +
+        @Query("select c from Course c join c.post p join p.postTagsInPost pt join pt.tag t " +
                 "where c.isPosted = true and (c.courseTitle like %:inputWord% or t.tagName like %:inputWord% or p.postContent like %:inputWord%) ")
         Set<Course> searchCourseOrderByUpdatedAt(@Param("inputWord") String inputWord);
 
