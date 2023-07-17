@@ -4,26 +4,27 @@ import { useNavigate } from 'react-router-dom';
 import { memo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { throttle } from 'lodash';
+import { AxiosError } from 'axios';
 
 import NoResults from './NoResults';
 import DeleteButton from './DeleteButton';
 import SkeletonCardContainer from './skeleton/SkeletonCardContainer';
+import FilterTab from './FilterTab';
+import FilterTabDiv from './FilterTabDiv';
 
 import ContensCard from '../ui/cards/ContentsCard';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
-import {
-  CommunitySummaryT,
-  FetchNextPageT,
-  InfiniteScrollT,
-} from '../../types/apitype';
+import { CommunitySummaryT, InfiniteScrollT } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
 import useUserInfo from '../../querys/useUserInfo';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import { RootState } from '../../store';
 import thousandTok from '../../utils/thousandTok';
+import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
+import { LIMIT } from '../../utils/constant/constant';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -40,42 +41,49 @@ const FilterWrapper = styled.div`
     padding-top: 0px;
   }
 `;
-const FilterContainer = styled(FlexDiv)`
-  margin: ${cssToken.SPACING['gap-20']};
-  column-gap: ${cssToken.SPACING['gap-16']};
-  width: ${cssToken.WIDTH['w-full']};
-  justify-content: center;
 
-  @media screen and (max-width: 768px) {
-    margin: 0px;
-  }
-`;
-
-const FilterSection = ({
-  children,
-  fetchNextPage,
-  hasNextPage,
-  isFetching,
-}: {
-  children: Props['children'];
-  hasNextPage: undefined | boolean;
-  fetchNextPage: FetchNextPageT;
-  isFetching: boolean;
-}) => {
+const FilterSection = () => {
   const [ref, inView] = useInView();
-  const { userData } = useUserInfo();
-  const communityData = useSelector(
-    (state: RootState) => state.communityBasic.communityList
-  );
-
   const navigate = useNavigate();
+  const selectedTab = useSelector(
+    (state: RootState) => state.communityBasic.selectedTab
+  );
+  const tagName = useSelector(
+    (state: RootState) => state.communityBasic.searchKeyword
+  );
+  const { userData } = useUserInfo();
+
+  const {
+    data: communityData,
+    fetchNextPage,
+    hasNextPage,
+    error,
+    isFetchingNextPage,
+  } = useInfiniteScrollQuery({
+    limit: LIMIT,
+    tagName: tagName || '',
+    sort: selectedTab,
+  });
+
+  if (error) {
+    const { response } = error as AxiosError;
+    if (response) {
+      navigate('/error', {
+        state: {
+          status: response.status,
+          errormsg: response.statusText,
+        },
+      });
+    }
+  }
+
   const moveToDetail = (postId: number | undefined) => {
     if (postId) navigate(`/community/${postId}`);
   };
 
   const fetcNexthData = throttle(() => {
-    fetchNextPage().catch((error) => {
-      throw error;
+    fetchNextPage().catch((err) => {
+      throw err;
     });
   }, 1000);
 
@@ -87,13 +95,12 @@ const FilterSection = ({
 
   return (
     <FilterWrapper>
-      <FilterContainer>{children}</FilterContainer>
-      {communityData && communityData[0].communityListData.length === 0 && (
-        <NoResults />
-      )}
+      <FilterTabDiv />
+      {communityData &&
+        communityData.pages[0].communityListData.length === 0 && <NoResults />}
       <CardWrapper>
         {communityData &&
-          communityData.map((datas: InfiniteScrollT) =>
+          communityData.pages.map((datas: InfiniteScrollT) =>
             datas.communityListData.map((post: CommunitySummaryT) => {
               if (post.courseId !== -1)
                 return (
@@ -124,7 +131,7 @@ const FilterSection = ({
               return <SkeletonCardContainer length={6} />;
             })
           )}
-        {isFetching && <SkeletonCardContainer length={6} />}
+        {isFetchingNextPage && <SkeletonCardContainer length={6} />}
       </CardWrapper>
       {communityData && <div ref={ref} />}
     </FilterWrapper>
