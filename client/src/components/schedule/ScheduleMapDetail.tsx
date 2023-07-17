@@ -22,6 +22,7 @@ import useMovePage from '../../hooks/useMovePage';
 import CalenderIcon from '../../assets/CalendarIcon';
 import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
+import getLoginStatus from '../../utils/getLoginStatus';
 
 const ScheduleDiv = styled(FlexDiv)`
   left: 0;
@@ -129,6 +130,7 @@ const ScheduleMapDetail = ({
 }) => {
   const newCenter = useSelector((state: RootState) => state.marker.center);
   const prevCenter = useSelector((state: RootState) => state.marker.prevCenter);
+  const isLogin = getLoginStatus();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const gotoMain = useMovePage('/');
@@ -194,14 +196,16 @@ const ScheduleMapDetail = ({
             ))}
           </LocationCardWrapper>
           <Btnbox>
-            <GrayButton
-              width="100%"
-              height="50px"
-              brradius="10px"
-              onClick={gotoBack}
-            >
-              뒤로가기
-            </GrayButton>
+            {isLogin && (
+              <GrayButton
+                width="100%"
+                height="50px"
+                brradius="10px"
+                onClick={gotoBack}
+              >
+                뒤로가기
+              </GrayButton>
+            )}
             <SkyBlueButton
               width="100%"
               height="50px"
