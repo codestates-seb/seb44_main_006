@@ -1,12 +1,18 @@
 import { styled } from 'styled-components';
+import { useState } from 'react';
 
 import { LoginState } from '../../store/userAuth-slice';
 import cssToken from '../../styles/cssToken';
 import WhiteButton from '../ui/button/WhiteButton';
-import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
+import UserInfoMy from '../ui/UserInfoPfp';
+import useUserInfo from '../../querys/useUserInfo';
+
+type NavT = {
+  ispath?: string;
+};
 
 const BtnBox = styled.nav`
   display: flex;
@@ -16,66 +22,140 @@ const BtnBox = styled.nav`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.2rem 0.95rem 0.95rem;
+    padding: 1.1rem 0.95rem 0.95rem;
     white-space: nowrap;
     transition: ${cssToken.TRANSITION.basic};
-    font-size: 14px;
+    font-size: 13px;
+  }
+`;
+
+const MenuWrapper = styled.div`
+  position: relative;
+`;
+
+const MenuToggleBtn = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+
+  > div {
+    border: 2px solid #fff;
+  }
+
+  &:hover span {
+    border-top: 8px solid ${cssToken.COLOR['gray-500']};
+  }
+`;
+
+const ArrowFigure = styled.span<NavT>`
+  width: 0;
+  height: 0;
+  border-bottom: 0 solid transparent;
+  border-top: ${(props) =>
+    props?.ispath === 'mypage'
+      ? `8px solid ${cssToken.COLOR['gray-900']}`
+      : `8px solid ${cssToken.COLOR['gray-300']}`};
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+
+  &.change_figure {
+    border-top: 8px solid ${cssToken.COLOR['gray-900']};
+  }
+`;
+
+const MenuUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+  width: 150px;
+  position: absolute;
+  top: 100%;
+  margin-top: 0.7rem;
+  right: 0px;
+  background: #fff;
+  overflow: hidden;
+`;
+
+const Menuli = styled.li`
+  width: 100%;
+  &:hover {
+    background: #f8f8f8;
+  }
+`;
+
+const MenuButton = styled.button`
+  cursor: pointer;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: 0.3s;
+
+  &:hover {
+    color: ${cssToken.COLOR['point-900']};
   }
 `;
 
 const Nav = ({
   ispath,
   isLoggedIn,
+  scrollPosition,
 }: {
   ispath: string;
   isLoggedIn: LoginState['isLogin'];
+  scrollPosition: number;
 }) => {
   const gotoCommunity = useMovePage('/community');
   const gotoMypage = useMovePage('/mypage');
+  const gotoSetting = useMovePage('/setting');
   const LogintoggleModal = useLoginToggleModal();
   const LogoutoggleModal = useLogioutoggleModal();
+  const { userData } = useUserInfo(!!isLoggedIn);
+  const [isMenuToggle, setIsMenuToggle] = useState<boolean>(false);
+
+  const handleMenuToggle = () => {
+    setIsMenuToggle((prev) => !prev);
+  };
 
   return (
     <BtnBox>
-      {!ispath && isLoggedIn && (
-        // 메인 페이지인 경우
-        <>
-          <WhiteButton
-            onClick={LogoutoggleModal}
-            height="25px"
-            brradius={`${cssToken.BORDER['rounded-tag']}`}
-          >
-            로그아웃
-          </WhiteButton>
-          <SkyBlueButton
-            onClick={gotoMypage}
-            height="25px"
-            brradius={`${cssToken.BORDER['rounded-tag']}`}
-          >
-            마이페이지
-          </SkyBlueButton>
-        </>
+      {isLoggedIn && (
+        <MenuWrapper>
+          <MenuToggleBtn onClick={handleMenuToggle}>
+            <UserInfoMy
+              styles={{
+                size: '2.5rem',
+              }}
+              src={userData && userData?.memberImageUrl}
+            />
+            <ArrowFigure
+              className={scrollPosition < 100 ? '' : 'change_figure'}
+              ispath={ispath}
+            />
+          </MenuToggleBtn>
+          {isMenuToggle && (
+            <MenuUl onMouseLeave={handleMenuToggle}>
+              <Menuli>
+                <MenuButton onClick={gotoMypage}>MY</MenuButton>
+              </Menuli>
+              <Menuli>
+                <MenuButton onClick={gotoCommunity}>커뮤니티</MenuButton>
+              </Menuli>
+              <Menuli>
+                <MenuButton onClick={gotoSetting}>설정</MenuButton>
+              </Menuli>
+              <Menuli>
+                <MenuButton onClick={LogoutoggleModal}>로그아웃</MenuButton>
+              </Menuli>
+            </MenuUl>
+          )}
+        </MenuWrapper>
       )}
-      {ispath && isLoggedIn && (
-        // 메인 페이지가 아닌 나머지
-        <>
-          <WhiteButton
-            onClick={LogoutoggleModal}
-            height="25px"
-            brradius={`${cssToken.BORDER['rounded-tag']}`}
-          >
-            로그아웃
-          </WhiteButton>
-          <SkyBlueButton
-            onClick={ispath === 'mypage' ? gotoCommunity : gotoMypage}
-            height="25px"
-            brradius={`${cssToken.BORDER['rounded-tag']}`}
-          >
-            {ispath === 'mypage' ? '커뮤니티' : '마이페이지'}
-          </SkyBlueButton>
-        </>
-      )}
-      {ispath && !isLoggedIn && (
+      {!isLoggedIn && (
         <WhiteButton
           onClick={LogintoggleModal}
           height="25px"
