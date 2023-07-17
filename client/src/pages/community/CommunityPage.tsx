@@ -18,9 +18,13 @@ import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 import { LIMIT } from '../../utils/constant/constant';
 import { communityBasicActions } from '../../store/communitybasic-slice';
 import scrollToTop from '../../utils/scrollToTop';
+import head from '../../assets/head.jpeg';
 
 const Wrapper = styled(FlexDiv)`
-  margin-top: 1.875rem;
+  background-image: url(${head});
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-top: 1rem;
   width: 100%;
   flex-direction: column;
   align-items: center;
@@ -31,6 +35,10 @@ const Wrapper = styled(FlexDiv)`
     display: flex;
     justify-content: center;
     width: 100%;
+
+    > div {
+      box-shadow: 0rem 0.25rem 1.875rem rgb(0, 0, 0, 0.25);
+    }
   }
 
   @media screen and (max-width: 768px) {
