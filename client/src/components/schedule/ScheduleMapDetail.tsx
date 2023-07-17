@@ -23,6 +23,7 @@ import CalenderIcon from '../../assets/CalendarIcon';
 import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
 import getLoginStatus from '../../utils/getLoginStatus';
+import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 
 const ScheduleDiv = styled(FlexDiv)`
   left: 0;
@@ -133,10 +134,13 @@ const ScheduleMapDetail = ({
   const isLogin = getLoginStatus();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocationEndpoint();
   const gotoMain = useMovePage('/');
   const gotoBack = () => {
     navigate(-1);
   };
+
+  console.log(location)
 
   useEffect(() => {
     dispatch(
@@ -172,7 +176,7 @@ const ScheduleMapDetail = ({
 
             <DataInfoText>
               <CalenderIcon />
-              {formatData(courseDday)}
+              {formatData(courseDday, location)}
             </DataInfoText>
           </TopWrap>
           <Text
