@@ -2,6 +2,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { useEffect } from 'react';
 
 import { UserQAuthInfo, setUserOAuthActions } from '../../store/userAuth-slice';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
@@ -40,12 +41,35 @@ const MemAccountModal = () => {
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('isLogin');
       gotoMain();
-      return window.location.reload();
+      dispatch(setUserOAuthActions.closeLogoutModal());
     },
     onError(error) {
       throw error;
     },
   });
+
+  useEffect(() => {
+    if (accessToken && refreshToken) {
+      localStorage.setItem('accessToken', `Bearer ${accessToken}`);
+      localStorage.setItem('refreshToken', `${refreshToken}`);
+      localStorage.setItem('isLogin', JSON.stringify(true));
+      if (localStorage.getItem('isLogin')) {
+        dispatch(setUserOAuthActions.setIsLogin(true));
+      }
+      gotoMain();
+    }
+  }, [accessToken, dispatch, gotoMain, refreshToken]);
+
+  useEffect(() => {
+    if (statusText && messageText) {
+      navigate('/error', {
+        state: {
+          status: statusText,
+          errormsg: messageText,
+        },
+      });
+    }
+  }, [messageText, navigate, statusText]);
 
   const handleLogout = () => {
     dispatch(setUserOAuthActions.setIsLogin(false));
@@ -57,27 +81,16 @@ const MemAccountModal = () => {
     queryFn: () => GetUserInfo(),
     onSuccess: (data) => {
       dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
-      if (accessToken && refreshToken) {
-        localStorage.setItem('accessToken', `Bearer ${accessToken}`);
-        localStorage.setItem('refreshToken', `${refreshToken}`);
-        localStorage.setItem('isLogin', JSON.stringify(true));
-        if (localStorage.getItem('isLogin')) {
-          dispatch(setUserOAuthActions.setIsLogin(true));
-        }
-        gotoMain();
-      }
     },
     onError: (error) => {
-      if (accessToken) {
-        const { response } = error as AxiosError;
-        if (response && statusText && messageText) {
-          navigate('/error', {
-            state: {
-              status: statusText,
-              errormsg: messageText,
-            },
-          });
-        }
+      const { response } = error as AxiosError;
+      if (response && statusText && messageText) {
+        navigate('/error', {
+          state: {
+            status: statusText,
+            errormsg: messageText,
+          },
+        });
       }
     },
   });

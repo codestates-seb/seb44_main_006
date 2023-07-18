@@ -131,7 +131,13 @@ const Modal = ({
   return ReactDOM.createPortal(
     <ModalWrapper className={className ? className[0] : ''}>
       <Backdrop onClick={backdropCallback} />
-      <ModalContainer className={className ? className[1] : ''} {...styles}>
+      <ModalContainer
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          e.stopPropagation();
+        }}
+        className={className ? className[1] : ''}
+        {...styles}
+      >
         {children}
       </ModalContainer>
     </ModalWrapper>,

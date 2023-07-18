@@ -164,7 +164,6 @@ const UserSetting = () => {
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('isLogin');
       gotoMain();
-      return window.location.reload();
     },
     onError(error) {
       throw error;
