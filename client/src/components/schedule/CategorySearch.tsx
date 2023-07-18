@@ -78,7 +78,12 @@ const CategorySearch = () => {
         <Text styles={{ weight: 500 }}>카테고리 선택</Text>
         <CategoryContainer dispatch={dispatch} />
         <ButtonWrapper>
-          <Button onClick={resetChoice}>초기화</Button>
+          <Button
+            styles={{ color: `${cssToken.COLOR.black}` }}
+            onClick={resetChoice}
+          >
+            초기화
+          </Button>
           <SkyBlueButton
             width="76px"
             height="35px"

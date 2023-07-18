@@ -122,7 +122,6 @@ const FormBox = styled.form<IsNickNameT>`
   @media (max-width: 768px) {
     > p {
       height: 2.3rem;
-      width: 2.3rem;
     }
   }
 

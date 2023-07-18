@@ -48,6 +48,8 @@ const Btnbox = styled.div`
   @media (max-width: 768px) {
     .gray {
       width: 100%;
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 `;
