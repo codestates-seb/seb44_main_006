@@ -7,7 +7,6 @@ import Text from '../ui/text/Text';
 const Div = styled(FlexDiv)`
   width: 100%;
   height: 100vh;
-  background-color: ${cssToken.COLOR['gray-300']};
   flex-direction: column;
   align-items: center;
   row-gap: ${cssToken.SPACING['gap-40']};

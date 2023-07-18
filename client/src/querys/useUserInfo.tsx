@@ -9,6 +9,7 @@ export type UserInfoT = {
   memberImageUrl: string; // 회원 이미지 URL
   myCourseCount: number; // 내가 작성한 코스의 개수
   myBookmarkCount: number; // 내가 즐겨찾기한 커뮤니티 글의 개수
+  isAdmin: boolean;
 };
 
 const useUserInfo = (enabled?: boolean) => {

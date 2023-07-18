@@ -27,6 +27,10 @@ const ContentDiv = styled(SkeletonDiv)`
   flex: 1;
   width: ${cssToken.WIDTH['w-full']};
   height: 4.5rem;
+
+  @media screen and (max-width: 768px) {
+    height: 3rem;
+  }
 `;
 
 const SkeletonLocationCard = () => {

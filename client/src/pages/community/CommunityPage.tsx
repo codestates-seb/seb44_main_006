@@ -1,21 +1,15 @@
 import { styled } from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
 
 import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
 import { FlexDiv } from '../../styles/styles';
 import FilterSection from '../../components/community/FilterSection';
-import FilterTab from '../../components/community/FilterTab';
-import useHandleTab from '../../hooks/useHandleTab';
 import CircleButton from '../../components/ui/button/CircleButton';
 import Pen from '../../assets/Pen';
 import useMovePage from '../../hooks/useMovePage';
 import getLoginStatus from '../../utils/getLoginStatus';
-import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
-import { LIMIT } from '../../utils/constant/constant';
 import { communityBasicActions } from '../../store/communitybasic-slice';
 import scrollToTop from '../../utils/scrollToTop';
 import head from '../../assets/head.jpeg';
@@ -96,30 +90,17 @@ const SearchDiv = styled(FlexDiv)`
 `;
 
 const CommunityPage = () => {
-  const navigate = useNavigate();
   const goToSelect = useMovePage('/community/select');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isLogin = getLoginStatus();
-  const { selectTab, setTab } = useHandleTab(); // 전역
-  const [tagName, setTagName] = useState<string>(''); // 전역
   const dispatch = useDispatch();
-  // fitersection 페이지에서 인피니트 훅 불러오기
-  const { data, fetchNextPage, hasNextPage, error, isFetchingNextPage } =
-    useInfiniteScrollQuery({
-      limit: LIMIT,
-      tagName: tagName || '',
-      sort: selectTab,
-    });
 
   useEffect(() => {
     scrollToTop();
-  }, []);
-
-  useEffect(() => {
-    if (data) {
-      dispatch(communityBasicActions.setData(data?.pages));
-    }
-  }, [data, dispatch]);
+    return () => {
+      dispatch(communityBasicActions.reset());
+    };
+  }, [dispatch]);
 
   const SearchPost = (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
@@ -127,21 +108,9 @@ const CommunityPage = () => {
     e.preventDefault();
     if (searchInputRef.current) {
       const keyword = searchInputRef.current?.value;
-      setTagName(keyword);
+      dispatch(communityBasicActions.setSearch(keyword));
     }
   };
-
-  if (error) {
-    const { response } = error as AxiosError;
-    if (response) {
-      navigate('/error', {
-        state: {
-          status: response.status,
-          errormsg: response.statusText,
-        },
-      });
-    }
-  }
 
   return (
     <>
@@ -172,24 +141,7 @@ const CommunityPage = () => {
             </SearchDiv>
           </form>
         </HeadDiv>
-        <FilterSection
-          hasNextPage={hasNextPage}
-          fetchNextPage={fetchNextPage}
-          isFetching={isFetchingNextPage}
-        >
-          <FilterTab
-            content="최신순"
-            selectTab={selectTab}
-            tab="First"
-            onClick={setTab}
-          />
-          <FilterTab
-            content="좋아요순"
-            selectTab={selectTab}
-            tab="Second"
-            onClick={setTab}
-          />
-        </FilterSection>
+        <FilterSection />
       </Wrapper>
       {isLogin && (
         <FixedDiv onClick={goToSelect}>

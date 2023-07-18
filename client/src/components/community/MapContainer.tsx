@@ -16,6 +16,7 @@ const MapDiv = styled.div`
   margin-left: ${cssToken.SPACING['gap-24']};
   flex: 3;
   @media screen and (max-width: 768px) {
+    margin-top: ${cssToken.SPACING['gap-10']};
     margin-left: 0px;
     > section {
       height: 60vh;

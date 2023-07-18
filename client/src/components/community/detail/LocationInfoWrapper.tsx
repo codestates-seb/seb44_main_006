@@ -20,7 +20,6 @@ const ScheduleDiv = styled(FlexDiv)`
   height: 60vh;
 
   @media screen and (max-width: 768px) {
-    margin-bottom: ${cssToken.SPACING['gap-20']};
     height: fit-content;
     max-height: 29vh;
     h1 {

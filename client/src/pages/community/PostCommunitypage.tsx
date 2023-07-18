@@ -32,6 +32,7 @@ import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
 import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
 import useValidEnter from '../../hooks/useValidEnter';
+import LocationInfoWrapper from '../../components/community/detail/LocationInfoWrapper';
 
 const PostOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
@@ -151,13 +152,18 @@ const PostCommunitypage = () => {
     <>
       <PostOutsideWrap>
         <MyCourseBoast />
+        {courses && (
+          <LocationInfoWrapper
+            title={courses.courseData.courseTitle}
+            destinationList={courses.destinationList}
+          />
+        )}
         <GapDiv>
           {isLoading && <SkeletonMapContainer />}
           {courses && (
             <MapContainer destinationList={courses.destinationList} />
           )}
         </GapDiv>
-
         <>
           <QuillDiv>
             <WritePost />
