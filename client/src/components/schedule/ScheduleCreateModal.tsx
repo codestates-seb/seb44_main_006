@@ -30,14 +30,14 @@ interface WrapperProp {
   display: string;
 }
 
-const ResponsiveWrapper = styled.div`
-  @media (max-width: 480px) {
-    > div {
-      width: ${cssToken.WIDTH['w-full']};
-      height: ${cssToken.HEIGHT};
-    }
-  }
-`;
+// const ResponsiveWrapper = styled.div`
+//   @media (max-width: 768px) {
+//     > section {
+//       width: ${cssToken.WIDTH['w-screen']};
+//       height: ${cssToken.HEIGHT['h-screen']};
+//     }
+//   }
+// `;
 
 const Wrapper = styled.div<WrapperProp>`
   width: ${cssToken.WIDTH['w-full']};

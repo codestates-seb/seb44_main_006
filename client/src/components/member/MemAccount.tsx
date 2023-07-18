@@ -1,20 +1,18 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { UserQAuthInfo, setUserOAuthActions } from '../../store/userAuth-slice';
+import { setUserOAuthActions } from '../../store/userAuth-slice';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
 import { RootState } from '../../store';
 import LoginModal from '../ui/modal/LoginModal';
 import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
-import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
+import { RemoveUserInfo } from '../../apis/api';
 import ModalChildren from '../community/post/ModalChildren';
 import cssToken from '../../styles/cssToken';
-import getLoginStatus from '../../utils/getLoginStatus';
 
 const MemAccountModal = () => {
   const [searchParams] = useSearchParams();
