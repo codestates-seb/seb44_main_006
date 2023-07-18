@@ -12,6 +12,9 @@ const Wrapper = styled.section`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;
+  > button {
+    font-size: 0.82rem;
+  }
 `;
 
 interface IAction {
