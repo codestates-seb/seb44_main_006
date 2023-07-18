@@ -33,36 +33,37 @@ instance.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    if (error && error.response?.status === 410) {
-      // 444에러인 경우(토큰 재발급 필요)
-      const accessToken = localStorage.getItem('accessToken');
-      const refreshToken = localStorage.getItem('refreshToken');
-
-      return axios
-        .post(
-          '/api/auth/reissue',
-          {},
-          {
-            baseURL: PROXY,
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: accessToken,
-              RefreshToken: refreshToken,
-            },
-          }
-        )
-        .then((response) => {
-          if (response && response.headers) {
-            const newAccessToken = response.headers.authorization as string;
-            localStorage.setItem('accessToken', newAccessToken ?? '');
-            localStorage.setItem('isLogin', JSON.stringify(true));
-          }
-        })
-        .catch((err: AxiosError) => {
-          if (err && err.response?.status === 410) {
-            localStorage.clear();
-          }
+    const originalConfig = error.config;
+    const status = error.response?.status;
+    if (status === 410) {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+        const response = await axios({
+          url: `${PROXY}/api/auth/reissue`,
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: accessToken,
+            RefreshToken: refreshToken,
+          },
         });
+        if (response) {
+          const newAccessToken = response.headers.authorization as string;
+          localStorage.setItem('accessToken', newAccessToken);
+          localStorage.setItem('isLogin', JSON.stringify(true));
+          if (originalConfig && originalConfig.headers !== undefined) {
+            originalConfig.headers = {
+              ...originalConfig.headers,
+              Authorization: newAccessToken,
+            };
+            return await instance(originalConfig);
+          }
+        }
+      } catch (err) {
+        localStorage.clear();
+        throw err;
+      }
     }
     return Promise.reject(error);
   }
