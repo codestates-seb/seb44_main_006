@@ -31,6 +31,8 @@ public class MemberBookmarked {
 
     private Boolean likeStatus;
 
+    private Integer answerCount;
+
     private LocalDateTime courseUpdatedAt;
 
     private LocalDateTime postCreatedAt;
@@ -49,6 +51,7 @@ public class MemberBookmarked {
         this.courseLikeCount = course.getCourseLikeCount();
         this.courseViewCount = course.getCourseViewCount();
         this.likeStatus = likeStatus;
+        this.answerCount = course.getPost().getAnswersInPost().size();
         this.courseUpdatedAt = course.getCourseUpdatedAt();
         this.postCreatedAt = course.getPost().getPostCreatedAt();
         this.tags = course.getPost().getPostTagsInPost().stream().map(postTag -> postTag.getTag().getTagName()).collect(Collectors.toList());
