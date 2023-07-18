@@ -70,8 +70,12 @@ const MoNavContainer = styled.nav<HeaderStyle>`
 `;
 
 const DivBox = styled.div`
-  width: 100%;
-  height: 4.5rem;
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+    width: 100%;
+    height: 4.5rem;
+  }
 `;
 
 const MoNav = () => {
