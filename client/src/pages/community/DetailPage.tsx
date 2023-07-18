@@ -24,8 +24,6 @@ import { CommunityDetailT } from '../../types/apitype';
 import Content from '../../components/community/detail/Content';
 import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
-import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
-import SkeletonUserContainer from '../../components/community/skeleton/SkeletonUserContainer';
 import notClient from '../../assets/notUserImg.svg';
 import LocationInfoWrapper from '../../components/community/detail/LocationInfoWrapper';
 import SkeletonDetail from '../../components/community/skeleton/SkeletonDetail';
