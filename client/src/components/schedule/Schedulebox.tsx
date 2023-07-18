@@ -57,7 +57,6 @@ const Btnbox = styled.div`
 const ScheduleInfoTxt = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${cssToken.SPACING['gap-10']};
 `;
 
 const ScheduleTitle = styled.div`

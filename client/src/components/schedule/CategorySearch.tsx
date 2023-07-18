@@ -23,7 +23,7 @@ const ButtonWrapper = styled.section`
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  gap: ${cssToken.SPACING['gap-16']};
+  gap: ${cssToken.SPACING['gap-10']};
 `;
 
 const reducer = (
@@ -79,7 +79,7 @@ const CategorySearch = () => {
         <CategoryContainer dispatch={dispatch} />
         <ButtonWrapper>
           <Button
-            styles={{ color: `${cssToken.COLOR.black}` }}
+            styles={{ color: `${cssToken.COLOR['gray-900']}` }}
             onClick={resetChoice}
           >
             초기화

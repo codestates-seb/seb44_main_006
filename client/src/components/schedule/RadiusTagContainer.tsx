@@ -10,7 +10,12 @@ import { selectedIdActions } from '../../store/selectedId-slice';
 const Wrapper = styled.section`
   width: ${cssToken.WIDTH['min-w-fit']};
   display: flex;
-  gap: ${cssToken.SPACING['gap-12']};
+  gap: ${cssToken.SPACING['gap-10']};
+
+  > button {
+    font-size: 0.82rem;
+    padding: 0.3125rem 0.4375rem 0.1875rem;
+  }
 `;
 
 interface IAction {

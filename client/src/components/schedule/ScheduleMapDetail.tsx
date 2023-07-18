@@ -60,6 +60,7 @@ const Btnbox = styled.div`
 
     .gray {
       width: ${cssToken.WIDTH['w-full']};
+      color: ${cssToken.COLOR.black};
     }
     .skyblue {
       width: ${cssToken.WIDTH['w-full']};
@@ -70,8 +71,7 @@ const Btnbox = styled.div`
 const TopWrap = styled(FlexDiv)`
   align-items: flex-start;
   justify-content: space-between;
-  flex-direction: column-reverse;
-  gap: ${cssToken.SPACING['gap-10']};
+  flex-direction: column;
 
   > h1 {
     flex: 2;
@@ -90,6 +90,7 @@ const DataInfoText = styled(FlexDiv)`
   justify-content: flex-end;
   width: ${cssToken.WIDTH['w-full']};
   gap: 0.1875rem;
+  margin-bottom: 0.625rem;
   > svg {
     width: 0.875rem;
   }
@@ -183,6 +184,10 @@ const ScheduleMapDetail = ({
       <BottomSheet param="detail">
         <ScheduleDiv>
           <TopWrap>
+            <DataInfoText>
+              <CalenderIcon />
+              {formatData(courseDday, location)}
+            </DataInfoText>
             <Title
               styles={{
                 size: '1.5rem',
@@ -191,21 +196,16 @@ const ScheduleMapDetail = ({
             >
               {title || ''}
             </Title>
-
-            <DataInfoText>
-              <CalenderIcon />
-              {formatData(courseDday, location)}
-            </DataInfoText>
+            <Text
+              styles={{
+                size: '0.85rem',
+                color: cssToken.COLOR['gray-900'],
+                weight: 500,
+              }}
+            >
+              {text || ''}
+            </Text>
           </TopWrap>
-          <Text
-            styles={{
-              size: '0.85rem',
-              color: cssToken.COLOR['gray-900'],
-              weight: 300,
-            }}
-          >
-            {text || ''}
-          </Text>
           <LocationCardWrapper ref={scrollRef}>
             {destinationList.map((destination, idx) => (
               <MapLocationCard

@@ -23,7 +23,7 @@ const CategoryButton = ({
         bgcolor: isActive ? cssToken.COLOR['point-100'] : cssToken.COLOR.white,
         border: isActive
           ? `${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['point-500']}`
-          : `${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['gray-300']}`,
+          : `${cssToken.BORDER['weight-1']} solid ${cssToken.COLOR['gray-500']}`,
         brradius: cssToken.BORDER['rounded-none'],
         categoryname,
       }}

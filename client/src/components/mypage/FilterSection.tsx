@@ -9,7 +9,7 @@ import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';
 import { MypCourseSummaryT, MyBookMarkSummaryT } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
-import Noresult from '../ui/Noresult';
+import NoResults from '../community/NoResults';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
 import Text from '../ui/text/Text';
@@ -30,6 +30,7 @@ const FilterWrapper = styled.div`
 
   @media screen and (max-width: 768px) {
     padding: ${cssToken.SPACING['gap-20']};
+    height: 100vh;
   }
 `;
 
@@ -97,15 +98,9 @@ const FilterSection = ({
           개 있습니다.
         </Text>
       </CounterContainer>
-      {isMemberCourseListEmpty ||
-        (isMemberBookmarkedListEmpty && (
-          <Noresult
-            iconHeight={100}
-            iconWidth={100}
-            size={cssToken.TEXT_SIZE['text-16']}
-          />
-        ))}
-
+      {(isMemberCourseListEmpty || isMemberBookmarkedListEmpty) && (
+        <NoResults />
+      )}
       <CardWrapper>
         {memberCourseList && selectTab === 'First'
           ? memberCourseList?.map((post: MypCourseSummaryT) => {
