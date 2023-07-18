@@ -60,6 +60,7 @@ const Btnbox = styled.div`
 
     .gray {
       width: ${cssToken.WIDTH['w-full']};
+      color: ${cssToken.COLOR.black};
     }
     .skyblue {
       width: ${cssToken.WIDTH['w-full']};
