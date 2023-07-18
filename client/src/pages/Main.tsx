@@ -71,7 +71,7 @@ const MainLink = styled.button`
 
 const CommunitySection = styled(SectionBox)`
   background: ${cssToken.COLOR.white};
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   padding: 0 30px;
 
   > button {

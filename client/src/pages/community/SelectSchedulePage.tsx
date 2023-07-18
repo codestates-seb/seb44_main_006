@@ -39,7 +39,7 @@ const OutsideWrap = styled(FlexDiv)`
 `;
 
 const OverFlowDiv = styled.div`
-  height: 62vh;
+  height: calc(var(--vh, 1vh) * 62);
   overflow: auto;
   background-color: ${cssToken.COLOR['gray-300']};
   padding: ${cssToken.SPACING['gap-24']};

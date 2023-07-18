@@ -22,7 +22,7 @@ const MapContainerDiv = styled(FlexDiv)`
 
     .skeletonMap {
       margin-left: 0px;
-      height: 50vh;
+      height: calc(var(--vh, 1vh) * 50);
     }
   }
 `;

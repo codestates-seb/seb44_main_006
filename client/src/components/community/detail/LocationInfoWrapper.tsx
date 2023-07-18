@@ -17,11 +17,11 @@ type LocationInfoT = {
 const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
   row-gap: ${cssToken.SPACING['gap-12']};
-  height: 60vh;
+  height: calc(var(--vh, 1vh) * 60);
 
   @media screen and (max-width: 768px) {
     height: fit-content;
-    max-height: 29vh;
+    max-height: calc(var(--vh, 1vh) * 29);
     h1 {
       font-size: 1.125rem;
     }

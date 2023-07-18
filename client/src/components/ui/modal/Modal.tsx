@@ -21,7 +21,7 @@ const ModalWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   z-index: 1000;
 
   @media screen and (max-width: 768px) {
@@ -36,7 +36,7 @@ const Backdrop = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   background-color: #000000;
   opacity: 0.3;
   z-index: 1001;

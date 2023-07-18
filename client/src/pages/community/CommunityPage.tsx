@@ -28,7 +28,7 @@ const Wrapper = styled(FlexDiv)`
 
 const HeadDiv = styled(FlexDiv)`
   width: 100%;
-  height: 40vh;
+  height: \calc(var(--vh, 1vh) * 40);
   justify-content: center;
   align-items: center;
   background-image: url(${head});
@@ -46,7 +46,7 @@ const HeadDiv = styled(FlexDiv)`
   }
 
   @media screen and (max-width: 768px) {
-    height: 22vh;
+    height: calc(var(--vh, 1vh) * 22);
     > form > div {
       width: 100%;
       > div {

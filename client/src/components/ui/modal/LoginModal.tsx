@@ -31,7 +31,7 @@ const Backdrop = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   background-color: #000000;
   opacity: 0.3;
   z-index: 10;

@@ -60,7 +60,7 @@ const DateDiv = styled(SkeletonDiv)`
 
 const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
-  height: 60vh;
+  height: calc(var(--vh, 1vh) * 60);
   overflow: auto;
   row-gap: ${cssToken.SPACING['gap-12']};
 `;
