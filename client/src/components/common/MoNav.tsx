@@ -69,10 +69,18 @@ const MoNavContainer = styled.nav<HeaderStyle>`
   }
 `;
 
-const DivBox = styled.div`
-  display: none;
+const DivBox = styled.div<HeaderStyle>`
   @media (max-width: 768px) {
-    display: block;
+    display: ${(props) => {
+      if (
+        props?.ispath === 'register' ||
+        props?.ispath === 'setting' ||
+        props?.ispathPull === '/community/select'
+      ) {
+        return 'block';
+      }
+      return 'none';
+    }};
     width: 100%;
     height: 4.5rem;
   }
