@@ -9,6 +9,7 @@ import { TitleDiv } from '../../skeleton/SkeletonContentCard';
 const Wrapper = styled(FlexDiv)`
   flex-direction: column;
   row-gap: ${cssToken.SPACING['gap-20']};
+  flex: 1.5;
 `;
 
 const UserContainer = styled(FlexDiv)`
@@ -59,8 +60,7 @@ const DateDiv = styled(SkeletonDiv)`
 
 const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
-  flex: 1;
-  height: 60vh;
+  height: calc(var(--vh, 1vh) * 60);
   overflow: auto;
   row-gap: ${cssToken.SPACING['gap-12']};
 `;

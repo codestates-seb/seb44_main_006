@@ -11,7 +11,7 @@ const Wrapper = styled.div<{
   param?: string;
 }>`
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   background-color: ${cssToken.COLOR.white};
   overflow: hidden;
   transition: height 0.3s ease-in-out;

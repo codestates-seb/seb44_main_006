@@ -30,7 +30,7 @@ const PlaceEmbedBox = styled.iframe`
   align-items: center;
   justify-content: center;
   width: ${cssToken.WIDTH['w-full']};
-  height: 90vh;
+  height: calc(var(--vh, 1vh) * 90);
 `;
 
 const ButtonWrapper = styled.section`

@@ -17,7 +17,7 @@ const ScheduleContainer = styled.section`
   left: 0;
   top: 0;
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   background: #fff;
   padding: 15px;
   overflow: auto;

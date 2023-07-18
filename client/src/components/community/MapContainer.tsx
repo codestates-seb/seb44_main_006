@@ -19,7 +19,7 @@ const MapDiv = styled.div`
     margin-top: ${cssToken.SPACING['gap-10']};
     margin-left: 0px;
     > section {
-      height: 60vh;
+      height: calc(var(--vh, 1vh) * 60);
     }
   }
 `;
