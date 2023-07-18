@@ -20,7 +20,7 @@ public enum ExceptionCode {
     ANSWER_CANNOT_CHANGE(403,"답변을 수정 할 수 없습니다."),
     ANSWER_CANNOT_DELETE(403,"답변을 삭제 할 수 없습니다."),
     NOT_IMPLEMENTATION(501,"Not Implementation"),
-    TOKEN_EXPIRED(444,"토큰이 만료되었습니다. 다시 로그인해주세요."),
+    TOKEN_EXPIRED(410,"토큰이 만료되었습니다. 다시 로그인해주세요."),
     IM_A_TEAPOT(418,"주전자가 비어있습니다. 커피를 넣어주세요"),
     GOOGLE_ACCOUNT_EXISTS(409,"GOOGLE_ACCOUNT_EXISTS"),
     NAVER_ACCOUNT_EXISTS(409,"NAVER_ACCOUNT_EXISTS"),
