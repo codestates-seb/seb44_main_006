@@ -5,19 +5,19 @@ import com.seb_main_006.domain.bookmark.repository.BookmarkRepository;
 import com.seb_main_006.domain.course.entity.Course;
 import com.seb_main_006.domain.course.repository.CourseRepository;
 import com.seb_main_006.domain.like.repository.LikesRepository;
-import com.seb_main_006.domain.member.dto.MemberBookmarked;
-import com.seb_main_006.domain.member.dto.MemberCourse;
-import com.seb_main_006.domain.member.dto.MemberPatchDto;
-import com.seb_main_006.domain.member.dto.MyPageResponseDto;
+import com.seb_main_006.domain.member.dto.*;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.repository.MemberRepository;
 import com.seb_main_006.global.auth.utils.CustomAuthorityUtils;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import com.seb_main_006.global.mail.service.MailService;
+import com.seb_main_006.global.uploadImg.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -25,6 +25,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MemberService {
 
+    private final S3Uploader s3Uploader;
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final CourseRepository courseRepository;
@@ -117,6 +118,19 @@ public class MemberService {
         Member findMember = findVerifiedMember(memberEmail);
         findMember.setMemberStatus(Member.MemberStatus.DELETED);
         findMember.setMemberNickname("탈퇴한 사용자");
+    }
+
+    /**
+     * 프로밀 이미지 업로드
+     */
+    public void updateImgMember(String memberEmail, MultipartFile img) throws IOException {
+        Member findMember = findVerifiedMember(memberEmail);
+        String storedImgUri="";
+        if(!img.isEmpty()) {
+            s3Uploader.getModifyImageURL(img, findMember);
+            storedImgUri = s3Uploader.upload(img,"images", findMember);
+        }
+       findMember.setMemberImageUrl(storedImgUri);
     }
 
     // 이메일로 DB에서 회원을 조회하고, 현재 가입된 provider 정보 String으로 반환 (GOOGLE, NAVER, KAKAO, null)
