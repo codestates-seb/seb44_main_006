@@ -129,10 +129,14 @@ const FilterSection = ({
                       postId={String(post.courseId)}
                     />
                     <CopyButton
-                      endpoint={`register/detail/${String(post.courseId)}`}
+                      endpoint={`register/detail/${String(
+                        post.courseId
+                      )}?share`}
                     />
                     <ShareKakaoButton
-                      endpoint={`register/detail/${String(post.courseId)}`}
+                      endpoint={`register/detail/${String(
+                        post.courseId
+                      )}?share`}
                     />
                   </ContensCard>
                 );
