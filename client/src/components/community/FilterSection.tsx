@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { throttle } from 'lodash';
 import { AxiosError } from 'axios';
@@ -44,7 +44,7 @@ const FilterSection = () => {
   const [ref, inView] = useInView();
   const scrollCnt = useRef<number>(0);
   const navigate = useNavigate();
-  const [prevData, setPrevData] = useState<[]>();
+  // const [prevData, setPrevData] = useState<[]>();
   const selectedTab = useSelector(
     (state: RootState) => state.communityBasic.selectedTab
   );
