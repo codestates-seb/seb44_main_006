@@ -12,6 +12,7 @@ import com.seb_main_006.global.auth.redis.RefreshTokenRedisRepository;
 import com.seb_main_006.global.exception.BusinessLogicException;
 import com.seb_main_006.global.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -84,25 +85,36 @@ public class AuthService {
      */
     @Transactional(readOnly = true)
     public MemberInfoResponseDto getMemberInfo(String accessToken) {
+        log.info("auth/members check1");
         Member member = new Member();
         boolean isAdmin = false;
-
+        log.info("auth/members check2");
         if (accessToken != null && !accessToken.equals("")) {
             try {
                 String memberEmail = jwtTokenizer.getSubject(accessToken).getUsername();
                 member = memberService.findVerifiedMember(memberEmail);
-            } catch (Exception e) {
-
+                log.info("auth/members check3");
+            }catch (ExpiredJwtException ee){
+                log.info("auth/members check : ExpiredJwtException");
+            }
+            catch (Exception e) {
+                log.info("auth/members check4");
             }
         }
-
+        log.info("auth/members check5");
         if(member.getRoles().size() != 0){
+            log.info("auth/members check6");
             List<String> roleList = member.getRoles();
-           isAdmin = roleList.contains("ADMIN");
+            log.info("auth/members check7");
+            isAdmin = roleList.contains("ADMIN");
+            log.info("auth/members check8");
         }
 
+        log.info("auth/members check9");
         int myCourseCount = member.getCourses().size();
+        log.info("auth/members check10");
         int myBookmarkCount = bookmarkService.getBookmarkCount(member);
+        log.info("auth/members check11");
         return MemberInfoResponseDto.of(member, myCourseCount, myBookmarkCount, isAdmin);
     }
 }
