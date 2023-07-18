@@ -118,6 +118,7 @@ const Nav = ({
   const LogoutoggleModal = useLogioutoggleModal();
   const { userData } = useUserInfo(!!isLoggedIn);
   const [isMenuToggle, setIsMenuToggle] = useState<boolean>(false);
+  console.log(isLoggedIn);
 
   const handleMenuToggle = () => {
     setIsMenuToggle((prev) => !prev);

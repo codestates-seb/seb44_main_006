@@ -14,6 +14,7 @@ import useMovePage from '../../hooks/useMovePage';
 import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
 import ModalChildren from '../community/post/ModalChildren';
 import cssToken from '../../styles/cssToken';
+import getLoginStatus from '../../utils/getLoginStatus';
 
 const MemAccountModal = () => {
   const [searchParams] = useSearchParams();
@@ -83,16 +84,9 @@ const MemAccountModal = () => {
       dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
     },
     onError: (error) => {
-      const { response } = error as AxiosError;
-      if (response && statusText && messageText) {
-        navigate('/error', {
-          state: {
-            status: statusText,
-            errormsg: messageText,
-          },
-        });
-      }
+      throw error;
     },
+    enabled: getLoginStatus(),
   });
 
   return (

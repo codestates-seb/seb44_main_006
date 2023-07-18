@@ -26,6 +26,34 @@ instance.interceptors.request.use(
     return newConfig;
   },
   (error: AxiosError) => {
+    console.log('error: 444 if 밖');
+    localStorage.clear();
+    if (error.response && error.response.status === 444) {
+      // 444에러인 경우(토큰 재발급 필요)
+      console.log('error: 444 if 안');
+
+      const accessToken = localStorage.getItem('accessToken');
+      const refreshToken = localStorage.getItem('refreshToken');
+      localStorage.clear();
+
+      return instance
+        .post<{ accessToken: string }>('/auth/reissue', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: accessToken,
+            RefreshToken: refreshToken,
+          },
+        })
+        .then((response: AxiosResponse<{ accessToken: string }>) => {
+          const newAccessToken = response.data.accessToken;
+          localStorage.setItem('accessToken', newAccessToken);
+          localStorage.setItem('isLogin', JSON.stringify(true));
+          console.log('refresh success!');
+        })
+        .catch((err: AxiosError) => {
+          throw err;
+        });
+    }
     return Promise.reject(error);
   }
 );
