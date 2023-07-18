@@ -2,6 +2,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { useEffect } from 'react';
 
 import { UserQAuthInfo, setUserOAuthActions } from '../../store/userAuth-slice';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
@@ -12,6 +13,7 @@ import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
 import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
 import ModalChildren from '../community/post/ModalChildren';
+import cssToken from '../../styles/cssToken';
 
 const MemAccountModal = () => {
   const [searchParams] = useSearchParams();
@@ -39,12 +41,35 @@ const MemAccountModal = () => {
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('isLogin');
       gotoMain();
-      return window.location.reload();
+      dispatch(setUserOAuthActions.closeLogoutModal());
     },
     onError(error) {
       throw error;
     },
   });
+
+  useEffect(() => {
+    if (accessToken && refreshToken) {
+      localStorage.setItem('accessToken', `Bearer ${accessToken}`);
+      localStorage.setItem('refreshToken', `${refreshToken}`);
+      localStorage.setItem('isLogin', JSON.stringify(true));
+      if (localStorage.getItem('isLogin')) {
+        dispatch(setUserOAuthActions.setIsLogin(true));
+      }
+      gotoMain();
+    }
+  }, [accessToken, dispatch, gotoMain, refreshToken]);
+
+  useEffect(() => {
+    if (statusText && messageText) {
+      navigate('/error', {
+        state: {
+          status: statusText,
+          errormsg: messageText,
+        },
+      });
+    }
+  }, [messageText, navigate, statusText]);
 
   const handleLogout = () => {
     dispatch(setUserOAuthActions.setIsLogin(false));
@@ -56,27 +81,16 @@ const MemAccountModal = () => {
     queryFn: () => GetUserInfo(),
     onSuccess: (data) => {
       dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
-      if (accessToken && refreshToken) {
-        localStorage.setItem('accessToken', `Bearer ${accessToken}`);
-        localStorage.setItem('refreshToken', `${refreshToken}`);
-        localStorage.setItem('isLogin', JSON.stringify(true));
-        if (localStorage.getItem('isLogin')) {
-          dispatch(setUserOAuthActions.setIsLogin(true));
-        }
-        gotoMain();
-      }
     },
     onError: (error) => {
-      if (accessToken) {
-        const { response } = error as AxiosError;
-        if (response && statusText && messageText) {
-          navigate('/error', {
-            state: {
-              status: statusText,
-              errormsg: messageText,
-            },
-          });
-        }
+      const { response } = error as AxiosError;
+      if (response && statusText && messageText) {
+        navigate('/error', {
+          state: {
+            status: statusText,
+            errormsg: messageText,
+          },
+        });
       }
     },
   });
@@ -99,18 +113,19 @@ const MemAccountModal = () => {
         <Modal
           className={['modal', 'modalContainer']}
           styles={{
-            width: '47.0625rem',
-            height: '28.375rem',
+            width: '25rem',
+            height: '15rem',
+            borderradius: `${cssToken.BORDER['rounded-s']}`,
           }}
         >
           <ModalChildren
             leftBtnCallback={(e) => {
               e.stopPropagation();
-              LogoutoggleModal();
+              handleLogout();
             }}
             rightBtnCallback={(e) => {
               e.stopPropagation();
-              handleLogout();
+              LogoutoggleModal();
             }}
             content="정말 로그아웃 하시겠습니까?"
           />

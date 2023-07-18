@@ -86,7 +86,8 @@ export const ModalChildrenDiv = styled(FlexDiv)`
   height: 100%;
   flex-direction: column;
   justify-content: space-around;
-  padding-top: ${cssToken.SPACING['py-100']};
+  padding-top: ${cssToken.SPACING['gap-50']};
+  align-items: center;
 `;
 
 export const ShareBtn = styled.button`

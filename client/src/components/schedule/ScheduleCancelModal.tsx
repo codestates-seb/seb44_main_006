@@ -23,6 +23,7 @@ const Wrapper = styled.div`
 
 const TextContainer = styled.section`
   text-align: center;
+  line-height: 1.3rem;
 `;
 
 const ButtonWrapper = styled.section`

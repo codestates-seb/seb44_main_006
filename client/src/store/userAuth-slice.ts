@@ -56,6 +56,9 @@ const setUserOAuthSlice = createSlice({
     closeLoginModal(state) {
       state.isLoginOpen = false;
     },
+    closeLogoutModal(state) {
+      state.isLogoutOpen = false;
+    },
   },
 });
 
