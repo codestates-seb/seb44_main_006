@@ -101,7 +101,7 @@ public class JwtTokenizer {
     // JWT 의 만료 일시를 지정하기 위한 메서드
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, expirationMinutes);
+        calendar.add(Calendar.SECOND, expirationMinutes * 30);
         Date expiration = calendar.getTime();
 
         return expiration;
