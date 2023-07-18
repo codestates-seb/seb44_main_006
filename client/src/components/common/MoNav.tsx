@@ -13,6 +13,7 @@ import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 import useUserInfo from '../../querys/useUserInfo';
 import notUserImag from '../../assets/notUserImg.svg';
+import getLoginStatus from '../../utils/getLoginStatus';
 
 type HeaderStyle = {
   ispath?: string;
@@ -71,7 +72,7 @@ const MoNavContainer = styled.nav<HeaderStyle>`
 `;
 
 const MoNav = () => {
-  const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
+  const isLoggedIn = getLoginStatus();
   const LogintoggleModal = useLoginToggleModal();
   const { userData } = useUserInfo(!!isLoggedIn);
   const ispath = useLocationEndpoint();

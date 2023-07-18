@@ -54,9 +54,6 @@ const MemAccountModal = () => {
       localStorage.setItem('accessToken', `Bearer ${accessToken}`);
       localStorage.setItem('refreshToken', `${refreshToken}`);
       localStorage.setItem('isLogin', JSON.stringify(true));
-      if (localStorage.getItem('isLogin')) {
-        dispatch(setUserOAuthActions.setIsLogin(true));
-      }
       gotoMain();
     }
   }, [accessToken, dispatch, gotoMain, refreshToken]);
@@ -73,21 +70,8 @@ const MemAccountModal = () => {
   }, [messageText, navigate, statusText]);
 
   const handleLogout = () => {
-    dispatch(setUserOAuthActions.setIsLogin(false));
     mutation.mutate();
   };
-
-  useQuery({
-    queryKey: ['oauthInfoData'],
-    queryFn: () => GetUserInfo(),
-    onSuccess: (data) => {
-      dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
-    },
-    onError: (error) => {
-      throw error;
-    },
-    enabled: getLoginStatus(),
-  });
 
   return (
     <>

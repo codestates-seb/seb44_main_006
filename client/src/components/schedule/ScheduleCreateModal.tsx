@@ -34,10 +34,10 @@ const ResponsiveWrapper = styled.div`
   @media (max-width: 480px) {
     > div {
       width: ${cssToken.WIDTH['w-full']};
-      height: ${cssToken.HEIGHT}
+      height: ${cssToken.HEIGHT};
     }
   }
-`
+`;
 
 const Wrapper = styled.div<WrapperProp>`
   width: ${cssToken.WIDTH['w-full']};

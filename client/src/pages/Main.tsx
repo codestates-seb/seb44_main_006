@@ -11,6 +11,7 @@ import useLoginToggleModal from '../hooks/useLoginToggleModal';
 import showToast from '../utils/showToast';
 import useMovePage from '../hooks/useMovePage';
 import useUserInfo from '../querys/useUserInfo';
+import getLoginStatus from '../utils/getLoginStatus';
 
 const MainContainer = styled.main`
   cursor: none;
@@ -123,11 +124,11 @@ const ScheduleSection = styled(SectionBox)`
 const Main = () => {
   const queryClient = useQueryClient();
   const [isHovered, setIsHovered] = useState<boolean>(true);
-  const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
+  const isLoggedIn = getLoginStatus();
   const goToRegister = useMovePage('/register');
   const goToCommunity = useMovePage('/community');
 
-  const { userData: userInfo } = useUserInfo(!!isLoggedIn);
+  const { userData: userInfo } = useUserInfo();
 
   const LogintoggleModal = useLoginToggleModal();
 
@@ -141,7 +142,8 @@ const Main = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      await queryClient.invalidateQueries(['user']);
+      const userData = await queryClient.invalidateQueries(['user']);
+      return userData;
     };
     if (isLoggedIn) {
       getUserData()
