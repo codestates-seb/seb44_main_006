@@ -55,6 +55,17 @@ const ModalContainer = styled.section<IModalContainer>`
   background-color: #ffffff;
   z-index: 1002;
 
+  @media screen and (max-width: 768px) {
+    &.fullModal {
+      height: 100vh;
+      overflow: auto;
+      border-radius: 0;
+      display: block;
+      padding: 2rem 1rem;
+    }
+  }
+
+
   &.modalContainer {
     @media screen and (max-width: 768px) {
       position: fixed;
@@ -96,6 +107,7 @@ const ModalContainer = styled.section<IModalContainer>`
         width: 10rem;
       }
     }
+
     @media screen and (max-width: 500px) {
       button {
         height: 2.1875rem;

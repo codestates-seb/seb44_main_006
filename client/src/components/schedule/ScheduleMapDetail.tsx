@@ -39,6 +39,7 @@ const ScheduleDiv = styled(FlexDiv)`
 
   @media (max-width: 768px) {
     height: calc(var(--vh, 1vh) * 90);
+    flex: 0 0 100%;
   }
 `;
 
