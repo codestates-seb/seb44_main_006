@@ -33,12 +33,10 @@ instance.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    if (error && error.response.status === 410) {
+    if (error && error.response?.status === 410) {
       // 444에러인 경우(토큰 재발급 필요)
       const accessToken = localStorage.getItem('accessToken');
       const refreshToken = localStorage.getItem('refreshToken');
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('isLogin');
 
       return axios
         .post(

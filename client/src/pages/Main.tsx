@@ -1,9 +1,7 @@
 import { styled } from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
@@ -128,7 +126,7 @@ const Main = () => {
   const goToRegister = useMovePage('/register');
   const goToCommunity = useMovePage('/community');
 
-  const { userData: userInfo } = useUserInfo();
+  const { userData: userInfo } = useUserInfo(isLoggedIn);
 
   const LogintoggleModal = useLoginToggleModal();
 
@@ -142,13 +140,13 @@ const Main = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const userData = await queryClient.invalidateQueries(['user']);
-      return userData;
+      return queryClient.invalidateQueries(['user']);
     };
     if (isLoggedIn) {
       getUserData()
         .then(() => {
           console.log('유저정보 가져오기 성공');
+          return queryClient.invalidateQueries(['user']);
         })
         .catch(() => {
           console.log('유저정보가져오기 실패');

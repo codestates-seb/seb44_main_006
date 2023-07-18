@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { RootState } from '../../store';
@@ -13,12 +13,13 @@ import Modal from '../../components/ui/modal/Modal';
 import ModalChildren from '../../components/community/post/ModalChildren';
 import useMovePage from '../../hooks/useMovePage';
 import useToggleModal from '../../hooks/useToggleModal';
-import { setUserOAuthActions } from '../../store/userAuth-slice';
 // import { setThemeModeActions } from '../../store/thememode-slice';
 import LightIcon from '../../assets/LightIcon';
 import DarkIcon from '../../assets/DarkIcon';
 import CloseButton from '../../components/ui/button/CloseButton';
 import showToast from '../../utils/showToast';
+import getLoginStatus from '../../utils/getLoginStatus';
+import useUserInfo from '../../querys/useUserInfo';
 
 const UserSettingContainer = styled.article`
   display: flex;
@@ -145,15 +146,12 @@ const UserSetting = () => {
   const LogoutoggleModal = useLogioutoggleModal();
   const toggleModal = useToggleModal();
   const gotoMain = useMovePage('/');
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const gotoBack = () => {
     navigate(-1);
   };
+  const { userData } = useUserInfo(getLoginStatus());
   const modalIsOpen = useSelector((state: RootState) => state.overlay.isOpen);
-  const userAuthInfo = useSelector(
-    (state: RootState) => state.userAuth.userInfo
-  );
 
   const ThemMode = useSelector((state: RootState) => state.themeMode.themeMode);
 
@@ -171,7 +169,6 @@ const UserSetting = () => {
   });
 
   const handleLogout = () => {
-    dispatch(setUserOAuthActions.setIsLogin(false));
     mutation.mutate();
   };
 
@@ -217,7 +214,7 @@ const UserSetting = () => {
             styles={{
               size: '10.75rem',
             }}
-            src={userAuthInfo?.memberImageUrl}
+            src={userData?.memberImageUrl}
           />
           <SkyBlueEventButton
             onClick={handlePreparing}
