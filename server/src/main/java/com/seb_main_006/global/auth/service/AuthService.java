@@ -86,7 +86,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public MemberInfoResponseDto getMemberInfo(String accessToken) {
         log.info("auth/members check1");
-        Member member = new Member();
+        Member member = new Member(0L);
         boolean isAdmin = false;
         log.info("auth/members check2");
         if (accessToken != null && !accessToken.equals("")) {
