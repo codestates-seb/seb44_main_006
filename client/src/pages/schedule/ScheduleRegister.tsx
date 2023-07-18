@@ -163,6 +163,7 @@ const ScheduleRegister = () => {
       <FixedDiv>
         <FloatButton
           bgcolor={cssToken.COLOR['gray-300']}
+          fontcolor={cssToken.COLOR.black}
           onClick={handleCancel}
         >
           <div>취소하기</div>

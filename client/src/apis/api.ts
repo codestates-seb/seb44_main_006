@@ -59,7 +59,9 @@ instance.interceptors.response.use(
           }
         })
         .catch((err: AxiosError) => {
-          throw err;
+          if (err && err.response?.status === 410) {
+            localStorage.clear();
+          }
         });
     }
     return Promise.reject(error);
