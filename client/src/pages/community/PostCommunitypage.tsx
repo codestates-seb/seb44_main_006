@@ -10,7 +10,7 @@ import { AxiosError } from 'axios';
 import { mgpd } from './commonstyle';
 
 import cssToken from '../../styles/cssToken';
-import { GapDiv, OutsideWrap } from '../../styles/styles';
+import { FlexDiv, GapDiv, OutsideWrap } from '../../styles/styles';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import {
   MyCourseBoast,
@@ -64,6 +64,17 @@ const QuillDiv = styled(GapDiv)`
       flex-direction: row;
     }
   }
+`;
+
+const MapInfoDiv = styled(FlexDiv)`
+  width: 100%;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const MapGap = styled(GapDiv)`
+  width: 100%;
 `;
 
 const ErrorContainer = styled(GapDiv)`
@@ -152,18 +163,20 @@ const PostCommunitypage = () => {
     <>
       <PostOutsideWrap>
         <MyCourseBoast />
-        {courses && (
-          <LocationInfoWrapper
-            title={courses.courseData.courseTitle}
-            destinationList={courses.destinationList}
-          />
-        )}
-        <GapDiv>
-          {isLoading && <SkeletonMapContainer />}
+        <MapInfoDiv>
           {courses && (
-            <MapContainer destinationList={courses.destinationList} />
+            <LocationInfoWrapper
+              title={courses.courseData.courseTitle}
+              destinationList={courses.destinationList}
+            />
           )}
-        </GapDiv>
+          <MapGap>
+            {isLoading && <SkeletonMapContainer />}
+            {courses && (
+              <MapContainer destinationList={courses.destinationList} />
+            )}
+          </MapGap>
+        </MapInfoDiv>
         <>
           <QuillDiv>
             <WritePost />
