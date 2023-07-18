@@ -121,8 +121,16 @@ const ThumbnailBox = styled.div<UrlProp>`
 
   @media (max-width: 480px) {
     padding: 1rem;
-    height: 100%;
+    height: 0%;
+    padding-bottom: 70%;
+    position: relative;
     gap: ${cssToken.SPACING['gap-12']};
+    > svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 `;
 
@@ -132,6 +140,12 @@ const SelfEnd = styled.div<{ bgUrl: boolean }>`
   align-items: end;
   padding-bottom: ${(props) =>
     props.bgUrl ? cssToken.SPACING['gap-50'] : '0rem'};
+
+  @media (max-width: 480px) {
+    padding-bottom: 0%;
+    position: absolute;
+    bottom: 30px;
+  }
 `;
 
 const DataChoiceWrapper = styled.div`
