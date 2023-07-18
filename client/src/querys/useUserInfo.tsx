@@ -20,6 +20,7 @@ const useUserInfo = (enabled?: boolean) => {
     select: (data: { data: UserInfoT }) => data.data,
     enabled,
   });
+
   return {
     userData,
   };

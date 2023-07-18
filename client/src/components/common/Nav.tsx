@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { useState } from 'react';
 
-import { LoginState } from '../../store/userAuth-slice';
 import cssToken from '../../styles/cssToken';
 import WhiteButton from '../ui/button/WhiteButton';
 import useMovePage from '../../hooks/useMovePage';
@@ -108,7 +107,7 @@ const Nav = ({
   scrollPosition,
 }: {
   ispath: string;
-  isLoggedIn: LoginState['isLogin'];
+  isLoggedIn: boolean;
   scrollPosition: number;
 }) => {
   const gotoCommunity = useMovePage('/community');

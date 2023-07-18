@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import cssToken from '../../styles/cssToken';
@@ -8,11 +7,11 @@ import CommunityPageIcon from '../../assets/CommunityPageIcon';
 import MainPageIcon from '../../assets/MainPageIcon';
 import MyPageIcon from '../../assets/MyPageIcon';
 import UserInfoMy from '../ui/UserInfoPfp';
-import { RootState } from '../../store';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 import useUserInfo from '../../querys/useUserInfo';
 import notUserImag from '../../assets/notUserImg.svg';
+import getLoginStatus from '../../utils/getLoginStatus';
 
 type HeaderStyle = {
   ispath?: string;
@@ -71,7 +70,7 @@ const MoNavContainer = styled.nav<HeaderStyle>`
 `;
 
 const MoNav = () => {
-  const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
+  const isLoggedIn = getLoginStatus();
   const LogintoggleModal = useLoginToggleModal();
   const { userData } = useUserInfo(!!isLoggedIn);
   const ispath = useLocationEndpoint();

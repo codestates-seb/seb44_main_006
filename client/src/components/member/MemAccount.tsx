@@ -1,17 +1,16 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { UserQAuthInfo, setUserOAuthActions } from '../../store/userAuth-slice';
+import { setUserOAuthActions } from '../../store/userAuth-slice';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
 import { RootState } from '../../store';
 import LoginModal from '../ui/modal/LoginModal';
 import Modal from '../ui/modal/Modal';
 import useMovePage from '../../hooks/useMovePage';
-import { GetUserInfo, RemoveUserInfo } from '../../apis/api';
+import { RemoveUserInfo } from '../../apis/api';
 import ModalChildren from '../community/post/ModalChildren';
 import cssToken from '../../styles/cssToken';
 
@@ -53,9 +52,6 @@ const MemAccountModal = () => {
       localStorage.setItem('accessToken', `Bearer ${accessToken}`);
       localStorage.setItem('refreshToken', `${refreshToken}`);
       localStorage.setItem('isLogin', JSON.stringify(true));
-      if (localStorage.getItem('isLogin')) {
-        dispatch(setUserOAuthActions.setIsLogin(true));
-      }
       gotoMain();
     }
   }, [accessToken, dispatch, gotoMain, refreshToken]);
@@ -72,28 +68,8 @@ const MemAccountModal = () => {
   }, [messageText, navigate, statusText]);
 
   const handleLogout = () => {
-    dispatch(setUserOAuthActions.setIsLogin(false));
     mutation.mutate();
   };
-
-  useQuery({
-    queryKey: ['oauthInfoData'],
-    queryFn: () => GetUserInfo(),
-    onSuccess: (data) => {
-      dispatch(setUserOAuthActions.setUserOAuth(data.data as UserQAuthInfo));
-    },
-    onError: (error) => {
-      const { response } = error as AxiosError;
-      if (response && statusText && messageText) {
-        navigate('/error', {
-          state: {
-            status: statusText,
-            errormsg: messageText,
-          },
-        });
-      }
-    },
-  });
 
   return (
     <>

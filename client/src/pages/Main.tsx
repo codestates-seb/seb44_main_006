@@ -1,9 +1,7 @@
 import { styled } from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { RootState } from '../store';
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
@@ -11,6 +9,7 @@ import useLoginToggleModal from '../hooks/useLoginToggleModal';
 import showToast from '../utils/showToast';
 import useMovePage from '../hooks/useMovePage';
 import useUserInfo from '../querys/useUserInfo';
+import getLoginStatus from '../utils/getLoginStatus';
 
 const MainContainer = styled.main`
   cursor: none;
@@ -123,11 +122,11 @@ const ScheduleSection = styled(SectionBox)`
 const Main = () => {
   const queryClient = useQueryClient();
   const [isHovered, setIsHovered] = useState<boolean>(true);
-  const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
+  const isLoggedIn = getLoginStatus();
   const goToRegister = useMovePage('/register');
   const goToCommunity = useMovePage('/community');
 
-  const { userData: userInfo } = useUserInfo(!!isLoggedIn);
+  const { userData: userInfo } = useUserInfo(isLoggedIn);
 
   const LogintoggleModal = useLoginToggleModal();
 
@@ -141,12 +140,13 @@ const Main = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      await queryClient.invalidateQueries(['user']);
+      return queryClient.invalidateQueries(['user']);
     };
     if (isLoggedIn) {
       getUserData()
         .then(() => {
           console.log('유저정보 가져오기 성공');
+          return queryClient.invalidateQueries(['user']);
         })
         .catch(() => {
           console.log('유저정보가져오기 실패');

@@ -1,14 +1,12 @@
 import { styled } from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { PatchMemNickname } from '../../apis/api';
-import { setUserOAuthActions } from '../../store/userAuth-slice';
 import Pen from '../../assets/Pen';
 import InputContainer from '../ui/input/InputContainer';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
@@ -142,7 +140,6 @@ const UserInfoBox = () => {
   const [isName, setIsName] = useState<boolean>(true);
   const memNicknameRef = useRef<HTMLInputElement>(null);
   const navigator = useNavigate();
-  const dispatch = useDispatch();
   const gotoRegister = useMovePage('/register');
   const gotoSetting = useMovePage('/setting');
   const queryClient = useQueryClient();
@@ -176,7 +173,6 @@ const UserInfoBox = () => {
   };
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setUserOAuthActions.paintMemNickname(e.target.value));
     if (e.target.value.length < 2 || e.target.value.length > 10) {
       setIsName(false);
       setErrMsg('글자 수를 만족하지 못했습니다.');
