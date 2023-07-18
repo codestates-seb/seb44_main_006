@@ -39,7 +39,14 @@ instance.interceptors.request.use(
 
 export const GetUserInfo = async () => instance.get(`/api/auth/members`);
 
-export const RemoveUserInfo = async () => instance.post('/api/auth/logout');
+export const RemoveUserInfo = async () => {
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+  return instance.post('/api/auth/logout', {
+    Authorization: accessToken,
+    RefreshToken: refreshToken,
+  });
+};
 
 export const DeleteAccount = async () => instance.delete('/api/members');
 
