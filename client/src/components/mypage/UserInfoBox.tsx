@@ -52,7 +52,7 @@ const WriteBtn = styled.button<IsNickNameT>`
   position: ${(props) => (props.toggleNickname ? 'absolute' : 'unset')};
   top: ${(props) => {
     if (props.toggleNickname) {
-      return props.isValidate ? '45%' : '35%';
+      return props.isValidate ? '45%' : '30%';
     }
     return 'unset';
   }};
