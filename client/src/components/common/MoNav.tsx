@@ -22,15 +22,15 @@ const MoNavContainer = styled.nav<HeaderStyle>`
   display: none;
   @media (max-width: 768px) {
     display: ${(props) => {
-      if (
-        props?.ispath === 'register' ||
-        props?.ispath === 'setting' ||
-        props?.ispathPull === '/community/select'
-      ) {
-        return 'none';
-      }
-      return 'grid';
-    }};
+    if (
+      props?.ispath === 'register' ||
+      props?.ispath === 'setting' ||
+      props?.ispathPull === '/community/select'
+    ) {
+      return 'none';
+    }
+    return 'grid';
+  }};
     height: 4.5rem;
     position: fixed;
     bottom: 0;
@@ -69,6 +69,11 @@ const MoNavContainer = styled.nav<HeaderStyle>`
   }
 `;
 
+const DivBox = styled.div`
+  width: 100%;
+  height: 4.5rem;
+`;
+
 const MoNav = () => {
   const isLoggedIn = getLoginStatus();
   const LogintoggleModal = useLoginToggleModal();
@@ -78,42 +83,45 @@ const MoNav = () => {
   const pathPull = location?.pathname;
 
   return (
-    <MoNavContainer ispath={ispath} ispathPull={pathPull}>
-      <Link to="/" className={!ispath ? 'active' : ''}>
-        <MainPageIcon />
-        <span>메인</span>
-      </Link>
-      <Link
-        onClick={isLoggedIn ? undefined : LogintoggleModal}
-        to={isLoggedIn ? '/register' : '/'}
-      >
-        <CalendarPageIcon />
-        <span>일정 등록</span>
-      </Link>
-      <Link to="/community" className={ispath === 'community' ? 'active' : ''}>
-        <CommunityPageIcon />
-        <span>커뮤니티</span>
-      </Link>
-      <Link
-        onClick={isLoggedIn ? undefined : LogintoggleModal}
-        to={isLoggedIn ? '/mypage' : '/'}
-        className={ispath === 'mypage' ? 'active' : ''}
-      >
-        {userData && isLoggedIn ? (
-          <UserInfoMy
-            styles={{
-              size: '1.5rem',
-            }}
-            src={
-              !userData.memberImageUrl ? notUserImag : userData.memberImageUrl
-            }
-          />
-        ) : (
-          <MyPageIcon />
-        )}
-        <span>MY</span>
-      </Link>
-    </MoNavContainer>
+    <>
+    <DivBox />
+      <MoNavContainer ispath={ispath} ispathPull={pathPull}>
+        <Link to="/" className={!ispath ? 'active' : ''}>
+          <MainPageIcon />
+          <span>메인</span>
+        </Link>
+        <Link
+          onClick={isLoggedIn ? undefined : LogintoggleModal}
+          to={isLoggedIn ? '/register' : '/'}
+        >
+          <CalendarPageIcon />
+          <span>일정 등록</span>
+        </Link>
+        <Link to="/community" className={ispath === 'community' ? 'active' : ''}>
+          <CommunityPageIcon />
+          <span>커뮤니티</span>
+        </Link>
+        <Link
+          onClick={isLoggedIn ? undefined : LogintoggleModal}
+          to={isLoggedIn ? '/mypage' : '/'}
+          className={ispath === 'mypage' ? 'active' : ''}
+        >
+          {userData && isLoggedIn ? (
+            <UserInfoMy
+              styles={{
+                size: '1.5rem',
+              }}
+              src={
+                !userData.memberImageUrl ? notUserImag : userData.memberImageUrl
+              }
+            />
+          ) : (
+            <MyPageIcon />
+          )}
+          <span>MY</span>
+        </Link>
+      </MoNavContainer>
+    </>
   );
 };
 
