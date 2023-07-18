@@ -5,12 +5,12 @@ import { useState, useEffect } from 'react';
 
 import Nav from './Nav';
 
-import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import LogoBlack from '../../assets/common_img/logo_black.svg';
 import LogoWhite from '../../assets/common_img/logo_white.svg';
 import MemAccountModal from '../member/MemAccount';
 import useLocationEndpoint from '../../hooks/useLocationEndpoint';
+import getLoginStatus from '../../utils/getLoginStatus';
 
 type HeaderStyle = {
   ispath?: string;
@@ -59,7 +59,7 @@ const LogoImg = styled.img`
 `;
 
 const Header = () => {
-  const isLoggedIn = useSelector((state: RootState) => state.userAuth.isLogin);
+  const isLoggedIn = getLoginStatus();
   const ispath = useLocationEndpoint();
   const location = useLocation();
   const ispathPath = location.pathname;
@@ -68,7 +68,6 @@ const Header = () => {
   const updateScroll = () => {
     setScrollPosition(window.scrollY || document.documentElement.scrollTop);
   };
-
 
   useEffect(() => {
     window.addEventListener('scroll', updateScroll);

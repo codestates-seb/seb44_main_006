@@ -162,7 +162,7 @@ const UserSetting = () => {
       toggleModal();
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-      localStorage.removeItem('isLogin');
+      localStorage.setItem('isLogin', JSON.stringify(false));
       gotoMain();
     },
     onError(error) {
@@ -171,7 +171,6 @@ const UserSetting = () => {
   });
 
   const handleLogout = () => {
-    dispatch(setUserOAuthActions.setIsLogin(false));
     mutation.mutate();
   };
 
