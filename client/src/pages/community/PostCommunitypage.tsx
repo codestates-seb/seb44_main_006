@@ -33,6 +33,7 @@ import isEmpty from '../../utils/isEmpty';
 import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
 import useValidEnter from '../../hooks/useValidEnter';
 import LocationInfoWrapper from '../../components/community/detail/LocationInfoWrapper';
+import { modules } from '../../utils/constant/constant';
 
 const PostOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
@@ -181,6 +182,7 @@ const PostCommunitypage = () => {
           <QuillDiv>
             <WritePost />
             <ReactQuill
+              modules={modules}
               onChange={HandleQuillChange}
               ref={quillRef}
               style={{ height: '200px' }}

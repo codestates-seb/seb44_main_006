@@ -7,3 +7,13 @@ const defaultOptions = {
 export default defaultOptions;
 
 export const LIMIT = 12;
+
+export const modules = {
+  toolbar: {
+    container: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['clean'],
+    ],
+  },
+};

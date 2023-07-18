@@ -6,6 +6,8 @@ import SkeletonMap from '../../skeleton/SkeletonMap';
 
 const MapContainerDiv = styled(FlexDiv)`
   width: 100%;
+  flex: 3;
+
   @media screen and (max-width: 768px) {
     flex-direction: column;
     &.skeletonScheduleDiv {
@@ -20,7 +22,6 @@ const MapContainerDiv = styled(FlexDiv)`
 
     .skeletonMap {
       margin-left: 0px;
-      flex: 1;
       height: 50vh;
     }
   }
