@@ -1,5 +1,6 @@
 import axios, {
   AxiosError,
+  AxiosRequestHeaders,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
@@ -52,11 +53,11 @@ instance.interceptors.response.use(
           const newAccessToken = response.headers.authorization as string;
           localStorage.setItem('accessToken', newAccessToken);
           localStorage.setItem('isLogin', JSON.stringify(true));
-          if (originalConfig && originalConfig.headers !== undefined) {
+          if (originalConfig && originalConfig.headers) {
             originalConfig.headers = {
               ...originalConfig.headers,
               Authorization: newAccessToken,
-            };
+            } as AxiosRequestHeaders;
             return await instance(originalConfig);
           }
         }
