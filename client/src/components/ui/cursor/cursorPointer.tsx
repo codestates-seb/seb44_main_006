@@ -40,7 +40,7 @@ const CursorContainer = styled.div<CursorInfo>`
     transition: background-image 0.2s;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     display: none;
   }
 `;

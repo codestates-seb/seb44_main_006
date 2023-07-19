@@ -54,9 +54,9 @@ const ArrowFigure = styled.span<NavT>`
   height: 0;
   border-bottom: 0 solid transparent;
   border-top: ${(props) =>
-    props?.ispath === 'mypage'
-      ? `8px solid ${cssToken.COLOR['gray-900']}`
-      : `8px solid ${cssToken.COLOR['gray-300']}`};
+    props?.ispath === 'community'
+      ? `8px solid ${cssToken.COLOR['gray-500']}`
+      : `8px solid ${cssToken.COLOR['gray-500']}`};
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
 

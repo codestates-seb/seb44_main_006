@@ -77,9 +77,9 @@ const DivBox = styled.div<HeaderStyle>`
         props?.ispath === 'setting' ||
         props?.ispathPull === '/community/select'
       ) {
-        return 'block';
+        return 'none';
       }
-      return 'none';
+      return 'block';
     }};
     width: 100%;
     height: 4.5rem;
