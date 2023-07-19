@@ -1,74 +1,29 @@
 <!DOCTYPE html>
-<html lang="kr">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-    /* CSS 스타일을 적용하세요 */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fff;
-    }
-
-    .container {
-      max-width: 37.5rem;
-      margin: auto;
-      padding: 3.125rem;
-      text-align: center;
-    }
-
-    .logo {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-
-    p {
-      margin-bottom: 1.25rem;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 1.25rem 1.875rem;
-      margin: auto;
-      background-color: #68D3FD;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 0.3125rem;
-      margin-bottom: 1.875rem;
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 1.875rem;
-      color: #888;
-    }
-  </style>
-    <title>Document</title>
+    <title>HaruMate</title>
 </head>
 
-<body>
-<div class="container">
-    <div class="logo">
-        <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/mail_img.jpg" style="width:100%" />
+<body style="font-family: Arial; sans-serif; background-color: #fff">
+<div class="container" style="max-width: 37.5rem; margin: auto; padding: 3.125rem; text-align: center">
+    <div class="logo" style="text-align: center; margin-bottom: 20px">
+        <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/mail_img.jpg" style="width:100%"/>
     </div>
 
-    <h1>
+    <h1 style="text-align: center; color: #333">
         <span th:text="${memberNickname}">홍길동</span>님<br>
         HARUMATE 가입을 축하합니다!
     </h1>
 
+    <a class="button" href="https://harumate.netlify.app" title="바로가기" style="display: inline-block; padding: 1.25rem 1.875rem; margin: auto;
+    background-color: #68D3FD; color: #fff; text-decoration: none; border-radius: 0.3125rem; margin-bottom: 1.875rem">HARUMATE
+        바로가기</a>
 
-    <a class="button" href="https://harumate.netlify.app/%22%3E" title="바로가기">HARUMATE 바로가기</a>
-
-
-    <div class="footer">
-        <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/HaruMate_logo.jpg" style="width:9.375rem" alt="logo"/>
+    <div class="footer" style="text-align: center; margin-top: 1.875rem; color: #888">
+        <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/HaruMate_logo.jpg"
+             style="width:9.375rem" alt="logo"/>
     </div>
 </div>
 </body>
