@@ -1,6 +1,6 @@
 import { IconStyle } from '../types/type';
 
-const Trash = ({ style }: { style: IconStyle }) => {
+export const Trash = ({ style }: { style: IconStyle }) => {
   return (
     <svg
       width={style.iconWidth}
@@ -16,5 +16,3 @@ const Trash = ({ style }: { style: IconStyle }) => {
     </svg>
   );
 };
-
-export default Trash;

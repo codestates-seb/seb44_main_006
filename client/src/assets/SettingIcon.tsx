@@ -1,4 +1,4 @@
-const SettingIcon = () => {
+export const SettingIcon = () => {
   return (
     <svg
       width="17"
@@ -14,8 +14,3 @@ const SettingIcon = () => {
     </svg>
   );
 };
-
-export default SettingIcon;
-
-
-

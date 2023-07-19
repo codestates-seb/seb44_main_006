@@ -1,6 +1,6 @@
 import { IconStyle } from '../types/type';
 
-const Search = ({ style }: { style: IconStyle }) => {
+export const Search = ({ style }: { style: IconStyle }) => {
   return (
     <svg
       width={style.iconWidth}
@@ -19,5 +19,3 @@ const Search = ({ style }: { style: IconStyle }) => {
     </svg>
   );
 };
-
-export default Search;

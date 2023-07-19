@@ -10,7 +10,7 @@ import cssToken from '../../styles/cssToken';
 import Modal from '../ui/modal/Modal';
 import Title from '../ui/text/Title';
 import SubTitle from '../ui/text/SubTitle';
-import Thumbnail from '../../assets/Thumbnail';
+import { Thumbnail } from '../../assets/index';
 import InputContainer from '../ui/input/InputContainer';
 import TextArea from '../ui/input/TextArea';
 import { GrayButton, SkyBlueButton } from '../ui/button/index';

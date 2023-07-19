@@ -2,10 +2,12 @@ import { styled } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 
 import cssToken from '../../styles/cssToken';
-import CalendarPageIcon from '../../assets/CalendarPageIcon';
-import CommunityPageIcon from '../../assets/CommunityPageIcon';
-import MainPageIcon from '../../assets/MainPageIcon';
-import MyPageIcon from '../../assets/MyPageIcon';
+import {
+  CalendarPageIcon,
+  CommunityPageIcon,
+  MainPageIcon,
+  MyPageIcon,
+} from '../../assets/index';
 import UserInfoMy from '../ui/UserInfoPfp';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLocationEndpoint from '../../hooks/useLocationEndpoint';

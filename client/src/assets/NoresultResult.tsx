@@ -1,6 +1,6 @@
 import { IconStyle } from '../types/type';
 
-const NoresultResult = ({ style }: { style: IconStyle }) => {
+export const NoresultResult = ({ style }: { style: IconStyle }) => {
   return (
     <svg
       width={style.iconWidth}
@@ -24,5 +24,3 @@ const NoresultResult = ({ style }: { style: IconStyle }) => {
     </svg>
   );
 };
-
-export default NoresultResult;

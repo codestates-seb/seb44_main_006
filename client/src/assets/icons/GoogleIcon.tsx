@@ -1,4 +1,4 @@
-const GoogleIcon = () => {
+export const GoogleIcon = () => {
   return (
     <svg
       width="40"
@@ -26,5 +26,3 @@ const GoogleIcon = () => {
     </svg>
   );
 };
-
-export default GoogleIcon;

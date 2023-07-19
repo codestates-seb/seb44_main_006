@@ -9,10 +9,9 @@ import cssToken from '../../../styles/cssToken';
 import { MapLocationCardInfo } from '../../../types/type';
 import { RootState } from '../../../store';
 import Button from '../button/Button';
-import Trash from '../../../assets/Trash';
+import { Trash, ThreeLine } from '../../../assets/index';
 import { scheduleListActions } from '../../../store/scheduleList-slice';
 import { markerActions } from '../../../store/marker-slice';
-import ThreeLine from '../../../assets/ThreeLine';
 
 const MapLocationCardContainer = styled.section`
   display: flex;

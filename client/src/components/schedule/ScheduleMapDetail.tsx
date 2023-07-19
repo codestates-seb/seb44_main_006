@@ -17,7 +17,7 @@ import makePolyline from '../../utils/makePolyline';
 import { markerActions } from '../../store/marker-slice';
 import { GrayButton, SkyBlueButton } from '../ui/button/index';
 import useMovePage from '../../hooks/useMovePage';
-import CalenderIcon from '../../assets/CalendarIcon';
+import { CalenderIcon } from '../../assets/index';
 import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
 import usePanMap from '../../hooks/usePanMap';
