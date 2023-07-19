@@ -7,7 +7,7 @@ const MapDiv = styled(SkeletonDiv)`
   border-radius: 0rem;
   margin-left: ${cssToken.SPACING['gap-24']};
   flex: 3;
-  height: calc(var(--vh, 1vh) * 80);
+  height: 80vh;
 `;
 const SkeletonMap = () => {
   return <MapDiv className="skeletonMap" />;

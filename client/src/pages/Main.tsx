@@ -71,7 +71,7 @@ const MainLink = styled.button`
 
 const CommunitySection = styled(SectionBox)`
   background: ${cssToken.COLOR.white};
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100vh;
   padding: 0 30px;
 
   > button {
@@ -82,6 +82,7 @@ const CommunitySection = styled(SectionBox)`
   }
 
   @media (min-width: 768px) {
+    height: calc(var(--vh, 1vh) * 100);
     flex: 1;
   }
 `;
