@@ -19,3 +19,5 @@ export { WarningIcon } from './WarningIcon';
 export { GoogleIcon } from './icons/GoogleIcon';
 export { KakaoIcon } from './icons/KakaoIcon';
 export { NaverIcon } from './icons/NaverIcon';
+export { CommentIcon } from './CommentIcon';
+export { EyeIcon } from './EyeIcon';
