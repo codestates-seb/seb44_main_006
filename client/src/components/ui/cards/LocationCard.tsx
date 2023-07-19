@@ -75,6 +75,10 @@ const LocationA = styled.a`
 `;
 
 const AddButton = styled(EventButton)`
+  display: flex;
+  justify-items: center;
+  align-items: center;
+
   width: 2rem;
   height: 2rem;
   font-size: 1.5rem;
