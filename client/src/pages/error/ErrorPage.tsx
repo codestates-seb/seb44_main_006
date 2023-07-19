@@ -29,16 +29,17 @@ type ResError = {
 
 const ErrorPage = () => {
   const response = useLocation().state as ResError;
+
   return (
     <ErrorWrapper>
-      <CatContainer status={response.status} />
+      <CatContainer status={response ? response.status : 404} />
       <Text
         styles={{
           color: cssToken.COLOR.white,
           weight: cssToken.FONT_WEIGHT.medium,
         }}
       >
-        {response.errormsg}
+        {response ? response.errormsg : 'Page Not Found'}
       </Text>
       <ErrorBtnContainer />
     </ErrorWrapper>
