@@ -18,7 +18,6 @@ const ScheduleDiv = styled(FlexDiv)`
   flex-direction: column;
   row-gap: ${cssToken.SPACING['gap-12']};
   height: 60vh;
-
   @media screen and (max-width: 768px) {
     height: fit-content;
     max-height: 29vh;

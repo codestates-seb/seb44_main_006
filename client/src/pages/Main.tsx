@@ -2,6 +2,8 @@ import { styled } from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
+import Landing from './Landing';
+
 import mainImg from '../assets/mainImg.png';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
@@ -158,28 +160,31 @@ const Main = () => {
   };
 
   return (
-    <MainContainer>
-      <CursorPointer isMouseHover={isHovered} />
-      <CommunitySection>
-        <MainLink
-          onClick={goToCommunity}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <span>Community</span>
-        </MainLink>
-      </CommunitySection>
-      <ScheduleSection>
-        <MainLink
-          onClick={isLoggedIn ? checkScheduleCount : LogintoggleModal}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <span>Schedule</span>
-        </MainLink>
-        <img src={`${mainImg}`} alt="bgimg" />
-      </ScheduleSection>
-    </MainContainer>
+    <>
+      <MainContainer>
+        <CursorPointer isMouseHover={isHovered} />
+        <CommunitySection>
+          <MainLink
+            onClick={goToCommunity}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <span>Community</span>
+          </MainLink>
+        </CommunitySection>
+        <ScheduleSection>
+          <MainLink
+            onClick={isLoggedIn ? checkScheduleCount : LogintoggleModal}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <span>Schedule</span>
+          </MainLink>
+          <img src={`${mainImg}`} alt="bgimg" />
+        </ScheduleSection>
+      </MainContainer>
+      <Landing />
+    </>
   );
 };
 
