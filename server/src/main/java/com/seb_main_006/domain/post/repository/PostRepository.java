@@ -14,6 +14,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findByCourse(Course course);
 
     @Query("select distinct c from Post p join p.course c " +
-            "where replace(c.courseTitle, ' ', '') like %:inputWord% or replace(p.postContent, ' ', '') like %:inputWord% or c.courseContent like %:inputWord% ")
+            "where replace(c.courseTitle, ' ', '') like %:inputWord% or replace(p.postContent, ' ', '') like %:inputWord%")
     List<Course> searchCourseOrderByWord(@Param("inputWord") String inputWord);
 }
