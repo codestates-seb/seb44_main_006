@@ -30,6 +30,7 @@ interface Props {
 const RadiusTagContainer = ({ dispatch }: Props) => {
   const arr = ['1km', '3km', '5km', '10km'];
   const selectedId = useSelector((state: RootState) => state.selectedId.tagId);
+
   const reduxDispatch = useDispatch();
 
   const handleClick = (tagname: string | undefined) => {

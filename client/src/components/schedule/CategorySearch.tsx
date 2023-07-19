@@ -46,7 +46,7 @@ const CategorySearch = () => {
     category: '',
   });
   const [choice, dispatch] = useReducer(reducer, {
-    radius: undefined,
+    radius: 1,
     category: '',
   });
 
@@ -63,10 +63,10 @@ const CategorySearch = () => {
   };
 
   const resetChoice = () => {
-    dispatch({ type: 'RADIUS', payload: { radius: undefined } });
+    dispatch({ type: 'RADIUS', payload: { radius: 1 } });
     dispatch({ type: 'CATEGORY', payload: { category: '' } });
-    setSearchPlace({ radius: undefined, category: '' });
-    reduxDispatch(selectedIdActions.setTagId(''));
+    setSearchPlace({ radius: 1, category: '' });
+    reduxDispatch(selectedIdActions.setTagId('1'));
     reduxDispatch(selectedIdActions.setCategoryId(''));
   };
 
