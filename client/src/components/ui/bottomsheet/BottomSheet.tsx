@@ -11,7 +11,7 @@ const Wrapper = styled.div<{
   param?: string;
 }>`
   width: 100%;
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100vh;
   background-color: ${cssToken.COLOR.white};
   overflow: hidden;
   transition: height 0.3s ease-in-out;
@@ -24,6 +24,7 @@ const Wrapper = styled.div<{
   }
 
   @media (max-width: 768px) {
+    height: calc(var(--vh, 1vh) * 100);
     position: fixed;
     bottom: 0;
     left: 0;

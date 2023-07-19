@@ -25,14 +25,6 @@ const RegisterDetailContainer = styled.section`
   align-items: center;
 `;
 
-const PlaceEmbedBox = styled.iframe`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: ${cssToken.WIDTH['w-full']};
-  height: calc(var(--vh, 1vh) * 90);
-`;
-
 const ButtonWrapper = styled.section`
   display: flex;
   justify-content: center;
@@ -84,7 +76,6 @@ const RegisterDetail = ({
 
   return (
     <RegisterDetailContainer>
-      <PlaceEmbedBox src={`${detailItem.place_url}`} />
       <ButtonWrapper>
         <GrayButton
           width="7rem"

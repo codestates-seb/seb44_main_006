@@ -16,8 +16,6 @@ function getWeekday(dateStr: string) {
 
 const formatData = (Days: string, location?: string) => {
   if (Days) {
-    console.log(Days);
-    console.log(calculateDDay(Days.split(',')[0]));
     const Dday = calculateDDay(Days.split(',')[0]);
     if (location) {
       // 일정 상세페이지인 경우
