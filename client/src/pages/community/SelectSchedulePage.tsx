@@ -21,6 +21,7 @@ import scrollToTop from '../../utils/scrollToTop';
 import SkeletonCardContainer from '../../components/community/skeleton/SkeletonCardContainer';
 import useValidEnter from '../../hooks/useValidEnter';
 import thousandTok from '../../utils/thousandTok';
+import formatData from '../../utils/sliceData';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -162,6 +163,7 @@ const SelectSchedulePage = () => {
                   courseId={course.courseId}
                   selectId={selectId}
                   onClick={handleClickCard}
+                  date={`${formatData(String(course.courseDday))}`}
                 />
               ))}
             </SelectCardWrapper>
