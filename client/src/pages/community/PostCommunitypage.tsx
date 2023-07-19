@@ -76,6 +76,7 @@ const MapInfoDiv = styled(FlexDiv)`
 
 const MapGap = styled(GapDiv)`
   width: 100%;
+  flex: 3;
 `;
 
 const ErrorContainer = styled(GapDiv)`

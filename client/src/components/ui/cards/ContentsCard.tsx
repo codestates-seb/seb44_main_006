@@ -24,7 +24,7 @@ const ContensCardContainer = styled.section<{ selected?: boolean }>`
   flex-grow: 0;
   width: 20.625rem;
   ${CardCommonBox}
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
     width: 100%;
   }
 `;
