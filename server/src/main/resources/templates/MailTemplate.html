@@ -1,20 +1,21 @@
 <!DOCTYPE html>
+<html lang="kr">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Our Community</title>
     <style>
     /* CSS 스타일을 적용하세요 */
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      background-color: #fff;
     }
 
     .container {
-      max-width: 600px;
+      max-width: 37.5rem;
       margin: auto;
-      padding: 20px;
+      padding: 3.125rem;
+      text-align: center;
     }
 
     .logo {
@@ -28,44 +29,46 @@
     }
 
     p {
-      margin-bottom: 20px;
+      margin-bottom: 1.25rem;
     }
 
     .button {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 1.25rem 1.875rem;
       margin: auto;
-      background-color: #0080ff;
+      background-color: #68D3FD;
       color: #fff;
       text-decoration: none;
-      border-radius: 5px;
+      border-radius: 0.3125rem;
+      margin-bottom: 1.875rem;
     }
 
     .footer {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 1.875rem;
       color: #888;
     }
   </style>
+    <title>Document</title>
 </head>
+
 <body>
 <div class="container">
     <div class="logo">
-        <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/HaruMate.png" style="width:200px; heigth:200px"/>
+        <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/mail_img.jpg" style="width:100%" />
     </div>
 
     <h1>
-    <div style="text-align: center">
-        <span th:text="${memberNickname}">홍길동</span>님 HaruMate 가입을 축하합니다!
-    </div>
+        <span th:text="${memberNickname}">홍길동</span>님<br>
+        HARUMATE 가입을 축하합니다!
     </h1>
 
-    <div style="text-align: center">
-        <p><a class="button" href="https://harumate.netlify.app/">HaruMate 바로가기</a></p>
-    </div>
+
+    <a class="button" href="https://harumate.netlify.app/%22%3E" title="바로가기">HARUMATE 바로가기</a>
+
 
     <div class="footer">
-        <p>프론트 선생님들 디자인좀 해주시면 감사하겠습니다. <br> 저희의 역량은 여기까지인것같습니다...</p>
+        <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/HaruMate_logo.jpg" style="width:9.375rem" alt="logo"/>
     </div>
 </div>
 </body>
