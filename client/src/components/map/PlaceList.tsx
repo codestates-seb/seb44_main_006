@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import useKeywordSearch from '../../hooks/useKeywordSearch';
 import { Pagination, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
-import LocationCard from '../ui/cards/LocationCard';
+import { LocationCard } from '../ui/cards/index';
 import cssToken from '../../styles/cssToken';
 import useGeolocation from '../../hooks/useGeolocation';
 import Noresult from '../ui/Noresult';

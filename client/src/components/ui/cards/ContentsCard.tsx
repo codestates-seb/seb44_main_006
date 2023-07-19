@@ -125,92 +125,95 @@ const DataText = styled.span`
   color: ${cssToken.COLOR['gray-900']};
 `;
 
-const ContensCard = ({
-  title,
-  text,
-  likeCount,
-  tag,
-  userName,
-  thumbnail,
-  onClick,
-  selectId,
-  postId,
-  courseId,
-  children,
-  likeStatus,
-  bookmarkStatus,
-  type,
-  date,
-  isMine,
-}: ContCardInfo) => {
-  const isLogin = getLoginStatus();
-  const selected = selectId !== undefined && selectId === courseId;
-  return (
-    <ContensCardContainer
-      onClick={() => {
-        if (onClick) {
-          if (type === 'course' && courseId) onClick(courseId);
-          else if (type === 'post' && postId) onClick(postId);
-        }
-      }}
-      selected={selected}
-    >
-      <ContensTop>
-        <UserName>{userName || '탈퇴한 사용자'}</UserName>
-        <OptionButton isActive={false}>{children}</OptionButton>
-      </ContensTop>
+export const ContensCard = memo(
+  ({
+    title,
+    text,
+    likeCount,
+    tag,
+    userName,
+    thumbnail,
+    onClick,
+    selectId,
+    postId,
+    courseId,
+    children,
+    likeStatus,
+    bookmarkStatus,
+    type,
+    date,
+    isMine,
+  }: ContCardInfo) => {
+    const isLogin = getLoginStatus();
+    const selected = selectId !== undefined && selectId === courseId;
+    return (
+      <ContensCardContainer
+        onClick={() => {
+          if (onClick) {
+            if (type === 'course' && courseId) onClick(courseId);
+            else if (type === 'post' && postId) onClick(postId);
+          }
+        }}
+        selected={selected}
+      >
+        <ContensTop>
+          <UserName>{userName || '탈퇴한 사용자'}</UserName>
+          <OptionButton isActive={false}>{children}</OptionButton>
+        </ContensTop>
 
-      <ContensMiddle>
-        <TextWrap>
-          <ContensHeader>
-            <ContensTitle>{title}</ContensTitle>
-            {isLogin && !isMine && bookmarkStatus !== undefined && courseId && (
-              <StarButton
-                status={bookmarkStatus ? 'del' : 'add'}
-                width="40px"
-                height="40px"
-                isActive={bookmarkStatus}
-                courseId={courseId}
-              />
+        <ContensMiddle>
+          <TextWrap>
+            <ContensHeader>
+              <ContensTitle>{title}</ContensTitle>
+              {isLogin &&
+                !isMine &&
+                bookmarkStatus !== undefined &&
+                courseId && (
+                  <StarButton
+                    status={bookmarkStatus ? 'del' : 'add'}
+                    width="40px"
+                    height="40px"
+                    isActive={bookmarkStatus}
+                    courseId={courseId}
+                  />
+                )}
+            </ContensHeader>
+            {text && <ContensText>{removeTag(text)}</ContensText>}
+            {tag && (
+              <Tags>
+                {tag?.map((tagItem: string) => (
+                  <TagButton
+                    width={cssToken.WIDTH['min-w-fit']}
+                    height={cssToken.HEIGHT['h-fit']}
+                    isActive={false}
+                    key={tagItem}
+                  >
+                    {tagItem}
+                  </TagButton>
+                ))}
+              </Tags>
             )}
-          </ContensHeader>
-          {text && <ContensText>{removeTag(text)}</ContensText>}
-          {tag && (
-            <Tags>
-              {tag?.map((tagItem: string) => (
-                <TagButton
-                  width={cssToken.WIDTH['min-w-fit']}
-                  height={cssToken.HEIGHT['h-fit']}
-                  isActive={false}
-                  key={tagItem}
-                >
-                  {tagItem}
-                </TagButton>
-              ))}
-            </Tags>
-          )}
-        </TextWrap>
+          </TextWrap>
 
-        <ThumbnailBox
-          styles={{
-            width: '100%',
-            height: '0',
-            brradius: cssToken.BORDER['rounded-s'],
-          }}
-          src={thumbnail || defaultThumbnail}
-        />
-      </ContensMiddle>
-      <ContensBottom>
-        <LikeBtnBox>
-          {isLogin && !isMine && likeStatus !== undefined && courseId && (
-            <LikeButton isActive={likeStatus} courseId={courseId} />
-          )}
-          <DataText>{thousandTok(Number(likeCount))} likes</DataText>
-        </LikeBtnBox>
-        <DataText>{date}</DataText>
-      </ContensBottom>
-    </ContensCardContainer>
-  );
-};
-
-export default memo(ContensCard);
+          <ThumbnailBox
+            styles={{
+              width: '100%',
+              height: '0',
+              brradius: cssToken.BORDER['rounded-s'],
+            }}
+            src={thumbnail || defaultThumbnail}
+          />
+        </ContensMiddle>
+        <ContensBottom>
+          <LikeBtnBox>
+            {isLogin && !isMine && likeStatus !== undefined && courseId && (
+              <LikeButton isActive={likeStatus} courseId={courseId} />
+            )}
+            <DataText>{thousandTok(Number(likeCount))} likes</DataText>
+          </LikeBtnBox>
+          <DataText>{date}</DataText>
+        </ContensBottom>
+      </ContensCardContainer>
+    );
+  }
+);

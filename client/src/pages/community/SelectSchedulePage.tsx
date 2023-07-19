@@ -8,7 +8,7 @@ import { mgpd } from './commonstyle';
 
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
-import ContensCard from '../../components/ui/cards/ContentsCard';
+import { ContensCard } from '../../components/ui/cards/index';
 import Head from '../../components/community/Head';
 import PageMoveBtnDiv from '../../components/community/PageMoveButton';
 import useMovePage from '../../hooks/useMovePage';

@@ -11,7 +11,7 @@ import DeleteButton from './DeleteButton';
 import SkeletonCardContainer from './skeleton/SkeletonCardContainer';
 import FilterTabDiv from './FilterTabDiv';
 
-import ContensCard from '../ui/cards/ContentsCard';
+import { ContensCard } from '../ui/cards/index';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper } from '../../styles/styles';
 import { CommunitySummaryT, InfiniteScrollT } from '../../types/apitype';

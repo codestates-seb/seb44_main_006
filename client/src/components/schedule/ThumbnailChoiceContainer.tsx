@@ -8,7 +8,7 @@ import SkyBlueButton from '../ui/button/SkyBlueButton';
 import Title from '../ui/text/Title';
 import SubTitle from '../ui/text/SubTitle';
 import imageUrl from '../../utils/constant/imageUrl';
-import ImageCard from '../ui/cards/ImageCard';
+import { ImageCard } from '../ui/cards/index';
 import { RootState } from '../../store';
 import { selectedIdActions } from '../../store/selectedId-slice';
 import { scheduleListActions } from '../../store/scheduleList-slice';

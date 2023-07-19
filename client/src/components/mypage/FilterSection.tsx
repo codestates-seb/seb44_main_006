@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 
 import SkeletonCardContainer from '../community/skeleton/SkeletonCardContainer';
-import ContensCard from '../ui/cards/ContentsCard';
+import { ContensCard } from '../ui/cards/index';
 import cssToken from '../../styles/cssToken';
 import { CardWrapper, FlexDiv } from '../../styles/styles';
 import { Props } from '../../types/type';

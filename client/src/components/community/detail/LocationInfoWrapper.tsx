@@ -7,7 +7,7 @@ import Title from '../../ui/text/Title';
 import { FlexDiv } from '../../../styles/styles';
 import { IScheduleListItem } from '../../../types/type';
 import useCourseListScroll from '../../../hooks/useCourseListScroll';
-import MapLocationCard from '../../ui/cards/MapLocationCard';
+import { MapLocationCard } from '../../ui/cards/index';
 
 type LocationInfoT = {
   title: string;

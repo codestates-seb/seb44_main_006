@@ -89,7 +89,7 @@ const AddButton = styled(EventButton)`
   cursor: pointer;
 `;
 
-const LocationCard = ({
+export const LocationCard = ({
   id,
   title,
   category,
@@ -142,5 +142,3 @@ const LocationCard = ({
     </LocationCardContainer>
   );
 };
-
-export default LocationCard;
