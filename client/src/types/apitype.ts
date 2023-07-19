@@ -137,6 +137,7 @@ export type MypCourseSummaryT = {
 };
 
 export type MyBookMarkSummaryT = {
+  answerCount?: number;
   bookmarkId?: number;
   courseId?: number;
   courseLikeCount?: number;

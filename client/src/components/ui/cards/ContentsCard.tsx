@@ -115,7 +115,7 @@ const ContensBottom = styled.div`
 
 const ContensCountBox = styled.div`
   display: flex;
-  gap: 7px;
+  gap: 0.4375rem;
 `;
 
 const BtnBox = styled.div`
@@ -123,23 +123,23 @@ const BtnBox = styled.div`
   align-items: center;
   justify-content: center;
   color: ${cssToken.COLOR['gray-900']};
-  font-size: 12px;
-  gap: 2px;
+  font-size: 0.75rem;
+  gap: 0.125rem;
   > button {
     padding: 0;
   }
   &.comment svg {
-    width: 15px;
-    height: 15px;
+    width: 0.9375rem;
+    height: 0.9375rem;
   }
   &.eye svg {
-    width: 21px;
-    height: 21px;
+    width: 1.3125rem;
+    height: 1.3125rem;
   }
 `;
 
 const DataText = styled.span`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: ${cssToken.COLOR['gray-900']};
 `;
 
@@ -237,7 +237,7 @@ export const ContensCard = memo(
               )}
               <DataText>{thousandTok(Number(likeCount))}</DataText>
             </BtnBox>
-            {!isMine && type !== 'course' &&
+            {!isMine && type !== 'course' && (
               <>
                 <BtnBox className="comment">
                   <CommentIcon />
@@ -248,7 +248,7 @@ export const ContensCard = memo(
                   {courseViewCount}
                 </BtnBox>
               </>
-            }
+            )}
           </ContensCountBox>
           <DataText>{date}</DataText>
         </ContensBottom>
