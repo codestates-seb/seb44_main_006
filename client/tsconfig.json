@@ -23,7 +23,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": false,
   },
   "include": ["src"],
   "exclude": ["node_modules"],
