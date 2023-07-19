@@ -78,7 +78,7 @@ const ModalContainer = styled.section<IModalContainer>`
       width: ${cssToken.WIDTH['w-full']};
       height: 15.5625rem;
 
-      border-radius: none;
+      border-radius: 0;
       border-top-left-radius: ${cssToken.BORDER['rounded-md']};
       border-top-right-radius: ${cssToken.BORDER['rounded-md']};
 

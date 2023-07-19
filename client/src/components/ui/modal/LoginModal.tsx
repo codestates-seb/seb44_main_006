@@ -35,6 +35,7 @@ const Backdrop = styled.div`
   background-color: #000000;
   opacity: 0.3;
   z-index: 10;
+  height: calc(var(--vh, 1vh) * 100);
 `;
 
 const ModalContainer = styled.section<IModalContainer>`
@@ -54,6 +55,7 @@ const ModalContainer = styled.section<IModalContainer>`
     width: 100%;
     bottom: 0;
     position: absolute;
+    padding-bottom: 4.125rem;
   }
 `;
 
