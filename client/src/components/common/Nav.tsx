@@ -124,14 +124,14 @@ const Nav = ({
 
   return (
     <BtnBox>
-      {isLoggedIn && (
+      {isLoggedIn ? (
         <MenuWrapper>
           <MenuToggleBtn onClick={handleMenuToggle}>
             <UserInfoMy
               styles={{
                 size: '2.5rem',
               }}
-              src={userData ? userData?.memberImageUrl : notUserImag}
+              src={userData?.memberId ? userData?.memberImageUrl : notUserImag}
             />
             <ArrowFigure
               className={scrollPosition < 100 ? '' : 'change_figure'}
@@ -155,8 +155,7 @@ const Nav = ({
             </MenuUl>
           )}
         </MenuWrapper>
-      )}
-      {!isLoggedIn && (
+      ) : (
         <WhiteButton
           onClick={LogintoggleModal}
           height="25px"

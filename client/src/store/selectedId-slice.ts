@@ -2,7 +2,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  tagId: '',
+  tagId: '1',
   categoryId: '',
   thumbnailId: '',
 };
@@ -21,7 +21,7 @@ const selectedIdSlice = createSlice({
       state.thumbnailId = action.payload;
     },
     allReset(state) {
-      state.tagId = '';
+      state.tagId = '1';
       state.categoryId = '';
       state.thumbnailId = '';
     },
