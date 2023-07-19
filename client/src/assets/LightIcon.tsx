@@ -1,4 +1,4 @@
-const LightIcon = () => {
+export const LightIcon = () => {
   return (
     <svg
       width="29"
@@ -12,7 +12,5 @@ const LightIcon = () => {
         fill="#E0E0E0"
       />
     </svg>
-  )
+  );
 };
-
-export default LightIcon;

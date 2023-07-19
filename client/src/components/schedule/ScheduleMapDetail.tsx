@@ -18,7 +18,7 @@ import { markerActions } from '../../store/marker-slice';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
-import CalenderIcon from '../../assets/CalendarIcon';
+import { CalenderIcon } from '../../assets/index';
 import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
 import usePanMap from '../../hooks/usePanMap';

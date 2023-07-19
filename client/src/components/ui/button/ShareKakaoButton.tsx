@@ -1,7 +1,7 @@
 import { debounce } from 'lodash';
 
 import shareKakao from '../../../utils/shareKakao';
-import KakaoIcon from '../../../assets/icons/KakaoIcon';
+import { KakaoIcon } from '../../../assets/index';
 import { ShareBtn } from '../../../styles/styles';
 
 const ShareKakaoButton = ({

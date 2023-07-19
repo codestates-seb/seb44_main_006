@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import EventButton from './EventButton';
 
-import Pen from '../../../assets/Pen';
+import { Pen } from '../../../assets/index';
 
 const EditorButtonComponent = ({ courseId }: { courseId?: string }) => {
   const navigate = useNavigate();

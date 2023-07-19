@@ -1,6 +1,6 @@
 import { IconStyle } from '../types/type';
 
-const Thumbnail = ({ style }: { style: IconStyle }) => {
+export const Thumbnail = ({ style }: { style: IconStyle }) => {
   return (
     <svg
       width={style.iconWidth || 125}
@@ -16,5 +16,3 @@ const Thumbnail = ({ style }: { style: IconStyle }) => {
     </svg>
   );
 };
-
-export default Thumbnail;

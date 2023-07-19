@@ -1,4 +1,4 @@
-const CommunityPageIcon = () => {
+export const CommunityPageIcon = () => {
   return (
     <svg
       width="20"
@@ -14,5 +14,3 @@ const CommunityPageIcon = () => {
     </svg>
   );
 };
-
-export default CommunityPageIcon;

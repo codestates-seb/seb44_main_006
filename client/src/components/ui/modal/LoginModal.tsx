@@ -2,9 +2,7 @@ import { styled } from 'styled-components';
 
 import CloseButton from '../button/CloseButton';
 import cssToken from '../../../styles/cssToken';
-import GoogleIcon from '../../../assets/icons/GoogleIcon';
-import KakaoIcon from '../../../assets/icons/KakaoIcon';
-import NaverIcon from '../../../assets/icons/NaverIcon';
+import { GoogleIcon, KakaoIcon, NaverIcon } from '../../../assets/index';
 import SubTitle from '../text/SubTitle';
 
 interface IModalContainer {

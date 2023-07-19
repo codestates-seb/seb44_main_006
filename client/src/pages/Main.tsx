@@ -13,7 +13,6 @@ import useMovePage from '../hooks/useMovePage';
 import useUserInfo from '../querys/useUserInfo';
 import getLoginStatus from '../utils/getLoginStatus';
 import CircleButton from '../components/ui/button/CircleButton';
-import scrollToTop from '../utils/scrollToTop';
 
 const MainContainer = styled.main`
   cursor: none;

@@ -7,11 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { PatchMemNickname } from '../../apis/api';
-import Pen from '../../assets/Pen';
+import { Pen, SettingIcon } from '../../assets/index';
 import InputContainer from '../ui/input/InputContainer';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import useMovePage from '../../hooks/useMovePage';
-import SettingIcon from '../../assets/SettingIcon';
 import useUserInfo from '../../querys/useUserInfo';
 import SkeletonUserInfoContainer from '../skeleton/SkeletonUserInfo';
 

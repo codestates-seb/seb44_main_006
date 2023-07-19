@@ -1,6 +1,6 @@
 import { IconStyle } from '../types/type';
 
-const ThreeLine = ({ style }: { style: IconStyle }) => {
+export const ThreeLine = ({ style }: { style: IconStyle }) => {
   return (
     <svg
       width={style.iconWidth}
@@ -13,5 +13,3 @@ const ThreeLine = ({ style }: { style: IconStyle }) => {
     </svg>
   );
 };
-
-export default ThreeLine;

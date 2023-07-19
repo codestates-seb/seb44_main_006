@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import Text from './text/Text';
 
 import { FlexDiv } from '../../styles/styles';
-import NoresultResult from '../../assets/NoresultResult';
+import { NoresultResult } from '../../assets/index';
 import cssToken from '../../styles/cssToken';
 
 const Div = styled(FlexDiv)`

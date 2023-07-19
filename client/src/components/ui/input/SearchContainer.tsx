@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { forwardRef, ForwardedRef, memo } from 'react';
 
-import Search from '../../../assets/Search';
+import { Search } from '../../../assets/index';
 import cssToken from '../../../styles/cssToken';
 
 const InputWrapper = styled.div<StylesT>`

@@ -1,6 +1,6 @@
 import { IconStyle } from '../types/type';
 
-const Pen = ({ style }: { style: IconStyle }) => {
+export const Pen = ({ style }: { style: IconStyle }) => {
   return (
     <svg
       width={style.iconWidth}
@@ -16,5 +16,3 @@ const Pen = ({ style }: { style: IconStyle }) => {
     </svg>
   );
 };
-
-export default Pen;

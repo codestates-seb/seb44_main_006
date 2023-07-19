@@ -10,7 +10,7 @@ import cssToken from '../../styles/cssToken';
 import Modal from '../ui/modal/Modal';
 import Title from '../ui/text/Title';
 import SubTitle from '../ui/text/SubTitle';
-import Thumbnail from '../../assets/Thumbnail';
+import { Thumbnail } from '../../assets/index';
 import InputContainer from '../ui/input/InputContainer';
 import TextArea from '../ui/input/TextArea';
 import GrayButton from '../ui/button/GrayButton';
@@ -70,7 +70,7 @@ const TitleContainer = styled.section`
       font-size: 1.25rem;
     }
     > h3 {
-      font-size: 0.8125rem;;
+      font-size: 0.8125rem;
     }
   }
 `;
