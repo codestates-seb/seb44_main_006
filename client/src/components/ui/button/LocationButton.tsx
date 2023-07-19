@@ -3,7 +3,7 @@ import Button from './Button';
 import cssToken from '../../../styles/cssToken';
 import { IArgButtonStyle } from '../../../types/type';
 
-const LocationButton = ({
+export const LocationButton = ({
   width,
   height,
   svgWidth,
@@ -90,5 +90,3 @@ const LocationButton = ({
     </Button>
   );
 };
-
-export default LocationButton;

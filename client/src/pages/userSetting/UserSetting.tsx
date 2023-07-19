@@ -6,7 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
-import SkyBlueEventButton from '../../components/ui/button/SkyBlueEventButton';
+import {
+  SkyBlueEventButton,
+  CloseButton,
+} from '../../components/ui/button/index';
 import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
 import { DeleteAccount } from '../../apis/api';
 import Modal from '../../components/ui/modal/Modal';
@@ -14,7 +17,7 @@ import ModalChildren from '../../components/community/post/ModalChildren';
 import useMovePage from '../../hooks/useMovePage';
 import useToggleModal from '../../hooks/useToggleModal';
 import { LightIcon, DarkIcon } from '../../assets/index';
-import CloseButton from '../../components/ui/button/CloseButton';
+// import { setThemeModeActions } from '../../store/thememode-slice';
 import showToast from '../../utils/showToast';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useUserInfo from '../../querys/useUserInfo';

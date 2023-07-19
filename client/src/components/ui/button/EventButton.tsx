@@ -5,7 +5,7 @@ import { Button640 } from './buttonStyles';
 import { IEventButtonStyle, Props } from '../../../types/type';
 import cssToken from '../../../styles/cssToken';
 
-const ButtonTemplate = styled.button<IEventButtonStyle>`
+export const ButtonTemplate = styled.button<IEventButtonStyle>`
   width: ${(props) => props.width || 'fit-content'};
   height: ${(props) => props.height || 'fit-content'};
   margin: ${(props) => props.margin};

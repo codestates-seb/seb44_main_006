@@ -3,7 +3,7 @@ import Button from './Button';
 import cssToken from '../../../styles/cssToken';
 import { IArgButtonStyle } from '../../../types/type';
 
-const TagButton = ({
+export const TagButton = ({
   children,
   width,
   height,
@@ -31,5 +31,3 @@ const TagButton = ({
     </Button>
   );
 };
-
-export default TagButton;

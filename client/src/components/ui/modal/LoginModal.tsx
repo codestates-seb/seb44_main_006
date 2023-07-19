@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-import CloseButton from '../button/CloseButton';
+import { CloseButton } from '../button/index';
 import cssToken from '../../../styles/cssToken';
 import { GoogleIcon, KakaoIcon, NaverIcon } from '../../../assets/index';
 import SubTitle from '../text/SubTitle';

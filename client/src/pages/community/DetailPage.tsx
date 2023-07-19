@@ -12,7 +12,7 @@ import cssToken from '../../styles/cssToken';
 import { FlexDiv, OutsideWrap } from '../../styles/styles';
 import MapContainer from '../../components/community/MapContainer';
 import TextArea from '../../components/ui/input/TextArea';
-import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
+import { SkyBlueButton } from '../../components/ui/button/index';
 import PageMoveButton from '../../components/community/detail/PageMoveButton';
 import CommentContainer from '../../components/community/detail/CommentContainer';
 import ActionButtonContainer from '../../components/community/detail/ActionButtonContainer';

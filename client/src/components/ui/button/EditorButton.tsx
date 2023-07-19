@@ -4,7 +4,7 @@ import EventButton from './EventButton';
 
 import { Pen } from '../../../assets/index';
 
-const EditorButtonComponent = ({ courseId }: { courseId?: string }) => {
+export const EditorButtonComponent = ({ courseId }: { courseId?: string }) => {
   const navigate = useNavigate();
   const gotoEditor = () => {
     if (courseId) {
@@ -29,5 +29,3 @@ const EditorButtonComponent = ({ courseId }: { courseId?: string }) => {
     </EventButton>
   );
 };
-
-export default EditorButtonComponent;

@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import cssToken from '../../styles/cssToken';
-import SkyBlueButton from '../ui/button/SkyBlueButton';
+import { SkyBlueButton, GrayButton } from '../ui/button/index';
 import { showDetailActions } from '../../store/showDetail-slice';
-import GrayButton from '../ui/button/GrayButton';
 import { PlacesSearchResultItem } from '../../types/type';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import { RootState } from '../../store';

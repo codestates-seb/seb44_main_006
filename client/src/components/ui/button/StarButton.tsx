@@ -8,7 +8,7 @@ import { LikeBookMarkButtonT } from '../../../types/type';
 import { PostBookmark } from '../../../apis/api';
 import showToast from '../../../utils/showToast';
 
-const StarButton = ({
+export const StarButton = ({
   status,
   width,
   height,
@@ -69,5 +69,3 @@ const StarButton = ({
     </EventButton>
   );
 };
-
-export default StarButton;

@@ -7,7 +7,7 @@ import cssToken from '../../../styles/cssToken';
 import { LikeBookMarkButtonT } from '../../../types/type';
 import { PostLike } from '../../../apis/api';
 
-const LikeButton = ({
+export const LikeButton = ({
   svgWidth,
   svgHeight,
   isActive,
@@ -49,5 +49,3 @@ const LikeButton = ({
     </EventButton>
   );
 };
-
-export default LikeButton;

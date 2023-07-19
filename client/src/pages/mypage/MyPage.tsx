@@ -16,8 +16,8 @@ import { MypSummaryT } from '../../types/apitype';
 import useValidEnter from '../../hooks/useValidEnter';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useMovePage from '../../hooks/useMovePage';
-import CircleButton from '../../components/ui/button/CircleButton';
 import { Pen } from '../../assets/index';
+import { CircleButton } from '../../components/ui/button/index';
 import scrollToTop from '../../utils/scrollToTop';
 
 const Wrapper = styled(FlexDiv)`

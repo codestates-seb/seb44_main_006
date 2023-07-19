@@ -3,7 +3,7 @@ import { memo } from 'react';
 
 import cssToken from '../../../styles/cssToken';
 import { TagDiv } from '../../../styles/styles';
-import TagButton from '../../ui/button/TagButton';
+import { TagButton } from '../../ui/button/index';
 
 const TagContainer = ({ tagArr }: { tagArr: string[] }) => {
   return (

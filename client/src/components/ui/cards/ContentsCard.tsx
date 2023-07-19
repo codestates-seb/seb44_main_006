@@ -4,11 +4,13 @@ import { memo } from 'react';
 import { CardCommonBox } from './Card.styled';
 
 import cssToken from '../../../styles/cssToken';
-import TagButton from '../button/TagButton';
+import {
+  TagButton,
+  StarButton,
+  LikeButton,
+  OptionButton,
+} from '../button/index';
 import ThumbnailBox from '../thumbnail/ThumbnailBox';
-import OptionButton from '../button/OptionButton';
-import StarButton from '../button/StarButton';
-import LikeButton from '../button/LikeButton';
 import { ContCardInfo } from '../../../types/type';
 import getLoginStatus from '../../../utils/getLoginStatus';
 import removeTag from '../../../utils/removeTag';

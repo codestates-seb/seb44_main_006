@@ -1,8 +1,7 @@
 import cssToken from '../../../styles/cssToken';
 import { BtnDiv, ModalChildrenDiv } from '../../../styles/styles';
 import { MouseEventfunc } from '../../../types/type';
-import GrayEventButton from '../../ui/button/GrayEventButton';
-import SkyBlueEventButton from '../../ui/button/SkyBlueEventButton';
+import { GrayEventButton, SkyBlueEventButton } from '../../ui/button/index';
 import Text from '../../ui/text/Text';
 
 const ModalChildren = ({
@@ -16,7 +15,9 @@ const ModalChildren = ({
 }) => {
   return (
     <ModalChildrenDiv>
-      <Text styles={{ size: cssToken.TEXT_SIZE['text-16'], weight: 500 }}>{content}</Text>
+      <Text styles={{ size: cssToken.TEXT_SIZE['text-16'], weight: 500 }}>
+        {content}
+      </Text>
       <BtnDiv>
         <GrayEventButton
           onClick={leftBtnCallback}

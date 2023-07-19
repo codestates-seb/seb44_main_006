@@ -6,7 +6,7 @@ import { ChooseTag } from './DescriptionZip';
 
 import { GapDiv, TagDiv } from '../../../styles/styles';
 import InputContainer from '../../ui/input/InputContainer';
-import TagButton from '../../ui/button/TagButton';
+import { TagButton } from '../../ui/button/index';
 import cssToken from '../../../styles/cssToken';
 
 const TagGapDiv = styled(GapDiv)`

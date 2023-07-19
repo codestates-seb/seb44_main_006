@@ -1,5 +1,4 @@
-import GrayButton from '../ui/button/GrayButton';
-import SkyBlueButton from '../ui/button/SkyBlueButton';
+import { GrayButton, SkyBlueButton } from '../ui/button/index';
 import cssToken from '../../styles/cssToken';
 import { BtnDiv } from '../../styles/styles';
 

@@ -3,7 +3,7 @@ import Button from './Button';
 import cssToken from '../../../styles/cssToken';
 import { IArgButtonStyle } from '../../../types/type';
 
-const CircleButton = ({
+export const CircleButton = ({
   children,
   width,
   height,
@@ -26,5 +26,3 @@ const CircleButton = ({
     </Button>
   );
 };
-
-export default CircleButton;
