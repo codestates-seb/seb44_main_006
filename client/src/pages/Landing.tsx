@@ -12,12 +12,14 @@ import {
 } from '../assets/landing';
 
 const LadingWrapper = styled(FlexDiv)`
+  cursor: none;
   flex-direction: column;
   align-items: center;
   padding-left: ${cssToken.SPACING['py-100']};
   padding-right: ${cssToken.SPACING['py-100']};
 
   @media screen and (max-width: 1000px) {
+    cursor: default;
     padding-left: ${cssToken.SPACING['gap-10']};
     padding-right: ${cssToken.SPACING['gap-10']};
   }
