@@ -3,8 +3,7 @@ import { SetStateAction } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
-import GrayButton from '../ui/button/GrayButton';
-import SkyBlueButton from '../ui/button/SkyBlueButton';
+import { GrayButton, SkyBlueButton } from '../ui/button/index';
 import Title from '../ui/text/Title';
 import SubTitle from '../ui/text/SubTitle';
 import imageUrl from '../../utils/constant/imageUrl';

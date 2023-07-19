@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 import { CardCommonBox } from './Card.styled';
 
-import TagButton from '../button/TagButton';
+import { TagButton } from '../button/index';
 import cssToken from '../../../styles/cssToken';
 import { LocationCardInfo } from '../../../types/type';
 import { RootState } from '../../../store';

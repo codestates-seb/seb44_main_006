@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 import cssToken from '../../../styles/cssToken';
-import GrayButton from '../../ui/button/GrayButton';
+import { GrayButton } from '../../ui/button/index';
 import useMovePage from '../../../hooks/useMovePage';
 import { FlexDiv } from '../../../styles/styles';
 

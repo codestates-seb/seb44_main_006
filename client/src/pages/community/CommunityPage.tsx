@@ -6,7 +6,7 @@ import cssToken from '../../styles/cssToken';
 import SearchContainer from '../../components/ui/input/SearchContainer';
 import { FlexDiv } from '../../styles/styles';
 import FilterSection from '../../components/community/FilterSection';
-import CircleButton from '../../components/ui/button/CircleButton';
+import { CircleButton } from '../../components/ui/button/index';
 import Pen from '../../assets/Pen';
 import useMovePage from '../../hooks/useMovePage';
 import getLoginStatus from '../../utils/getLoginStatus';

@@ -13,8 +13,7 @@ import SubTitle from '../ui/text/SubTitle';
 import Thumbnail from '../../assets/Thumbnail';
 import InputContainer from '../ui/input/InputContainer';
 import TextArea from '../ui/input/TextArea';
-import GrayButton from '../ui/button/GrayButton';
-import SkyBlueButton from '../ui/button/SkyBlueButton';
+import { GrayButton, SkyBlueButton } from '../ui/button/index';
 import 'react-datepicker/dist/react-datepicker.css';
 import { overlayActions } from '../../store/overlay-slice';
 import { RootState } from '../../store';
@@ -70,7 +69,7 @@ const TitleContainer = styled.section`
       font-size: 1.25rem;
     }
     > h3 {
-      font-size: 0.8125rem;;
+      font-size: 0.8125rem;
     }
   }
 `;
