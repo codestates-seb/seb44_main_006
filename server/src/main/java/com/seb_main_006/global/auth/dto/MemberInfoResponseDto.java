@@ -1,4 +1,4 @@
-package com.seb_main_006.global.auth.attribute;
+package com.seb_main_006.global.auth.dto;
 
 import com.seb_main_006.domain.member.entity.Member;
 import lombok.*;

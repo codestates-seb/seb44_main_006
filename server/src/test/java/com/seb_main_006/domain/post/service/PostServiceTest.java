@@ -165,7 +165,6 @@ class PostServiceTest {
     }
 
 
-
     @ParameterizedTest
     @CsvSource(value = {"null", "''"}, delimiter = ':', nullValues = "null")
     @DisplayName("파라미터로 전달된 토큰(accessToken) 값이 빈 값이거나 null 일 경우, findVerifiedMember() 가 호출되지 않는다.")

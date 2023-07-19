@@ -1,7 +1,8 @@
 package com.seb_main_006.global.auth.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.seb_main_006.global.auth.attribute.MemberInfoResponseDto;
+import com.seb_main_006.global.auth.dto.MemberInfoResponseDto;
+import com.seb_main_006.global.auth.dto.TokenDto;
 import com.seb_main_006.global.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,10 +48,12 @@ public class AuthController {
         log.info("userEmail = {}", userEmail);
 
         String refreshToken = request.getHeader("RefreshToken");
-        String newAccessToken = authService.reissue(refreshToken, userEmail);
+//        String newAccessToken = authService.reissue(refreshToken, userEmail);
+        TokenDto tokens = authService.reissueV2(refreshToken, userEmail);
 
         // 응답 헤더에 재발급된 AccessToken 추가
-        response.setHeader("Authorization", "Bearer " + newAccessToken);
+        response.setHeader("Authorization", "Bearer " + tokens.getAccessToken());
+        response.setHeader("RefreshToken", tokens.getRefreshToken());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
