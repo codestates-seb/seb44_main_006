@@ -76,7 +76,7 @@ const Jcbetween = styled(FlexDiv)`
 `;
 
 const SelectCardWrapper = styled(CardWrapper)`
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 450px) {
     grid-template-columns: repeat(auto-fill, minmax(95%, auto));
   }
 `;
