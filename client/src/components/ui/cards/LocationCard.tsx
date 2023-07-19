@@ -87,12 +87,6 @@ const AddButton = styled(EventButton)`
   background-color: ${cssToken.COLOR['point-100']};
   border-radius: ${cssToken.BORDER['rounded-full']};
   cursor: pointer;
-
-  @media (max-width: 768px) {
-    width: 1rem;
-    height: 1rem;
-    font-size: 1rem;
-  }
 `;
 
 const LocationCard = ({
