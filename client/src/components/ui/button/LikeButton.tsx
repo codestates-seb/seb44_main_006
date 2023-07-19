@@ -6,12 +6,15 @@ import EventButton from './EventButton';
 import cssToken from '../../../styles/cssToken';
 import { LikeBookMarkButtonT } from '../../../types/type';
 import { PostLike } from '../../../apis/api';
+import showToast from '../../../utils/showToast';
 
 export const LikeButton = ({
   svgWidth,
   svgHeight,
   isActive,
   courseId,
+  impossible,
+  isMine,
 }: LikeBookMarkButtonT) => {
   const queryClient = useQueryClient();
   const mutation = useMutation(PostLike, {
@@ -28,10 +31,18 @@ export const LikeButton = ({
 
   const handleLikeButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    if (impossible) {
+      showToast('error', '로그인 후 이용해주세요.')();
+      return;
+    }
+    if (isMine) {
+      showToast('error', '다른 사람 글에 좋아요를 눌러주세요.')();
+      return;
+    }
     if (courseId) PushLike();
   };
   return (
-    <EventButton onClick={handleLikeButton}>
+    <EventButton className="like" onClick={handleLikeButton}>
       <svg
         width={svgWidth || '18px'}
         height={svgHeight || '18px'}

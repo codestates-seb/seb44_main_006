@@ -25,7 +25,9 @@ export const ButtonTemplate = styled.button<IEventButtonStyle>`
   gap: ${(props) => props.gap};
 
   font-size: ${(props) => props.fontsize || cssToken.TEXT_SIZE['text-16']};
-
+  &.like {
+    background-color: transparent;
+  }
   &:hover {
     opacity: 0.8;
   }

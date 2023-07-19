@@ -208,10 +208,15 @@ export const ContensCard = memo(
         </ContensMiddle>
         <ContensBottom>
           <LikeBtnBox>
-            {isLogin && !isMine && likeStatus !== undefined && courseId && (
-              <LikeButton isActive={likeStatus} courseId={courseId} />
+            {courseId && (
+              <LikeButton
+                isActive={likeStatus}
+                courseId={courseId}
+                impossible={!isLogin}
+                isMine={isMine}
+              />
             )}
-            <DataText>{thousandTok(Number(likeCount))} likes</DataText>
+            <DataText>{thousandTok(Number(likeCount))}</DataText>
           </LikeBtnBox>
           <DataText>{date}</DataText>
         </ContensBottom>
