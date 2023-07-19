@@ -26,6 +26,9 @@ const ScheduleListBox = () => {
     const targetSchedules = copySchedules.splice(source.index, 1);
     copySchedules.splice(destination.index, 0, ...targetSchedules);
 
+    dispatch(
+      scheduleListActions.setLastItem(copySchedules[copySchedules.length - 1])
+    );
     dispatch(scheduleListActions.updateList(copySchedules));
   };
 

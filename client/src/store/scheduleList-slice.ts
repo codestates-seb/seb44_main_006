@@ -52,6 +52,9 @@ const scheduleListSlice = createSlice({
     updateList(state, action: PayloadAction<TScheduleList>) {
       state.list = action.payload;
     },
+    setLastItem(state, action: PayloadAction<IScheduleListItem>) {
+      state.lastItem = action.payload;
+    },
     resetList(state) {
       state.list = [];
       state.imageUrl = '';
