@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { styled } from 'styled-components';
 
 import cssToken from '../../../styles/cssToken';
@@ -81,35 +81,46 @@ const CursorPointer = ({ isMouseHover }: CursorInfo) => {
     }
   };
 
-  useEffect(() => {
+  const handleScroll = useCallback(() => {
     const storedPosition = localStorage.getItem('cursorPosition');
 
     if (storedPosition) {
-      const { x, y } = JSON.parse(storedPosition);
+      const { x, y } = JSON.parse(storedPosition) as { x: number; y: number };
 
-      endX.current = x;
-      endY.current = y;
+      endX.current = x + window.scrollX;
+      endY.current = y + window.scrollY;
 
       if (circleCursor.current) {
         circleCursor.current.style.top = `${endY.current}px`;
         circleCursor.current.style.left = `${endX.current}px`;
       }
     }
+    requestAnimationFrame(handleScroll);
   }, []);
+
+  useEffect(() => {
+    const animationFrameId = requestAnimationFrame(handleScroll);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [handleScroll]);
 
   useEffect(() => {
     // 이벤트 함수 호출
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('scroll', handleScroll);
 
     // 컴포넌트 언마운트 시 이벤트 리스너 및 애니메이션 정리
     return () => {
       document.removeEventListener('mouseenter', handleMouseEnter);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [handleScroll]);
 
   return <CursorContainer isMouseHover={isMouseHover} ref={circleCursor} />;
 };
