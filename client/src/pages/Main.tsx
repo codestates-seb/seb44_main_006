@@ -15,8 +15,10 @@ const MainContainer = styled.main`
   cursor: none;
   display: flex;
   flex-direction: row;
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     cursor: default;
+  }
+  @media (max-width: 768px) {
     flex-direction: column-reverse;
   }
 `;
@@ -61,10 +63,6 @@ const MainLink = styled.button`
 
   @media (max-width: 1280px) {
     font-size: 50px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 50px;
     cursor: default;
   }
 `;
@@ -88,10 +86,6 @@ const CommunitySection = styled(SectionBox)`
 `;
 
 const ScheduleSection = styled(SectionBox)`
-  background-image: url(${mainImg});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
   flex: 2;
   position: relative;
   overflow: hidden;

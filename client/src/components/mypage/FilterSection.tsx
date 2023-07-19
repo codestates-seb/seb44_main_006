@@ -30,7 +30,6 @@ const FilterWrapper = styled.div`
 
   @media screen and (max-width: 768px) {
     padding: ${cssToken.SPACING['gap-20']};
-    height: 100vh;
   }
 `;
 
