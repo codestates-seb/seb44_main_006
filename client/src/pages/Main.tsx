@@ -155,7 +155,6 @@ const ScrollArrow = styled(FlexDiv)`
   position: absolute;
   bottom: 2rem;
   left: 50%;
-  z-index: 10;
   transform: translate(-50%, 0);
   flex-direction: column;
   justify-content: center;
