@@ -175,6 +175,7 @@ export interface MapLocationCardInfo {
   placeId?: string;
   onClick?: ({ id }: { id: string | undefined }) => void;
   type?: 'register';
+  place_url?: string;
 }
 
 export interface RouteState {

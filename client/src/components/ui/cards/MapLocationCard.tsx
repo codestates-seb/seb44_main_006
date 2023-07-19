@@ -61,21 +61,22 @@ const NumCircle = styled.span`
     height: 1.8rem;
 
     &::after {
-      height: 80%;
-      bottom: -100%;
+      height: 100%;
+      bottom: -135%;
     }
   }
 `;
 
-const LocationCard = styled.div<{ selected?: boolean }>`
+const LocationCard = styled.div<{ selected?: boolean; type?: string }>`
   background-color: ${cssToken.COLOR.white};
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: ${(props) => (props.type ? 'center' : 'flex-start')};
   flex: 1;
+  flex-direction: ${(props) => (props.type ? '' : 'column')};
   width: ${cssToken.WIDTH['w-full']};
-  padding: ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-12']}
-    ${cssToken.SPACING['gap-24']} ${cssToken.SPACING['gap-16']};
+  padding: ${cssToken.SPACING['gap-16']} ${cssToken.SPACING['gap-12']}
+    ${cssToken.SPACING['gap-16']} ${cssToken.SPACING['gap-16']};
   ${CardCommonBox}
 
   @media screen and (max-width: 768px) {
@@ -85,7 +86,7 @@ const LocationCard = styled.div<{ selected?: boolean }>`
 `;
 
 const LocationText = styled.p`
-  font-size: ${cssToken.TEXT_SIZE['text-18']};
+  font-size: ${cssToken.TEXT_SIZE['text-16']};
   font-weight: ${cssToken.FONT_WEIGHT.medium};
 
   @media screen and (max-width: 768px) {
@@ -104,12 +105,30 @@ const RightButtonArea = styled.section`
   }
 `;
 
+const BottomWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const LocationA = styled.a`
+  font-size: ${cssToken.TEXT_SIZE['text-12']};
+  color: ${cssToken.COLOR['point-500']};
+  text-decoration: none;
+  margin-top: 0.3125rem;
+
+  &:hover {
+    color: ${cssToken.COLOR['point-900']};
+  }
+`;
+
 const MapLocationCard = ({
   indexNum,
   location,
   latlng,
   id,
   type,
+  place_url,
 }: MapLocationCardInfo) => {
   const locationRef = useRef<HTMLDivElement>(null);
   const markerId = useSelector((state: RootState) => state.marker.markerId);
@@ -138,6 +157,7 @@ const MapLocationCard = ({
         {indexNum}
       </NumCircle>
       <LocationCard
+        type={type}
         ref={locationRef}
         selected={selected}
         onClick={() => {
@@ -155,6 +175,13 @@ const MapLocationCard = ({
             {type && <Trash style={{ iconWidth: 16, iconHeight: 18 }} />}
           </Button>
         </RightButtonArea>
+        {!type && (
+          <BottomWrapper>
+            <LocationA href={place_url} target="_blank" rel="noreferrer">
+              자세히 보러가기
+            </LocationA>
+          </BottomWrapper>
+        )}
       </LocationCard>
     </MapLocationCardContainer>
   );

@@ -145,6 +145,7 @@ const ScheduleMapDetail = ({
   const dispatch = useDispatch();
   const location = useLocationEndpoint();
   const gotoMain = useMovePage('/');
+  const gotoMy = useMovePage('/mypage');
   const gotoBack = () => {
     navigate(-1);
   };
@@ -214,6 +215,7 @@ const ScheduleMapDetail = ({
                 id={destination.id}
                 indexNum={idx + 1}
                 location={destination.placeName}
+                place_url={destination.placeUrl}
               />
             ))}
           </LocationCardWrapper>
@@ -232,24 +234,26 @@ const ScheduleMapDetail = ({
               width="100%"
               height="50px"
               brradius="10px"
-              onClick={gotoMain}
+              onClick={isLogin ? gotoMy : gotoMain}
             >
-              메인
+              {isLogin ? '마이페이지' : '메인'}
             </SkyBlueButton>
           </Btnbox>
         </ScheduleDiv>
       </BottomSheet>
 
       <FixedDiv>
-        <FloatButton bgcolor={cssToken.COLOR['gray-300']} onClick={gotoBack}>
-          <div>뒤로가기</div>
-        </FloatButton>
+        {isLogin && (
+          <FloatButton bgcolor={cssToken.COLOR['gray-300']} onClick={gotoBack}>
+            <div>뒤로가기</div>
+          </FloatButton>
+        )}
         <FloatButton
           bgcolor={cssToken.COLOR['point-900']}
           fontcolor={cssToken.COLOR.white}
-          onClick={gotoMain}
+          onClick={isLogin ? gotoMy : gotoMain}
         >
-          <div>메인</div>
+          <div>{isLogin ? '마이페이지' : '메인'}</div>
         </FloatButton>
       </FixedDiv>
       <MapDiv>
