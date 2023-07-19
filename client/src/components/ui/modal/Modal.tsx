@@ -21,10 +21,11 @@ const ModalWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100vh;
   z-index: 1000;
 
   @media screen and (max-width: 768px) {
+    height: calc(var(--vh, 1vh) * 100);
     &.modal {
       align-items: end;
     }
@@ -36,10 +37,14 @@ const Backdrop = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100vh;
   background-color: #000000;
   opacity: 0.3;
   z-index: 1001;
+
+  @media screen and (max-width: 768px) {
+    height: calc(var(--vh, 1vh) * 100);
+  }
 `;
 
 const ModalContainer = styled.section<IModalContainer>`
@@ -57,14 +62,13 @@ const ModalContainer = styled.section<IModalContainer>`
 
   @media screen and (max-width: 768px) {
     &.fullModal {
-      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
       overflow: auto;
       border-radius: 0;
       display: block;
       padding: 2rem 1rem;
     }
   }
-
 
   &.modalContainer {
     @media screen and (max-width: 768px) {

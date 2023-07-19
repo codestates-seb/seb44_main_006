@@ -8,7 +8,7 @@ const Img = styled.img`
   }
 `;
 
-const CatContainer = ({ status }: { status: number }) => {
+const CatContainer = ({ status }: { status?: number }) => {
   return <Img src={`https://http.cat/${status}.jpg`} alt="status에러" />;
 };
 
