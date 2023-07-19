@@ -50,9 +50,9 @@ const BottomImg = styled.img`
 const Loading = () => {
   return (
     <Wrapper>
-      <LoadingImg src="/loading_Img.png" alt="로딩이미지" />
+      <LoadingImg src="/loading_Img.webp" alt="로딩이미지" />
       <TextSpan>데이터를 불러오는 중입니다...</TextSpan>
-      <BottomImg src="/bottom_gradation.png" alt="아래이미지" />
+      <BottomImg src="/bottom_gradation.webp" alt="아래이미지" />
     </Wrapper>
   );
 };

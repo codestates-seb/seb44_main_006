@@ -12,7 +12,7 @@ import useMovePage from '../../hooks/useMovePage';
 import getLoginStatus from '../../utils/getLoginStatus';
 import { communityBasicActions } from '../../store/communitybasic-slice';
 import scrollToTop from '../../utils/scrollToTop';
-import head from '../../assets/head.jpeg';
+import head from '../../assets/head.webp';
 import Text from '../../components/ui/text/Text';
 
 const Wrapper = styled(FlexDiv)`

@@ -15,7 +15,7 @@ const Div = styled(FlexDiv)`
 const NoResults = () => {
   return (
     <Div>
-      <img width="40%" src="noresults.png" alt="noresults" />
+      <img width="40%" src="noresults.webp" alt="noresults" />
       <Text
         styles={{
           size: cssToken.TEXT_SIZE['text-32'],

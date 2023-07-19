@@ -14,7 +14,7 @@ import ThumbnailBox from '../thumbnail/ThumbnailBox';
 import { ContCardInfo } from '../../../types/type';
 import getLoginStatus from '../../../utils/getLoginStatus';
 import removeTag from '../../../utils/removeTag';
-import defaultThumbnail from '../../../assets/defaultThumbnail.jpeg';
+import defaultThumbnail from '../../../assets/defaultThumbnail.webp';
 import thousandTok from '../../../utils/thousandTok';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`

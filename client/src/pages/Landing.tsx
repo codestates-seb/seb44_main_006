@@ -109,24 +109,24 @@ const Landing = () => {
       title: '내가 만든 일정을 \n 확인 및 수정해요',
       description:
         '일정을 클릭하여 나의 일정을 확인해 보세요. \n 일정을 수정하거나 삭제할 수 있습니다.',
-      img: 'logo.jpeg',
+      img: 'logo.webp',
     },
     {
       title: '다른 사람에게 \n 내 일정을 자랑해요',
       description:
         '자랑하기 버튼을 눌러 \n 커뮤니티에 내 일정을 작성할 수 있습니다. \n 커뮤니티 페이지에서 다양한 일정을 확인할 수 있습니다. \n 로그인 후 좋아요, 즐겨찾기가 가능해요. \n 마음에 드는 일정에 댓글을 작성해보세요.',
-      img: 'logo.jpeg',
+      img: 'logo.webp',
     },
     {
       title: '하루를 함께 보낼 \n 친구에게 공유해요',
       description:
         '카카오톡과 링크 복사를 통해 \n 친구에게 마음에 드는 일정을 공유할 수 있습니다.',
-      img: 'logo.jpeg',
+      img: 'logo.webp',
     },
     {
       title: 'PC, Mobile에서 \n 하루메이트와 함께',
       description: '하루 일정을 만들고 \n 공유하는 나의 하루 메이트',
-      img: 'logo.jpeg',
+      img: 'logo.webp',
     },
   ];
   return (
