@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { IScheduleListItem, PlacesSearchResultItem } from '../../types/type';
 import { RootState } from '../../store';
-import ScheduleBox from '../../components/schedule/Schedulebox';
+import ScheduleBox from '../../components/schedule/ScheduleBox';
 import cssToken from '../../styles/cssToken';
 import { MarkerOff } from '../../components/map/index';
 import ScheduleCreateModal from '../../components/schedule/ScheduleCreateModal';
