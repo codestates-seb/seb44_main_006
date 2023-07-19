@@ -26,9 +26,6 @@ instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return newConfig;
 });
 
-// TODO:refrashtoken 응답요청 하기
-//* 기존 API 호출하다 444 에러코드 응답 시 reissue 로 헤더 그대로 호출시 재발급
-//* reissue 호출에 대한 응답까지도 444 일 경우 refreshToken도 만료된 상황이므로 다시 로그인이 필요
 instance.interceptors.response.use(
   (response) => {
     return response;
@@ -51,18 +48,22 @@ instance.interceptors.response.use(
         });
         if (response) {
           const newAccessToken = response.headers.authorization as string;
+          const newRefreshToken = response.headers.refreshtoken as string;
           localStorage.setItem('accessToken', newAccessToken);
+          localStorage.setItem('refreshToken', newRefreshToken);
           localStorage.setItem('isLogin', JSON.stringify(true));
           if (originalConfig && originalConfig.headers) {
             originalConfig.headers = {
               ...originalConfig.headers,
               Authorization: newAccessToken,
-            } as AxiosRequestHeaders;
+              Refreshtoken: newRefreshToken,
+            } as unknown as AxiosRequestHeaders;
             return await instance(originalConfig);
           }
         }
       } catch (err) {
         localStorage.clear();
+        window.location.reload();
         throw err;
       }
     }
