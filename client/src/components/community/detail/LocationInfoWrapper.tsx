@@ -55,6 +55,7 @@ const LocationInfoWrapper = ({ title, destinationList }: LocationInfoT) => {
             id={destination.id}
             indexNum={idx + 1}
             location={destination.placeName}
+            place_url={destination.placeUrl}
           />
         ))}
       </LocationCardWrapper>
