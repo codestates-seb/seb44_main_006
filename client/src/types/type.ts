@@ -62,6 +62,8 @@ export type LikeBookMarkButtonT = IEventButtonStyle & {
   status?: 'add' | 'del';
   courseId: number;
   className?: string;
+  impossible?: boolean;
+  isMine?: boolean;
 };
 
 export type PlacesSearchResult = PlacesSearchResultItem[];

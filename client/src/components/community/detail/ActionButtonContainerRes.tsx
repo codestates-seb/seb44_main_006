@@ -62,28 +62,16 @@ const ActionButtonContainerRes = ({
         />
       )}
       <LikeDiv>
-        {isLogin && (
-          <>
-            {userData && memberEmail !== userData.memberEmail ? (
-              <LikeButton
-                className="communityLike"
-                isActive={likeStatus}
-                courseId={courseId}
-              />
-            ) : (
-              <Text styles={{ weight: cssToken.FONT_WEIGHT.medium }}>
-                좋아요
-              </Text>
-            )}
-            {LikeCount}
-          </>
+        {userData && (
+          <LikeButton
+            impossible={!isLogin}
+            isMine={memberEmail === userData.memberEmail}
+            className="communityLike"
+            isActive={likeStatus}
+            courseId={courseId}
+          />
         )}
-        {!isLogin && (
-          <>
-            <Text styles={{ weight: cssToken.FONT_WEIGHT.medium }}>좋아요</Text>
-            {LikeCount}
-          </>
-        )}
+        {LikeCount}
       </LikeDiv>
     </BtnDiv>
   );

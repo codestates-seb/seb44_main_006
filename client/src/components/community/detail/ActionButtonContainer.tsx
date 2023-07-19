@@ -92,7 +92,6 @@ const ActionButtonContainer = ({
   memberEmail: string;
 }) => {
   const { userData } = useUserInfo(isLogin);
-
   return (
     <BtnDiv>
       <>
@@ -114,28 +113,14 @@ const ActionButtonContainer = ({
         />
       )}
       <LikeDiv>
-        {isLogin && (
-          <>
-            {userData && memberEmail !== userData.memberEmail ? (
-              <LikeButton
-                className="communityLike"
-                isActive={likeStatus}
-                courseId={courseId}
-              />
-            ) : (
-              <Text styles={{ weight: cssToken.FONT_WEIGHT.medium }}>
-                좋아요
-              </Text>
-            )}
-            {LikeCount}
-          </>
-        )}
-        {!isLogin && (
-          <>
-            <Text styles={{ weight: cssToken.FONT_WEIGHT.medium }}>좋아요</Text>
-            {LikeCount}
-          </>
-        )}
+        <LikeButton
+          impossible={!isLogin}
+          isMine={userData ? memberEmail === userData.memberEmail : false}
+          className="communityLike"
+          isActive={likeStatus}
+          courseId={courseId}
+        />
+        {LikeCount}
       </LikeDiv>
     </BtnDiv>
   );
