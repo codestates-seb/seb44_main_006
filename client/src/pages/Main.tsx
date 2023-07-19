@@ -123,9 +123,24 @@ const FixedDiv = styled.div`
   bottom: ${cssToken.SPACING['gap-40']};
   z-index: 1;
 
+  .circle {
+    width: 5rem;
+    height: 5rem;
+    background-color: ${cssToken.COLOR['gray-900']};
+    color: ${cssToken.COLOR.white};
+  }
+
   @media screen and (max-width: 768px) {
     right: 1rem;
     bottom: 5.5rem;
+
+    .circle {
+      width: 4rem;
+      height: 4rem;
+      div {
+        font-size: 1rem;
+      }
+    }
   }
 `;
 
