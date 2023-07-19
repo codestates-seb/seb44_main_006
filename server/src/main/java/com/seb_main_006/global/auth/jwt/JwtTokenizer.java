@@ -83,6 +83,24 @@ public class JwtTokenizer {
                 .compact();
     }
 
+    // Access Token 이 만료되었을 경우, Access Token 을 새로 생성할 수 있게 해주는 Refresh Token 을 생성하는 메서드
+    public String generateRefreshToken(String userEmail) throws JsonProcessingException {
+
+        Subject subject = new Subject(userEmail, "RefreshToken");
+        Date expiration = getTokenExpiration(getRefreshTokenExpirationMinutes());
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+        String subjectStr = objectMapper.writeValueAsString(subject);
+
+        return Jwts.builder()
+                .setSubject(subjectStr)
+                .setIssuedAt(Calendar.getInstance().getTime())
+                .setExpiration(expiration)
+                .signWith(key)
+                .compact();
+    }
+
     public Jws<Claims> getClaims(String token) {
 
         return getClaims(token, encodeBase64SecretKey(secretKey));
@@ -101,7 +119,7 @@ public class JwtTokenizer {
     // JWT 의 만료 일시를 지정하기 위한 메서드
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, expirationMinutes * 30);
+        calendar.add(Calendar.MINUTE, expirationMinutes);
         Date expiration = calendar.getTime();
 
         return expiration;

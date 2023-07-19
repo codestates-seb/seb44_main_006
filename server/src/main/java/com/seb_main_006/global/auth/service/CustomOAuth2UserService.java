@@ -1,6 +1,6 @@
 package com.seb_main_006.global.auth.service;
 
-import com.seb_main_006.global.auth.attribute.OAuth2Attribute;
+import com.seb_main_006.global.auth.dto.OAuth2Attribute;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

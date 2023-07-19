@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.seb_main_006.domain.bookmark.service.BookmarkService;
 import com.seb_main_006.domain.member.entity.Member;
 import com.seb_main_006.domain.member.service.MemberService;
-import com.seb_main_006.global.auth.attribute.MemberInfoResponseDto;
+import com.seb_main_006.global.auth.dto.MemberInfoResponseDto;
+import com.seb_main_006.global.auth.dto.TokenDto;
 import com.seb_main_006.global.auth.jwt.JwtTokenizer;
 import com.seb_main_006.global.auth.redis.RedisUtil;
 import com.seb_main_006.global.auth.redis.RefreshToken;
@@ -15,12 +16,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -79,6 +78,37 @@ public class AuthService {
         List<String> authorities = refreshTokenRedisRepository.findByRefreshToken(refreshToken).getAuthorities();
 
         return jwtTokenizer.generateAccessToken(userEmail, authorities);
+    }
+
+    /**
+     * AccessToken 재발급 + 리프레시 토큰 만료시간 확인 및 재발급
+     */
+    public TokenDto reissueV2(String refreshToken, String userEmail) throws JsonProcessingException {
+        log.info("refreshToken = {}", refreshToken);
+
+        String newRefreshToken = refreshToken; // 재발급이 필요하지 않으면 기존 RTK 가 전달되도록 초기값 설정
+
+        // RTK 남은 만료시간 계산
+        long expirationTime = jwtTokenizer.getClaims(refreshToken).getBody().getExpiration().getTime();  // RTK의 만료 시점
+        long currentTime = Instant.now().toEpochMilli();  // 현재 시점 // System.currentTimeMillis();
+        log.info("expirationTime = {}, currentTime = {}", expirationTime, currentTime);
+
+        // 리프레시 만료시간 24시간 이하 남은 상태
+        if (expirationTime - currentTime <= 30000) { // 24시간 86400000
+            newRefreshToken = jwtTokenizer.generateRefreshToken(userEmail); // 재발급된 RTK newRefreshToken에 할당
+        }
+
+        // 예외 핸들링 (토큰 타입 검사)
+        String tokenType = jwtTokenizer.getSubject(refreshToken).getTokenType();
+        if (!tokenType.equals("RefreshToken")) {
+            throw new BusinessLogicException(ExceptionCode.IM_A_TEAPOT);
+        }
+
+        // AccessToken 재발급 후 ATK, RTK TokenDto로 리턴
+        List<String> authorities = refreshTokenRedisRepository.findByRefreshToken(refreshToken).getAuthorities();
+        String newAccessToken = jwtTokenizer.generateAccessToken(userEmail, authorities);
+
+        return new TokenDto(newAccessToken, newRefreshToken);
     }
 
     /**
