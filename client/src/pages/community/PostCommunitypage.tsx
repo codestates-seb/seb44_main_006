@@ -53,18 +53,6 @@ const PostOutsideWrap = styled(OutsideWrap)`
 
 const QuillDiv = styled(GapDiv)`
   margin-bottom: 0.1875rem;
-  .ql-toolbar {
-    height: 2.625rem;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    overflow-x: scroll;
-
-    .ql-formats {
-      display: flex;
-      flex-direction: row;
-    }
-  }
 `;
 
 const MapInfoDiv = styled(FlexDiv)`

@@ -37,7 +37,6 @@ const LandingContainer = styled(FlexDiv)`
 `;
 
 const TextContainer = styled(FlexDiv)`
-  position: relative;
   flex-direction: column;
   row-gap: ${cssToken.SPACING['gap-20']};
   padding-left: 3.375rem;
@@ -76,8 +75,8 @@ const TextContainer = styled(FlexDiv)`
 const LandingImg = styled.img`
   width: 60%;
   min-width: 40%;
-  @media screen and (max-width: 1000px) {
-    width: 100%;
+  @media screen and (max-width: 760px) {
+    width: 80%;
   }
 `;
 
@@ -114,15 +113,15 @@ const Landing = () => {
       img: 'logo.jpeg',
     },
     {
-      title: '다른 사람에게 \n 내 일정을 자랑해요.',
+      title: '다른 사람에게 \n 내 일정을 자랑해요',
       description:
         '자랑하기 버튼을 눌러 \n 커뮤니티에 내 일정을 작성할 수 있습니다. \n 커뮤니티 페이지에서 다양한 일정을 확인할 수 있습니다. \n 로그인 후 좋아요, 즐겨찾기가 가능해요. \n 마음에 드는 일정에 댓글을 작성해보세요.',
       img: 'logo.jpeg',
     },
     {
-      title: '하루를 함께 보낼 \n 친구에게 공유해요.',
+      title: '하루를 함께 보낼 \n 친구에게 공유해요',
       description:
-        '카카오톡과 링크 복사를 통해 친구에게 마음에 드는 일정을 공유할 수 있습니다.',
+        '카카오톡과 링크 복사를 통해 \n 친구에게 마음에 드는 일정을 공유할 수 있습니다.',
       img: 'logo.jpeg',
     },
     {
@@ -136,15 +135,6 @@ const Landing = () => {
       {datas.map((data, idx) => (
         <LandingContainer>
           <TextContainer>
-            <Text
-              styles={{
-                color: cssToken.COLOR['point-500'],
-                size: cssToken.TEXT_SIZE['text-18'],
-                weight: cssToken.FONT_WEIGHT.medium,
-              }}
-            >
-              하루메이트 사용 설명서
-            </Text>
             <Title styles={{ size: cssToken.TEXT_SIZE['text-40'] }}>
               {data.title}
             </Title>

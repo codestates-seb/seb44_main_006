@@ -12,6 +12,8 @@ import showToast from '../utils/showToast';
 import useMovePage from '../hooks/useMovePage';
 import useUserInfo from '../querys/useUserInfo';
 import getLoginStatus from '../utils/getLoginStatus';
+import CircleButton from '../components/ui/button/CircleButton';
+import scrollToTop from '../utils/scrollToTop';
 
 const MainContainer = styled.main`
   cursor: none;
@@ -116,6 +118,18 @@ const ScheduleSection = styled(SectionBox)`
   }
 `;
 
+const FixedDiv = styled.div`
+  position: fixed;
+  right: ${cssToken.SPACING['gap-40']};
+  bottom: ${cssToken.SPACING['gap-40']};
+  z-index: 1;
+
+  @media screen and (max-width: 768px) {
+    right: 1rem;
+    bottom: 5.5rem;
+  }
+`;
+
 const Main = () => {
   const queryClient = useQueryClient();
   const [isHovered, setIsHovered] = useState<boolean>(true);
@@ -184,6 +198,15 @@ const Main = () => {
         </ScheduleSection>
       </MainContainer>
       <Landing />
+      <FixedDiv
+        onClick={() => {
+          window.scrollTo(0, 0);
+        }}
+      >
+        <CircleButton width="117px" height="117px">
+          <div>Top</div>
+        </CircleButton>
+      </FixedDiv>
     </>
   );
 };
