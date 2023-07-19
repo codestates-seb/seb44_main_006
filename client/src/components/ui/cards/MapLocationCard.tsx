@@ -71,7 +71,7 @@ const LocationCard = styled.div<{ selected?: boolean; type?: string }>`
   background-color: ${cssToken.COLOR.white};
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: ${(props) => (props.type ? 'center' : 'flex-start')};
   flex: 1;
   flex-direction: ${(props) => (props.type ? '' : 'column')};
   width: ${cssToken.WIDTH['w-full']};
@@ -86,7 +86,7 @@ const LocationCard = styled.div<{ selected?: boolean; type?: string }>`
 `;
 
 const LocationText = styled.p`
-  font-size: ${cssToken.TEXT_SIZE['text-18']};
+  font-size: ${cssToken.TEXT_SIZE['text-16']};
   font-weight: ${cssToken.FONT_WEIGHT.medium};
 
   @media screen and (max-width: 768px) {
