@@ -13,7 +13,7 @@ import java.util.Set;
 public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findByCourse(Course course);
 
-    @Query("select distinct c from Post p join p.course c " +
+    @Query("select distinct c from Course c join fetch c.post p join fetch c.member m join fetch m.roles r " +
             "where replace(c.courseTitle, ' ', '') like %:inputWord%")
     List<Course> searchCourseOrderByWord(@Param("inputWord") String inputWord);
 }

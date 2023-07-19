@@ -5,6 +5,7 @@ import com.seb_main_006.domain.course.entity.Course;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
@@ -28,14 +29,16 @@ public class Post {
     @CreatedDate
     private LocalDateTime postCreatedAt; // 코스 생성일자
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course; // course entity와 연관관계 매핑(1:1)
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @BatchSize(size = 50)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostTag> postTagsInPost = new ArrayList<>(); // postTag entity와 연관관계 매핑(1:다)
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @BatchSize(size = 50)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Answer> answersInPost = new ArrayList<>(); // answer entity와 연관관계 매핑(1:다)
 
 }

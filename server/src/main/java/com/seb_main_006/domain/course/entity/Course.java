@@ -61,7 +61,6 @@ public class Course {
     @JoinColumn(name = "member_id")
     private Member member; // member entity와 연관관계 매핑(다:1)
 
-    @BatchSize(size = 100)
     @OneToOne(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Post post; // post entity와 연관관계 매핑(1:1)
 

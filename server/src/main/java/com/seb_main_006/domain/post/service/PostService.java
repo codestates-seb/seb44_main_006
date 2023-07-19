@@ -235,23 +235,23 @@ public class PostService {
 
             // sort 값에 따라 정렬기준 다르게 적용한 결과 리스트
             List<Course> searchCourseList = getSearchCourseResult(inputWords, sort);
-            
-            for(int i=0; i<searchCourseList.size(); i++){
-                log.info(searchCourseList.get(i).getCourseTitle());
-            }
 
             // 변환한 List<Question> 을 Page 로 생성
-            int start = (int) pageRequest.getOffset(); // 페이지 시작 데이터 위치
-            int end = Math.min(start + pageRequest.getPageSize(), searchCourseList.size()); // 페이지의 마지막 데이터 위치
-            pageResult = new PageImpl<>(searchCourseList.subList(start, end), pageRequest, searchCourseList.size());// Paging 된 리스트로 생성
+            int start = (int) pageRequest.getOffset();
+            int end = Math.min(start + pageRequest.getPageSize(), searchCourseList.size());
+            pageResult = new PageImpl<>(searchCourseList.subList(start, end), pageRequest, searchCourseList.size());
         }
+
 
         // 응답 데이터 형식으로 변환해서 리턴 (없는 데이터 : likeStatus, bookmarkStatus)
         List<PostDataForList> postDataList = new ArrayList<>();
+        Long memberId = member.getMemberId();
 
         for (Course course : pageResult.getContent()) {
-            boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
-            boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
+//            boolean likeStatus = likesRepository.findByMemberAndCourse(member, course).isPresent();
+//            boolean bookmarkStatus = bookmarkRepository.findByMemberAndCourse(member, course).isPresent();
+            boolean likeStatus = course.getLikesInCourse().stream().anyMatch(like -> like.getMember().getMemberId().equals(memberId));
+            boolean bookmarkStatus = course.getBookmarksInCourse().stream().anyMatch(bookmark -> bookmark.getMember().getMemberId().equals(memberId));
             postDataList.add(PostDataForList.of(course, likeStatus, bookmarkStatus));
         }
 
@@ -347,26 +347,23 @@ public class PostService {
 
     // 검색어가 존재할 때 sort 값에 따라 다른 정렬 기준(메서드) 적용한 결과 리스트 반환
     private List<Course> getSearchCourseResult(String[] inputWords, String sort) {
-
         Set<Course> searchCourseSet = new HashSet<>();
 
+        // 검색어 배열 순회하여 해당 검색어를 포함하는 Course 조회 -> 조회 결과 Set 으로 통합(중복 제거)
         for (String inputWord : inputWords) {
             List<Course> courseSet = postRepository.searchCourseOrderByWord(inputWord);
             searchCourseSet.addAll(courseSet);
         }
 
-        // tagName 으로 검색한 List<Course>
+        // tag 테이블에서 해당 검색어 조회
         Set<Tag> findTagSet = new HashSet<>();
         Arrays.stream(inputWords)
                 .forEach(inputWord -> findTagSet.addAll(tagRepository.findByTagNameContaining(inputWord)));
+
         List<Course> findCoursesByTag = postTagRepository.findByTagInOrderByWord(new ArrayList<>(findTagSet));
         searchCourseSet.addAll(findCoursesByTag);
 
         List<Course> searchCourseList = new ArrayList<>(searchCourseSet);
-
-        for (Course course : searchCourseList) {
-            log.info("courseTitle = {}", course.getCourseTitle());
-        }
 
         // sort 값 여부에 따라 다른 메서드(정렬기준) 적용
         if (sort == null) {
