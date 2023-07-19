@@ -25,7 +25,7 @@ const ImageDiv = styled.img<StyleProp>`
   cursor: pointer;
 `;
 
-const ImageCard = ({ id, selectedid, url, onClick }: Prop) => {
+export const ImageCard = ({ id, selectedid, url, onClick }: Prop) => {
   const isActive = !!(selectedid && selectedid === id);
 
   return (
@@ -36,5 +36,3 @@ const ImageCard = ({ id, selectedid, url, onClick }: Prop) => {
     />
   );
 };
-
-export default ImageCard;

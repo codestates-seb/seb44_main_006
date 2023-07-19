@@ -11,7 +11,7 @@ import Polyline from '../map/Polyline';
 import cssToken from '../../styles/cssToken';
 import Title from '../ui/text/Title';
 import Text from '../ui/text/Text';
-import MapLocationCard from '../ui/cards/MapLocationCard';
+import { MapLocationCard } from '../ui/cards/index';
 import { IScheduleListItem } from '../../types/type';
 import makePolyline from '../../utils/makePolyline';
 import { markerActions } from '../../store/marker-slice';

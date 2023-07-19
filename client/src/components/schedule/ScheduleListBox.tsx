@@ -4,7 +4,7 @@ import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd';
 
 import cssToken from '../../styles/cssToken';
 import { RootState } from '../../store';
-import MapLocationCard from '../ui/cards/MapLocationCard';
+import { MapLocationCard } from '../ui/cards/index';
 import { IScheduleListItem, TScheduleList } from '../../types/type';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import { StrictModeDroppable } from '../dnd/StrictModeDroppable';

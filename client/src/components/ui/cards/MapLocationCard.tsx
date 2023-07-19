@@ -121,7 +121,7 @@ const LocationA = styled.a`
   }
 `;
 
-const MapLocationCard = ({
+export const MapLocationCard = ({
   indexNum,
   location,
   latlng,
@@ -185,5 +185,3 @@ const MapLocationCard = ({
     </MapLocationCardContainer>
   );
 };
-
-export default MapLocationCard;
