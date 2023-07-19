@@ -98,9 +98,10 @@ const ScheduleRegister = () => {
     });
     const { destinationList } = response.data as PostReadT;
     dispatch(scheduleListActions.updateList(destinationList));
+    return destinationList;
   };
 
-  useQuery({
+  const { data: destinationList } = useQuery({
     queryKey: ['modify'],
     queryFn: dispatchDestinationList,
     refetchOnWindowFocus: false,
@@ -116,6 +117,15 @@ const ScheduleRegister = () => {
       panTo({ map, newCenter });
     }
   }, [map, newCenter]);
+
+  useEffect(() => {
+    if (isModify === 'true' && destinationList) {
+      panTo({
+        map,
+        newCenter: { lat: destinationList[0].y, lng: destinationList[0].x },
+      });
+    }
+  }, [isModify, map, destinationList]);
 
   useEffect(() => {
     if (isEmpty) dispatch(placeListActions.resetList());
