@@ -205,13 +205,14 @@ const PostCommunitypage = () => {
           backdropCallback={toggleModal}
           handleCloseBtn={toggleModal}
           styles={{
-            width: '47.0625rem',
-            height: '28.375rem',
+            width: '25rem',
+            height: '15rem',
+            borderradius: `${cssToken.BORDER['rounded-s']}`,
           }}
         >
           <ModalChildren
-            leftBtnCallback={toggleModal}
-            rightBtnCallback={goToback}
+            leftBtnCallback={goToback}
+            rightBtnCallback={toggleModal}
             content="작성하신 내용이 사라집니다."
           />
         </Modal>
