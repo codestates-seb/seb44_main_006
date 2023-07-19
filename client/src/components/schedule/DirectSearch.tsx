@@ -20,7 +20,7 @@ const DirectSearch = () => {
 
   useEffect(() => {
     dispatch(selectedIdActions.setCategoryId(''));
-    dispatch(selectedIdActions.setTagId(''));
+    dispatch(selectedIdActions.setTagId('1'));
   }, [dispatch]);
 
   const handleSubmit = (
