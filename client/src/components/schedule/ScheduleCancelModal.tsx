@@ -4,8 +4,7 @@ import { SetStateAction } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import Modal from '../ui/modal/Modal';
-import GrayButton from '../ui/button/GrayButton';
-import SkyBlueButton from '../ui/button/SkyBlueButton';
+import { GrayButton, SkyBlueButton } from '../ui/button/index';
 import useMovePage from '../../hooks/useMovePage';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import { selectedIdActions } from '../../store/selectedId-slice';

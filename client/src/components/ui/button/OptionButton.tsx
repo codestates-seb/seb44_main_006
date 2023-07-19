@@ -30,7 +30,11 @@ const OptionDiv = styled.div`
   }
 `;
 
-const OptionButton = ({ svgWidth, svgHeight, children }: IButtonStyle) => {
+export const OptionButton = ({
+  svgWidth,
+  svgHeight,
+  children,
+}: IButtonStyle) => {
   const [isActive, setActive] = useState<boolean>(false);
   return (
     <Container>
@@ -83,5 +87,3 @@ const OptionButton = ({ svgWidth, svgHeight, children }: IButtonStyle) => {
     </Container>
   );
 };
-
-export default OptionButton;

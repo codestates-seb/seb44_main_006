@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import SkyBlueButton from '../button/SkyBlueButton';
-import GrayButton from '../button/GrayButton';
+import { SkyBlueButton, GrayButton } from '../button/index';
 import cssToken from '../../../styles/cssToken';
 import { FlexDiv } from '../../../styles/styles';
 

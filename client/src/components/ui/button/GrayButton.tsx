@@ -3,7 +3,7 @@ import Button from './Button';
 import cssToken from '../../../styles/cssToken';
 import { IArgButtonStyle } from '../../../types/type';
 
-const GrayButton = ({
+export const GrayButton = ({
   children,
   width,
   height,
@@ -31,5 +31,3 @@ const GrayButton = ({
     </Button>
   );
 };
-
-export default GrayButton;

@@ -10,7 +10,6 @@ import {
   makeCourseGIF,
   saveCourseGIF,
 } from '../assets/landing';
-import Text from '../components/ui/text/Text';
 
 const LadingWrapper = styled(FlexDiv)`
   flex-direction: column;

@@ -3,7 +3,7 @@ import Button from './Button';
 import cssToken from '../../../styles/cssToken';
 import { IArgButtonStyle } from '../../../types/type';
 
-const WhiteButton = ({
+export const WhiteButton = ({
   children,
   width,
   height,
@@ -26,5 +26,3 @@ const WhiteButton = ({
     </Button>
   );
 };
-
-export default WhiteButton;

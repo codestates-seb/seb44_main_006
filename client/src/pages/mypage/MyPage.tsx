@@ -16,7 +16,7 @@ import { MypSummaryT } from '../../types/apitype';
 import useValidEnter from '../../hooks/useValidEnter';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useMovePage from '../../hooks/useMovePage';
-import CircleButton from '../../components/ui/button/CircleButton';
+import { CircleButton } from '../../components/ui/button/index';
 import Pen from '../../assets/Pen';
 import scrollToTop from '../../utils/scrollToTop';
 
