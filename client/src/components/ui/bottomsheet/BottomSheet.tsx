@@ -38,7 +38,7 @@ const Wrapper = styled.div<{
       if (props.param === 'detail') {
         return `${props.contentHeight / 2 + 200}px`;
       }
-      return `${props.contentHeight - 48}px`;
+      return `${props.contentHeight - 55}px`;
     }};
     border-top-left-radius: ${cssToken.BORDER['rounded-md']};
     border-top-right-radius: ${cssToken.BORDER['rounded-md']};
@@ -57,7 +57,7 @@ const Header = styled.section<{
     justify-content: center;
     padding-top: 1rem;
     width: 100%;
-    background-color: ${cssToken.COLOR.white};
+    background-color: ${cssToken.COLOR['point-500']};
     cursor: pointer;
   }
 `;
@@ -66,7 +66,7 @@ const Handle = styled.div`
   width: 2rem;
   height: 4px;
   border-radius: ${cssToken.BORDER['rounded-s']};
-  background-color: ${cssToken.COLOR['gray-700']};
+  background-color: ${cssToken.COLOR.white};
 `;
 
 interface Prop {
