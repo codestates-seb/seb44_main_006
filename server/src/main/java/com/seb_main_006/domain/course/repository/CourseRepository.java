@@ -14,9 +14,6 @@ import java.util.Set;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-        @Query("select c from Course c where c.isPosted = true")
-        Page<Course> findAllByPosted(Pageable pageable);
-
         List<Course> findAllByMember(Member member);
 
         @Query("select c from Course c join c.post p where c.isPosted = true " +
