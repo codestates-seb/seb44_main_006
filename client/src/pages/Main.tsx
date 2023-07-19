@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import Landing from './Landing';
 
-import mainImg from '../assets/mainImg.png';
+import mainImg from '../assets/mainImg.webp';
 import cssToken from '../styles/cssToken';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
 import useLoginToggleModal from '../hooks/useLoginToggleModal';
