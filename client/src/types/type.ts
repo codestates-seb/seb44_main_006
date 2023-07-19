@@ -138,6 +138,7 @@ export interface Pagination {
 }
 
 export interface ContCardInfo {
+  answerCount?: number;
   userName?: string;
   title?: string;
   text?: string;
@@ -154,6 +155,7 @@ export interface ContCardInfo {
   type: 'post' | 'course';
   date?: string;
   isMine?: boolean;
+  courseViewCount?: number;
 }
 
 export interface LocationCardInfo {

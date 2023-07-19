@@ -67,6 +67,7 @@ export type CommunityDetailT = {
 };
 
 export type CommunitySummaryT = {
+  answerCount: number;
   bookmarkStatus: boolean;
   courseId: number;
   courseLikeCount: number;
@@ -136,6 +137,7 @@ export type MypCourseSummaryT = {
 };
 
 export type MyBookMarkSummaryT = {
+  answerCount?: number;
   bookmarkId?: number;
   courseId?: number;
   courseLikeCount?: number;

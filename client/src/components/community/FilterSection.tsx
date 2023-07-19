@@ -118,6 +118,8 @@ const FilterSection = () => {
                     courseId={post.courseId}
                     likeStatus={post.likeStatus}
                     bookmarkStatus={post.bookmarkStatus}
+                    answerCount={post.answerCount}
+                    courseViewCount={post.courseViewCount}
                     isMine={userData?.memberEmail === post.memberEmail}
                     date={manufactureDate(post.postCreatedAt)}
                   >

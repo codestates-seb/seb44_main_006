@@ -155,6 +155,8 @@ const FilterSection = ({
                     bookmarkStatus
                     postId={post.postId}
                     likeStatus={post.likeStatus}
+                    answerCount={post.answerCount}
+                    courseViewCount={post.courseViewCount}
                     date={manufactureDate(post?.courseUpdatedAt)}
                   >
                     <CopyButton endpoint={`community/${String(post.postId)}`} />

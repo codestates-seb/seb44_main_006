@@ -16,6 +16,7 @@ import getLoginStatus from '../../../utils/getLoginStatus';
 import removeTag from '../../../utils/removeTag';
 import defaultThumbnail from '../../../assets/defaultThumbnail.webp';
 import thousandTok from '../../../utils/thousandTok';
+import { CommentIcon, EyeIcon } from '../../../assets';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;
@@ -112,18 +113,33 @@ const ContensBottom = styled.div`
   align-items: center;
 `;
 
-const LikeBtnBox = styled.div`
+const ContensCountBox = styled.div`
+  display: flex;
+  gap: 0.4375rem;
+`;
+
+const BtnBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: ${cssToken.COLOR['gray-900']};
+  font-size: 0.75rem;
+  gap: 0.125rem;
   > button {
-    margin-right: 0.1875rem;
     padding: 0;
+  }
+  &.comment svg {
+    width: 0.9375rem;
+    height: 0.9375rem;
+  }
+  &.eye svg {
+    width: 1.3125rem;
+    height: 1.3125rem;
   }
 `;
 
 const DataText = styled.span`
-  font-size: ${cssToken.TEXT_SIZE['text-14']};
+  font-size: 0.75rem;
   color: ${cssToken.COLOR['gray-900']};
 `;
 
@@ -145,6 +161,8 @@ export const ContensCard = memo(
     type,
     date,
     isMine,
+    answerCount,
+    courseViewCount,
   }: ContCardInfo) => {
     const isLogin = getLoginStatus();
     const selected = selectId !== undefined && selectId === courseId;
@@ -207,17 +225,31 @@ export const ContensCard = memo(
           />
         </ContensMiddle>
         <ContensBottom>
-          <LikeBtnBox>
-            {courseId && (
-              <LikeButton
-                isActive={likeStatus}
-                courseId={courseId}
-                impossible={!isLogin}
-                isMine={isMine}
-              />
+          <ContensCountBox>
+            <BtnBox>
+              {courseId && (
+                <LikeButton
+                  isActive={likeStatus}
+                  courseId={courseId}
+                  impossible={!isLogin}
+                  isMine={isMine}
+                />
+              )}
+              <DataText>{thousandTok(Number(likeCount))}</DataText>
+            </BtnBox>
+            {!isMine && type !== 'course' && (
+              <>
+                <BtnBox className="comment">
+                  <CommentIcon />
+                  {answerCount}
+                </BtnBox>
+                <BtnBox className="eye">
+                  <EyeIcon />
+                  {courseViewCount}
+                </BtnBox>
+              </>
             )}
-            <DataText>{thousandTok(Number(likeCount))}</DataText>
-          </LikeBtnBox>
+          </ContensCountBox>
           <DataText>{date}</DataText>
         </ContensBottom>
       </ContensCardContainer>
