@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 import { FlexDiv } from '../../../styles/styles';
 import cssToken from '../../../styles/cssToken';
 import { StarButton, LikeButton } from '../../ui/button/index';
-import Text from '../../ui/text/Text';
 import { UserInfoT } from '../../../querys/useUserInfo';
 
 const BtnDiv = styled(FlexDiv)`

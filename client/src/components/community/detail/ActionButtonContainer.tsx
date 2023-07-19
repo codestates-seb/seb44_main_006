@@ -8,7 +8,6 @@ import {
   ShareKakaoButton,
   CopyButton,
 } from '../../ui/button/index';
-import Text from '../../ui/text/Text';
 import DeleteButton from '../DeleteButton';
 import useUserInfo from '../../../querys/useUserInfo';
 
