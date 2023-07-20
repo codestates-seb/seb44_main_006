@@ -29,11 +29,10 @@ const Backdrop = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100vh;
   background-color: #000000;
   opacity: 0.3;
   z-index: 10;
-  height: calc(var(--vh, 1vh) * 100);
 `;
 
 const ModalContainer = styled.section<IModalContainer>`
