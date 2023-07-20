@@ -13,7 +13,7 @@ const LadingWrapper = styled(FlexDiv)`
   padding-left: ${cssToken.SPACING['py-100']};
   padding-right: ${cssToken.SPACING['py-100']};
 
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 1280px) {
     cursor: default;
     padding-left: ${cssToken.SPACING['gap-10']};
     padding-right: ${cssToken.SPACING['gap-10']};
