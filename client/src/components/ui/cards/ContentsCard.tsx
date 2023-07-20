@@ -237,7 +237,7 @@ export const ContensCard = memo(
               )}
               <DataText>{thousandTok(Number(likeCount))}</DataText>
             </BtnBox>
-            {!isMine && type !== 'course' && (
+            {type !== 'course' && (
               <>
                 <BtnBox className="comment">
                   <CommentIcon />
