@@ -104,6 +104,9 @@ const ScheduleSection = styled(SectionBox)`
     position: absolute;
     -webkit-user-drag: none;
     transition: 1s;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   > button {
