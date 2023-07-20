@@ -84,7 +84,6 @@ const Tags = styled.div`
   display: flex;
   gap: 0.3rem;
   flex-wrap: wrap;
-  height: 1.5625rem;
   > button {
     font-size: 0.75rem;
     padding: 0.1875rem 0.5rem 0.125rem;
@@ -241,11 +240,11 @@ export const ContensCard = memo(
               <>
                 <BtnBox className="comment">
                   <CommentIcon />
-                  {answerCount}
+                  {thousandTok(Number(answerCount))}
                 </BtnBox>
                 <BtnBox className="eye">
                   <EyeIcon />
-                  {courseViewCount}
+                  {thousandTok(Number(courseViewCount))}
                 </BtnBox>
               </>
             )}
