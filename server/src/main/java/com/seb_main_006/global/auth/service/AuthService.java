@@ -94,7 +94,7 @@ public class AuthService {
         log.info("expirationTime = {}, currentTime = {}", expirationTime, currentTime);
 
         // 리프레시 만료시간 24시간 이하 남은 상태
-        if (expirationTime - currentTime <= 86400000) { // 24시간 86400000
+        if (expirationTime - currentTime <= 90_000_000) { // 25시간 90000000
             newRefreshToken = jwtTokenizer.generateRefreshToken(userEmail); // 재발급된 RTK newRefreshToken에 할당
         }
 
