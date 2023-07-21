@@ -27,4 +27,4 @@ DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/server/deploy.log
 #cp /home/ubuntu/application-aws.properties /home/ubuntu/action/server/build/libs/application-aws.properties
 #sudo nohup java -jar -Dspring.profiles.active=aws $DEPLOY_JAR >> /home/ubuntu/action/server/deploy.log 2>/home/ubuntu/action/server/deploy_err.log &
-sudo nohup java -jar /home/ubuntu/action/server/build/libs/seb_main_006-0.0.1-SNAPSHOT.jar >> /home/ubuntu/action/server/deploy.log 2>/home/ubuntu/action/server/deploy_err.log &
+sudo nohup java -jar -Duser.timezone=Asia/Seoul /home/ubuntu/action/server/build/libs/seb_main_006-0.0.1-SNAPSHOT.jar >> /home/ubuntu/action/server/deploy.log 2>/home/ubuntu/action/server/deploy_err.log &
