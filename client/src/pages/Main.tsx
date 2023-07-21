@@ -14,6 +14,7 @@ import useUserInfo from '../querys/useUserInfo';
 import getLoginStatus from '../utils/getLoginStatus';
 import { CircleButton } from '../components/ui/button/index';
 import { FlexDiv } from '../styles/styles';
+import scrollToTop from '../utils/scrollToTop';
 
 const MainContainer = styled.main`
   position: relative;
@@ -243,17 +244,20 @@ const Main = () => {
   };
 
   useEffect(() => {
+    scrollToTop();
+  }, []);
+
+  useEffect(() => {
     const getUserData = async () => {
       return queryClient.invalidateQueries(['user']);
     };
     if (isLoggedIn) {
       getUserData()
         .then(() => {
-          console.log('유저정보 가져오기 성공');
           return queryClient.invalidateQueries(['user']);
         })
-        .catch(() => {
-          console.log('유저정보가져오기 실패');
+        .catch((err) => {
+          throw err;
         });
     }
   }, [isLoggedIn, queryClient]);
