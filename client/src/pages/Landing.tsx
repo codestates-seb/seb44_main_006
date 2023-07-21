@@ -1,10 +1,13 @@
 import { styled } from 'styled-components';
+import { Suspense, lazy } from 'react';
 
-import { FlexDiv } from '../styles/styles';
+import { FlexDiv, SkeletonDiv } from '../styles/styles';
 import Title from '../components/ui/text/Title';
 import SubTitle from '../components/ui/text/SubTitle';
 import cssToken from '../styles/cssToken';
 import { landingData } from '../utils/constant/constant';
+
+const LandingVideo = lazy(() => import('../components/main/LandingVideo'));
 
 const LadingWrapper = styled(FlexDiv)`
   cursor: none;
@@ -68,7 +71,7 @@ const TextContainer = styled(FlexDiv)`
   }
 `;
 
-const LandingVideo = styled.video`
+const LandingImg = styled.img`
   width: 45%;
   min-width: 30%;
   @media screen and (max-width: 760px) {
@@ -76,8 +79,9 @@ const LandingVideo = styled.video`
   }
 `;
 
-const LandingImg = styled.img`
+const SkeletonVideo = styled(SkeletonDiv)`
   width: 45%;
+  height: 30%;
   min-width: 30%;
   @media screen and (max-width: 760px) {
     width: 80%;
@@ -104,11 +108,11 @@ const Landing = () => {
             </SubTitle>
           </TextContainer>
           {idx < 4 ? (
-            <LandingVideo autoPlay muted loop playsInline>
-              <source src={data.src} type="video/mp4" />
-            </LandingVideo>
+            <Suspense fallback={<SkeletonVideo />}>
+              <LandingVideo src={data.src} />
+            </Suspense>
           ) : (
-            <LandingImg src={data.src} alt="image" />
+            <LandingImg loading="lazy" src={data.src} alt="image" />
           )}
         </LandingContainer>
       ))}
