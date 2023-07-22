@@ -157,7 +157,7 @@ const FixedDiv = styled.div`
 
 const ScrollArrow = styled(FlexDiv)`
   position: absolute;
-  bottom: 2rem;
+  bottom: 2.5rem;
   left: 50%;
   z-index: 10;
   transform: translate(-50%, 0);
@@ -169,8 +169,8 @@ const ScrollArrow = styled(FlexDiv)`
   > span {
     width: 24px;
     height: 24px;
-    border-left: 2px solid ${cssToken.COLOR.black};
-    border-bottom: 2px solid ${cssToken.COLOR.black};
+    border-left: 2px solid ${cssToken.COLOR.white};
+    border-bottom: 2px solid ${cssToken.COLOR.white};
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
     -webkit-animation: sdb 2s infinite;
@@ -194,7 +194,7 @@ const ScrollArrow = styled(FlexDiv)`
     animation-delay: 0.3s;
   }
   > p {
-    color: ${cssToken.COLOR.black};
+    color: ${cssToken.COLOR.white};
     margin-top: ${cssToken.SPACING['gap-20']};
     @media screen and (max-width: 768px) {
       display: none;
