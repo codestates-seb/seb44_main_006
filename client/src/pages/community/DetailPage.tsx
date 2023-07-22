@@ -118,7 +118,7 @@ const DetailPage = () => {
     error,
     isLoading,
   } = useQuery({
-    queryKey: ['communityDetail'],
+    queryKey: ['communityDetail', postId],
     queryFn: () => GetCommunityPost({ postId }),
     refetchOnWindowFocus: false,
     select: (data: { data: CommunityDetailT }) => data.data,
