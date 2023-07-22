@@ -35,7 +35,7 @@ const HeaderContainer = styled.header<HeaderStyle>`
   top: 0;
   left: 0;
   width: ${cssToken.WIDTH['w-full']};
-  transition: 0.3s;
+  transition: 0.2s;
   z-index: 999;
 
   &.change_header {
@@ -76,14 +76,14 @@ const Header = () => {
     <>
       <MemAccountModal />
       <HeaderContainer
-        className={scrollPosition < 100 ? '' : 'change_header'}
+        className={scrollPosition < 80 ? '' : 'change_header'}
         ispath={ispath}
       >
         <LogoBox>
           <Link to="/">
             {ispathPath === '/community' && (
               <LogoImg
-                src={scrollPosition < 100 ? LogoWhite : LogoBlack}
+                src={scrollPosition < 80 ? LogoWhite : LogoBlack}
                 alt="logo-harumate"
               />
             )}

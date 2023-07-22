@@ -38,14 +38,14 @@ const ScheduleCancelModal = ({
   setIsCancel: React.Dispatch<SetStateAction<boolean>>;
 }) => {
   const dispatch = useDispatch();
-  const navigateMain = useMovePage('/');
+  const navigateMypage = useMovePage('/mypage');
 
   const handleYes = () => {
     dispatch(placeListActions.resetList());
     dispatch(scheduleListActions.resetList());
     dispatch(selectedIdActions.allReset());
     setIsCancel(true);
-    navigateMain();
+    navigateMypage();
   };
 
   const handleNo = () => {

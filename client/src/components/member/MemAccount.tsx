@@ -43,6 +43,11 @@ const MemAccountModal = () => {
       dispatch(setUserOAuthActions.closeLogoutModal());
     },
     onError(error) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('isLogin');
+      gotoMain();
+      dispatch(setUserOAuthActions.closeLogoutModal());
       throw error;
     },
   });

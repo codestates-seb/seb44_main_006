@@ -169,8 +169,8 @@ const ScrollArrow = styled(FlexDiv)`
   > span {
     width: 24px;
     height: 24px;
-    border-left: 1px solid white;
-    border-bottom: 1px solid white;
+    border-left: 2px solid ${cssToken.COLOR.black};
+    border-bottom: 2px solid ${cssToken.COLOR.black};
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
     -webkit-animation: sdb 2s infinite;
@@ -178,7 +178,7 @@ const ScrollArrow = styled(FlexDiv)`
     opacity: 0;
     box-sizing: border-box;
     @media screen and (max-width: 768px) {
-      border-color: black;
+      border-color: ${cssToken.COLOR.black};
     }
   }
   > span:nth-of-type(1) {
@@ -194,7 +194,7 @@ const ScrollArrow = styled(FlexDiv)`
     animation-delay: 0.3s;
   }
   > p {
-    color: white;
+    color: ${cssToken.COLOR.black};
     margin-top: ${cssToken.SPACING['gap-20']};
     @media screen and (max-width: 768px) {
       display: none;
