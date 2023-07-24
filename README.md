@@ -5,7 +5,10 @@
   <br>
   <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/logo.png">
   <br>
+<p align='center'>하루메이트는 당일 일정을 만들고 친구에게 손쉽게 공유할 수 있는 서비스입니다.</p>
+<p align="center">
   <a href='https://harumate.netlify.app'>하루메이트 바로가기</a>
+</p>
 </p>
 
 <br>
