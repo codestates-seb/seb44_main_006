@@ -5,7 +5,7 @@
   <br>
   <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/logo.png">
   <br>
-  <a src='https://harumate.netlify.app'>하루메이트 바로가기</a>
+  <a href='https://harumate.netlify.app'>하루메이트 바로가기</a>
 </p>
 
 목차
@@ -14,12 +14,12 @@
 <table>
 <thead>
 <tr>
-<th>김영웅 (FE 부팀장)</th>
-<th>류지수 (FE 팀원)</th>
-<th>최지은 (FE 팀원)</th>
-<th>정유성 (BE 팀장)</th>
-<th>김용덕 (BE 팀원)</th>
-<th>송민형 (BE 팀원)</th>
+<th>김영웅 <br>(FE 부팀장)</th>
+<th>류지수 <br>(FE 팀원)</th>
+<th>최지은 <br>(FE 팀원)</th>
+<th>정유성 <br>(BE 팀장)</th>
+<th>김용덕 <br>(BE 팀원)</th>
+<th>송민형 <br>(BE 팀원)</th>
 </tr>
 </thead>
 <tbody>
