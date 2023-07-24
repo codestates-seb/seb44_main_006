@@ -79,17 +79,24 @@
 |<b>설정페이지</b>|<b>랜딩페이지</b>|
 |![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/a97df5fd-ebe5-4ab1-b93a-93d655772683)|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/f757bcdb-6a4a-4594-ad92-f6a87ef8d6e3)|
 
+<br>
+<br>
+
 ## 기능 시연 영상
+
+<br>
 
 ### 일정 등록 페이지
 https://github.com/codestates-seb/seb44_main_006/assets/109754988/2efba3b2-c28d-4ac2-8eee-c699b0adbf9b
 
 https://github.com/codestates-seb/seb44_main_006/assets/109754988/30abfac0-c2bb-4484-8e4f-5625fd188982
 
+<br>
 
 ### 마이 페이지
 https://github.com/codestates-seb/seb44_main_006/assets/109754988/8ada7dca-dce2-42ec-93d5-8e73f6d47656
 
+<br>
 
 ### 커뮤니티 페이지
 https://github.com/codestates-seb/seb44_main_006/assets/109754988/9606c5bd-e69b-421f-b8c8-b9901993bb3e
