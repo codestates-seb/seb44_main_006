@@ -69,14 +69,17 @@
 
 <br>
 
+
 ## 페이지
 |메인페이지|일정등록페이지|
 |:---:|:---:|
-|![image]()|![image]()|
+|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/6341a0f3-e248-4af3-9733-4846c1ae7c51)|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/93dca001-e946-4665-8093-c50dcdb6aad0)|
 |<b>커뮤니티페이지</b>|<b>마이페이지</b>|
-|![image]()|![image]()|
+|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/fef65d05-d4b6-4462-9239-86b715b3789b)|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/89573d57-166d-456d-ae5d-df5928d4d50b)|
 |<b>설정페이지</b>|<b>랜딩페이지</b>|
-|![image]()|![image]()|
+|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/a97df5fd-ebe5-4ab1-b93a-93d655772683)|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/f757bcdb-6a4a-4594-ad92-f6a87ef8d6e3)|
+
+## 기능 시연 영상
 
 ### 일정 등록 페이지
 https://github.com/codestates-seb/seb44_main_006/assets/109754988/2efba3b2-c28d-4ac2-8eee-c699b0adbf9b
@@ -87,6 +90,8 @@ https://github.com/codestates-seb/seb44_main_006/assets/109754988/30abfac0-c2bb-
 ### 마이 페이지
 https://github.com/codestates-seb/seb44_main_006/assets/109754988/8ada7dca-dce2-42ec-93d5-8e73f6d47656
 
+
+### 커뮤니티 페이지
 https://github.com/codestates-seb/seb44_main_006/assets/109754988/9606c5bd-e69b-421f-b8c8-b9901993bb3e
 
 
