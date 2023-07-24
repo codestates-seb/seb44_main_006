@@ -57,8 +57,7 @@
 <br>
 
 ## 기술 스택
-
-이미지 추가
+<img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/stack.png">
 
 <br>
 
