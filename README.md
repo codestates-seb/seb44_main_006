@@ -5,11 +5,16 @@
   <br>
   <img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/logo.png">
   <br>
-<p align='center'>하루메이트는 당일 일정을 만들고 친구에게 손쉽게 공유할 수 있는 서비스입니다.</p>
-<p align="center">
-  <a href='https://harumate.netlify.app'>하루메이트 바로가기</a>
+<p align='center'><strong>하루메이트는 당일 일정을 만들고 친구에게 손쉽게 공유할 수 있는 서비스입니다.</strong></p>
 </p>
-</p>
+  <ul>
+  <li><strong>팀 명:</strong> 6 can do it</li>
+  <li><strong>프로젝트 명:</strong> HARUMATE(하루메이트)</li>
+  <li><strong>프로젝트 기간:</strong> 23.06.29 ~ 23.07.26</li>
+  <li><strong>팀원:</strong> 정유성(팀장), 김영웅(부팀장), 류지수, 최지은, 김용덕, 송민형</li>
+  <li><strong>배포링크:</strong> <a href='https://harumate.netlify.app'>🔗 하루메이트 바로가기</a></li>
+</ul>
+
 
 <br>
 
@@ -65,14 +70,25 @@
 <br>
 
 ## 페이지
+|메인페이지|일정등록페이지|
+|:---:|:---:|
+|![image]()|![image]()|
+|<b>커뮤니티페이지</b>|<b>마이페이지</b>|
+|![image]()|![image]()|
+|<b>설정페이지</b>|<b>랜딩페이지</b>|
+|![image]()|![image]()|
 
-### 기능 1
+### 일정 등록 페이지
+https://github.com/codestates-seb/seb44_main_006/assets/109754988/2efba3b2-c28d-4ac2-8eee-c699b0adbf9b
 
-### 기능 2
+https://github.com/codestates-seb/seb44_main_006/assets/109754988/30abfac0-c2bb-4484-8e4f-5625fd188982
 
-### 기능 3
 
-### 기능 4
+### 마이 페이지
+https://github.com/codestates-seb/seb44_main_006/assets/109754988/8ada7dca-dce2-42ec-93d5-8e73f6d47656
+
+https://github.com/codestates-seb/seb44_main_006/assets/109754988/9606c5bd-e69b-421f-b8c8-b9901993bb3e
+
 
 <br>
 
