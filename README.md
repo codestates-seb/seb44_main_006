@@ -8,7 +8,7 @@
   <a href='https://harumate.netlify.app'>하루메이트 바로가기</a>
 </p>
 
-목차
+<br>
 
 ## 팀원 소개
 <table>
