@@ -85,7 +85,6 @@ public class Course {
         this.getBookmarksInCourse().clear();
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
