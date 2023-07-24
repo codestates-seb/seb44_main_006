@@ -75,7 +75,7 @@
 <br>
 
 <h2>ERD</h2>
-<details open="">
+<details>
 <summary>ERD</summary>
 <div dir="auto">
 <a target="_blank" rel="noopener noreferrer" href=""><img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/ERD.png" alt="erdImg" style="max-width: 100%;"></a>
