@@ -53,13 +53,6 @@
 </tr>
 </tbody>
 </table>
-<p align="justify">
-프로젝트 개요/동기
-</p>
-
-<p align="center">
-GIF Images
-</p>
 
 <br>
 
@@ -81,14 +74,18 @@ GIF Images
 
 <br>
 
-## 배운 점 & 아쉬운 점
-
-<p align="justify">
-
-</p>
-
+<h2>ERD</h2>
+<details open="">
+<summary>ERD</summary>
+<div dir="auto">
+<a target="_blank" rel="noopener noreferrer" href=""><img src="https://seb-44-mainproject-006.s3.ap-northeast-2.amazonaws.com/ERD.png" alt="erdImg" style="max-width: 100%;"></a>
+</div>
+</details>
 <br>
-
-## 라이센스
-
-MIT &copy; [NoHack](mailto:lbjp114@gmail.com)
+<h2><a href="https://drive.google.com/file/d/1WNAoJJcP-ybHIrENq2jlUSc6YNvmOVwA/view?usp=sharing" rel="nofollow">테이블 명세서</a></h2>
+<br>
+<h2><a href="https://drive.google.com/file/d/1d7T4WHeAefmc8mddL1bgDd5UFcl4-3qv/view?usp=sharing" rel="nofollow">API 명세서</a></h2>
+<br>
+<h2><a href="https://drive.google.com/file/d/17z87WpmeDfhc7oW_8RaaGTl38b67IWVI/view?usp=sharing" rel="nofollow">화면 정의서</a></h2>
+<br>
+<h2><a href="https://drive.google.com/file/d/1oy-Lqj1MduojdJ-z_tv1_DDqphxrjnJE/view?usp=sharing" rel="nofollow">서비스 메뉴얼</a></h2>
