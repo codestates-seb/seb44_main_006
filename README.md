@@ -62,6 +62,9 @@
 </tbody>
 </table>
 
+<h3>
+<a href="https://boiled-november-915.notion.site/a9e75793246d4ce09cdbef5088add1a9?pvs=4">담당 파트</a>
+</h3>
 <br>
 
 ## 기술 스택
@@ -83,8 +86,6 @@
 <br>
 
 ## 기능 시연 영상
-
-<br>
 
 ### 일정 등록 페이지
 
