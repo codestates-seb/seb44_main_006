@@ -87,20 +87,22 @@
 <br>
 
 ### 일정 등록 페이지
-https://github.com/codestates-seb/seb44_main_006/assets/109754988/2efba3b2-c28d-4ac2-8eee-c699b0adbf9b
 
-https://github.com/codestates-seb/seb44_main_006/assets/109754988/30abfac0-c2bb-4484-8e4f-5625fd188982
+https://github.com/codestates-seb/seb44_main_006/assets/79021544/32381f09-75fa-4fef-8c53-0ae595e3a524
+
+https://github.com/codestates-seb/seb44_main_006/assets/79021544/2c2afdce-1e5a-4d81-b601-96f2e0b5be10
 
 <br>
 
 ### 마이 페이지
-https://github.com/codestates-seb/seb44_main_006/assets/109754988/8ada7dca-dce2-42ec-93d5-8e73f6d47656
+
+https://github.com/codestates-seb/seb44_main_006/assets/79021544/1c1288d2-800e-438a-b90c-5960976fe56f
 
 <br>
 
 ### 커뮤니티 페이지
-https://github.com/codestates-seb/seb44_main_006/assets/109754988/9606c5bd-e69b-421f-b8c8-b9901993bb3e
 
+https://github.com/codestates-seb/seb44_main_006/assets/79021544/941b6bec-71e6-4748-9598-79de45440f87
 
 <br>
 
