@@ -62,7 +62,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         List<String> authorities = authorityUtils.createRoles(email);
 
         if (email == null || email.equals("null")) {
-            ErrorResponder.sendErrorResponse(response, ExceptionCode.TEMPORARY_ERROR);
+            String uri1 = createURI(null, null, ExceptionCode.TEMPORARY_ERROR).toString();
+            getRedirectStrategy().sendRedirect(request, response, uri1);
             return;
         }
 
