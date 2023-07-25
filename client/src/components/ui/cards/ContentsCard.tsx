@@ -76,7 +76,8 @@ const ContensText = styled.p`
   color: ${cssToken.COLOR['gray-900']};
   font-size: 0.875rem;
   font-weight: ${cssToken.FONT_WEIGHT.medium};
-  height: 2rem;
+  height: 2.1rem;
+  padding: 0.1875rem 0;
   ${TextLimit};
 `;
 

@@ -14,6 +14,7 @@ import useUserInfo from '../querys/useUserInfo';
 import getLoginStatus from '../utils/getLoginStatus';
 import { CircleButton } from '../components/ui/button/index';
 import { FlexDiv } from '../styles/styles';
+import scrollToTop from '../utils/scrollToTop';
 
 const MainContainer = styled.main`
   position: relative;
@@ -156,7 +157,7 @@ const FixedDiv = styled.div`
 
 const ScrollArrow = styled(FlexDiv)`
   position: absolute;
-  bottom: 2rem;
+  bottom: 2.5rem;
   left: 50%;
   z-index: 10;
   transform: translate(-50%, 0);
@@ -168,8 +169,8 @@ const ScrollArrow = styled(FlexDiv)`
   > span {
     width: 24px;
     height: 24px;
-    border-left: 1px solid white;
-    border-bottom: 1px solid white;
+    border-left: 2px solid ${cssToken.COLOR.white};
+    border-bottom: 2px solid ${cssToken.COLOR.white};
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
     -webkit-animation: sdb 2s infinite;
@@ -177,7 +178,7 @@ const ScrollArrow = styled(FlexDiv)`
     opacity: 0;
     box-sizing: border-box;
     @media screen and (max-width: 768px) {
-      border-color: black;
+      border-color: ${cssToken.COLOR.black};
     }
   }
   > span:nth-of-type(1) {
@@ -193,7 +194,7 @@ const ScrollArrow = styled(FlexDiv)`
     animation-delay: 0.3s;
   }
   > p {
-    color: white;
+    color: ${cssToken.COLOR.white};
     margin-top: ${cssToken.SPACING['gap-20']};
     @media screen and (max-width: 768px) {
       display: none;
@@ -243,17 +244,20 @@ const Main = () => {
   };
 
   useEffect(() => {
+    scrollToTop();
+  }, []);
+
+  useEffect(() => {
     const getUserData = async () => {
       return queryClient.invalidateQueries(['user']);
     };
     if (isLoggedIn) {
       getUserData()
         .then(() => {
-          console.log('유저정보 가져오기 성공');
           return queryClient.invalidateQueries(['user']);
         })
-        .catch(() => {
-          console.log('유저정보가져오기 실패');
+        .catch((err) => {
+          throw err;
         });
     }
   }, [isLoggedIn, queryClient]);

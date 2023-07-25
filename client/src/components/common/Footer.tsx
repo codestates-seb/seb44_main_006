@@ -9,7 +9,11 @@ type FootreStyle = {
 
 const FooterContainer = styled.footer<FootreStyle>`
   display: ${(props) => {
-    if (props?.ispath === 'community' || props?.ispath === 'mypage') {
+    if (
+      props?.ispath === 'community' ||
+      props?.ispath === 'mypage' ||
+      props?.ispath === ''
+    ) {
       return 'flex';
     }
     return 'none';
@@ -89,7 +93,7 @@ const InfoText = styled.ul`
 
       &:hover span {
         opacity: 1;
-        top:  -1.5625rem;
+        top: -1.5625rem;
       }
     }
   }
