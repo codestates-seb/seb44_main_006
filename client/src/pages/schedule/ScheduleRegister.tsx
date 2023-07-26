@@ -23,6 +23,7 @@ import { GetCourse } from '../../apis/api';
 import { PostReadT } from '../../types/apitype';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import ScheduleBox from '../../components/schedule/ScheduleBox';
+import { markerActions } from '../../store/marker-slice';
 
 const KakaoMap = lazy(() => import('../../components/map/KakaoMap'));
 const Marker = lazy(() => import('../../components/map/Marker'));
@@ -110,7 +111,10 @@ const ScheduleRegister = () => {
 
   useEffect(() => {
     checkValidEnter(); // 로그인 상태 아닐 때 url을 직접 검색해서 들어오면 메인으로 돌려보냄
-  }, [checkValidEnter]);
+    return () => {
+      dispatch(markerActions.reset());
+    };
+  }, [checkValidEnter, dispatch]);
 
   useEffect(() => {
     if (map && newCenter.lat && newCenter.lng) {
