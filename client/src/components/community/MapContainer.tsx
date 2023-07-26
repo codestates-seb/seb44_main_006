@@ -32,20 +32,12 @@ const MapContainer = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(markerActions.reset());
     dispatch(
       markerActions.setInitialCenter({
         lat: destinationList[0].y,
         lng: destinationList[0].x,
         level: 6,
-      })
-    );
-    dispatch(
-      markerActions.selectMarker({
-        markerId: '',
-        center: {
-          lat: '',
-          lng: '',
-        },
       })
     );
     return () => {
