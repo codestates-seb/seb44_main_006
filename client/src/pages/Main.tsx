@@ -16,7 +16,7 @@ import { CircleButton } from '../components/ui/button/index';
 import { FlexDiv } from '../styles/styles';
 import scrollToTop from '../utils/scrollToTop';
 
-const MainContainer = styled.main`
+const MainContainer = styled.article`
   position: relative;
   cursor: none;
   display: flex;
@@ -35,6 +35,7 @@ const SectionBox = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 30px;
 
   @media screen and (max-width: 768px) {
     height: calc(var(--vh, 1vh) * 50);
@@ -81,7 +82,6 @@ const CommunitySection = styled(SectionBox)`
   flex: 1;
   background: ${cssToken.COLOR.white};
   height: 100vh;
-  padding: 0 30px;
 
   > button {
     color: ${cssToken.COLOR['point-500']};
@@ -227,6 +227,7 @@ const ScrollArrow = styled(FlexDiv)`
 const Main = () => {
   const queryClient = useQueryClient();
   const [isHovered, setIsHovered] = useState<boolean>(true);
+  const [isCursorVisible, setIsCursorVisible] = useState<boolean>(true);
   const isLoggedIn = getLoginStatus();
   const goToRegister = useMovePage('/register');
   const goToCommunity = useMovePage('/community');
@@ -270,8 +271,19 @@ const Main = () => {
     setIsHovered((prev) => !prev);
   };
 
+  const handleMainMouseLeave = () => {
+    setIsCursorVisible(false);
+  };
+
+  const handleMainMouseEnter = () => {
+    setIsCursorVisible(true);
+  };
+
   return (
-    <>
+    <main
+      onMouseLeave={handleMainMouseLeave}
+      onMouseEnter={handleMainMouseEnter}
+    >
       <MainContainer>
         <ScrollArrow>
           <span />
@@ -279,7 +291,7 @@ const Main = () => {
           <span />
           <p>이용방법</p>
         </ScrollArrow>
-        <CursorPointer isMouseHover={isHovered} />
+        <CursorPointer isMouseHover={isHovered} isMainMouse={isCursorVisible} />
         <CommunitySection>
           <MainLink
             onClick={goToCommunity}
@@ -310,7 +322,7 @@ const Main = () => {
           <div>Top</div>
         </CircleButton>
       </FixedDiv>
-    </>
+    </main>
   );
 };
 
