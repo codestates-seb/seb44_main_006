@@ -67,6 +67,7 @@ const MainTextInfoDiv = styled(FlexDiv)`
 `;
 
 const MainDiv = styled(FlexDiv)`
+  height: 80vh;
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
