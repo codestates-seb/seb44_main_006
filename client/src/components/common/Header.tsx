@@ -39,7 +39,7 @@ const HeaderContainer = styled.header<HeaderStyle>`
   z-index: 999;
 
   &.change_header {
-    background: #fff;
+    background-color: #fff;
     border-bottom: 1px solid ${cssToken.COLOR['gray-300']};
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.03);
   }
@@ -58,12 +58,13 @@ const LogoImg = styled.img`
 `;
 
 const Header = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
   const ispath = useLocationEndpoint();
   const location = useLocation();
   const ispathPath = location.pathname;
   const isLogin = getLoginStatus();
+  const SCROLL_SIZE = scrollPosition < 80;
 
-  const [scrollPosition, setScrollPosition] = useState(0);
   const updateScroll = () => {
     setScrollPosition(window.scrollY || document.documentElement.scrollTop);
   };
@@ -76,14 +77,14 @@ const Header = () => {
     <>
       <MemAccountModal />
       <HeaderContainer
-        className={scrollPosition < 80 ? '' : 'change_header'}
+        className={SCROLL_SIZE ? '' : 'change_header'}
         ispath={ispath}
       >
         <LogoBox>
           <Link to="/">
             {ispathPath === '/community' && (
               <LogoImg
-                src={scrollPosition < 80 ? LogoWhite : LogoBlack}
+                src={SCROLL_SIZE ? LogoWhite : LogoBlack}
                 alt="logo-harumate"
               />
             )}
