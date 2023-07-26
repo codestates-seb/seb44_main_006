@@ -30,9 +30,10 @@ const KakaoMap = ({ width, height, children, ...options }: KakaoMapT) => {
     (element: HTMLElement) => {
       if (!kakao || !element) return;
       const currentPosition = {
-        lat: curLocation.coords?.latitude,
-        lng: curLocation.coords?.longitude,
+        lat: curLocation.coords?.latitude || 37.553651,
+        lng: curLocation.coords?.longitude || 126.969763,
       };
+
       const { lat, lng } =
         firstCourse?.lat && firstCourse?.lng ? firstCourse : currentPosition;
       const newMap = new kakao.maps.Map(element, {
