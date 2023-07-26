@@ -11,7 +11,7 @@ interface ILocation {
 const useGeolocation = () => {
   const [location, setLocation] = useState<ILocation>({
     loaded: false,
-    coords: { latitude: 33.450701, longitude: 126.570667 }, // 기본은 카카오 본사
+    coords: { latitude: 37.553651, longitude: 126.969763 }, // 기본은 서울역
   });
 
   const onSuccess = (position: { coords: TLocation }) => {
