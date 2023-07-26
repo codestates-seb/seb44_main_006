@@ -17,7 +17,7 @@ const ScheduleDetail = () => {
   const location = useLocation();
 
   useQuery({
-    queryKey: ['resisterDetail'],
+    queryKey: ['resisterDetail', courseId],
     queryFn: () => {
       return location.search === '?share'
         ? GetShareSchedule({ courseId })
