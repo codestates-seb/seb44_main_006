@@ -8,7 +8,6 @@ import java.util.List;
 
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @RedisHash(value = "refresh", timeToLive = 1209600)

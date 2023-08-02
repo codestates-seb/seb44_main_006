@@ -86,6 +86,7 @@ public class AuthService {
     public TokenDto reissueV2(String refreshToken, String userEmail) throws JsonProcessingException {
         log.info("refreshToken = {}", refreshToken);
 
+        // Redis에서 전달받은 refreshToken으로 조회한 결과가 없다면 예외 발생
         RefreshToken findRefreshToken = refreshTokenRedisRepository.findByRefreshToken(refreshToken);
         if (findRefreshToken == null) {
             throw new BusinessLogicException(ExceptionCode.TOKEN_EXPIRED);
@@ -119,7 +120,7 @@ public class AuthService {
                 .id(userEmail)
                 .username(userEmail)
                 .authorities(authorities)
-                .refreshToken(refreshToken)
+                .refreshToken(newAccessToken)
                 .build());
 
         return new TokenDto(newAccessToken, newRefreshToken);
