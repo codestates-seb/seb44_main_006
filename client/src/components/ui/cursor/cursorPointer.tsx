@@ -7,6 +7,7 @@ import cursorOff from '../../../assets/cursor_off.svg';
 
 interface CursorInfo {
   isMouseHover?: boolean;
+  isMainMouse?: boolean;
 }
 
 const CursorContainer = styled.div<CursorInfo>`
@@ -15,8 +16,8 @@ const CursorContainer = styled.div<CursorInfo>`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: ${(props) => (props.isMouseHover ? `83px` : `73px`)};
-  height: ${(props) => (props.isMouseHover ? `83px` : `73px`)};
+  width: ${(props) => (props.isMouseHover ? `63px` : `53px`)};
+  height: ${(props) => (props.isMouseHover ? `63px` : `53px`)};
   border: 1px solid ${cssToken.COLOR['gray-500']};
   background-color: ${cssToken.COLOR.white};
   border-radius: 50%;
@@ -30,14 +31,18 @@ const CursorContainer = styled.div<CursorInfo>`
     top: 50%;
     background-image: ${(props) =>
       props.isMouseHover ? `url(${cursorOff})` : `url(${cursorOn})`};
-    background-size: ${(props) => (props.isMouseHover ? `cover` : '20px')};
+    background-size: ${(props) => (props.isMouseHover ? `cover` : '15px')};
     background-repeat: no-repeat;
     background-position: center;
     display: block;
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     transform: translate(-50%, -50%);
     transition: background-image 0.2s;
+  }
+
+  &.visible {
+    display: none;
   }
 
   @media (max-width: 1280px) {
@@ -45,7 +50,7 @@ const CursorContainer = styled.div<CursorInfo>`
   }
 `;
 
-const CursorPointer = ({ isMouseHover }: CursorInfo) => {
+const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
   const circleCursor = useRef<HTMLDivElement>(null);
   const cursorEnlarged = useRef<boolean>(false);
   const endX = useRef<number>(0);
@@ -122,7 +127,13 @@ const CursorPointer = ({ isMouseHover }: CursorInfo) => {
     };
   }, [handleScroll]);
 
-  return <CursorContainer isMouseHover={isMouseHover} ref={circleCursor} />;
+  return (
+    <CursorContainer
+      className={isMainMouse ? '' : 'visible'}
+      isMouseHover={isMouseHover}
+      ref={circleCursor}
+    />
+  );
 };
 
 export default CursorPointer;

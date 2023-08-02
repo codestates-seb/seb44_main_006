@@ -13,6 +13,7 @@ import Noresult from '../ui/Noresult';
 import { markerActions } from '../../store/marker-slice';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import showToast from '../../utils/showToast';
+import defaultOptions from '../../utils/constant/constant';
 
 const Wrapper = styled.div`
   display: flex;
@@ -73,10 +74,10 @@ const PlaceList = ({
   const curLocation = useGeolocation();
   const x = curLocation.coords
     ? `${curLocation.coords?.longitude}`
-    : '126.570667';
+    : `${defaultOptions.lng}`;
   const y = curLocation.coords
     ? `${curLocation.coords?.latitude}`
-    : '33.450701';
+    : `${defaultOptions.lat}`;
 
   const displayPagination = useCallback((pagination: Pagination) => {
     const div = document.createElement('div');

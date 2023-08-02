@@ -9,8 +9,8 @@ import {
 
 const defaultOptions = {
   level: 6,
-  lat: 33.450701,
-  lng: 126.570667,
+  lat: 37.553651,
+  lng: 126.969763,
 };
 
 export default defaultOptions;

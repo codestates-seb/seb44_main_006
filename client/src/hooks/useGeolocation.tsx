@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import defaultOptions from '../utils/constant/constant';
+
 type TLocation = { latitude: number; longitude: number };
 type TError = { code: number; message: string };
 interface ILocation {
@@ -11,7 +13,7 @@ interface ILocation {
 const useGeolocation = () => {
   const [location, setLocation] = useState<ILocation>({
     loaded: false,
-    coords: { latitude: 33.450701, longitude: 126.570667 }, // 기본은 카카오 본사
+    coords: { latitude: defaultOptions.lat, longitude: defaultOptions.lng }, // 기본은 서울역
   });
 
   const onSuccess = (position: { coords: TLocation }) => {
