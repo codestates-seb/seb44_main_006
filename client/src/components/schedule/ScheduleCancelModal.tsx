@@ -4,11 +4,12 @@ import { SetStateAction } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import Modal from '../ui/modal/Modal';
-import { GrayButton, SkyBlueButton } from '../ui/button/index';
 import useMovePage from '../../hooks/useMovePage';
 import { scheduleListActions } from '../../store/scheduleList-slice';
 import { selectedIdActions } from '../../store/selectedId-slice';
 import { placeListActions } from '../../store/placeList-slice';
+import GrayButton from '../ui/button/GrayButton';
+import SkyBlueButton from '../ui/button/SkyBlueButton';
 
 const Wrapper = styled.div`
   width: ${cssToken.WIDTH['w-full']};

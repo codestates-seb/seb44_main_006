@@ -8,7 +8,7 @@ import { LikeBookMarkButtonT } from '../../../types/type';
 import { PostLike } from '../../../apis/api';
 import showToast from '../../../utils/showToast';
 
-export const LikeButton = ({
+const LikeButton = ({
   svgWidth,
   svgHeight,
   isActive,
@@ -60,3 +60,5 @@ export const LikeButton = ({
     </EventButton>
   );
 };
+
+export default LikeButton;

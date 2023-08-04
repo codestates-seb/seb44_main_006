@@ -2,10 +2,10 @@ import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
-import { TagButton } from '../ui/button/index';
 import { ICSearchState } from '../../types/type';
 import { RootState } from '../../store';
 import { selectedIdActions } from '../../store/selectedId-slice';
+import TagButton from '../ui/button/TagButton';
 
 const Wrapper = styled.section`
   width: ${cssToken.WIDTH['min-w-fit']};

@@ -3,7 +3,6 @@ import { SetStateAction } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import cssToken from '../../styles/cssToken';
-import { GrayButton, SkyBlueButton } from '../ui/button/index';
 import Title from '../ui/text/Title';
 import SubTitle from '../ui/text/SubTitle';
 import imageUrl from '../../utils/constant/imageUrl';
@@ -11,6 +10,8 @@ import { ImageCard } from '../ui/cards/index';
 import { RootState } from '../../store';
 import { selectedIdActions } from '../../store/selectedId-slice';
 import { scheduleListActions } from '../../store/scheduleList-slice';
+import GrayButton from '../ui/button/GrayButton';
+import SkyBlueButton from '../ui/button/SkyBlueButton';
 
 interface IDisplay {
   display: string;

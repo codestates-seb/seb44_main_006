@@ -7,12 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../ui/UserInfoPfp';
 import { PatchMemNickname } from '../../apis/api';
-import { Pen, SettingIcon } from '../../assets/index';
 import InputContainer from '../ui/input/InputContainer';
-import { SkyBlueButton } from '../ui/button/index';
 import useMovePage from '../../hooks/useMovePage';
 import useUserInfo from '../../querys/useUserInfo';
 import SkeletonUserInfoContainer from '../skeleton/SkeletonUserInfo';
+import SkyBlueButton from '../ui/button/SkyBlueButton';
+import Pen from '../../assets/icons/Pen';
+import SettingIcon from '../../assets/icons/SettingIcon';
 
 interface IsNickNameT {
   toggleNickname?: boolean;

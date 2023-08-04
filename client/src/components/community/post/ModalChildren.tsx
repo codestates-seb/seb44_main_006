@@ -1,7 +1,8 @@
 import cssToken from '../../../styles/cssToken';
 import { BtnDiv, ModalChildrenDiv } from '../../../styles/styles';
 import { MouseEventfunc } from '../../../types/type';
-import { GrayEventButton, SkyBlueEventButton } from '../../ui/button/index';
+import GrayEventButton from '../../ui/button/GrayEventButton';
+import SkyBlueEventButton from '../../ui/button/SkyBlueEventButton';
 import Text from '../../ui/text/Text';
 
 const ModalChildren = ({

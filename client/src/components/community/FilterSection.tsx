@@ -17,11 +17,12 @@ import { CardWrapper } from '../../styles/styles';
 import { CommunitySummaryT, InfiniteScrollT } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
 import useUserInfo from '../../querys/useUserInfo';
-import { ShareKakaoButton, CopyButton } from '../ui/button/index';
 import { RootState } from '../../store';
 import thousandTok from '../../utils/thousandTok';
 import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 import { LIMIT } from '../../utils/constant/constant';
+import ShareKakaoButton from '../ui/button/ShareKakaoButton';
+import CopyButton from '../ui/button/CopyButton';
 
 const FilterWrapper = styled.div`
   width: 100%;

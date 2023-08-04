@@ -2,8 +2,9 @@ import { styled } from 'styled-components';
 
 import { FlexDiv } from '../../../styles/styles';
 import cssToken from '../../../styles/cssToken';
-import { StarButton, LikeButton } from '../../ui/button/index';
 import { UserInfoT } from '../../../querys/useUserInfo';
+import StarButton from '../../ui/button/StarButton';
+import LikeButton from '../../ui/button/LikeButton';
 
 const BtnDiv = styled(FlexDiv)`
   column-gap: ${cssToken.SPACING['gap-12']};

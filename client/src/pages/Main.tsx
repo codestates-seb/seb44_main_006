@@ -12,7 +12,7 @@ import showToast from '../utils/showToast';
 import useMovePage from '../hooks/useMovePage';
 import useUserInfo from '../querys/useUserInfo';
 import getLoginStatus from '../utils/getLoginStatus';
-import { CircleButton } from '../components/ui/button/index';
+import CircleButton from '../components/ui/button/CircleButton';
 import { FlexDiv } from '../styles/styles';
 import scrollToTop from '../utils/scrollToTop';
 

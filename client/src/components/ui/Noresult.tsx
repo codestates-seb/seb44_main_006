@@ -3,8 +3,8 @@ import { styled } from 'styled-components';
 import Text from './text/Text';
 
 import { FlexDiv } from '../../styles/styles';
-import { NoresultResult } from '../../assets/index';
 import cssToken from '../../styles/cssToken';
+import { NoresultResult } from '../../assets/NoresultResult';
 
 const Div = styled(FlexDiv)`
   width: 100%;

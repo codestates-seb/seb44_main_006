@@ -4,12 +4,12 @@ import { useEffect, useRef } from 'react';
 
 import { CardCommonBox } from './Card.styled';
 
-import { TagButton } from '../button/index';
 import cssToken from '../../../styles/cssToken';
 import { LocationCardInfo } from '../../../types/type';
 import { RootState } from '../../../store';
 import { markerActions } from '../../../store/marker-slice';
 import EventButton from '../button/EventButton';
+import TagButton from '../button/TagButton';
 
 const LocationCardContainer = styled.section<{ selected: boolean }>`
   display: flex;

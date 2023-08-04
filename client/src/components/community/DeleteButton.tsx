@@ -9,9 +9,9 @@ import useToggleModal from '../../hooks/useToggleModal';
 import { DeleteCommunityPost, DeleteMyPageCourses } from '../../apis/api';
 import useMovePage from '../../hooks/useMovePage';
 import EventButton from '../ui/button/EventButton';
-import { Trash } from '../../assets/index';
 import showToast from '../../utils/showToast';
 import cssToken from '../../styles/cssToken';
+import Trash from '../../assets/icons/Trash';
 
 const DeleteButton = ({
   type,

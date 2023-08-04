@@ -1,8 +1,8 @@
 import { styled } from 'styled-components';
 import { forwardRef, ForwardedRef, memo } from 'react';
 
-import { Search } from '../../../assets/index';
 import cssToken from '../../../styles/cssToken';
+import Search from '../../../assets/icons/Search';
 
 const InputWrapper = styled.div<StylesT>`
   position: relative;

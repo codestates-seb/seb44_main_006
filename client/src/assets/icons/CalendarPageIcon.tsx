@@ -1,4 +1,4 @@
-export const CalendarPageIcon = () => {
+const CalendarPageIcon = () => {
   return (
     <svg
       width="24"
@@ -14,3 +14,4 @@ export const CalendarPageIcon = () => {
     </svg>
   );
 };
+export default CalendarPageIcon;

@@ -3,7 +3,7 @@ import Button from './Button';
 import cssToken from '../../../styles/cssToken';
 import { IArgButtonStyle } from '../../../types/type';
 
-export const CategoryButton = ({
+const CategoryButton = ({
   children,
   width,
   height,
@@ -32,3 +32,5 @@ export const CategoryButton = ({
     </Button>
   );
 };
+
+export default CategoryButton;

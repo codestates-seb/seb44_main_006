@@ -7,11 +7,11 @@ import RadiusTagContainer from './RadiusTagContainer';
 
 import Text from '../ui/text/Text';
 import cssToken from '../../styles/cssToken';
-import { SkyBlueButton } from '../ui/button/index';
 import Button from '../ui/button/Button';
 import PlaceList from '../map/PlaceList';
 import { ICSearchState } from '../../types/type';
 import { selectedIdActions } from '../../store/selectedId-slice';
+import SkyBlueButton from '../ui/button/SkyBlueButton';
 
 const ButtonWrapper = styled.section`
   width: ${cssToken.WIDTH['w-full']};

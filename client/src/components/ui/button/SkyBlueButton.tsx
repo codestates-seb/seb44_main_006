@@ -3,7 +3,7 @@ import Button from './Button';
 import cssToken from '../../../styles/cssToken';
 import { IArgButtonStyle } from '../../../types/type';
 
-export const SkyBlueButton = ({
+const SkyBlueButton = ({
   children,
   width,
   height,
@@ -30,3 +30,5 @@ export const SkyBlueButton = ({
     </Button>
   );
 };
+
+export default SkyBlueButton;

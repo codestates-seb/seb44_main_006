@@ -1,4 +1,4 @@
-export const DarkIcon = () => {
+const DarkIcon = () => {
   return (
     <svg
       width="22"
@@ -16,3 +16,4 @@ export const DarkIcon = () => {
     </svg>
   );
 };
+export default DarkIcon;

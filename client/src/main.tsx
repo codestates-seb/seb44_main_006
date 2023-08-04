@@ -8,7 +8,6 @@ import App from './App';
 import GlobalStyle from './GlobalStyle';
 import store from './store';
 import Header from './components/common/Header';
-import MoNav from './components/common/MoNav';
 import Loading from './components/ui/loading/Loading';
 import Footer from './components/common/Footer';
 
@@ -25,10 +24,10 @@ const ScheduleRegister = lazy(
   () => import('./pages/schedule/ScheduleRegister')
 );
 const RegisterDetail = lazy(() => import('./pages/schedule/ScheduleDetail'));
-
 const DetailPage = lazy(() => import('./pages/community/DetailPage'));
 const MyPage = lazy(() => import('./pages/mypage/MyPage'));
 const UserSetting = lazy(() => import('./pages/userSetting/UserSetting'));
+const MoNav = lazy(() => import('./components/common/MoNav'));
 
 const queryClient = new QueryClient();
 

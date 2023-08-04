@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 
-import { WarningIcon } from '../../../assets/index';
 import cssToken from '../../../styles/cssToken';
 import { FlexDiv } from '../../../styles/styles';
 import Text from '../../ui/text/Text';
+import WarningIcon from '../../../assets/icons/WarningIcon';
 
 const WarningDiv = styled(FlexDiv)`
   background-color: ${cssToken.COLOR['red-100']};

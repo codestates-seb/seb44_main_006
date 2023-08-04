@@ -6,8 +6,8 @@ import { ChooseTag } from './DescriptionZip';
 
 import { GapDiv, TagDiv } from '../../../styles/styles';
 import InputContainer from '../../ui/input/InputContainer';
-import { TagButton } from '../../ui/button/index';
 import cssToken from '../../../styles/cssToken';
+import TagButton from '../../ui/button/TagButton';
 
 const TagGapDiv = styled(GapDiv)`
   row-gap: ${cssToken.SPACING['gap-10']};

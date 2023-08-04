@@ -2,18 +2,16 @@ import { styled } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 
 import cssToken from '../../styles/cssToken';
-import {
-  CalendarPageIcon,
-  CommunityPageIcon,
-  MainPageIcon,
-  MyPageIcon,
-} from '../../assets/index';
 import UserInfoMy from '../ui/UserInfoPfp';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 import useUserInfo from '../../querys/useUserInfo';
 import notUserImag from '../../assets/notUserImg.svg';
 import getLoginStatus from '../../utils/getLoginStatus';
+import CalendarPageIcon from '../../assets/icons/CalendarPageIcon';
+import CommunityPageIcon from '../../assets/icons/CommunityPageIcon';
+import MainPageIcon from '../../assets/icons/MainPageIcon';
+import MyPageIcon from '../../assets/icons/MyPageIcon';
 
 type HeaderStyle = {
   ispath?: string;

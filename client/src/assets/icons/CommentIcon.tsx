@@ -1,4 +1,4 @@
-export const CommentIcon = () => {
+const CommentIcon = () => {
   return (
     <svg
       width="20"
@@ -14,3 +14,4 @@ export const CommentIcon = () => {
     </svg>
   );
 };
+export default CommentIcon;

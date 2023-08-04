@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 
 import EventButton from './EventButton';
 
-import { Pen } from '../../../assets/index';
+import Pen from '../../../assets/icons/Pen';
 
-export const EditorButtonComponent = ({ courseId }: { courseId?: string }) => {
+const EditorButtonComponent = ({ courseId }: { courseId?: string }) => {
   const navigate = useNavigate();
   const gotoEditor = () => {
     if (courseId) {
@@ -29,3 +29,5 @@ export const EditorButtonComponent = ({ courseId }: { courseId?: string }) => {
     </EventButton>
   );
 };
+
+export default EditorButtonComponent;

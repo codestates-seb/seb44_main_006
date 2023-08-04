@@ -6,21 +6,20 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
 import cssToken from '../../styles/cssToken';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
-import {
-  SkyBlueEventButton,
-  CloseButton,
-} from '../../components/ui/button/index';
+import SkyBlueEventButton from '../../components/ui/button/SkyBlueEventButton';
+import CloseButton from '../../components/ui/button/CloseButton';
 import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
 import { DeleteAccount } from '../../apis/api';
 import Modal from '../../components/ui/modal/Modal';
 import ModalChildren from '../../components/community/post/ModalChildren';
 import useMovePage from '../../hooks/useMovePage';
 import useToggleModal from '../../hooks/useToggleModal';
-import { LightIcon, DarkIcon } from '../../assets/index';
 // import { setThemeModeActions } from '../../store/thememode-slice';
 import showToast from '../../utils/showToast';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useUserInfo from '../../querys/useUserInfo';
+import LightIcon from '../../assets/icons/LightIcon';
+import DarkIcon from '../../assets/icons/DarkIcon';
 
 const UserSettingContainer = styled.article`
   display: flex;

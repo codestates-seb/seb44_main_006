@@ -10,10 +10,8 @@ import cssToken from '../../styles/cssToken';
 import Modal from '../ui/modal/Modal';
 import Title from '../ui/text/Title';
 import SubTitle from '../ui/text/SubTitle';
-import { Thumbnail } from '../../assets/index';
 import InputContainer from '../ui/input/InputContainer';
 import TextArea from '../ui/input/TextArea';
-import { GrayButton, SkyBlueButton } from '../ui/button/index';
 import 'react-datepicker/dist/react-datepicker.css';
 import { overlayActions } from '../../store/overlay-slice';
 import { RootState } from '../../store';
@@ -21,6 +19,9 @@ import { scheduleListActions } from '../../store/scheduleList-slice';
 import useScheduleMutation from '../../querys/useScheduleMutaion';
 import dateToString from '../../utils/dateToString';
 import { placeListActions } from '../../store/placeList-slice';
+import GrayButton from '../ui/button/GrayButton';
+import SkyBlueButton from '../ui/button/SkyBlueButton';
+import { Thumbnail } from '../../assets/Thumbnail';
 
 interface UrlProp {
   url: string;

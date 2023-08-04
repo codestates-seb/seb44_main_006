@@ -3,7 +3,7 @@ import EventButton from './EventButton';
 import cssToken from '../../../styles/cssToken';
 import { IEventButtonStyle } from '../../../types/type';
 
-export const GrayEventButton = ({
+const GrayEventButton = ({
   children,
   width,
   height,
@@ -31,3 +31,5 @@ export const GrayEventButton = ({
     </EventButton>
   );
 };
+
+export default GrayEventButton;

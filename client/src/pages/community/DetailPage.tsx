@@ -12,7 +12,6 @@ import cssToken from '../../styles/cssToken';
 import { FlexDiv, OutsideWrap } from '../../styles/styles';
 import MapContainer from '../../components/community/MapContainer';
 import TextArea from '../../components/ui/input/TextArea';
-import { SkyBlueButton } from '../../components/ui/button/index';
 import PageMoveButton from '../../components/community/detail/PageMoveButton';
 import CommentContainer from '../../components/community/detail/CommentContainer';
 import ActionButtonContainer from '../../components/community/detail/ActionButtonContainer';
@@ -27,6 +26,7 @@ import isEmpty from '../../utils/isEmpty';
 import notClient from '../../assets/notUserImg.svg';
 import LocationInfoWrapper from '../../components/community/detail/LocationInfoWrapper';
 import SkeletonDetail from '../../components/community/skeleton/SkeletonDetail';
+import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 
 const DetailOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {

@@ -1,6 +1,6 @@
-import { IconStyle } from '../types/type';
+import { IconStyle } from '../../types/type';
 
-export const WarningIcon = ({ style }: { style: IconStyle }) => {
+const WarningIcon = ({ style }: { style: IconStyle }) => {
   return (
     <svg
       width={style.iconWidth}
@@ -17,3 +17,4 @@ export const WarningIcon = ({ style }: { style: IconStyle }) => {
     </svg>
   );
 };
+export default WarningIcon;
