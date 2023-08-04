@@ -2,14 +2,12 @@ import { styled } from 'styled-components';
 
 import { FlexDiv } from '../../../styles/styles';
 import cssToken from '../../../styles/cssToken';
-import {
-  StarButton,
-  LikeButton,
-  ShareKakaoButton,
-  CopyButton,
-} from '../../ui/button/index';
-import DeleteButton from '../DeleteButton';
 import useUserInfo from '../../../querys/useUserInfo';
+import StarButton from '../../ui/button/StarButton';
+import LikeButton from '../../ui/button/LikeButton';
+import ShareKakaoButton from '../../ui/button/ShareKakaoButton';
+import DeleteButton from '../DeleteButton';
+import CopyButton from '../../ui/button/CopyButton';
 
 const BtnDiv = styled(FlexDiv)`
   margin-top: -2.625rem;

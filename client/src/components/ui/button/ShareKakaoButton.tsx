@@ -4,7 +4,7 @@ import shareKakao from '../../../utils/shareKakao';
 import { KakaoIcon } from '../../../assets/index';
 import { ShareBtn } from '../../../styles/styles';
 
-export const ShareKakaoButton = ({
+const ShareKakaoButton = ({
   endpoint,
   title,
   description,
@@ -29,3 +29,5 @@ export const ShareKakaoButton = ({
     </ShareBtn>
   );
 };
+
+export default ShareKakaoButton;

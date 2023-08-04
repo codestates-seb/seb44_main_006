@@ -2,13 +2,13 @@ import { styled } from 'styled-components';
 import { useState } from 'react';
 
 import cssToken from '../../styles/cssToken';
-import { WhiteButton } from '../ui/button/index';
 import useMovePage from '../../hooks/useMovePage';
 import useLoginToggleModal from '../../hooks/useLoginToggleModal';
 import useLogioutoggleModal from '../../hooks/useLogoutToggleModal';
 import UserInfoMy from '../ui/UserInfoPfp';
 import useUserInfo from '../../querys/useUserInfo';
 import notUserImag from '../../assets/notUserImg.svg';
+import WhiteButton from '../ui/button/WhiteButton';
 
 type NavT = {
   ispath?: string;

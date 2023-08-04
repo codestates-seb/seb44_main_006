@@ -4,7 +4,7 @@ import { Copy } from '../../../assets/index';
 import { ShareBtn } from '../../../styles/styles';
 import showToast from '../../../utils/showToast';
 
-export const CopyButton = ({ endpoint }: { endpoint: string }) => {
+const CopyButton = ({ endpoint }: { endpoint: string }) => {
   const ClickCopy = debounce(() => {
     navigator.clipboard
       .writeText(`https://harumate.netlify.app/${endpoint}`)
@@ -26,3 +26,5 @@ export const CopyButton = ({ endpoint }: { endpoint: string }) => {
     </ShareBtn>
   );
 };
+
+export default CopyButton;

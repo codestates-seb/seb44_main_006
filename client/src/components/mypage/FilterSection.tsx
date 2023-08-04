@@ -10,16 +10,14 @@ import { Props } from '../../types/type';
 import { MypCourseSummaryT, MyBookMarkSummaryT } from '../../types/apitype';
 import manufactureDate from '../../utils/manufactureDate';
 import NoResults from '../community/NoResults';
-import {
-  ShareKakaoButton,
-  CopyButton,
-  EditorButtonComponent,
-} from '../ui/button/index';
 import Text from '../ui/text/Text';
 import useUserInfo from '../../querys/useUserInfo';
 import DeleteButton from '../community/DeleteButton';
 import formatData from '../../utils/sliceData';
 import thousandTok from '../../utils/thousandTok';
+import ShareKakaoButton from '../ui/button/ShareKakaoButton';
+import CopyButton from '../ui/button/CopyButton';
+import EditorButtonComponent from '../ui/button/EditorButton';
 
 const FilterWrapper = styled.div`
   width: 100%;

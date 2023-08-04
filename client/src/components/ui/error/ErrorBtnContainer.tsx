@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import { SkyBlueButton, GrayButton } from '../button/index';
 import cssToken from '../../../styles/cssToken';
 import { FlexDiv } from '../../../styles/styles';
+import SkyBlueButton from '../button/SkyBlueButton';
+import GrayButton from '../button/GrayButton';
 
 const BtnDiv = styled(FlexDiv)`
   gap: ${cssToken.SPACING['gap-16']};

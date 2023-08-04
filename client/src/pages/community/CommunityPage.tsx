@@ -7,13 +7,13 @@ import SearchContainer from '../../components/ui/input/SearchContainer';
 import { FlexDiv } from '../../styles/styles';
 import FilterSection from '../../components/community/FilterSection';
 import { Pen } from '../../assets/index';
-import { CircleButton } from '../../components/ui/button/index';
 import useMovePage from '../../hooks/useMovePage';
 import getLoginStatus from '../../utils/getLoginStatus';
 import { communityBasicActions } from '../../store/communitybasic-slice';
 import scrollToTop from '../../utils/scrollToTop';
 import head from '../../assets/head.webp';
 import Text from '../../components/ui/text/Text';
+import CircleButton from '../../components/ui/button/CircleButton';
 
 const Wrapper = styled(FlexDiv)`
   width: 100%;

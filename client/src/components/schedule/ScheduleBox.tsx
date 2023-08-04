@@ -9,9 +9,9 @@ import CategorySearch from './CategorySearch';
 import cssToken from '../../styles/cssToken';
 import SubTitle from '../ui/text/SubTitle';
 import Text from '../ui/text/Text';
-import { GrayButton } from '../ui/button/index';
 import { placeListActions } from '../../store/placeList-slice';
 import useCourseListScroll from '../../hooks/useCourseListScroll';
+import GrayButton from '../ui/button/GrayButton';
 
 const ScheduleContainer = styled.section`
   left: 0;

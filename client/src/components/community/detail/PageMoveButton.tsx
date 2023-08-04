@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 
 import cssToken from '../../../styles/cssToken';
-import { GrayButton } from '../../ui/button/index';
 import useMovePage from '../../../hooks/useMovePage';
 import { FlexDiv } from '../../../styles/styles';
+import GrayButton from '../../ui/button/GrayButton';
 
 const MoveBtnDiv = styled(FlexDiv)`
   justify-content: center;

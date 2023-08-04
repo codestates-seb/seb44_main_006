@@ -16,7 +16,7 @@ import { GetMyList } from '../../apis/api';
 import { MemberBookmaredT, MemberCourseT } from '../../types/apitype';
 import Title from '../../components/ui/text/Title';
 import Text from '../../components/ui/text/Text';
-import { SkyBlueButton } from '../../components/ui/button/index';
+import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
 import scrollToTop from '../../utils/scrollToTop';
 import SkeletonCardContainer from '../../components/community/skeleton/SkeletonCardContainer';
 import useValidEnter from '../../hooks/useValidEnter';

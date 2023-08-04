@@ -3,7 +3,7 @@ import EventButton from './EventButton';
 import cssToken from '../../../styles/cssToken';
 import { IEventButtonStyle } from '../../../types/type';
 
-export const SkyBlueEventButton = ({
+const SkyBlueEventButton = ({
   children,
   width,
   height,
@@ -30,3 +30,5 @@ export const SkyBlueEventButton = ({
     </EventButton>
   );
 };
+
+export default SkyBlueEventButton;
