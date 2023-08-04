@@ -10,11 +10,12 @@ import getLoginStatus from '../../../utils/getLoginStatus';
 import removeTag from '../../../utils/removeTag';
 import defaultThumbnail from '../../../assets/defaultThumbnail.webp';
 import thousandTok from '../../../utils/thousandTok';
-import { CommentIcon, EyeIcon } from '../../../assets';
 import TagButton from '../button/TagButton';
 import StarButton from '../button/StarButton';
 import LikeButton from '../button/LikeButton';
 import OptionButton from '../button/OptionButton';
+import CommentIcon from '../../../assets/icons/CommentIcon';
+import EyeIcon from '../../../assets/icons/EyeIcon';
 
 const ContensCardContainer = styled.section<{ selected?: boolean }>`
   display: flex;

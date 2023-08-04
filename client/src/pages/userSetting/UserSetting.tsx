@@ -14,11 +14,12 @@ import Modal from '../../components/ui/modal/Modal';
 import ModalChildren from '../../components/community/post/ModalChildren';
 import useMovePage from '../../hooks/useMovePage';
 import useToggleModal from '../../hooks/useToggleModal';
-import { LightIcon, DarkIcon } from '../../assets/index';
 // import { setThemeModeActions } from '../../store/thememode-slice';
 import showToast from '../../utils/showToast';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useUserInfo from '../../querys/useUserInfo';
+import LightIcon from '../../assets/icons/LightIcon';
+import DarkIcon from '../../assets/icons/DarkIcon';
 
 const UserSettingContainer = styled.article`
   display: flex;

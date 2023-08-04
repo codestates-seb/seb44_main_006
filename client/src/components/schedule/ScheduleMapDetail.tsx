@@ -16,7 +16,6 @@ import { IScheduleListItem } from '../../types/type';
 import makePolyline from '../../utils/makePolyline';
 import { markerActions } from '../../store/marker-slice';
 import useMovePage from '../../hooks/useMovePage';
-import { CalenderIcon } from '../../assets/index';
 import formatData from '../../utils/sliceData';
 import BottomSheet from '../ui/bottomsheet/BottomSheet';
 import usePanMap from '../../hooks/usePanMap';
@@ -25,6 +24,7 @@ import getLoginStatus from '../../utils/getLoginStatus';
 import useLocationEndpoint from '../../hooks/useLocationEndpoint';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
+import CalenderIcon from '../../assets/icons/CalendarIcon';
 
 const ScheduleDiv = styled(FlexDiv)`
   left: 0;

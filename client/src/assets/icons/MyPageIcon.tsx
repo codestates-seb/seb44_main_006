@@ -1,4 +1,4 @@
-export const MyPageIcon = () => {
+const MyPageIcon = () => {
   return (
     <svg
       width="28"
@@ -19,3 +19,4 @@ export const MyPageIcon = () => {
     </svg>
   );
 };
+export default MyPageIcon;

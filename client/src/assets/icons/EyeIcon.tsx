@@ -1,4 +1,4 @@
-export const EyeIcon = () => {
+const EyeIcon = () => {
   return (
     <svg
       width="27"
@@ -14,3 +14,4 @@ export const EyeIcon = () => {
     </svg>
   );
 };
+export default EyeIcon;

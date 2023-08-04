@@ -1,6 +1,6 @@
-import { IconStyle } from '../types/type';
+import { IconStyle } from '../../types/type';
 
-export const CloseIcon = ({ style }: { style: IconStyle }) => {
+const CloseIcon = ({ style }: { style: IconStyle }) => {
   return (
     <svg
       width={style.iconWidth}
@@ -16,3 +16,4 @@ export const CloseIcon = ({ style }: { style: IconStyle }) => {
     </svg>
   );
 };
+export default CloseIcon;

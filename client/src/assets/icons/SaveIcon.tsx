@@ -1,6 +1,6 @@
-import { IconStyle } from '../types/type';
+import { IconStyle } from '../../types/type';
 
-export const SaveIcon = ({ style }: { style: IconStyle }) => {
+const SaveIcon = ({ style }: { style: IconStyle }) => {
   return (
     <svg
       width={style.iconWidth}
@@ -16,3 +16,4 @@ export const SaveIcon = ({ style }: { style: IconStyle }) => {
     </svg>
   );
 };
+export default SaveIcon;

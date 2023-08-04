@@ -1,8 +1,8 @@
 import { debounce } from 'lodash';
 
-import { Copy } from '../../../assets/index';
 import { ShareBtn } from '../../../styles/styles';
 import showToast from '../../../utils/showToast';
+import Copy from '../../../assets/icons/Copy';
 
 const CopyButton = ({ endpoint }: { endpoint: string }) => {
   const ClickCopy = debounce(() => {
