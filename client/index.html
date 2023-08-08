@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="image" property="og:image" content="og_img.webp">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://harumate.netlify.app">
+  <meta property="og:title" content="HARUMATE: 하루메이트" />
+  <meta property="og:image" content="og_img.webp">
+  <meta property="og:description" content="당일 코스를 만들고 공유하는 나의 메이트" />
+  <meta property="og:site_name" content="HARUMATE">
+  <meta property="og:locale" content="en_US">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  <script type="text/javascript"
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_API_KEY%&libraries=services"></script>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js"
+    integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC"
+    crossorigin="anonymous"></script>
+  <title>Haru Mate</title>
+</head>
+
+<body>
+  <div id="overlay-root"></div>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>
