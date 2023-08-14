@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 import { FlexDiv } from '../../../styles/styles';
-import Comment from '../Comment';
+import Comment from '../comment/Comment';
 import manufactureDate from '../../../utils/manufactureDate';
 import { CommentT } from '../../../types/apitype';
 
