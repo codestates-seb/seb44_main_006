@@ -86,6 +86,12 @@ public class AuthService {
     public TokenDto reissueV2(String refreshToken, String userEmail) throws JsonProcessingException {
         log.info("refreshToken = {}", refreshToken);
 
+        // Redis에서 전달받은 refreshToken으로 조회한 결과가 없다면 예외 발생
+        RefreshToken findRefreshToken = refreshTokenRedisRepository.findByRefreshToken(refreshToken);
+        if (findRefreshToken == null) {
+            throw new BusinessLogicException(ExceptionCode.TOKEN_EXPIRED);
+        }
+
         String newRefreshToken = refreshToken; // 재발급이 필요하지 않으면 기존 RTK 가 전달되도록 초기값 설정
 
         // RTK 남은 만료시간 계산
@@ -105,8 +111,17 @@ public class AuthService {
         }
 
         // AccessToken 재발급 후 ATK, RTK TokenDto로 리턴
-        List<String> authorities = refreshTokenRedisRepository.findByRefreshToken(refreshToken).getAuthorities();
+        List<String> authorities = findRefreshToken.getAuthorities();
         String newAccessToken = jwtTokenizer.generateAccessToken(userEmail, authorities);
+
+        // 기존 RefreshToken 삭제 & newRefreshToken Redis에 새로 저장
+        refreshTokenRedisRepository.delete(findRefreshToken);
+        refreshTokenRedisRepository.save(RefreshToken.builder()
+                .id(userEmail)
+                .username(userEmail)
+                .authorities(authorities)
+                .refreshToken(newAccessToken)
+                .build());
 
         return new TokenDto(newAccessToken, newRefreshToken);
     }
