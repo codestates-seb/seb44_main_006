@@ -15,7 +15,7 @@ const MoveBtnDiv = styled(FlexDiv)`
     }
   }
 `;
-const PageMoveButton = () => {
+const MoveToCommunityPageButton = () => {
   const goToCommunity = useMovePage('/community');
 
   return (
@@ -32,4 +32,4 @@ const PageMoveButton = () => {
   );
 };
 
-export default PageMoveButton;
+export default MoveToCommunityPageButton;

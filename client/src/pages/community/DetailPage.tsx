@@ -6,13 +6,13 @@ import { AxiosError } from 'axios';
 
 import { mgpd } from './commonstyle';
 
-import InfoContainer from '../../components/community/detail/InfoContainer';
+import InfoContainer from '../../components/community/detail/DetailInfoContainer';
 import UserInfoMy from '../../components/ui/UserInfoPfp';
 import cssToken from '../../styles/cssToken';
 import { FlexDiv, OutsideWrap } from '../../styles/styles';
 import MapContainer from '../../components/community/MapContainer';
 import TextArea from '../../components/ui/input/TextArea';
-import PageMoveButton from '../../components/community/detail/PageMoveButton';
+import PageMoveButton from '../../components/community/detail/MoveToCommunityPageButton';
 import CommentContainer from '../../components/community/detail/CommentContainer';
 import ActionButtonContainer from '../../components/community/detail/ActionButtonContainer';
 import TagContainer from '../../components/community/detail/TagContainer';
@@ -20,7 +20,7 @@ import { GetCommunityPost, PostComment } from '../../apis/api';
 import manufactureDate from '../../utils/manufactureDate';
 import getLoginStatus from '../../utils/getLoginStatus';
 import { CommunityDetailT } from '../../types/apitype';
-import Content from '../../components/community/detail/Content';
+import CommunityContent from '../../components/community/detail/CommunityContent';
 import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
 import notClient from '../../assets/notUserImg.svg';
@@ -252,7 +252,7 @@ const DetailPage = () => {
       <ContentDiv>
         {detailData && contentData && (
           <>
-            <Content postContent={contentData.postContent} />
+            <CommunityContent postContent={contentData.postContent} />
             <TagContainer tagArr={contentData.tags} />
           </>
         )}

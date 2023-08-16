@@ -30,19 +30,24 @@ const TagContainer = ({
   const [placeholder, setPlaceholder] = useState<string>(
     '태그 작성 후 엔터를 해주세요. 추가된 태그 클릭시 삭제 됩니다.'
   );
+
+  const isTagNameSatisfiedCondition = () => {
+    if (!inputRef.current) return false;
+    const newTag = inputRef.current.value ?? '';
+    if (newTag.trim().length <= 0) return false;
+    return !tags.find((tag: string) => tag === newTag);
+  };
+
   const makeTag = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      if (!inputRef.current) return;
-      const { current } = inputRef;
-      if (current && current?.value.trim().length > 0) {
-        const newTag = current.value;
-        if (!tags.find((tas) => tas === newTag)) {
-          setTags((prev) => [...prev, newTag]);
-        }
-        current.value = '';
+      if (isTagNameSatisfiedCondition()) {
+        const newTag = inputRef.current!.value;
+        setTags((prev) => [...prev, newTag]);
       }
+      inputRef.current!.value = '';
     }
   };
+
   const removeTag = (selectTag: string | undefined) => {
     const filterTag = tags.filter((tag) => tag !== selectTag);
     setTags(filterTag);

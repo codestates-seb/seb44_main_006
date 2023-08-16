@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ForwardedRef } from 'react';
 
 import { Button } from './styles';
 

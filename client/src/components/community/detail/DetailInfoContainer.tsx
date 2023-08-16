@@ -36,7 +36,7 @@ const DateViewCountDiv = styled(FlexDiv)`
   }
 `;
 
-const InfoContainer = ({
+const DetailInfoContainer = ({
   writer,
   date,
   viewCount,
@@ -63,7 +63,6 @@ const InfoContainer = ({
         >
           {date}
         </Text>
-
         <Text
           styles={{
             weight: cssToken.FONT_WEIGHT.light,
@@ -76,4 +75,4 @@ const InfoContainer = ({
   );
 };
 
-export default memo(InfoContainer);
+export default memo(DetailInfoContainer);

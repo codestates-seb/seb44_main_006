@@ -63,7 +63,7 @@ const UserDiv = styled.div`
     }
   }
 `;
-
+// Todo isEditing 상태에 따라 아예 나누는게 어떤지?
 const Comment = ({
   answererImageUrl: commenterImageUrl,
   answererNickname: commenterNickName,

@@ -12,12 +12,10 @@ const Div = styled.div`
     list-style-type: decimal;
     padding-inline-start: ${cssToken.SPACING['gap-20']};
   }
-
   li {
     display: list-item;
     text-align: -webkit-match-parent;
   }
-
   &.content {
     display: flex;
     flex-direction: column;
@@ -36,7 +34,7 @@ const Div = styled.div`
   }
 `;
 
-const Content = ({ postContent }: { postContent: string }) => {
+const CommunityContent = ({ postContent }: { postContent: string }) => {
   return (
     <Div
       className="content"
@@ -45,4 +43,4 @@ const Content = ({ postContent }: { postContent: string }) => {
   );
 };
 
-export default memo(Content);
+export default memo(CommunityContent);
