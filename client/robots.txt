@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /
+Allow: /$
+Allow: /favicon.ico
+Allow: /community
+Allow: /register
+Allow: /*.ts$
+Allow: /*.tsx$
