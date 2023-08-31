@@ -19,9 +19,11 @@ const PatchCommentButton = ({
   const patchMutation = useMutation(PatchComment, {
     onSuccess: () => queryClient.invalidateQueries(['communityDetail']),
   });
+
   const isSatisfiedPatchCommentConditions = () => {
     return newComment !== previousComment && newComment.trim().length > 0;
   };
+
   const handlePatchComment = () => {
     if (isSatisfiedPatchCommentConditions()) {
       if (commentId)
@@ -32,6 +34,7 @@ const PatchCommentButton = ({
     }
     setEditing(false);
   };
+
   return <Button onClick={handlePatchComment}>수정완료</Button>;
 };
 

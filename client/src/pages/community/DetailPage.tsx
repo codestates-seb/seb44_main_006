@@ -112,10 +112,9 @@ const CommentBtn = styled(FlexDiv)`
 
 const DetailPage = () => {
   const isLogin = getLoginStatus();
-  const navigate = useNavigate();
   const [isValidate, setValidate] = useState(true);
+
   const { postId } = useParams() as { postId: string };
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const {
     data: detailData,
     error,
@@ -128,6 +127,9 @@ const DetailPage = () => {
   });
 
   const queryClient = useQueryClient();
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const navigate = useNavigate();
+
   const mutation = useMutation(PostComment, {
     onSuccess: () => {
       if (textAreaRef.current) textAreaRef.current.value = '';
