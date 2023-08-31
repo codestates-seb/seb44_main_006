@@ -16,6 +16,7 @@ const PatchCommentButton = ({
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const queryClient = useQueryClient();
+
   const patchMutation = useMutation(PatchComment, {
     onSuccess: () => queryClient.invalidateQueries(['communityDetail']),
   });

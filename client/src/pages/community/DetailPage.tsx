@@ -113,6 +113,7 @@ const CommentBtn = styled(FlexDiv)`
 const DetailPage = () => {
   const isLogin = getLoginStatus();
   const [isValidate, setValidate] = useState(true);
+  const navigate = useNavigate();
 
   const { postId } = useParams() as { postId: string };
   const {
@@ -126,10 +127,20 @@ const DetailPage = () => {
     select: (data: { data: CommunityDetailT }) => data.data,
   });
 
+  if (error) {
+    const { response } = error as AxiosError;
+    if (response) {
+      navigate('/error', {
+        state: {
+          status: response.status,
+          errormsg: response.statusText,
+        },
+      });
+    }
+  }
+
   const queryClient = useQueryClient();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const navigate = useNavigate();
-
   const mutation = useMutation(PostComment, {
     onSuccess: () => {
       if (textAreaRef.current) textAreaRef.current.value = '';
@@ -148,10 +159,6 @@ const DetailPage = () => {
     },
   });
 
-  useEffect(() => {
-    scrollToTop();
-  }, []);
-
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (textAreaRef.current && !isEmpty(textAreaRef.current.value)) {
@@ -166,18 +173,6 @@ const DetailPage = () => {
     if (textAreaRef.current && !isEmpty(textAreaRef.current.value))
       setValidate(true);
   };
-
-  if (error) {
-    const { response } = error as AxiosError;
-    if (response) {
-      navigate('/error', {
-        state: {
-          status: response.status,
-          errormsg: response.statusText,
-        },
-      });
-    }
-  }
 
   const postInfo = useMemo(() => {
     return {
@@ -204,6 +199,10 @@ const DetailPage = () => {
       tags: detailData?.tags ?? [],
     };
   }, [detailData?.postContent, detailData?.tags]);
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   return (
     <DetailOutsideWrap>

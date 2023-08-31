@@ -80,7 +80,6 @@ const Comment = ({
     : false;
 
   const commentRef = useRef<HTMLTextAreaElement>(null);
-
   const [isEditing, setEditing] = useState<boolean>(false);
   useEffect(() => {
     if (isEditing && commentRef.current)

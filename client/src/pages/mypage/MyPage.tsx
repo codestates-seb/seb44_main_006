@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import { FlexDiv } from '../../styles/styles';
@@ -13,12 +12,11 @@ import useHandleTab from '../../hooks/useHandleTab';
 import { myInfoDataListActions } from '../../store/myInfoDataList-slice';
 import { RootState } from '../../store';
 import { MypSummaryT } from '../../types/apitype';
-import useValidEnter from '../../hooks/useValidEnter';
 import getLoginStatus from '../../utils/getLoginStatus';
 import useMovePage from '../../hooks/useMovePage';
 import CircleButton from '../../components/ui/button/CircleButton';
-import scrollToTop from '../../utils/scrollToTop';
 import Pen from '../../assets/icons/Pen';
+import useEnterPage from '../../hooks/useEnterPage';
 
 const Wrapper = styled(FlexDiv)`
   margin-top: 77px;
@@ -50,7 +48,6 @@ const FixedDiv = styled.div`
 `;
 
 const MyPage = () => {
-  const checkValidEnter = useValidEnter();
   const dispatch = useDispatch();
   const goToSelect = useMovePage('/community/select', 'mypage');
   const { selectTab, setTab } = useHandleTab();
@@ -70,17 +67,14 @@ const MyPage = () => {
     },
   });
 
-  useEffect(() => {
-    checkValidEnter();
-    scrollToTop();
-  }, [checkValidEnter]);
-
   const memberCourseList = useSelector(
     (state: RootState) => state.myInfoData.memberCourseList
   );
   const memberBookmarkedList = useSelector(
     (state: RootState) => state.myInfoData.memberBookmarkedList
   );
+
+  useEnterPage();
 
   return (
     <Wrapper>
