@@ -22,9 +22,10 @@ import { placeListActions } from '../../store/placeList-slice';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import { Thumbnail } from '../../assets/Thumbnail';
+import { PostReadT } from '../../types/apitype';
 
 interface UrlProp {
-  url: string;
+  url: string | undefined;
 }
 interface WrapperProp {
   display: string;
@@ -204,9 +205,11 @@ const DateInputBox = styled(DatePicker)`
 const ScheduleCreateModal = ({
   ismodify,
   courseId,
+  courseData,
 }: {
   ismodify: boolean;
   courseId: string;
+  courseData: PostReadT['courseData'] | undefined;
 }) => {
   const [isThumbChoice, setIsThumbChouce] = useState(false);
   const [choiceDate, setChoiceDate] = useState(new Date());
@@ -233,7 +236,6 @@ const ScheduleCreateModal = ({
       setTitleIsValidate(true);
       setDescIsValidate(true);
 
-      // TODO 여기에 isModify로 조건부 호출
       if (ismodify) {
         scheduleMutation.mutate({
           courseData: {
@@ -308,8 +310,8 @@ const ScheduleCreateModal = ({
 
           <WriteContainer>
             <WriteLeftBox>
-              <ThumbnailBox url={bgUrl}>
-                {!bgUrl && (
+              <ThumbnailBox url={bgUrl || courseData?.courseThumbnail}>
+                {!(bgUrl || courseData?.courseThumbnail) && (
                   <Thumbnail style={{ iconWidth: 125, iconHeight: 103 }} />
                 )}
                 <SelfEnd bgUrl={!!bgUrl}>
@@ -336,6 +338,7 @@ const ScheduleCreateModal = ({
             <WriteRightBox onChange={handleChange}>
               <InputContainer
                 ref={titleRef}
+                defaultValue={courseData?.courseTitle}
                 description="일정의 제목을 작성해 주세요."
                 minLength={1}
                 maxLength={30}
@@ -348,6 +351,7 @@ const ScheduleCreateModal = ({
               />
               <TextArea
                 ref={descriptionRef}
+                defaultValue={courseData?.courseContent}
                 description="일정의 상세 설명을 작성해 주세요."
                 minLength={1}
                 maxLength={40}

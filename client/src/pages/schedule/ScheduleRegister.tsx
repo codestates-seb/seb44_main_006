@@ -97,12 +97,13 @@ const ScheduleRegister = () => {
     const response = await GetCourse({
       courseId,
     });
-    const { destinationList } = response.data as PostReadT;
+    const { courseData, destinationList } = response.data as PostReadT;
     dispatch(scheduleListActions.updateList(destinationList));
-    return destinationList;
+
+    return { courseData, destinationList };
   };
 
-  const { data: modifyDestinationList } = useQuery({
+  const { data: modifyData } = useQuery({
     queryKey: ['modify'],
     queryFn: updateDestinationList,
     refetchOnWindowFocus: false,
@@ -123,13 +124,13 @@ const ScheduleRegister = () => {
   }, [map, newCenter]);
 
   useEffect(() => {
-    if (isModify && modifyDestinationList) {
+    if (isModify && modifyData?.destinationList) {
       panTo({
         map,
-        newCenter: { lat: modifyDestinationList[0].y, lng: modifyDestinationList[0].x },
+        newCenter: { lat: modifyData?.destinationList[0].y, lng: modifyData?.destinationList[0].x },
       });
     }
-  }, [isModify, map, modifyDestinationList]);
+  }, [isModify, map, modifyData?.destinationList]);
 
   useEffect(() => {
     if (isEmpty) dispatch(placeListActions.resetList());
@@ -139,7 +140,7 @@ const ScheduleRegister = () => {
   return (
     <Wrapper>
       {isSave && (
-        <ScheduleCreateModal ismodify={isModify} courseId={courseId} />
+        <ScheduleCreateModal ismodify={isModify} courseId={courseId} courseData={modifyData?.courseData} />
       )}
       {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 
