@@ -25,6 +25,7 @@ const TextArea = forwardRef(
   (
     {
       description,
+      defaultValue,
       minLength,
       maxLength,
       styles,
@@ -33,6 +34,7 @@ const TextArea = forwardRef(
       onChange,
     }: {
       description: string;
+      defaultValue?: string;
       minLength?: number;
       maxLength?: number;
       styles?: TextareaT;
@@ -47,6 +49,7 @@ const TextArea = forwardRef(
         <Content
           onChange={onChange}
           ref={ref}
+          defaultValue={defaultValue}
           {...styles}
           placeholder={description}
           minLength={minLength || 1}
@@ -54,7 +57,7 @@ const TextArea = forwardRef(
           wrap="vertical"
           disabled={disabled}
         />
-        {!isValidate && (
+        {(!isValidate && defaultValue?.length! <= 1) && (
           <Text
             styles={{
               color: cssToken.COLOR['red-900'],
