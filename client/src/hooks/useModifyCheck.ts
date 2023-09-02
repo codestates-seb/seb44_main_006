@@ -7,13 +7,13 @@ const useModifyCheck = () => {
     () => new URLSearchParams(location.search),
     [location.search]
   );
-  const [isModify, setIsModify] = useState('');
+  const [isModify, setIsModify] = useState(false);
   const [courseId, setIsCourseId] = useState('');
 
   useEffect(() => {
     const modify = params.get('modify');
     const id = params.get('courseId');
-    if (modify) setIsModify(modify);
+    if (modify) setIsModify(Boolean(modify));
     if (id) setIsCourseId(id);
   }, [params]);
 
