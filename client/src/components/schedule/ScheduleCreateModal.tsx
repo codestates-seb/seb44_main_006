@@ -205,7 +205,7 @@ const ScheduleCreateModal = ({
   ismodify,
   courseId,
 }: {
-  ismodify: string;
+  ismodify: boolean;
   courseId: string;
 }) => {
   const [isThumbChoice, setIsThumbChouce] = useState(false);
@@ -234,7 +234,7 @@ const ScheduleCreateModal = ({
       setDescIsValidate(true);
 
       // TODO 여기에 isModify로 조건부 호출
-      if (ismodify === 'true') {
+      if (ismodify) {
         scheduleMutation.mutate({
           courseData: {
             courseDday: `${dateToString(choiceDate)}`,
@@ -299,10 +299,10 @@ const ScheduleCreateModal = ({
         <Wrapper display={isThumbChoice ? 'none' : 'flex'}>
           <TitleContainer>
             <Title styles={{ size: `${cssToken.TEXT_SIZE['text-32']}` }}>
-              일정 저장하기
+              {ismodify ? '일정 수정하기' : '일정 저장하기'}
             </Title>
             <SubTitle styles={{ weight: 300 }}>
-              일정 저장 시 주요 내용을 작성해 주세요!
+              {`일정 ${ismodify ? '수정' : '저장'} 시 주요 내용을 작성해 주세요!`}
             </SubTitle>
           </TitleContainer>
 
@@ -375,7 +375,7 @@ const ScheduleCreateModal = ({
               brradius={cssToken.BORDER['rounded-md']}
               onClick={handleSave}
             >
-              저장하기
+              {ismodify ? '수정하기' : '저장하기'}
             </SkyBlueButton>
           </ButtonWrapper>
         </Wrapper>

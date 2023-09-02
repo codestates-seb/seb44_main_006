@@ -93,7 +93,7 @@ const ScheduleRegister = () => {
     setIsCancel(true);
   };
 
-  const dispatchDestinationList = async () => {
+  const updateDestinationList = async () => {
     const response = await GetCourse({
       courseId,
     });
@@ -102,11 +102,11 @@ const ScheduleRegister = () => {
     return destinationList;
   };
 
-  const { data: destinationList } = useQuery({
+  const { data: modifyDestinationList } = useQuery({
     queryKey: ['modify'],
-    queryFn: dispatchDestinationList,
+    queryFn: updateDestinationList,
     refetchOnWindowFocus: false,
-    enabled: isModify === 'true',
+    enabled: isModify,
   });
 
   useEffect(() => {
@@ -123,13 +123,13 @@ const ScheduleRegister = () => {
   }, [map, newCenter]);
 
   useEffect(() => {
-    if (isModify === 'true' && destinationList) {
+    if (isModify && modifyDestinationList) {
       panTo({
         map,
-        newCenter: { lat: destinationList[0].y, lng: destinationList[0].x },
+        newCenter: { lat: modifyDestinationList[0].y, lng: modifyDestinationList[0].x },
       });
     }
-  }, [isModify, map, destinationList]);
+  }, [isModify, map, modifyDestinationList]);
 
   useEffect(() => {
     if (isEmpty) dispatch(placeListActions.resetList());
@@ -190,7 +190,7 @@ const ScheduleRegister = () => {
               dispatch(overlayActions.toggleOverlay());
           }}
         >
-          <div>{isModify === 'true' ? '수정하기' : '저장하기'}</div>
+          <div>{isModify ? '수정하기' : '저장하기'}</div>
         </FloatButton>
       </FixedDiv>
     </Wrapper>
