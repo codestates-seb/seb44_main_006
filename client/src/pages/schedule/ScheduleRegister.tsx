@@ -93,20 +93,21 @@ const ScheduleRegister = () => {
     setIsCancel(true);
   };
 
-  const dispatchDestinationList = async () => {
+  const updateDestinationList = async () => {
     const response = await GetCourse({
       courseId,
     });
-    const { destinationList } = response.data as PostReadT;
+    const { courseData, destinationList } = response.data as PostReadT;
     dispatch(scheduleListActions.updateList(destinationList));
-    return destinationList;
+
+    return { courseData, destinationList };
   };
 
-  const { data: destinationList } = useQuery({
+  const { data: modifyData } = useQuery({
     queryKey: ['modify'],
-    queryFn: dispatchDestinationList,
+    queryFn: updateDestinationList,
     refetchOnWindowFocus: false,
-    enabled: isModify === 'true',
+    enabled: isModify,
   });
 
   useEffect(() => {
@@ -123,13 +124,13 @@ const ScheduleRegister = () => {
   }, [map, newCenter]);
 
   useEffect(() => {
-    if (isModify === 'true' && destinationList) {
+    if (isModify && modifyData?.destinationList) {
       panTo({
         map,
-        newCenter: { lat: destinationList[0].y, lng: destinationList[0].x },
+        newCenter: { lat: modifyData?.destinationList[0].y, lng: modifyData?.destinationList[0].x },
       });
     }
-  }, [isModify, map, destinationList]);
+  }, [isModify, map, modifyData?.destinationList]);
 
   useEffect(() => {
     if (isEmpty) dispatch(placeListActions.resetList());
@@ -139,7 +140,7 @@ const ScheduleRegister = () => {
   return (
     <Wrapper>
       {isSave && (
-        <ScheduleCreateModal ismodify={isModify} courseId={courseId} />
+        <ScheduleCreateModal ismodify={isModify} courseId={courseId} courseData={modifyData?.courseData} />
       )}
       {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 
@@ -190,7 +191,7 @@ const ScheduleRegister = () => {
               dispatch(overlayActions.toggleOverlay());
           }}
         >
-          <div>{isModify === 'true' ? '수정하기' : '저장하기'}</div>
+          <div>{isModify ? '수정하기' : '저장하기'}</div>
         </FloatButton>
       </FixedDiv>
     </Wrapper>
