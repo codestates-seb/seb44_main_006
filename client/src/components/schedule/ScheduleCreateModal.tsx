@@ -22,9 +22,10 @@ import { placeListActions } from '../../store/placeList-slice';
 import GrayButton from '../ui/button/GrayButton';
 import SkyBlueButton from '../ui/button/SkyBlueButton';
 import { Thumbnail } from '../../assets/Thumbnail';
+import { PostReadT } from '../../types/apitype';
 
 interface UrlProp {
-  url: string;
+  url: string | undefined;
 }
 interface WrapperProp {
   display: string;
@@ -204,9 +205,11 @@ const DateInputBox = styled(DatePicker)`
 const ScheduleCreateModal = ({
   ismodify,
   courseId,
+  courseData,
 }: {
-  ismodify: string;
+  ismodify: boolean;
   courseId: string;
+  courseData: PostReadT['courseData'] | undefined;
 }) => {
   const [isThumbChoice, setIsThumbChouce] = useState(false);
   const [choiceDate, setChoiceDate] = useState(new Date());
@@ -233,8 +236,7 @@ const ScheduleCreateModal = ({
       setTitleIsValidate(true);
       setDescIsValidate(true);
 
-      // TODO 여기에 isModify로 조건부 호출
-      if (ismodify === 'true') {
+      if (ismodify) {
         scheduleMutation.mutate({
           courseData: {
             courseDday: `${dateToString(choiceDate)}`,
@@ -299,17 +301,17 @@ const ScheduleCreateModal = ({
         <Wrapper display={isThumbChoice ? 'none' : 'flex'}>
           <TitleContainer>
             <Title styles={{ size: `${cssToken.TEXT_SIZE['text-32']}` }}>
-              일정 저장하기
+              {ismodify ? '일정 수정하기' : '일정 저장하기'}
             </Title>
             <SubTitle styles={{ weight: 300 }}>
-              일정 저장 시 주요 내용을 작성해 주세요!
+              {`일정 ${ismodify ? '수정' : '저장'} 시 주요 내용을 작성해 주세요!`}
             </SubTitle>
           </TitleContainer>
 
           <WriteContainer>
             <WriteLeftBox>
-              <ThumbnailBox url={bgUrl}>
-                {!bgUrl && (
+              <ThumbnailBox url={bgUrl || courseData?.courseThumbnail}>
+                {!(bgUrl || courseData?.courseThumbnail) && (
                   <Thumbnail style={{ iconWidth: 125, iconHeight: 103 }} />
                 )}
                 <SelfEnd bgUrl={!!bgUrl}>
@@ -336,6 +338,7 @@ const ScheduleCreateModal = ({
             <WriteRightBox onChange={handleChange}>
               <InputContainer
                 ref={titleRef}
+                defaultValue={courseData?.courseTitle}
                 description="일정의 제목을 작성해 주세요."
                 minLength={1}
                 maxLength={30}
@@ -348,6 +351,7 @@ const ScheduleCreateModal = ({
               />
               <TextArea
                 ref={descriptionRef}
+                defaultValue={courseData?.courseContent}
                 description="일정의 상세 설명을 작성해 주세요."
                 minLength={1}
                 maxLength={40}
@@ -375,7 +379,7 @@ const ScheduleCreateModal = ({
               brradius={cssToken.BORDER['rounded-md']}
               onClick={handleSave}
             >
-              저장하기
+              {ismodify ? '수정하기' : '저장하기'}
             </SkyBlueButton>
           </ButtonWrapper>
         </Wrapper>

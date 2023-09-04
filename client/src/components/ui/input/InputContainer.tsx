@@ -62,7 +62,7 @@ const InputContainer = forwardRef(
           defaultValue={defaultValue}
           onChange={onChange}
         />
-        {!textType && type === 'title' && !isValidate && (
+        {!textType && type === 'title' && (!isValidate && defaultValue?.length! <= 1) && (
           <Text
             styles={{
               color: cssToken.COLOR['red-900'],
