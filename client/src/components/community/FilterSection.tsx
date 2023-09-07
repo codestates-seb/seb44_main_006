@@ -59,6 +59,7 @@ const FilterSection = () => {
     error,
     isFetchingNextPage,
   } = useInfiniteScrollQuery({
+    keyArr: ['community', tagName, selectedTab],
     limit: LIMIT,
     tagName: tagName || '',
     sort: selectedTab,
