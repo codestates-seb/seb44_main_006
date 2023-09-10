@@ -1,17 +1,17 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { GetCommunityList } from '../apis/api';
+import { InfiniteScrollT } from '../types/apitype';
 
 const useInfiniteScrollQuery = ({
   keyArr,
-  limit,
-  sort,
-  tagName,
+  queryFunc,
 }: {
   keyArr: string[];
-  limit: number;
-  sort?: string | undefined;
-  tagName?: string | undefined;
+  queryFunc: ({
+    pageParam,
+  }: {
+    pageParam?: number;
+  }) => Promise<InfiniteScrollT>;
 }) => {
   const {
     data,
@@ -20,16 +20,11 @@ const useInfiniteScrollQuery = ({
     hasNextPage,
     error,
     isFetchingNextPage,
-  } = useInfiniteQuery(
-    keyArr,
-    ({ pageParam = 1 }) =>
-      GetCommunityList({ pageParam, limit, sort, tagName }),
-    {
-      getNextPageParam: (lastPage) => {
-        return !lastPage.isLast ? lastPage.current_page + 1 : undefined;
-      },
-    }
-  );
+  } = useInfiniteQuery(keyArr, queryFunc, {
+    getNextPageParam: (lastPage) => {
+      return !lastPage.isLast ? lastPage.current_page + 1 : undefined;
+    },
+  });
   return {
     data,
     fetchNextPage,

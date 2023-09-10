@@ -23,6 +23,7 @@ import useInfiniteScrollQuery from '../../hooks/useInfiniteQuery';
 import { LIMIT } from '../../utils/constant/constant';
 import ShareKakaoButton from '../ui/button/ShareKakaoButton';
 import CopyButton from '../ui/button/CopyButton';
+import { GetCommunityList } from '../../apis/api';
 
 const FilterWrapper = styled.div`
   width: 100%;
@@ -60,9 +61,8 @@ const FilterSection = () => {
     isFetchingNextPage,
   } = useInfiniteScrollQuery({
     keyArr: ['community', tagName, selectedTab],
-    limit: LIMIT,
-    tagName: tagName || '',
-    sort: selectedTab,
+    queryFunc: ({ pageParam = 1 }) =>
+      GetCommunityList({ pageParam, limit: LIMIT, sort: selectedTab, tagName }),
   });
 
   if (error) {
