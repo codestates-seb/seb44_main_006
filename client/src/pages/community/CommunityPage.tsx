@@ -91,10 +91,9 @@ const SearchDiv = styled(FlexDiv)`
 
 const CommunityPage = () => {
   const goToSelect = useMovePage('/community/select');
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const isLogin = getLoginStatus();
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   useEffect(() => {
     scrollToTop();
     return () => {
@@ -102,6 +101,7 @@ const CommunityPage = () => {
     };
   }, [dispatch]);
 
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const SearchPost = (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
   ) => {

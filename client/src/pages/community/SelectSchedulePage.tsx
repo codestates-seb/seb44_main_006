@@ -17,11 +17,10 @@ import { MemberBookmaredT, MemberCourseT } from '../../types/apitype';
 import Title from '../../components/ui/text/Title';
 import Text from '../../components/ui/text/Text';
 import SkyBlueButton from '../../components/ui/button/SkyBlueButton';
-import scrollToTop from '../../utils/scrollToTop';
 import SkeletonCardContainer from '../../components/community/skeleton/SkeletonCardContainer';
-import useValidEnter from '../../hooks/useValidEnter';
 import thousandTok from '../../utils/thousandTok';
 import formatData from '../../utils/sliceData';
+import useEnterPage from '../../hooks/useEnterPage';
 
 const OutsideWrap = styled(FlexDiv)`
   margin-top: 77px;
@@ -83,15 +82,15 @@ const SelectCardWrapper = styled(CardWrapper)`
 `;
 
 const SelectSchedulePage = () => {
-  const prevPage = useLocation().state as string;
-  const checkValidEnter = useValidEnter();
   const [selectId, setSelectId] = useState<number | null | undefined>(null);
   const navigate = useNavigate();
+
+  const prevPage = useLocation().state as string;
   const gotoBack = useMovePage(
     prevPage === 'mypage' ? '/mypage' : '/community'
   );
-  const gotoNext = useMovePage('/community/post', selectId);
   const gotoRegister = useMovePage('/register');
+
   const {
     data: courses,
     error,
@@ -108,25 +107,6 @@ const SelectSchedulePage = () => {
     }): MemberCourseT[] => data.data.memberCourseList,
   });
 
-  useEffect(() => {
-    checkValidEnter();
-    scrollToTop();
-  }, [checkValidEnter]);
-
-  const registerCourses = courses
-    ? courses.filter((course: MemberCourseT) => course.isPosted === false)
-    : [];
-
-  const handleClickCard = (courseId: number | undefined) => {
-    if (courseId === selectId) setSelectId(null);
-    else setSelectId(courseId);
-  };
-  const goToWrite = () => {
-    if (selectId) {
-      gotoNext();
-    }
-  };
-
   if (error) {
     const { response } = error as AxiosError;
     if (response) {
@@ -138,6 +118,24 @@ const SelectSchedulePage = () => {
       });
     }
   }
+
+  const handleClickCard = (courseId: number | undefined) => {
+    if (courseId === selectId) setSelectId(null);
+    else setSelectId(courseId);
+  };
+
+  const gotoNext = useMovePage('/community/post', selectId);
+  const goToWrite = () => {
+    if (selectId) {
+      gotoNext();
+    }
+  };
+
+  const registerCourses = courses
+    ? courses.filter((course: MemberCourseT) => course.isPosted === false)
+    : [];
+
+  useEnterPage();
 
   return (
     <OutsideWrap>

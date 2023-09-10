@@ -72,13 +72,15 @@ const Comment = ({
   answererEmail: commenterEmail,
   answerId: commentId,
 }: CommentT) => {
-  const { userData } = useUserInfo();
-  const commentRef = useRef<HTMLTextAreaElement>(null);
   const [newComment, setNewComment] = useState(previousComment);
-  const [isEditing, setEditing] = useState<boolean>(false);
+
+  const { userData } = useUserInfo();
   const isSamePerson = userData
     ? userData.memberEmail === commenterEmail
     : false;
+
+  const commentRef = useRef<HTMLTextAreaElement>(null);
+  const [isEditing, setEditing] = useState<boolean>(false);
   useEffect(() => {
     if (isEditing && commentRef.current)
       commentRef.current.value = previousComment;
