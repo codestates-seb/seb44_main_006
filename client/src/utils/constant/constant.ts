@@ -63,3 +63,54 @@ export const landingData = [
     src: responsiveIMG,
   },
 ];
+
+export const FOOTER_DATA = [
+  {
+    id: 1,
+    name: 'novice-hero',
+    type: 'Front-End',
+    url: 'https://github.com/novice-hero',
+    target: '_blank',
+    rel: 'noreferrer',
+  },
+  {
+    id: 2,
+    name: 'R-jisu',
+    type: 'Front-End',
+    url: 'https://github.com/R-jisu',
+    target: '_blank',
+    rel: 'noreferrer',
+  },
+  {
+    id: 3,
+    name: 'jieun419',
+    type: 'Front-End',
+    url: 'https://github.com/jieun419',
+    target: '_blank',
+    rel: 'noreferrer',
+  },
+  {
+    id: 4,
+    name: 'BlancCarte',
+    type: 'Back-End',
+    url: 'https://github.com/BlancCarte',
+    target: '_blank',
+    rel: 'noreferrer',
+  },
+  {
+    id: 5,
+    name: 'MignonSS',
+    type: 'Back-End',
+    url: 'https://github.com/MignonSS',
+    target: '_blank',
+    rel: 'noreferrer',
+  },
+  {
+    id: 6,
+    name: 'atreeud12',
+    type: 'Back-End',
+    url: 'https://github.com/atreeud12',
+    target: '_blank',
+    rel: 'noreferrer',
+  },
+];

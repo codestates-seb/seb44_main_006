@@ -2,22 +2,10 @@ import { styled } from 'styled-components';
 
 import cssToken from '../../styles/cssToken';
 import useLocationEndpoint from '../../hooks/useLocationEndpoint';
+import { FOOTER_DATA } from '../../utils/constant/constant';
 
-type FootreStyle = {
-  ispath?: string;
-};
-
-const FooterContainer = styled.footer<FootreStyle>`
-  display: ${(props) => {
-    if (
-      props?.ispath === 'community' ||
-      props?.ispath === 'mypage' ||
-      props?.ispath === ''
-    ) {
-      return 'flex';
-    }
-    return 'none';
-  }};
+const FooterContainer = styled.footer`
+  display: flex;
   align-items: center;
   justify-content: center;
   background: ${cssToken.COLOR['gray-900']};
@@ -102,69 +90,28 @@ const InfoText = styled.ul`
 const Footer = () => {
   const ispath = useLocationEndpoint();
 
-  return (
-    <FooterContainer ispath={ispath}>
-      <InfoText>
-        <li>
-          <a
-            href="https://github.com/novice-hero"
-            target="_blank"
-            rel="noreferrer"
-          >
-            novice-hero
-            <span>Front-End</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/R-jisu" target="_blank" rel="noreferrer">
-            R-jisu
-            <span>Front-End</span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://github.com/jieun419"
-            target="_blank"
-            rel="noreferrer"
-          >
-            jieun419
-            <span>Front-End</span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://github.com/BlancCarte"
-            target="_blank"
-            rel="noreferrer"
-          >
-            BlancCarte
-            <span>Back-End</span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://github.com/MignonSS"
-            target="_blank"
-            rel="noreferrer"
-          >
-            MignonSS
-            <span>Back-End</span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://github.com/atreeud12"
-            target="_blank"
-            rel="noreferrer"
-          >
-            atreeud12
-            <span>Back-End</span>
-          </a>
-        </li>
-      </InfoText>
-      <FooterText>Copyright2023. 6 can do it all rights reserved.</FooterText>
-    </FooterContainer>
-  );
+  if (ispath === 'community' || ispath === 'mypage' || ispath === '') {
+    return (
+      <FooterContainer>
+        <InfoText>
+          {FOOTER_DATA.map((team) => {
+            return (
+              <li key={team.id}>
+                <a href={team.url} target={team.target} rel={team.rel}>
+                  {team.name}
+                  <span>{team.type}</span>
+                </a>
+              </li>
+            );
+          })}
+        </InfoText>
+        <FooterText>
+          Copyright 2023. 6 can do it all rights reserved.
+        </FooterText>
+      </FooterContainer>
+    );
+  }
+  return null;
 };
 
 export default Footer;
