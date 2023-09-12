@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -28,12 +28,11 @@ import { GetCourse, PostCommunity } from '../../apis/api';
 import { PostReadT } from '../../types/apitype';
 import removeTag from '../../utils/removeTag';
 import Text from '../../components/ui/text/Text';
-import scrollToTop from '../../utils/scrollToTop';
 import isEmpty from '../../utils/isEmpty';
 import SkeletonMapContainer from '../../components/community/skeleton/SkeletonMapContainer';
-import useValidEnter from '../../hooks/useValidEnter';
 import LocationInfoWrapper from '../../components/community/detail/LocationInfoWrapper';
 import { modules } from '../../utils/constant/constant';
+import useEnterPage from '../../hooks/useEnterPage';
 
 const PostOutsideWrap = styled(OutsideWrap)`
   @media screen and (max-width: 768px) {
@@ -76,16 +75,13 @@ const ErrorContainer = styled(GapDiv)`
 `;
 
 const PostCommunitypage = () => {
-  const checkValidEnter = useValidEnter();
-  const scheduleid = useLocation().state as string;
-  const quillRef = useRef<ReactQuill>(null);
   const gotoBack = useMovePage('/community/select', null, true);
   const navigate = useNavigate();
   const modalIsOpen = useSelector((state: RootState) => state.overlay.isOpen);
   const toggleModal = useToggleModal();
-  const [tags, setTags] = useState<string[] | []>([]);
   const [isValidate, setIsValidate] = useState<boolean>(true);
 
+  const scheduleid = useLocation().state as string;
   const { data: courses, isLoading } = useQuery({
     queryKey: ['course'],
     queryFn: () => GetCourse({ courseId: scheduleid }),
@@ -112,11 +108,7 @@ const PostCommunitypage = () => {
     },
   });
 
-  useEffect(() => {
-    checkValidEnter();
-    scrollToTop();
-  }, [checkValidEnter]);
-
+  const quillRef = useRef<ReactQuill>(null);
   const HandleBack = () => {
     if (isEmpty(removeTag(String(quillRef.current?.value)))) {
       gotoBack();
@@ -125,6 +117,7 @@ const PostCommunitypage = () => {
     toggleModal();
   };
 
+  const [tags, setTags] = useState<string[] | []>([]);
   const HandleNext = () => {
     if (!isEmpty(removeTag(String(quillRef.current?.value)))) {
       mutation.mutate({
@@ -138,16 +131,18 @@ const PostCommunitypage = () => {
     setIsValidate(false);
   };
 
-  const goToback = () => {
-    gotoBack();
-    toggleModal();
-  };
-
   const HandleQuillChange = () => {
     if (!isEmpty(removeTag(String(quillRef.current?.value)))) {
       setIsValidate(true);
     }
   };
+
+  const goToback = () => {
+    gotoBack();
+    toggleModal();
+  };
+
+  useEnterPage();
 
   return (
     <>
