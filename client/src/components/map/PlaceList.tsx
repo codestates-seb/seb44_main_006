@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
@@ -168,4 +168,4 @@ const PlaceList = ({
   );
 };
 
-export default PlaceList;
+export default React.memo(PlaceList);
