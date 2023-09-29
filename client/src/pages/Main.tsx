@@ -74,7 +74,7 @@ const MainLink = styled.button`
 
   @media (max-width: 1280px) {
     font-size: 50px;
-    cursor: default;
+    cursor: pointer;
   }
 `;
 
