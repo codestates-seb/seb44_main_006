@@ -1,9 +1,9 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { styled } from 'styled-components';
 
-import cssToken from '../../../styles/cssToken';
 import cursorOn from '../../../assets/cursor_on.svg';
 import cursorOff from '../../../assets/cursor_off.svg';
+import cssToken from '../../../styles/cssToken';
 
 interface CursorInfo {
   isMouseHover?: boolean;
