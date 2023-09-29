@@ -68,6 +68,7 @@ const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
     }
   };
 
+  // 커서 위치 저장
   const updateCursorPosition = (
     x: number,
     y: number,
@@ -88,6 +89,7 @@ const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
     }
   };
 
+  // 스크롤해도 커서 스타일을 유지
   const handleScroll = useCallback(() => {
     const storedPosition = localStorage.getItem('cursorPosition');
     if (storedPosition) {
@@ -106,6 +108,7 @@ const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
   }, [handleScroll]);
 
   useEffect(() => {
+    // 화면에서 마우스 움직여도 커서 스타일을 유지
     const handleMouseMove = (e: MouseEvent) => {
       cursorEnlarged.current = true;
       const { clientX, clientY } = e;
