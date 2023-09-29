@@ -166,6 +166,10 @@ const ScrollArrow = styled(FlexDiv)`
   align-items: center;
   align-self: flex-end;
 
+  @media screen and (max-width: 768px) {
+    bottom: 6rem;
+  }
+
   > span {
     width: 24px;
     height: 24px;
@@ -231,11 +235,10 @@ const Main = () => {
   const isLoggedIn = getLoginStatus();
   const goToRegister = useMovePage('/register');
   const goToCommunity = useMovePage('/community');
-
   const { userData: userInfo } = useUserInfo(isLoggedIn);
-
   const LogintoggleModal = useLoginToggleModal();
 
+  // Schedule Page Count 적용
   const checkScheduleCount = () => {
     if (userInfo && userInfo.myCourseCount >= 30) {
       showToast('warning', `일정은 30개를 초과해서 만드실 수 없습니다!`)();
@@ -263,10 +266,12 @@ const Main = () => {
     }
   }, [isLoggedIn, queryClient]);
 
+  // 마우스 메뉴 hover시 스타일 변경
   const handleMouseEvent = () => {
     setIsHovered((prev) => !prev);
   };
 
+  // 마우스 메인 영역 벗어날 경우 커서 스타일 적용/풀림
   const handleMainMouseLeave = () => {
     setIsCursorVisible(false);
   };
