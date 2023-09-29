@@ -68,22 +68,30 @@ const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
     }
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    cursorEnlarged.current = true;
-
-    const { clientX, clientY } = e;
-
-    endX.current = clientX;
-    endY.current = clientY;
+  const updateCursorPosition = (
+    x: number,
+    y: number,
+    positionSave: boolean
+  ) => {
+    endX.current = x;
+    endY.current = y;
 
     if (circleCursor.current) {
       circleCursor.current.style.top = `${endY.current}px`;
       circleCursor.current.style.left = `${endX.current}px`;
-      localStorage.setItem(
-        'cursorPosition',
-        JSON.stringify({ x: endX.current, y: endY.current })
-      );
+      if (positionSave) {
+        localStorage.setItem(
+          'cursorPosition',
+          JSON.stringify({ x: endX.current, y: endY.current })
+        );
+      }
     }
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    cursorEnlarged.current = true;
+    const { clientX, clientY } = e;
+    updateCursorPosition(clientX, clientY, true);
   };
 
   const handleScroll = useCallback(() => {
@@ -91,14 +99,7 @@ const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
 
     if (storedPosition) {
       const { x, y } = JSON.parse(storedPosition) as { x: number; y: number };
-
-      endX.current = x + window.scrollX;
-      endY.current = y + window.scrollY;
-
-      if (circleCursor.current) {
-        circleCursor.current.style.top = `${endY.current}px`;
-        circleCursor.current.style.left = `${endX.current}px`;
-      }
+      updateCursorPosition(x + window.scrollX, y + window.scrollY, false);
     }
     requestAnimationFrame(handleScroll);
   }, []);
