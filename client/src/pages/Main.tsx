@@ -1,20 +1,20 @@
-import { styled } from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { styled } from 'styled-components';
 
 import Landing from './Landing';
 
-import mainImg from '../assets/mainImg.webp';
-import cssToken from '../styles/cssToken';
+import CircleButton from '../components/ui/button/CircleButton';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
-import useLoginToggleModal from '../hooks/useLoginToggleModal';
+import scrollToTop from '../utils/scrollToTop';
 import showToast from '../utils/showToast';
+import getLoginStatus from '../utils/getLoginStatus';
+import useLoginToggleModal from '../hooks/useLoginToggleModal';
 import useMovePage from '../hooks/useMovePage';
 import useUserInfo from '../querys/useUserInfo';
-import getLoginStatus from '../utils/getLoginStatus';
-import CircleButton from '../components/ui/button/CircleButton';
+import mainImg from '../assets/mainImg.webp';
+import cssToken from '../styles/cssToken';
 import { FlexDiv } from '../styles/styles';
-import scrollToTop from '../utils/scrollToTop';
 
 const MainContainer = styled.article`
   position: relative;
