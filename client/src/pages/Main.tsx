@@ -263,11 +263,7 @@ const Main = () => {
     }
   }, [isLoggedIn, queryClient]);
 
-  const handleMouseEnter = () => {
-    setIsHovered((prev) => !prev);
-  };
-
-  const handleMouseLeave = () => {
+  const handleMouseEvent = () => {
     setIsHovered((prev) => !prev);
   };
 
@@ -295,8 +291,8 @@ const Main = () => {
         <CommunitySection>
           <MainLink
             onClick={goToCommunity}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={handleMouseEvent}
+            onMouseLeave={handleMouseEvent}
           >
             <span>Community</span>
           </MainLink>
@@ -304,8 +300,8 @@ const Main = () => {
         <ScheduleSection>
           <MainLink
             onClick={isLoggedIn ? checkScheduleCount : LogintoggleModal}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={handleMouseEvent}
+            onMouseLeave={handleMouseEvent}
           >
             <span>Schedule</span>
           </MainLink>
