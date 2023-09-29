@@ -88,15 +88,8 @@ const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
     }
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    cursorEnlarged.current = true;
-    const { clientX, clientY } = e;
-    updateCursorPosition(clientX, clientY, true);
-  };
-
   const handleScroll = useCallback(() => {
     const storedPosition = localStorage.getItem('cursorPosition');
-
     if (storedPosition) {
       const { x, y } = JSON.parse(storedPosition) as { x: number; y: number };
       updateCursorPosition(x + window.scrollX, y + window.scrollY, false);
@@ -113,6 +106,11 @@ const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
   }, [handleScroll]);
 
   useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      cursorEnlarged.current = true;
+      const { clientX, clientY } = e;
+      updateCursorPosition(clientX, clientY, true);
+    };
     // 이벤트 함수 호출
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
