@@ -97,7 +97,13 @@ const Footer = () => {
           {FOOTER_DATA.map((team) => {
             return (
               <li key={team.id}>
-                <a href={team.url} target={team.target} rel={team.rel}>
+                <a
+                  href={team.url}
+                  target={team.target}
+                  role="button"
+                  title="바로가기(새창)"
+                  rel={team.rel}
+                >
                   {team.name}
                   <span>{team.type}</span>
                 </a>
