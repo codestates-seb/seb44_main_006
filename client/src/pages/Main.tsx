@@ -1,20 +1,20 @@
-import { styled } from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { styled } from 'styled-components';
 
 import Landing from './Landing';
 
-import mainImg from '../assets/mainImg.webp';
-import cssToken from '../styles/cssToken';
+import CircleButton from '../components/ui/button/CircleButton';
 import CursorPointer from '../components/ui/cursor/cursorPointer';
-import useLoginToggleModal from '../hooks/useLoginToggleModal';
+import scrollToTop from '../utils/scrollToTop';
 import showToast from '../utils/showToast';
+import getLoginStatus from '../utils/getLoginStatus';
+import useLoginToggleModal from '../hooks/useLoginToggleModal';
 import useMovePage from '../hooks/useMovePage';
 import useUserInfo from '../querys/useUserInfo';
-import getLoginStatus from '../utils/getLoginStatus';
-import CircleButton from '../components/ui/button/CircleButton';
+import mainImg from '../assets/mainImg.webp';
+import cssToken from '../styles/cssToken';
 import { FlexDiv } from '../styles/styles';
-import scrollToTop from '../utils/scrollToTop';
 
 const MainContainer = styled.article`
   position: relative;
@@ -74,7 +74,7 @@ const MainLink = styled.button`
 
   @media (max-width: 1280px) {
     font-size: 50px;
-    cursor: default;
+    cursor: pointer;
   }
 `;
 
@@ -166,6 +166,10 @@ const ScrollArrow = styled(FlexDiv)`
   align-items: center;
   align-self: flex-end;
 
+  @media screen and (max-width: 768px) {
+    bottom: 6rem;
+  }
+
   > span {
     width: 24px;
     height: 24px;
@@ -231,11 +235,10 @@ const Main = () => {
   const isLoggedIn = getLoginStatus();
   const goToRegister = useMovePage('/register');
   const goToCommunity = useMovePage('/community');
-
   const { userData: userInfo } = useUserInfo(isLoggedIn);
-
   const LogintoggleModal = useLoginToggleModal();
 
+  // Schedule Page Count 적용
   const checkScheduleCount = () => {
     if (userInfo && userInfo.myCourseCount >= 30) {
       showToast('warning', `일정은 30개를 초과해서 만드실 수 없습니다!`)();
@@ -263,14 +266,12 @@ const Main = () => {
     }
   }, [isLoggedIn, queryClient]);
 
-  const handleMouseEnter = () => {
+  // 마우스 메뉴 hover시 스타일 변경
+  const handleMouseEvent = () => {
     setIsHovered((prev) => !prev);
   };
 
-  const handleMouseLeave = () => {
-    setIsHovered((prev) => !prev);
-  };
-
+  // 마우스 메인 영역 벗어날 경우 커서 스타일 적용/풀림
   const handleMainMouseLeave = () => {
     setIsCursorVisible(false);
   };
@@ -295,8 +296,8 @@ const Main = () => {
         <CommunitySection>
           <MainLink
             onClick={goToCommunity}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={handleMouseEvent}
+            onMouseLeave={handleMouseEvent}
           >
             <span>Community</span>
           </MainLink>
@@ -304,8 +305,8 @@ const Main = () => {
         <ScheduleSection>
           <MainLink
             onClick={isLoggedIn ? checkScheduleCount : LogintoggleModal}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={handleMouseEvent}
+            onMouseLeave={handleMouseEvent}
           >
             <span>Schedule</span>
           </MainLink>

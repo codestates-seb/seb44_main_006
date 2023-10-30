@@ -1,9 +1,9 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { styled } from 'styled-components';
 
-import cssToken from '../../../styles/cssToken';
 import cursorOn from '../../../assets/cursor_on.svg';
 import cursorOff from '../../../assets/cursor_off.svg';
+import cssToken from '../../../styles/cssToken';
 
 interface CursorInfo {
   isMouseHover?: boolean;
@@ -68,37 +68,33 @@ const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
     }
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    cursorEnlarged.current = true;
-
-    const { clientX, clientY } = e;
-
-    endX.current = clientX;
-    endY.current = clientY;
+  // 커서 위치 저장
+  const updateCursorPosition = (
+    x: number,
+    y: number,
+    positionSave: boolean
+  ) => {
+    endX.current = x;
+    endY.current = y;
 
     if (circleCursor.current) {
       circleCursor.current.style.top = `${endY.current}px`;
       circleCursor.current.style.left = `${endX.current}px`;
-      localStorage.setItem(
-        'cursorPosition',
-        JSON.stringify({ x: endX.current, y: endY.current })
-      );
+      if (positionSave) {
+        localStorage.setItem(
+          'cursorPosition',
+          JSON.stringify({ x: endX.current, y: endY.current })
+        );
+      }
     }
   };
 
+  // 스크롤해도 커서 스타일을 유지
   const handleScroll = useCallback(() => {
     const storedPosition = localStorage.getItem('cursorPosition');
-
     if (storedPosition) {
       const { x, y } = JSON.parse(storedPosition) as { x: number; y: number };
-
-      endX.current = x + window.scrollX;
-      endY.current = y + window.scrollY;
-
-      if (circleCursor.current) {
-        circleCursor.current.style.top = `${endY.current}px`;
-        circleCursor.current.style.left = `${endX.current}px`;
-      }
+      updateCursorPosition(x + window.scrollX, y + window.scrollY, false);
     }
     requestAnimationFrame(handleScroll);
   }, []);
@@ -112,6 +108,12 @@ const CursorPointer = ({ isMouseHover, isMainMouse }: CursorInfo) => {
   }, [handleScroll]);
 
   useEffect(() => {
+    // 화면에서 마우스 움직여도 커서 스타일을 유지
+    const handleMouseMove = (e: MouseEvent) => {
+      cursorEnlarged.current = true;
+      const { clientX, clientY } = e;
+      updateCursorPosition(clientX, clientY, true);
+    };
     // 이벤트 함수 호출
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
