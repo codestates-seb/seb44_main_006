@@ -127,7 +127,10 @@ const ScheduleRegister = () => {
     if (isModify && modifyData?.destinationList) {
       panTo({
         map,
-        newCenter: { lat: modifyData?.destinationList[0].y, lng: modifyData?.destinationList[0].x },
+        newCenter: {
+          lat: modifyData?.destinationList[0].y,
+          lng: modifyData?.destinationList[0].x,
+        },
       });
     }
   }, [isModify, map, modifyData?.destinationList]);
@@ -140,7 +143,11 @@ const ScheduleRegister = () => {
   return (
     <Wrapper>
       {isSave && (
-        <ScheduleCreateModal ismodify={isModify} courseId={courseId} courseData={modifyData?.courseData} />
+        <ScheduleCreateModal
+          ismodify={isModify}
+          courseId={courseId}
+          courseData={modifyData?.courseData}
+        />
       )}
       {isCancel && <ScheduleCancelModal setIsCancel={setIsCancel} />}
 

@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd';
-import React, { useMemo } from 'react';
 
 import cssToken from '../../styles/cssToken';
 import { RootState } from '../../store';
@@ -17,13 +16,12 @@ const Wrapper = styled.div`
 const ScheduleListBox = () => {
   const dispatch = useDispatch();
   const schedules = useSelector((state: RootState) => state.scheduleList.list);
-  const memoSchedules = useMemo(() => schedules, [schedules]);
 
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
 
     const copySchedules = JSON.parse(
-      JSON.stringify(memoSchedules)
+      JSON.stringify(schedules)
     ) as TScheduleList;
     const targetSchedules = copySchedules.splice(source.index, 1);
     copySchedules.splice(destination.index, 0, ...targetSchedules);
@@ -40,7 +38,7 @@ const ScheduleListBox = () => {
         <StrictModeDroppable droppableId="schedules">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              {memoSchedules.map((schedule: IScheduleListItem, idx: number) => (
+              {schedules.map((schedule: IScheduleListItem, idx: number) => (
                 <Draggable
                   key={schedule.id}
                   draggableId={schedule.id}
@@ -72,4 +70,4 @@ const ScheduleListBox = () => {
   );
 };
 
-export default React.memo(ScheduleListBox);
+export default ScheduleListBox;

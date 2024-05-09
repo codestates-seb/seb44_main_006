@@ -62,7 +62,7 @@ const PlaceList = ({
 }) => {
   const places = useSelector((state: RootState) => state.placeList.list);
   const isEmpty = useSelector((state: RootState) => state.placeList.isEmpty);
-  const schedule = useSelector(
+  const lastSchedule = useSelector(
     (state: RootState) => state.scheduleList.lastItem
   );
   const scheduleList = useSelector(
@@ -109,8 +109,8 @@ const PlaceList = ({
   useKeywordSearch(
     displayPagination,
     searchPlace,
-    schedule.x || x,
-    schedule.y || y,
+    lastSchedule.x || x,
+    lastSchedule.y || y,
     radius ? radius * 1000 : undefined
   );
 
